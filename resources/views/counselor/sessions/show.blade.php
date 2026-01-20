@@ -4,16 +4,14 @@
 
 @section('content')
 <div class="mb-6 flex items-center justify-between">
-    <div class="flex items-center gap-4">
-        <a href="{{ route('counselor.sessions.index') }}" class="inline-flex items-center gap-2 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
-            <span class="material-symbols-outlined text-sm">arrow_back</span>
-            Back to Sessions
-        </a>
-        <div>
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Session with {{ $session->student->name }}</h1>
-            <p class="text-sm text-gray-500 dark:text-gray-400">{{ ucfirst($session->session_type) }} • {{ ucfirst($session->status) }} • {{ $session->created_at->format('M d, Y') }}</p>
-        </div>
+    <div>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Session with {{ $session->student->name }}</h1>
+        <p class="text-sm text-gray-500 dark:text-gray-400">{{ ucfirst($session->session_type) }} • {{ ucfirst($session->status) }} • {{ $session->created_at->format('M d, Y') }}</p>
     </div>
+    <a href="{{ route('counselor.sessions.index') }}" class="inline-flex items-center gap-2 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+        <span class="material-symbols-outlined text-sm">arrow_back</span>
+        Back to Sessions
+    </a>
 </div>
 
 @if($session->status === 'pending')
