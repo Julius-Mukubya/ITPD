@@ -94,6 +94,14 @@
                     <p class="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Requested</p>
                     <p class="text-xs text-gray-900 dark:text-white">{{ $session->created_at->diffForHumans() }}</p>
                 </div>
+
+                <!-- Student's Request -->
+                <div class="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Student's Request</p>
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-2">
+                        <p class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">{{ $session->description }}</p>
+                    </div>
+                </div>
             </div>
 
             @if($session->status === 'pending')
@@ -303,6 +311,33 @@
                         </button>
                     </div>
                 </div>
+
+                <!-- Custom Contact Information -->
+                @if(auth()->user()->custom_contact_info)
+                    @foreach(auth()->user()->custom_contact_info as $key => $contact)
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="material-symbols-outlined text-purple-600 text-sm">{{ $contact['icon'] ?? 'contact_page' }}</span>
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $contact['label'] }}</span>
+                        </div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <input type="text" id="custom-{{ $key }}" readonly
+                                   value="{{ $contact['value'] }}"
+                                   class="flex-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="copyContactField('custom-{{ $key }}', '{{ $contact['label'] }}')" 
+                                    class="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-xs">
+                                Copy
+                            </button>
+                            <button onclick="shareCustomContactField('{{ $key }}', '{{ $contact['label'] }}', '{{ $contact['value'] }}')" 
+                                    class="bg-purple-600 hover:bg-purple-700 text-white px-2 py-1 rounded text-xs">
+                                Share in Chat
+                            </button>
+                        </div>
+                    </div>
+                    @endforeach
+                @endif
             </div>
         </div>
     </div>
@@ -401,88 +436,74 @@
 </div>
 @endif
 
-<!-- Two Column Section: Request, Notes -->
-<div class="mt-4 px-4 py-4 mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Student's Request -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-            <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-                <span class="material-symbols-outlined text-sm">description</span>
-                Student's Request
+<!-- Notes Section - Full Width -->
+@if($session->status !== 'pending')
+<div class="mt-4 px-4 py-4 mb-8">
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+        <div class="flex items-center justify-between mb-3">
+            <h3 class="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm text-primary">note_alt</span>
+                Notes
             </h3>
-            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-                <p class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">{{ $session->description }}</p>
-            </div>
+            <button onclick="document.getElementById('addNoteModal').classList.remove('hidden')" 
+                class="text-primary hover:text-primary/80 transition-colors">
+                <span class="material-symbols-outlined text-sm">add_circle</span>
+            </button>
         </div>
 
-        <!-- Session Notes -->
-        @if($session->status !== 'pending')
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-            <div class="flex items-center justify-between mb-3">
-                <h3 class="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                    <span class="material-symbols-outlined text-sm text-primary">note_alt</span>
-                    Notes
-                </h3>
+        <div class="space-y-2 max-h-80 overflow-y-auto">
+            @forelse($session->notes as $note)
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+                <div class="flex items-start justify-between mb-2">
+                    <div class="flex-1">
+                        @if($note->title)
+                        <h4 class="font-semibold text-gray-900 dark:text-white text-sm">{{ $note->title }}</h4>
+                        @endif
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="px-2 py-0.5 text-xs font-medium rounded-full
+                                @if($note->type === 'progress') bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300
+                                @elseif($note->type === 'observation') bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300
+                                @elseif($note->type === 'reminder') bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300
+                                @else bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-300
+                                @endif">
+                                {{ ucfirst($note->type) }}
+                            </span>
+                            @if($note->is_private)
+                            <span class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-xs">lock</span>
+                                Private
+                            </span>
+                            @endif
+                        </div>
+                    </div>
+                    <form action="{{ route('counselor.sessions.notes.delete', [$session, $note->id]) }}" method="POST" 
+                        onsubmit="return confirm('Delete this note?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-gray-400 hover:text-red-600 dark:hover:text-red-400">
+                            <span class="material-symbols-outlined text-sm">delete</span>
+                        </button>
+                    </form>
+                </div>
+                <p class="text-xs text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{{ $note->content }}</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    {{ $note->created_at->format('M d, h:i A') }}
+                </p>
+            </div>
+            @empty
+            <div class="text-center py-6">
+                <span class="material-symbols-outlined text-3xl text-gray-300 dark:text-gray-600 mb-2">note</span>
+                <p class="text-xs text-gray-500 dark:text-gray-400">No notes yet</p>
                 <button onclick="document.getElementById('addNoteModal').classList.remove('hidden')" 
-                    class="text-primary hover:text-primary/80 transition-colors">
-                    <span class="material-symbols-outlined text-sm">add_circle</span>
+                    class="text-primary hover:underline text-xs mt-1">
+                    Add note
                 </button>
             </div>
-
-            <div class="space-y-2 max-h-80 overflow-y-auto">
-                @forelse($session->notes as $note)
-                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
-                    <div class="flex items-start justify-between mb-2">
-                        <div class="flex-1">
-                            @if($note->title)
-                            <h4 class="font-semibold text-gray-900 dark:text-white text-sm">{{ $note->title }}</h4>
-                            @endif
-                            <div class="flex items-center gap-2 mt-1">
-                                <span class="px-2 py-0.5 text-xs font-medium rounded-full
-                                    @if($note->type === 'progress') bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300
-                                    @elseif($note->type === 'observation') bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300
-                                    @elseif($note->type === 'reminder') bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300
-                                    @else bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-300
-                                    @endif">
-                                    {{ ucfirst($note->type) }}
-                                </span>
-                                @if($note->is_private)
-                                <span class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-xs">lock</span>
-                                    Private
-                                </span>
-                                @endif
-                            </div>
-                        </div>
-                        <form action="{{ route('counselor.sessions.notes.delete', [$session, $note->id]) }}" method="POST" 
-                            onsubmit="return confirm('Delete this note?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-gray-400 hover:text-red-600 dark:hover:text-red-400">
-                                <span class="material-symbols-outlined text-sm">delete</span>
-                            </button>
-                        </form>
-                    </div>
-                    <p class="text-xs text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{{ $note->content }}</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        {{ $note->created_at->format('M d, h:i A') }}
-                    </p>
-                </div>
-                @empty
-                <div class="text-center py-6">
-                    <span class="material-symbols-outlined text-3xl text-gray-300 dark:text-gray-600 mb-2">note</span>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">No notes yet</p>
-                    <button onclick="document.getElementById('addNoteModal').classList.remove('hidden')" 
-                        class="text-primary hover:underline text-xs mt-1">
-                        Add note
-                    </button>
-                </div>
-                @endforelse
-            </div>
+            @endforelse
         </div>
-        @else
-        <div></div>
-        @endif
     </div>
+</div>
+@endif
 
 <!-- Meeting Link Modal -->
 <div id="meetingLinkModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -564,7 +585,7 @@
                 <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
                     <p class="text-xs text-blue-700 dark:text-blue-300 flex items-start gap-2">
                         <span class="material-symbols-outlined text-sm mt-0.5">info</span>
-                        <span>This will be added to your existing meeting links and can be shared with the student via chat.</span>
+                        <span>This will be added to your meeting links. You can share it with the student manually using the "Share in Chat" button.</span>
                     </p>
                 </div>
             </div>
@@ -1080,6 +1101,54 @@ You can reach me via email for session coordination, questions, or follow-up com
     .catch(error => {
         console.error('Error sharing contact info:', error);
         showContactNotification(`Failed to share ${contactLabel.toLowerCase()}.`, 'error');
+    })
+    .finally(() => {
+        // Reset button
+        button.innerHTML = originalHTML;
+        button.disabled = false;
+    });
+}
+
+// Share custom contact field function
+function shareCustomContactField(key, label, value) {
+    const button = event.target;
+    const originalHTML = button.innerHTML;
+    button.innerHTML = '<span class="material-symbols-outlined animate-spin text-xs">refresh</span>';
+    button.disabled = true;
+    
+    // Create share message for custom contact
+    const shareMessage = `📋 Counselor Contact Information
+
+${label}: ${value}
+
+You can reach me using this contact method for session coordination or any questions you may have.`;
+    
+    // Send message via AJAX
+    fetch('{{ route("counselor.sessions.message", $session) }}', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            'message': shareMessage
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            showContactNotification(`${label} shared in chat successfully!`, 'success');
+            
+            // Reload page to show the new message
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+        } else {
+            throw new Error('Failed to send message');
+        }
+    })
+    .catch(error => {
+        console.error('Error sharing custom contact info:', error);
+        showContactNotification(`Failed to share ${label.toLowerCase()}.`, 'error');
     })
     .finally(() => {
         // Reset button

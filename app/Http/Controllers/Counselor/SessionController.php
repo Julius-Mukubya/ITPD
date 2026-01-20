@@ -212,56 +212,7 @@ class SessionController extends Controller
             'meeting_link' => implode("\n", $existingLinks),
         ]);
 
-        // Use the selected method from the form
-        $selectedMethod = $request->contact_method;
-        $methodName = ucfirst(str_replace('_', ' ', $selectedMethod));
-        $scheduledTime = $session->scheduled_at ? $session->scheduled_at->format('l, F j, Y \a\t g:i A') : 'To be confirmed';
-        
-        $message = "📅 {$methodName} Session Details\n\n";
-        $message .= "Hello! I've added new meeting details for our counseling session:\n\n";
-        
-        if ($selectedMethod === 'zoom') {
-            $message .= "🎥 Zoom Meeting Link:\n{$newLink}\n\n";
-            $message .= "📌 Instructions:\n";
-            $message .= "1. Click the link above at the scheduled time\n";
-            $message .= "2. You may need to download Zoom if you haven't already\n";
-            $message .= "3. Please join a few minutes early to test your audio/video\n";
-        } elseif ($selectedMethod === 'google_meet') {
-            $message .= "🎥 Google Meet Link:\n{$newLink}\n\n";
-            $message .= "📌 Instructions:\n";
-            $message .= "1. Click the link above at the scheduled time\n";
-            $message .= "2. Make sure you're signed into your Google account\n";
-            $message .= "3. Allow camera and microphone access when prompted\n";
-        } elseif ($selectedMethod === 'whatsapp') {
-            $message .= "💬 WhatsApp Contact:\n{$newLink}\n\n";
-            $message .= "📌 Instructions:\n";
-            $message .= "1. Save this number or click the link to start a chat\n";
-            $message .= "2. Send me a message to confirm you've added me\n";
-            $message .= "3. I'll reach out at the scheduled time\n";
-        } elseif ($selectedMethod === 'phone_call') {
-            $message .= "📞 Phone Number:\n{$newLink}\n\n";
-            $message .= "📌 Instructions:\n";
-            $message .= "1. I will call you at the scheduled time\n";
-            $message .= "2. Please ensure you're in a quiet, private space\n";
-            $message .= "3. If you miss the call, I'll try again in 5 minutes\n";
-        } else {
-            $message .= "📍 Meeting Location:\n{$newLink}\n\n";
-            $message .= "📌 Instructions:\n";
-            $message .= "1. Please arrive 5-10 minutes early\n";
-            $message .= "2. Check in at the reception if needed\n";
-            $message .= "3. Bring any relevant documents or notes\n";
-        }
-        
-        $message .= "\n⏰ Scheduled Time: {$scheduledTime}\n\n";
-        $message .= "If you need to reschedule or have any questions, please let me know. Looking forward to our session!";
-
-        CounselingMessage::create([
-            'session_id' => $session->id,
-            'sender_id' => auth()->id(),
-            'message' => $message,
-        ]);
-
-        return back()->with('success', 'Meeting link added and shared with the student!');
+        return back()->with('success', 'Meeting link added successfully!');
     }
 
     public function removeMeetingLink(Request $request, CounselingSession $session)
