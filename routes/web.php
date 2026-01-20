@@ -320,6 +320,7 @@ Route::middleware([
             Route::post('/{session}/complete', [CounselorSessionController::class, 'complete'])->name('complete');
             Route::post('/{session}/message', [CounselorSessionController::class, 'sendMessage'])->name('message');
             Route::post('/{session}/meeting-link', [CounselorSessionController::class, 'updateMeetingLink'])->name('update-meeting-link');
+            Route::post('/{session}/remove-meeting-link', [CounselorSessionController::class, 'removeMeetingLink'])->name('remove-meeting-link');
 
             Route::post('/{session}/notes', [CounselorSessionController::class, 'addNote'])->name('notes.add');
             Route::delete('/{session}/notes/{noteId}', [CounselorSessionController::class, 'deleteNote'])->name('notes.delete');

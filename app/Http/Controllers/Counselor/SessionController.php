@@ -194,54 +194,58 @@ class SessionController extends Controller
 
         $request->validate([
             'meeting_link' => 'required|string|max:500',
-            'contact_method' => 'required|in:zoom,google_meet,whatsapp,phone_call,physical,jitsi',
+            'contact_method' => 'required|in:zoom,google_meet,whatsapp,phone_call,physical',
         ]);
 
+        // Get existing meeting links
+        $existingLinks = $session->meeting_link ? explode("\n", trim($session->meeting_link)) : [];
+        $existingLinks = array_filter(array_map('trim', $existingLinks));
+        
+        // Add the new link
+        $newLink = trim($request->meeting_link);
+        if (!in_array($newLink, $existingLinks)) {
+            $existingLinks[] = $newLink;
+        }
+        
+        // Update session with all links
         $session->update([
-            'meeting_link' => $request->meeting_link,
+            'meeting_link' => implode("\n", $existingLinks),
         ]);
 
-        // Use the selected method from the form, not the preferred method
+        // Use the selected method from the form
         $selectedMethod = $request->contact_method;
         $methodName = ucfirst(str_replace('_', ' ', $selectedMethod));
         $scheduledTime = $session->scheduled_at ? $session->scheduled_at->format('l, F j, Y \a\t g:i A') : 'To be confirmed';
         
         $message = "📅 {$methodName} Session Details\n\n";
-        $message .= "Hello! I've scheduled our counseling session. Here are the details:\n\n";
+        $message .= "Hello! I've added new meeting details for our counseling session:\n\n";
         
         if ($selectedMethod === 'zoom') {
-            $message .= "🎥 Zoom Meeting Link:\n{$request->meeting_link}\n\n";
+            $message .= "🎥 Zoom Meeting Link:\n{$newLink}\n\n";
             $message .= "📌 Instructions:\n";
             $message .= "1. Click the link above at the scheduled time\n";
             $message .= "2. You may need to download Zoom if you haven't already\n";
             $message .= "3. Please join a few minutes early to test your audio/video\n";
         } elseif ($selectedMethod === 'google_meet') {
-            $message .= "🎥 Google Meet Link:\n{$request->meeting_link}\n\n";
+            $message .= "🎥 Google Meet Link:\n{$newLink}\n\n";
             $message .= "📌 Instructions:\n";
             $message .= "1. Click the link above at the scheduled time\n";
             $message .= "2. Make sure you're signed into your Google account\n";
             $message .= "3. Allow camera and microphone access when prompted\n";
         } elseif ($selectedMethod === 'whatsapp') {
-            $message .= "💬 WhatsApp Contact:\n{$request->meeting_link}\n\n";
+            $message .= "💬 WhatsApp Contact:\n{$newLink}\n\n";
             $message .= "📌 Instructions:\n";
             $message .= "1. Save this number or click the link to start a chat\n";
             $message .= "2. Send me a message to confirm you've added me\n";
             $message .= "3. I'll reach out at the scheduled time\n";
         } elseif ($selectedMethod === 'phone_call') {
-            $message .= "📞 Phone Number:\n{$request->meeting_link}\n\n";
+            $message .= "📞 Phone Number:\n{$newLink}\n\n";
             $message .= "📌 Instructions:\n";
             $message .= "1. I will call you at the scheduled time\n";
             $message .= "2. Please ensure you're in a quiet, private space\n";
             $message .= "3. If you miss the call, I'll try again in 5 minutes\n";
-        } elseif ($selectedMethod === 'jitsi') {
-            $message .= "🎥 Jitsi Meet (Embedded Video Call):\n{$request->meeting_link}\n\n";
-            $message .= "📌 Instructions:\n";
-            $message .= "1. The video call will appear directly in this chat interface\n";
-            $message .= "2. No need to download any apps or leave this page\n";
-            $message .= "3. Allow camera and microphone access when prompted\n";
-            $message .= "4. You can also click the link above to open in a new tab if needed\n";
         } else {
-            $message .= "📍 Meeting Location:\n{$request->meeting_link}\n\n";
+            $message .= "📍 Meeting Location:\n{$newLink}\n\n";
             $message .= "📌 Instructions:\n";
             $message .= "1. Please arrive 5-10 minutes early\n";
             $message .= "2. Check in at the reception if needed\n";
@@ -257,7 +261,35 @@ class SessionController extends Controller
             'message' => $message,
         ]);
 
-        return back()->with('success', 'Meeting details saved and shared with the student!');
+        return back()->with('success', 'Meeting link added and shared with the student!');
+    }
+
+    public function removeMeetingLink(Request $request, CounselingSession $session)
+    {
+        if ($session->counselor_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $request->validate([
+            'link_to_remove' => 'required|string',
+        ]);
+
+        // Get existing meeting links
+        $existingLinks = $session->meeting_link ? explode("\n", trim($session->meeting_link)) : [];
+        $existingLinks = array_filter(array_map('trim', $existingLinks));
+        
+        // Remove the specified link
+        $linkToRemove = trim($request->link_to_remove);
+        $existingLinks = array_filter($existingLinks, function($link) use ($linkToRemove) {
+            return $link !== $linkToRemove;
+        });
+        
+        // Update session
+        $session->update([
+            'meeting_link' => empty($existingLinks) ? null : implode("\n", $existingLinks),
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Meeting link removed successfully!']);
     }
 
     public function addNote(Request $request, CounselingSession $session)

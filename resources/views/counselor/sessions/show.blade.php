@@ -245,7 +245,7 @@
                         </button>
                         <button onclick="shareContactField('phone', 'counselor-phone')" 
                                 class="bg-purple-600 hover:bg-purple-700 text-white px-2 py-1 rounded text-xs">
-                            Share
+                            Share in Chat
                         </button>
                     </div>
                 </div>
@@ -272,7 +272,7 @@
                         </button>
                         <button onclick="shareContactField('whatsapp', 'counselor-whatsapp')" 
                                 class="bg-purple-600 hover:bg-purple-700 text-white px-2 py-1 rounded text-xs">
-                            Share
+                            Share in Chat
                         </button>
                     </div>
                 </div>
@@ -299,18 +299,9 @@
                         </button>
                         <button onclick="shareContactField('email', 'counselor-email')" 
                                 class="bg-purple-600 hover:bg-purple-700 text-white px-2 py-1 rounded text-xs">
-                            Share
+                            Share in Chat
                         </button>
                     </div>
-                </div>
-                
-                <!-- Request Contact Info Button -->
-                <div class="pt-2">
-                    <button onclick="requestContactInfo({{ $session->id }})" 
-                            class="w-full bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2">
-                        <span class="material-symbols-outlined text-sm">contact_support</span>
-                        Request Updated Contact Info
-                    </button>
                 </div>
             </div>
         </div>
@@ -328,58 +319,67 @@
             </div>
 
             <div class="p-4 space-y-4">
-                @if($session->meeting_link)
-                    <!-- Existing Meeting Link -->
-                    <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="material-symbols-outlined text-green-600">check_circle</span>
-                            <h4 class="font-semibold text-green-800 dark:text-green-200">Meeting Ready</h4>
-                        </div>
+                <!-- Multiple Meeting Links -->
+                <div id="meeting-links-container">
+                    @if($session->meeting_link)
+                        @php
+                            // Try to parse multiple links if they exist (separated by newlines)
+                            $meetingLinks = explode("\n", trim($session->meeting_link));
+                            $meetingLinks = array_filter(array_map('trim', $meetingLinks));
+                        @endphp
                         
-                        <div class="space-y-3">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Meeting Link</label>
-                                <div class="flex items-center gap-2">
-                                    <input type="text" readonly value="{{ $session->meeting_link }}" 
-                                           class="flex-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white">
-                                    <button onclick="copyMeetingLink('{{ $session->meeting_link }}')" 
-                                            class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all">
-                                        Copy
+                        @foreach($meetingLinks as $index => $link)
+                        <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 meeting-link-item">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="material-symbols-outlined text-green-600">check_circle</span>
+                                <h4 class="font-semibold text-green-800 dark:text-green-200">Meeting Link {{ $index + 1 }}</h4>
+                                <button onclick="removeMeetingLink(this)" class="ml-auto text-red-500 hover:text-red-700">
+                                    <span class="material-symbols-outlined text-sm">delete</span>
+                                </button>
+                            </div>
+                            
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Meeting Link</label>
+                                    <div class="flex items-center gap-2">
+                                        <input type="text" readonly value="{{ $link }}" 
+                                               class="flex-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm text-gray-900 dark:text-white">
+                                        <button onclick="copyMeetingLink('{{ $link }}')" 
+                                                class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all">
+                                            Copy
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex gap-2">
+                                    <button onclick="shareMeetingLinkInChat('{{ $link }}', '{{ $session->preferred_method }}')" 
+                                            class="flex-1 bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2">
+                                        <span class="material-symbols-outlined text-sm">share</span>
+                                        Share in Chat
                                     </button>
                                 </div>
                             </div>
-                            
-                            <div class="flex gap-2">
-                                <button onclick="shareMeetingLinkInChat('{{ $session->meeting_link }}', '{{ $session->preferred_method }}')" 
-                                        class="flex-1 bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2">
-                                    <span class="material-symbols-outlined text-sm">share</span>
-                                    Share in Chat
-                                </button>
-                                <button onclick="openMeetingLinkModal()" 
-                                        class="bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-all">
-                                    Update
-                                </button>
+                        </div>
+                        @endforeach
+                    @else
+                        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="material-symbols-outlined text-blue-600">videocam</span>
+                                <h4 class="font-semibold text-blue-800 dark:text-blue-200">Set Up Video Meeting</h4>
                             </div>
+                            <p class="text-blue-700 dark:text-blue-300 text-sm mb-4">
+                                Create meeting links in your preferred platforms and share them with the student.
+                            </p>
                         </div>
-                    </div>
-                @else
-                    <!-- Setup Meeting Link -->
-                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="material-symbols-outlined text-blue-600">videocam</span>
-                            <h4 class="font-semibold text-blue-800 dark:text-blue-200">Set Up Video Meeting</h4>
-                        </div>
-                        <p class="text-blue-700 dark:text-blue-300 text-sm mb-4">
-                            Create a meeting link in your preferred platform and share it with the student.
-                        </p>
-                        
-                        <button onclick="openMeetingLinkModal()" 
-                                class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2">
-                            <span class="material-symbols-outlined">add</span>
-                            Add Meeting Link
-                        </button>
-                    </div>
-                @endif
+                    @endif
+                </div>
+                
+                <!-- Add New Meeting Link Button -->
+                <button onclick="openMeetingLinkModal()" 
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined">add</span>
+                    Add Meeting Link
+                </button>
                 
                 <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
                     <div class="flex items-start gap-2">
@@ -487,7 +487,7 @@
 <!-- Meeting Link Modal -->
 <div id="meetingLinkModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
     <div class="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Share Contact Information</h3>
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Add Meeting Link</h3>
         
         <form action="{{ route('counselor.sessions.update-meeting-link', $session) }}" method="POST">
             @csrf
@@ -536,8 +536,6 @@
                             </div>
                         </label>
 
-                        {{-- Jitsi option removed - embedded video calls no longer supported --}}
-
                         <label class="relative cursor-pointer md:col-span-2">
                             <input type="radio" name="contact_method" value="physical" class="sr-only peer" {{ ($session->preferred_method === 'physical') ? 'checked' : '' }}>
                             <div class="bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg p-3 peer-checked:border-orange-500 peer-checked:bg-orange-50 dark:peer-checked:bg-orange-900/20 transition-all">
@@ -553,11 +551,11 @@
                 <!-- Contact Details Input -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Contact Details / Link
+                        Meeting Link / Contact Details
                     </label>
-                    <textarea name="meeting_link" rows="3" required
+                    <input type="text" name="meeting_link" required
                         placeholder="Enter meeting link, phone number, WhatsApp link, or physical address..."
-                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">{{ $session->meeting_link ?? '' }}</textarea>
+                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
                         Examples: https://zoom.us/j/123456, +1234567890, https://wa.me/1234567890, Building A Room 101
                     </p>
@@ -566,14 +564,14 @@
                 <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3">
                     <p class="text-xs text-blue-700 dark:text-blue-300 flex items-start gap-2">
                         <span class="material-symbols-outlined text-sm mt-0.5">info</span>
-                        <span>This will be automatically shared with the student via a detailed chat message with instructions.</span>
+                        <span>This will be added to your existing meeting links and can be shared with the student via chat.</span>
                     </p>
                 </div>
             </div>
 
             <div class="flex gap-3 mt-6">
                 <button type="submit" class="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-semibold">
-                    Save & Share with Student
+                    Add Meeting Link
                 </button>
                 <button type="button" onclick="document.getElementById('meetingLinkModal').classList.add('hidden')" 
                     class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:opacity-90">
@@ -683,7 +681,64 @@ function linkifyAllMessages() {
 // Linkify on page load
 document.addEventListener('DOMContentLoaded', linkifyAllMessages);
 
-// Video call functions removed - embedded video calls no longer supported
+// Meeting link functions
+function openMeetingLinkModal() {
+    document.getElementById('meetingLinkModal').classList.remove('hidden');
+}
+
+function removeMeetingLink(button) {
+    if (!confirm('Are you sure you want to remove this meeting link?')) {
+        return;
+    }
+    
+    const linkItem = button.closest('.meeting-link-item');
+    const linkValue = linkItem.querySelector('input[readonly]').value;
+    
+    // Send AJAX request to remove the link
+    fetch('{{ route("counselor.sessions.remove-meeting-link", $session) }}', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            'link_to_remove': linkValue
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            // Remove the link item from the DOM
+            linkItem.remove();
+            
+            // Check if there are no more links
+            const container = document.getElementById('meeting-links-container');
+            const remainingLinks = container.querySelectorAll('.meeting-link-item');
+            
+            if (remainingLinks.length === 0) {
+                // Add the "Set Up Video Meeting" placeholder
+                container.innerHTML = `
+                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="material-symbols-outlined text-blue-600">videocam</span>
+                            <h4 class="font-semibold text-blue-800 dark:text-blue-200">Set Up Video Meeting</h4>
+                        </div>
+                        <p class="text-blue-700 dark:text-blue-300 text-sm mb-4">
+                            Create meeting links in your preferred platforms and share them with the student.
+                        </p>
+                    </div>
+                `;
+            }
+            
+            showContactNotification('Meeting link removed successfully!', 'success');
+        } else {
+            throw new Error('Failed to remove meeting link');
+        }
+    })
+    .catch(error => {
+        console.error('Error removing meeting link:', error);
+        showContactNotification('Failed to remove meeting link.', 'error');
+    });
+}
 
 // Copy meeting link (for non-Jitsi meetings)
 function copyMeetingLink(link) {
@@ -807,61 +862,6 @@ function copyToClipboard(text, type) {
         console.error('Failed to copy: ', err);
         alert(`Failed to copy ${type.toLowerCase()}. Please copy manually: ${text}`);
     }
-}
-
-function requestContactInfo(sessionId) {
-    if (!confirm('This will send a message to the student asking them to share their updated contact information. Continue?')) {
-        return;
-    }
-    
-    const button = event.target;
-    const originalHTML = button.innerHTML;
-    button.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">refresh</span> Requesting...';
-    button.disabled = true;
-    
-    // Send request message
-    const requestMessage = `📞 Contact Information Request
-
-Hi! Could you please share your current contact information with me? This will help me reach you if needed during our counseling sessions.
-
-Please provide:
-• Phone number
-• WhatsApp number (if different)
-• Preferred contact method
-
-You can share this information by replying to this message. Thank you!`;
-    
-    fetch('{{ route("counselor.sessions.message", $session) }}', {
-        method: 'POST',
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-            'message': requestMessage
-        })
-    })
-    .then(response => {
-        if (response.ok) {
-            showContactNotification('Contact information request sent to student!', 'success');
-            
-            // Reload page to show the new message
-            setTimeout(() => {
-                window.location.reload();
-            }, 1500);
-        } else {
-            throw new Error('Failed to send message');
-        }
-    })
-    .catch(error => {
-        console.error('Error requesting contact info:', error);
-        showContactNotification('Failed to send contact information request.', 'error');
-    })
-    .finally(() => {
-        // Reset button
-        button.innerHTML = originalHTML;
-        button.disabled = false;
-    });
 }
 
 // Contact notification function
