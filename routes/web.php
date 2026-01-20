@@ -340,6 +340,8 @@ Route::middleware([
         Route::post('/contact-setup/field', [CounselorSessionController::class, 'updateContactField'])->name('contact-setup.update-field');
         Route::post('/contact-setup/custom', [CounselorSessionController::class, 'addCustomContact'])->name('contact-setup.add-custom');
         Route::delete('/contact-setup/custom/{key}', [CounselorSessionController::class, 'deleteCustomContact'])->name('contact-setup.delete-custom');
+        Route::post('/contact-setup/meeting', [CounselorSessionController::class, 'addMeetingLink'])->name('contact-setup.add-meeting');
+        Route::delete('/contact-setup/meeting/{key}', [CounselorSessionController::class, 'deleteMeetingLink'])->name('contact-setup.delete-meeting');
 
         // Content Management (Counselors can only manage their own content)
         Route::resource('contents', \App\Http\Controllers\Counselor\ContentController::class);

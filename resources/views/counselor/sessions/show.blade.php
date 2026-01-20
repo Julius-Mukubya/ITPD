@@ -929,21 +929,40 @@ function saveContactField(type) {
         return;
     }
     
-    // Store in localStorage for persistence
-    localStorage.setItem(`counselor_${type}`, value);
-    
-    // Update all matching fields
-    inputFields.forEach(field => {
-        field.value = value;
-    });
-    
-    showContactNotification(`${type.charAt(0).toUpperCase() + type.slice(1)} saved successfully!`, 'success');
-    
-    // Reset button
-    setTimeout(() => {
+    // Save to database instead of localStorage
+    fetch('{{ route("counselor.contact-setup.update-field") }}', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            field: type === 'phone' ? 'phone' : type === 'whatsapp' ? 'whatsapp_number' : 'counselor_email',
+            value: value
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update all matching fields
+            inputFields.forEach(field => {
+                field.value = value;
+            });
+            
+            showContactNotification(`${type.charAt(0).toUpperCase() + type.slice(1)} saved successfully!`, 'success');
+        } else {
+            showContactNotification(data.message || 'Failed to save.', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error saving contact field:', error);
+        showContactNotification('Failed to save. Please try again.', 'error');
+    })
+    .finally(() => {
+        // Reset button
         button.innerHTML = originalHTML;
         button.disabled = false;
-    }, 1000);
+    });
 }
 
 // Copy contact field function
@@ -1071,29 +1090,6 @@ You can reach me via email for session coordination, questions, or follow-up com
 
 // Load saved contact info on page load
 document.addEventListener('DOMContentLoaded', function() {
-    // Load saved contact information
-    const savedPhone = localStorage.getItem('counselor_phone');
-    const savedWhatsapp = localStorage.getItem('counselor_whatsapp');
-    const savedEmail = localStorage.getItem('counselor_email');
-    
-    if (savedPhone) {
-        document.querySelectorAll('#counselor-phone, #counselor-phone-2, #counselor-phone-3').forEach(field => {
-            if (field) field.value = savedPhone;
-        });
-    }
-    
-    if (savedWhatsapp) {
-        document.querySelectorAll('#counselor-whatsapp, #counselor-whatsapp-2, #counselor-whatsapp-3').forEach(field => {
-            if (field) field.value = savedWhatsapp;
-        });
-    }
-    
-    if (savedEmail) {
-        document.querySelectorAll('#counselor-email, #counselor-email-2, #counselor-email-3').forEach(field => {
-            if (field) field.value = savedEmail;
-        });
-    }
-    
     // Scroll chat to bottom on page load
     scrollChatToBottom();
 });

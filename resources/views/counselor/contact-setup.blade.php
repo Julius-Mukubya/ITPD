@@ -206,6 +206,72 @@
     </div>
 </div>
 
+<!-- Default Meeting Links -->
+<div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm mb-6">
+    <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                    <span class="material-symbols-outlined text-blue-600">videocam</span>
+                    Default Meeting Links
+                </h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    Set up your default meeting links that will be pre-populated in sessions
+                </p>
+            </div>
+            <button onclick="showAddMeetingModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm font-medium flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm">add</span>
+                Add Meeting Link
+            </button>
+        </div>
+    </div>
+    
+    <div class="p-6">
+        <div id="meeting-links-list" class="space-y-4">
+            @if($user->default_meeting_links)
+                @foreach($user->default_meeting_links as $key => $meeting)
+                <div class="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg" data-key="{{ $key }}">
+                    <div class="flex items-center gap-3 flex-1">
+                        <span class="material-symbols-outlined text-blue-600">
+                            @if($meeting['type'] === 'zoom') videocam
+                            @elseif($meeting['type'] === 'google_meet') video_call
+                            @elseif($meeting['type'] === 'whatsapp') chat
+                            @elseif($meeting['type'] === 'phone_call') call
+                            @elseif($meeting['type'] === 'physical') location_on
+                            @else videocam
+                            @endif
+                        </span>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-900 dark:text-white">
+                                {{ ucfirst(str_replace('_', ' ', $meeting['type'])) }}
+                                @if($meeting['label']) - {{ $meeting['label'] }} @endif
+                            </p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 break-all">{{ $meeting['link'] }}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="copyMeetingLink('{{ $meeting['link'] }}')" class="text-blue-600 hover:text-blue-700 p-1" title="Copy Link">
+                            <span class="material-symbols-outlined text-sm">content_copy</span>
+                        </button>
+                        <button onclick="deleteMeetingLink('{{ $key }}')" class="text-red-600 hover:text-red-700 p-1" title="Delete">
+                            <span class="material-symbols-outlined text-sm">delete</span>
+                        </button>
+                    </div>
+                </div>
+                @endforeach
+            @else
+                <div id="no-meeting-links" class="text-center py-8">
+                    <span class="material-symbols-outlined text-4xl text-gray-300 dark:text-gray-600 mb-2">videocam</span>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm">No default meeting links added yet</p>
+                    <button onclick="showAddMeetingModal()" class="text-blue-600 hover:underline text-sm mt-1">
+                        Add your first meeting link
+                    </button>
+                </div>
+            @endif
+        </div>
+    </div>
+</div>
+
 <!-- Availability Hours (Keep the existing bulk save for this complex section) -->
 <form action="{{ route('counselor.contact-setup.update') }}" method="POST">
     @csrf
@@ -319,6 +385,51 @@
     </div>
 </div>
 
+<!-- Add Meeting Link Modal -->
+<div id="addMeetingModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-md w-full">
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Add Meeting Link</h3>
+        
+        <form id="addMeetingForm" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Meeting Type</label>
+                <select id="meeting_type" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
+                    <option value="">Select meeting type</option>
+                    <option value="zoom">Zoom</option>
+                    <option value="google_meet">Google Meet</option>
+                    <option value="whatsapp">WhatsApp</option>
+                    <option value="phone_call">Phone Call</option>
+                    <option value="physical">Physical (In-Person)</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Label (Optional)</label>
+                <input type="text" id="meeting_label" placeholder="e.g., Main Room, Personal Meeting"
+                       class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Meeting Link/Details</label>
+                <input type="text" id="meeting_link" placeholder="e.g., https://zoom.us/j/123456, +256700000000" required
+                       class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
+                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                    Enter meeting URL, phone number, or address depending on the type
+                </p>
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+                <button type="submit" class="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium">
+                    Add Meeting Link
+                </button>
+                <button type="button" onclick="hideAddMeetingModal()" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
 // Save individual field
 function saveField(fieldName) {
@@ -369,6 +480,16 @@ function hideAddCustomModal() {
     document.getElementById('addCustomForm').reset();
 }
 
+// Meeting link functions
+function showAddMeetingModal() {
+    document.getElementById('addMeetingModal').classList.remove('hidden');
+}
+
+function hideAddMeetingModal() {
+    document.getElementById('addMeetingModal').classList.add('hidden');
+    document.getElementById('addMeetingForm').reset();
+}
+
 // Add custom contact
 document.getElementById('addCustomForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -405,7 +526,145 @@ document.getElementById('addCustomForm').addEventListener('submit', function(e) 
     });
 });
 
-// Add custom contact to the list
+// Add meeting link
+document.getElementById('addMeetingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const type = document.getElementById('meeting_type').value;
+    const label = document.getElementById('meeting_label').value.trim();
+    const link = document.getElementById('meeting_link').value.trim();
+    
+    fetch('{{ route("counselor.contact-setup.add-meeting") }}', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            type: type,
+            label: label,
+            link: link
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast(data.message, 'success');
+            addMeetingLinkToList(data.key, data.meeting);
+            hideAddMeetingModal();
+        } else {
+            showToast(data.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Failed to add meeting link. Please try again.', 'error');
+    });
+});
+
+// Add meeting link to the list
+function addMeetingLinkToList(key, meeting) {
+    const list = document.getElementById('meeting-links-list');
+    const noLinksDiv = document.getElementById('no-meeting-links');
+    
+    if (noLinksDiv) {
+        noLinksDiv.remove();
+    }
+    
+    const iconMap = {
+        'zoom': 'videocam',
+        'google_meet': 'video_call',
+        'whatsapp': 'chat',
+        'phone_call': 'call',
+        'physical': 'location_on'
+    };
+    
+    const linkDiv = document.createElement('div');
+    linkDiv.className = 'flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg';
+    linkDiv.setAttribute('data-key', key);
+    linkDiv.innerHTML = `
+        <div class="flex items-center gap-3 flex-1">
+            <span class="material-symbols-outlined text-blue-600">${iconMap[meeting.type] || 'videocam'}</span>
+            <div class="flex-1">
+                <p class="text-sm font-medium text-gray-900 dark:text-white">
+                    ${meeting.type.charAt(0).toUpperCase() + meeting.type.slice(1).replace('_', ' ')}
+                    ${meeting.label ? ' - ' + meeting.label : ''}
+                </p>
+                <p class="text-sm text-gray-600 dark:text-gray-400 break-all">${meeting.link}</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button onclick="copyMeetingLink('${meeting.link}')" class="text-blue-600 hover:text-blue-700 p-1" title="Copy Link">
+                <span class="material-symbols-outlined text-sm">content_copy</span>
+            </button>
+            <button onclick="deleteMeetingLink('${key}')" class="text-red-600 hover:text-red-700 p-1" title="Delete">
+                <span class="material-symbols-outlined text-sm">delete</span>
+            </button>
+        </div>
+    `;
+    
+    list.appendChild(linkDiv);
+}
+
+// Copy meeting link
+function copyMeetingLink(link) {
+    navigator.clipboard.writeText(link).then(() => {
+        showToast('Meeting link copied to clipboard!', 'success');
+    }).catch(() => {
+        // Fallback for older browsers
+        const tempInput = document.createElement('input');
+        tempInput.value = link;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+        showToast('Meeting link copied to clipboard!', 'success');
+    });
+}
+
+// Delete meeting link
+function deleteMeetingLink(key) {
+    if (!confirm('Are you sure you want to delete this meeting link?')) {
+        return;
+    }
+    
+    fetch(`{{ route("counselor.contact-setup.delete-meeting", "") }}/${key}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast(data.message, 'success');
+            const linkDiv = document.querySelector(`[data-key="${key}"]`);
+            if (linkDiv) {
+                linkDiv.remove();
+            }
+            
+            // Show "no links" message if list is empty
+            const list = document.getElementById('meeting-links-list');
+            if (list.children.length === 0) {
+                list.innerHTML = `
+                    <div id="no-meeting-links" class="text-center py-8">
+                        <span class="material-symbols-outlined text-4xl text-gray-300 dark:text-gray-600 mb-2">videocam</span>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">No default meeting links added yet</p>
+                        <button onclick="showAddMeetingModal()" class="text-blue-600 hover:underline text-sm mt-1">
+                            Add your first meeting link
+                        </button>
+                    </div>
+                `;
+            }
+        } else {
+            showToast(data.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Failed to delete meeting link. Please try again.', 'error');
+    });
+}
 function addCustomContactToList(key, contact) {
     const list = document.getElementById('custom-contacts-list');
     const noContactsDiv = document.getElementById('no-custom-contacts');
@@ -496,5 +755,42 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleDayInputs(day);
     });
 });
+
+// Toast notification function
+function showToast(message, type = 'info') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transform transition-all duration-300 translate-x-full ${
+        type === 'success' ? 'bg-green-500 text-white' : 
+        type === 'error' ? 'bg-red-500 text-white' : 
+        'bg-blue-500 text-white'
+    }`;
+    
+    notification.innerHTML = `
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm">
+                ${type === 'success' ? 'check_circle' : type === 'error' ? 'error' : 'info'}
+            </span>
+            <span class="text-sm font-medium">${message}</span>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => {
+        notification.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Auto remove after 4 seconds
+    setTimeout(() => {
+        notification.classList.add('translate-x-full');
+        setTimeout(() => {
+            if (document.body.contains(notification)) {
+                document.body.removeChild(notification);
+            }
+        }, 300);
+    }, 4000);
+}
 </script>
 @endsection

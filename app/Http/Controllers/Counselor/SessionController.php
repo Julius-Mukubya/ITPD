@@ -687,4 +687,52 @@ class SessionController extends Controller
 
         return response()->json(['success' => false, 'message' => 'Contact not found']);
     }
+
+    public function addMeetingLink(Request $request)
+    {
+        $request->validate([
+            'type' => 'required|string|in:zoom,google_meet,whatsapp,phone_call,physical',
+            'label' => 'nullable|string|max:100',
+            'link' => 'required|string|max:500',
+        ]);
+
+        $user = auth()->user();
+        $meetingLinks = $user->default_meeting_links ?: [];
+        
+        // Generate a unique key
+        $key = $request->type . '_' . time();
+        
+        $meetingLinks[$key] = [
+            'type' => $request->type,
+            'label' => $request->label,
+            'link' => $request->link,
+        ];
+
+        $user->update(['default_meeting_links' => $meetingLinks]);
+
+        return response()->json([
+            'success' => true, 
+            'message' => 'Meeting link added successfully!',
+            'meeting' => $meetingLinks[$key],
+            'key' => $key
+        ]);
+    }
+
+    public function deleteMeetingLink($key)
+    {
+        $user = auth()->user();
+        $meetingLinks = $user->default_meeting_links ?: [];
+        
+        if (isset($meetingLinks[$key])) {
+            unset($meetingLinks[$key]);
+            $user->update(['default_meeting_links' => $meetingLinks]);
+            
+            return response()->json([
+                'success' => true, 
+                'message' => 'Meeting link deleted successfully!'
+            ]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Meeting link not found']);
+    }
 }

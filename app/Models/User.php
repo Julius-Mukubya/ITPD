@@ -29,6 +29,7 @@ class User extends Authenticatable
         'office_phone',
         'availability_hours',
         'custom_contact_info',
+        'default_meeting_links',
         'avatar',
         'role',
         'is_active',
@@ -55,6 +56,7 @@ class User extends Authenticatable
         'default_microphone_on' => 'boolean',
         'availability_hours' => 'array',
         'custom_contact_info' => 'array',
+        'default_meeting_links' => 'array',
     ];
 
     protected $appends = [
