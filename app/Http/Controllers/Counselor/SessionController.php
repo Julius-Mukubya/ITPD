@@ -621,6 +621,29 @@ class SessionController extends Controller
         ]);
     }
 
+    public function updateCustomContact(Request $request)
+    {
+        $request->validate([
+            'key' => 'required|string',
+            'value' => 'required|string|max:255',
+        ]);
+
+        $user = auth()->user();
+        $customContacts = $user->custom_contact_info ?: [];
+        
+        if (isset($customContacts[$request->key])) {
+            $customContacts[$request->key]['value'] = $request->value;
+            $user->update(['custom_contact_info' => $customContacts]);
+            
+            return response()->json([
+                'success' => true, 
+                'message' => 'Custom contact updated successfully!'
+            ]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Contact not found']);
+    }
+
     public function deleteCustomContact($key)
     {
         $user = auth()->user();

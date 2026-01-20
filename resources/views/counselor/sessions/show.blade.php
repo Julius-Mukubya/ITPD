@@ -3,11 +3,17 @@
 @section('title', 'Session Details - Counselor')
 
 @section('content')
-<div class="mb-6">
-    <a href="{{ route('counselor.sessions.index') }}" class="inline-flex items-center gap-2 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
-        <span class="material-symbols-outlined text-sm">arrow_back</span>
-        Back to Sessions
-    </a>
+<div class="mb-6 flex items-center justify-between">
+    <div class="flex items-center gap-4">
+        <a href="{{ route('counselor.sessions.index') }}" class="inline-flex items-center gap-2 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+            <span class="material-symbols-outlined text-sm">arrow_back</span>
+            Back to Sessions
+        </a>
+        <div>
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Session with {{ $session->student->name }}</h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400">{{ ucfirst($session->session_type) }} • {{ ucfirst($session->status) }} • {{ $session->created_at->format('M d, Y') }}</p>
+        </div>
+    </div>
 </div>
 
 @if($session->status === 'pending')
@@ -252,7 +258,8 @@
                             Copy
                         </button>
                         <button onclick="shareContactField('phone', 'counselor-phone')" 
-                                class="bg-purple-600 hover:bg-purple-700 text-white px-2 py-1 rounded text-xs">
+                                class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs">share</span>
                             Share in Chat
                         </button>
                     </div>
@@ -279,7 +286,8 @@
                             Copy
                         </button>
                         <button onclick="shareContactField('whatsapp', 'counselor-whatsapp')" 
-                                class="bg-purple-600 hover:bg-purple-700 text-white px-2 py-1 rounded text-xs">
+                                class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs">share</span>
                             Share in Chat
                         </button>
                     </div>
@@ -306,7 +314,8 @@
                             Copy
                         </button>
                         <button onclick="shareContactField('email', 'counselor-email')" 
-                                class="bg-purple-600 hover:bg-purple-700 text-white px-2 py-1 rounded text-xs">
+                                class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs">share</span>
                             Share in Chat
                         </button>
                     </div>
@@ -321,9 +330,13 @@
                             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $contact['label'] }}</span>
                         </div>
                         <div class="flex items-center gap-2 mb-2">
-                            <input type="text" id="custom-{{ $key }}" readonly
+                            <input type="text" id="custom-{{ $key }}" 
                                    value="{{ $contact['value'] }}"
                                    class="flex-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm">
+                            <button onclick="saveCustomContactField('{{ $key }}')" 
+                                    class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs">
+                                Save
+                            </button>
                         </div>
                         <div class="flex items-center gap-2">
                             <button onclick="copyContactField('custom-{{ $key }}', '{{ $contact['label'] }}')" 
@@ -331,7 +344,8 @@
                                 Copy
                             </button>
                             <button onclick="shareCustomContactField('{{ $key }}', '{{ $contact['label'] }}', '{{ $contact['value'] }}')" 
-                                    class="bg-purple-600 hover:bg-purple-700 text-white px-2 py-1 rounded text-xs">
+                                    class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
+                                <span class="material-symbols-outlined text-xs">share</span>
                                 Share in Chat
                             </button>
                         </div>
@@ -708,10 +722,6 @@ function openMeetingLinkModal() {
 }
 
 function removeMeetingLink(button) {
-    if (!confirm('Are you sure you want to remove this meeting link?')) {
-        return;
-    }
-    
     const linkItem = button.closest('.meeting-link-item');
     const linkValue = linkItem.querySelector('input[readonly]').value;
     
@@ -977,6 +987,54 @@ function saveContactField(type) {
     })
     .catch(error => {
         console.error('Error saving contact field:', error);
+        showContactNotification('Failed to save. Please try again.', 'error');
+    })
+    .finally(() => {
+        // Reset button
+        button.innerHTML = originalHTML;
+        button.disabled = false;
+    });
+}
+
+// Save custom contact field function
+function saveCustomContactField(key) {
+    const button = event.target;
+    const originalHTML = button.innerHTML;
+    button.innerHTML = '<span class="material-symbols-outlined animate-spin text-xs">refresh</span>';
+    button.disabled = true;
+    
+    const field = document.getElementById(`custom-${key}`);
+    const value = field.value.trim();
+    
+    if (!value) {
+        showContactNotification('Please enter a value for this contact field.', 'error');
+        button.innerHTML = originalHTML;
+        button.disabled = false;
+        return;
+    }
+    
+    // Update custom contact in database
+    fetch('{{ route("counselor.contact-setup.update-custom") }}', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            key: key,
+            value: value
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showContactNotification('Custom contact updated successfully!', 'success');
+        } else {
+            showContactNotification(data.message || 'Failed to save.', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error saving custom contact field:', error);
         showContactNotification('Failed to save. Please try again.', 'error');
     })
     .finally(() => {
@@ -1358,55 +1416,57 @@ body.fullscreen-chat-active {
 
 <!-- Add Note Modal -->
 <div id="addNoteModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-    <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-2xl w-full shadow-2xl">
-        <div class="flex items-center justify-between mb-6">
-            <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Add Session Note</h3>
+    <div class="bg-white dark:bg-gray-800 rounded-xl p-4 max-w-lg w-full shadow-xl">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Add Session Note</h3>
             <button onclick="document.getElementById('addNoteModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
-                <span class="material-symbols-outlined text-2xl">close</span>
+                <span class="material-symbols-outlined text-lg">close</span>
             </button>
         </div>
         
-        <form action="{{ route('counselor.sessions.notes.add', $session) }}" method="POST" class="space-y-6">
+        <form action="{{ route('counselor.sessions.notes.add', $session) }}" method="POST" class="space-y-3">
             @csrf
             
-            <div>
-                <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-3">Note Type *</label>
-                <select name="type" required 
-                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white transition-all">
-                    <option value="general">General Note</option>
-                    <option value="progress">Progress Update</option>
-                    <option value="observation">Clinical Observation</option>
-                    <option value="reminder">Reminder/Follow-up</option>
-                </select>
-            </div>
-
-            <div>
-                <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-3">Title (Optional)</label>
-                <input type="text" name="title" placeholder="Brief title for this note..." 
-                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white transition-all">
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Note Type *</label>
+                    <select name="type" required 
+                        class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-1 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white">
+                        <option value="general">General Note</option>
+                        <option value="progress">Progress Update</option>
+                        <option value="observation">Clinical Observation</option>
+                        <option value="reminder">Reminder/Follow-up</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Title (Optional)</label>
+                    <input type="text" name="title" placeholder="Brief title..." 
+                        class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-1 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white">
+                </div>
             </div>
             
             <div>
-                <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-3">Note Content *</label>
-                <textarea name="content" rows="6" required placeholder="Write your note here..." 
-                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white resize-none transition-all"></textarea>
+                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Note Content *</label>
+                <textarea name="content" rows="4" required placeholder="Write your note here..." 
+                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-1 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white resize-none"></textarea>
             </div>
 
-            <div class="flex items-center gap-3 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+            <div class="flex items-center gap-2 p-2 bg-gray-50 dark:bg-gray-700 rounded-lg">
                 <input type="checkbox" name="is_private" id="is_private" value="1" checked 
-                    class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
-                <label for="is_private" class="text-sm text-gray-700 dark:text-gray-300 flex items-center gap-2">
-                    <span class="material-symbols-outlined text-sm">lock</span>
-                    <span>Keep this note private (only visible to counselors and admins)</span>
+                    class="w-3 h-3 text-primary border-gray-300 rounded focus:ring-primary">
+                <label for="is_private" class="text-xs text-gray-700 dark:text-gray-300 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs">lock</span>
+                    <span>Keep private (counselors only)</span>
                 </label>
             </div>
             
-            <div class="flex gap-3">
-                <button type="submit" class="flex-1 bg-primary text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary/90 shadow-sm hover:shadow-md transition-all">
+            <div class="flex gap-2 pt-2">
+                <button type="submit" class="flex-1 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition-all">
                     Save Note
                 </button>
                 <button type="button" onclick="document.getElementById('addNoteModal').classList.add('hidden')" 
-                    class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-all">
+                    class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-all">
                     Cancel
                 </button>
             </div>
