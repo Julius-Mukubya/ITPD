@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WellPath Platform - Your Wellbeing Matters</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#FFD700',
+                        'wellpath-blue': '#003366',
+                        'background-light': '#ffffff',
+                        'background-dark': '#1a1a1a',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Line clamp utility */
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    
+    <!-- Hero Section -->
+    <div class="relative w-full h-screen flex items-center overflow-hidden">
+        <!-- Background Image -->
+        <img alt="Banner background" class="absolute inset-0 h-full w-full object-cover" 
+             src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaei4zVm6LMjCzOVeGiCrhI7yoToYFSZ67NFRSOpSi2mS78a4OlW5SUWJ6pb6uehKbKJYkyLdYuWxLOLcYqgTxhJDdOV5-TGjhJGRIC6Mw6f0BpUtqOf2WUzvouDx1C-cX7IZq5sTR_0tZQY81G8hmA7w609vHtY53hIjl_Z7uKMuJtcfu9xj_w-h5h-tQzhnl1SKW4blx_rDkSirm7BB0IdRYU1p10v-DVIT3Qqi_xtXuBK_86-uuVTLeC4WFxj7_2DutIbO4XA"/>
+        <div class="absolute inset-0 bg-black/30"></div>
+        
+        <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <div class="flex flex-col gap-6 items-center justify-center text-center text-white">
+                <div class="flex flex-col gap-4 max-w-3xl">
+                    <h1 class="text-4xl font-black leading-tight tracking-tighter sm:text-5xl md:text-6xl">Your Wellbeing Matters</h1>
+                    <p class="text-gray-200 text-base font-normal leading-normal sm:text-lg">A confidential space for students to find support, information, and resources for drug and alcohol awareness.</p>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row gap-4 mt-6">
+                    <button class="flex min-w-[140px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-wellpath-blue text-base font-bold leading-normal tracking-[0.015em] hover:bg-white transition-colors">
+                        <span class="truncate">Get Started</span>
+                    </button>
+                    <button class="flex min-w-[140px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white/20 text-white text-base font-bold leading-normal tracking-[0.015em] border border-white/50 hover:bg-white/30 transition-colors">
+                        <span class="truncate">Sign In</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Services Section -->
+    <div class="w-full bg-white py-16 sm:py-24">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Service Card 1 -->
+                <div class="flex flex-col gap-4 p-6 bg-white rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-2xl">quiz</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900">Self-Assessment Tools</h3>
+                    <p class="text-gray-600">Understand your habits with confidential, easy-to-use assessment tools.</p>
+                </div>
+                
+                <!-- Service Card 2 -->
+                <div class="flex flex-col gap-4 p-6 bg-white rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-2xl">health_and_safety</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900">Professional Counseling</h3>
+                    <p class="text-gray-600">Connect with qualified counselors for private and supportive guidance.</p>
+                </div>
+                
+                <!-- Service Card 3 -->
+                <div class="flex flex-col gap-4 p-6 bg-white rounded-xl border border-gray-200 hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-2xl">auto_stories</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900">Educational Resources</h3>
+                    <p class="text-gray-600">Access a rich library of articles, videos, and guides to stay informed.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Explore Topics Section -->
+    <div class="w-full py-16 sm:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Explore Topics</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    Find information and resources on topics that matter to you. Get expert guidance and support for your wellbeing journey.
+                </p>
+            </div>
+            
+            <!-- Carousel Container -->
+            <div class="relative mt-12 max-w-[1032px] mx-auto">
+                <!-- Navigation Buttons -->
+                <button id="prevBtn" class="absolute -left-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:text-primary hover:border-primary transition-all">
+                    <span class="material-symbols-outlined">chevron_left</span>
+                </button>
+                <button id="nextBtn" class="absolute -right-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white rounded-full shadow-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:text-primary hover:border-primary transition-all">
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </button>
+
+                <!-- Carousel Track -->
+                <div class="overflow-hidden">
+                    <div id="topicsCarousel" class="flex transition-transform duration-300 ease-in-out gap-6">
+                        <!-- Topic Card 1 -->
+                        <div class="flex-none w-80">
+                            <a href="#" class="group block bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-primary/30 hover:-translate-y-1 h-full">
+                                <div class="relative h-48 overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop&q=80&v=1" 
+                                         alt="Mental Health" 
+                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                                    <div class="absolute top-4 left-4">
+                                        <span class="bg-white/90 backdrop-blur-sm text-gray-800 px-3 py-1 rounded-full text-xs font-semibold">Mental Health</span>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    <h3 class="font-bold text-gray-900 text-lg mb-2 group-hover:text-primary transition-colors">Mental Health</h3>
+                                    <p class="text-sm text-gray-600 line-clamp-3 leading-relaxed">Resources for emotional wellbeing, stress management, and mental health support to help you thrive academically and personally.</p>
+                                    <div class="mt-4 flex items-center text-primary font-semibold text-sm group-hover:gap-2 transition-all">
+                                        <span>Learn More</span>
+                                        <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- Topic Card 2 -->
+                        <div class="flex-none w-80">
+                            <a href="#" class="group block bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-primary/30 hover:-translate-y-1 h-full">
+                                <div class="relative h-48 overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=800&h=600&fit=crop&q=80&v=2" 
+                                         alt="Alcohol Awareness" 
+                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                                    <div class="absolute top-4 left-4">
+                                        <span class="bg-white/90 backdrop-blur-sm text-gray-800 px-3 py-1 rounded-full text-xs font-semibold">Alcohol Awareness</span>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    <h3 class="font-bold text-gray-900 text-lg mb-2 group-hover:text-primary transition-colors">Alcohol Awareness</h3>
+                                    <p class="text-sm text-gray-600 line-clamp-3 leading-relaxed">Information about responsible drinking, alcohol safety, and understanding the risks associated with alcohol consumption.</p>
+                                    <div class="mt-4 flex items-center text-primary font-semibold text-sm group-hover:gap-2 transition-all">
+                                        <span>Learn More</span>
+                                        <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- Topic Card 3 -->
+                        <div class="flex-none w-80">
+                            <a href="#" class="group block bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-primary/30 hover:-translate-y-1 h-full">
+                                <div class="relative h-48 overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=800&h=600&fit=crop&q=80&v=3" 
+                                         alt="Drug Information" 
+                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                                    <div class="absolute top-4 left-4">
+                                        <span class="bg-white/90 backdrop-blur-sm text-gray-800 px-3 py-1 rounded-full text-xs font-semibold">Drug Information</span>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    <h3 class="font-bold text-gray-900 text-lg mb-2 group-hover:text-primary transition-colors">Drug Information</h3>
+                                    <p class="text-sm text-gray-600 line-clamp-3 leading-relaxed">Educational resources about substance use, prevention strategies, and understanding the impact of drugs on health and academics.</p>
+                                    <div class="mt-4 flex items-center text-primary font-semibold text-sm group-hover:gap-2 transition-all">
+                                        <span>Learn More</span>
+                                        <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- Topic Card 4 -->
+                        <div class="flex-none w-80">
+                            <a href="#" class="group block bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-primary/30 hover:-translate-y-1 h-full">
+                                <div class="relative h-48 overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=600&fit=crop&q=80&v=4" 
+                                         alt="Peer Support" 
+                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                                    <div class="absolute top-4 left-4">
+                                        <span class="bg-white/90 backdrop-blur-sm text-gray-800 px-3 py-1 rounded-full text-xs font-semibold">Peer Support</span>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    <h3 class="font-bold text-gray-900 text-lg mb-2 group-hover:text-primary transition-colors">Peer Support</h3>
+                                    <p class="text-sm text-gray-600 line-clamp-3 leading-relaxed">Connect with others, build supportive relationships, and learn how to create a strong network of friends and mentors.</p>
+                                    <div class="mt-4 flex items-center text-primary font-semibold text-sm group-hover:gap-2 transition-all">
+                                        <span>Learn More</span>
+                                        <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- Topic Card 5 -->
+                        <div class="flex-none w-80">
+                            <a href="#" class="group block bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-primary/30 hover:-translate-y-1 h-full">
+                                <div class="relative h-48 overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=600&fit=crop&q=80&v=5" 
+                                         alt="Academic Success" 
+                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                                    <div class="absolute top-4 left-4">
+                                        <span class="bg-white/90 backdrop-blur-sm text-gray-800 px-3 py-1 rounded-full text-xs font-semibold">Academic Success</span>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    <h3 class="font-bold text-gray-900 text-lg mb-2 group-hover:text-primary transition-colors">Academic Success</h3>
+                                    <p class="text-sm text-gray-600 line-clamp-3 leading-relaxed">Study tips, time management strategies, and academic resources to help you excel in your studies and achieve your goals.</p>
+                                    <div class="mt-4 flex items-center text-primary font-semibold text-sm group-hover:gap-2 transition-all">
+                                        <span>Learn More</span>
+                                        <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- Topic Card 6 -->
+                        <div class="flex-none w-80">
+                            <a href="#" class="group block bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-primary/30 hover:-translate-y-1 h-full">
+                                <div class="relative h-48 overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=800&h=600&fit=crop&q=80&v=6" 
+                                         alt="Recovery & Healing" 
+                                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                                    <div class="absolute top-4 left-4">
+                                        <span class="bg-white/90 backdrop-blur-sm text-gray-800 px-3 py-1 rounded-full text-xs font-semibold">Recovery & Healing</span>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    <h3 class="font-bold text-gray-900 text-lg mb-2 group-hover:text-primary transition-colors">Recovery & Healing</h3>
+                                    <p class="text-sm text-gray-600 line-clamp-3 leading-relaxed">Support and resources for recovery, personal growth, and healing from various challenges and life experiences.</p>
+                                    <div class="mt-4 flex items-center text-primary font-semibold text-sm group-hover:gap-2 transition-all">
+                                        <span>Learn More</span>
+                                        <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dots Indicator -->
+                <div id="dotsContainer" class="flex justify-center mt-8 gap-2">
+                    <!-- Dots will be generated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action Section -->
+    <div class="w-full py-16 sm:py-24 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-r from-primary/80 to-primary rounded-xl p-8 md:p-12 text-center">
+                <h2 class="text-3xl font-bold text-wellpath-blue tracking-tight">Ready to Take the Next Step?</h2>
+                <p class="mt-4 text-lg text-wellpath-blue/80 max-w-2xl mx-auto">Create a free, confidential account to access personalized tools, save resources, and connect with counselors.</p>
+                <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-8 text-wellpath-blue">
+                    <div class="flex flex-col">
+                        <span class="text-4xl font-black">100%</span>
+                        <span class="text-sm font-medium">Confidential</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-4xl font-black">500+</span>
+                        <span class="text-sm font-medium">Students Supported</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-4xl font-black">24/7</span>
+                        <span class="text-sm font-medium">Resource Access</span>
+                    </div>
+                </div>
+                <button class="inline-block mt-10 rounded-lg bg-wellpath-blue px-8 py-3 text-base font-bold text-white hover:bg-opacity-90 transition-colors">Create Your Account</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carousel JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const carousel = document.getElementById('topicsCarousel');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const dotsContainer = document.getElementById('dotsContainer');
+            
+            if (!carousel || !prevBtn || !nextBtn) return;
+            
+            const cards = carousel.children;
+            const totalCards = cards.length;
+            const cardsPerView = 3;
+            const cardWidth = 320;
+            const gap = 24;
+            const slideWidth = cardWidth + gap;
+            const autoSlideInterval = 5000;
+            
+            let currentIndex = 0;
+            let autoSlideTimer = null;
+            let isUserInteracting = false;
+            const maxIndex = Math.max(0, totalCards - cardsPerView);
+            
+            // Create dots
+            const totalDots = Math.ceil(totalCards / cardsPerView);
+            for (let i = 0; i < totalDots; i++) {
+                const dot = document.createElement('button');
+                dot.className = 'w-2 h-2 rounded-full transition-all duration-300';
+                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                dot.addEventListener('click', () => {
+                    isUserInteracting = true;
+                    goToSlide(i * cardsPerView);
+                    resetAutoSlide();
+                });
+                dotsContainer.appendChild(dot);
+            }
+            
+            function updateCarousel() {
+                const offset = -(currentIndex * slideWidth);
+                carousel.style.transform = `translateX(${offset}px)`;
+                
+                // Hide/show buttons based on position
+                if (currentIndex === 0) {
+                    prevBtn.style.opacity = '0';
+                    prevBtn.style.pointerEvents = 'none';
+                } else {
+                    prevBtn.style.opacity = '1';
+                    prevBtn.style.pointerEvents = 'auto';
+                }
+                
+                if (currentIndex >= maxIndex) {
+                    nextBtn.style.opacity = '0';
+                    nextBtn.style.pointerEvents = 'none';
+                } else {
+                    nextBtn.style.opacity = '1';
+                    nextBtn.style.pointerEvents = 'auto';
+                }
+                
+                // Update dots
+                const dots = dotsContainer.children;
+                const activeDotIndex = Math.floor(currentIndex / cardsPerView);
+                Array.from(dots).forEach((dot, index) => {
+                    if (index === activeDotIndex) {
+                        dot.className = 'w-8 h-2 rounded-full bg-primary transition-all duration-300';
+                    } else {
+                        dot.className = 'w-2 h-2 rounded-full bg-gray-300 transition-all duration-300';
+                    }
+                });
+            }
+            
+            function goToSlide(index) {
+                currentIndex = Math.max(0, Math.min(index, maxIndex));
+                updateCarousel();
+            }
+            
+            function nextSlide() {
+                if (currentIndex < maxIndex) {
+                    currentIndex++;
+                    updateCarousel();
+                }
+            }
+            
+            function prevSlide() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateCarousel();
+                }
+            }
+            
+            // Auto-slide functionality
+            function startAutoSlide() {
+                stopAutoSlide();
+                autoSlideTimer = setInterval(() => {
+                    if (!isUserInteracting && currentIndex < maxIndex) {
+                        nextSlide();
+                    } else if (currentIndex >= maxIndex) {
+                        stopAutoSlide();
+                    }
+                }, autoSlideInterval);
+            }
+            
+            function stopAutoSlide() {
+                if (autoSlideTimer) {
+                    clearInterval(autoSlideTimer);
+                    autoSlideTimer = null;
+                }
+            }
+            
+            function resetAutoSlide() {
+                stopAutoSlide();
+                setTimeout(() => {
+                    isUserInteracting = false;
+                    startAutoSlide();
+                }, autoSlideInterval);
+            }
+            
+            prevBtn.addEventListener('click', () => {
+                isUserInteracting = true;
+                prevSlide();
+                resetAutoSlide();
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                isUserInteracting = true;
+                nextSlide();
+                resetAutoSlide();
+            });
+            
+            // Pause auto-slide on hover
+            carousel.addEventListener('mouseenter', () => {
+                isUserInteracting = true;
+                stopAutoSlide();
+            });
+            
+            carousel.addEventListener('mouseleave', () => {
+                isUserInteracting = false;
+                startAutoSlide();
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    isUserInteracting = true;
+                    prevBtn.click();
+                } else if (e.key === 'ArrowRight') {
+                    isUserInteracting = true;
+                    nextBtn.click();
+                }
+            });
+            
+            // Touch/swipe support
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            carousel.addEventListener('touchstart', (e) => {
+                isUserInteracting = true;
+                stopAutoSlide();
+                touchStartX = e.changedTouches[0].screenX;
+            });
+            
+            carousel.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+                resetAutoSlide();
+            });
+            
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                if (touchStartX - touchEndX > swipeThreshold) {
+                    nextSlide();
+                } else if (touchEndX - touchStartX > swipeThreshold) {
+                    prevSlide();
+                }
+            }
+            
+            // Initialize
+            updateCarousel();
+            startAutoSlide();
+            
+            // Handle window resize
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    updateCarousel();
+                }, 250);
+            });
+            
+            // Pause when page is not visible
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    stopAutoSlide();
+                } else {
+                    startAutoSlide();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
