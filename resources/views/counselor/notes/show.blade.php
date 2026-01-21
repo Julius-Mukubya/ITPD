@@ -9,12 +9,12 @@
         <p class="text-gray-900 dark:text-white text-2xl sm:text-3xl font-bold tracking-tight">Session Note Details</p>
         <p class="text-gray-500 dark:text-gray-400 text-sm sm:text-base">View detailed information about this session note</p>
     </div>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 justify-end">
         <a href="{{ route('counselor.notes.edit', $note) }}" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
             <span class="material-symbols-outlined text-sm">edit</span>
             Edit Note
         </a>
-        <a href="{{ route('counselor.notes.index') }}" class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 font-medium transition-colors">
+        <a href="{{ route('counselor.notes.index') }}" class="inline-flex items-center gap-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 font-medium transition-colors">
             <span class="material-symbols-outlined text-sm">arrow_back</span>
             Back to Notes
         </a>
@@ -153,9 +153,12 @@
 @endphp
 
 @if($relatedNotes->count() > 0)
-<div class="mt-6">
-    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Other Notes from This Session</h2>
-    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+<div class="mt-8">
+    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+        <span class="material-symbols-outlined text-emerald-600">note</span>
+        Other Notes from This Session
+    </h2>
+    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
         <div class="divide-y divide-gray-200 dark:divide-gray-700">
             @foreach($relatedNotes as $relatedNote)
             <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">

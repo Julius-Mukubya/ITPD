@@ -9,7 +9,7 @@
         <p class="text-gray-900 dark:text-white text-2xl sm:text-3xl font-bold tracking-tight">Create Session Note</p>
         <p class="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Document observations, progress, and important details from your counseling sessions</p>
     </div>
-    <a href="{{ route('counselor.notes.index') }}" class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 font-medium transition-colors">
+    <a href="{{ route('counselor.notes.index') }}" class="inline-flex items-center gap-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 font-medium transition-colors">
         <span class="material-symbols-outlined text-sm">arrow_back</span>
         Back to Notes
     </a>
@@ -131,7 +131,7 @@
             <a href="{{ route('counselor.notes.index') }}" class="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors">
                 Cancel
             </a>
-            <button type="submit" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-colors">
+            <button type="submit" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-sm font-semibold px-6 py-3 rounded-xl hover:shadow-lg hover:shadow-emerald-500/30 transition-all duration-200">
                 Create Note
             </button>
         </div>

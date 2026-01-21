@@ -12,42 +12,11 @@ class NoteController extends Controller
     {
         $user = auth()->user();
         
-        // Get all notes for this counselor
-        $query = SessionNote::where('counselor_id', $user->id)
-            ->with(['session.student', 'counselor']);
-        
-        // Filter by search term
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('content', 'like', "%{$search}%")
-                  ->orWhereHas('session.student', function($studentQuery) use ($search) {
-                      $studentQuery->where('name', 'like', "%{$search}%")
-                                   ->orWhere('email', 'like', "%{$search}%");
-                  });
-            });
-        }
-        
-        // Filter by note type
-        if ($request->filled('type') && $request->type !== 'all') {
-            $query->where('type', $request->type);
-        }
-        
-        // Filter by privacy
-        if ($request->filled('privacy') && $request->privacy !== 'all') {
-            $query->where('is_private', $request->privacy === 'private');
-        }
-        
-        // Filter by client
-        if ($request->filled('client')) {
-            $query->whereHas('session', function($sessionQuery) use ($request) {
-                $sessionQuery->where('student_id', $request->client);
-            });
-        }
-        
-        // Sort by most recent
-        $notes = $query->latest()->paginate(20);
+        // Get all notes for this counselor with relationships
+        $notes = SessionNote::where('counselor_id', $user->id)
+            ->with(['session.student', 'counselor'])
+            ->latest()
+            ->get();
         
         // Get clients for filter dropdown
         $clients = User::whereIn('role', ['user', 'admin'])
@@ -59,12 +28,10 @@ class NoteController extends Controller
         
         // Statistics
         $stats = [
-            'total_notes' => SessionNote::where('counselor_id', $user->id)->count(),
-            'private_notes' => SessionNote::where('counselor_id', $user->id)->where('is_private', true)->count(),
-            'public_notes' => SessionNote::where('counselor_id', $user->id)->where('is_private', false)->count(),
-            'recent_notes' => SessionNote::where('counselor_id', $user->id)
-                ->where('created_at', '>=', now()->subDays(7))
-                ->count(),
+            'total_notes' => $notes->count(),
+            'private_notes' => $notes->where('is_private', true)->count(),
+            'public_notes' => $notes->where('is_private', false)->count(),
+            'recent_notes' => $notes->where('created_at', '>=', now()->subDays(7))->count(),
         ];
         
         return view('counselor.notes.index', compact('notes', 'clients', 'stats'));
