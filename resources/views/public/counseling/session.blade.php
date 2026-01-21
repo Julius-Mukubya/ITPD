@@ -210,43 +210,84 @@
                 </div>
                 @endif
                 
-                <div class="space-y-4">
+                <div class="space-y-3">
                     <div>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Session Type</p>
-                        <p class="font-medium text-gray-900 dark:text-white">{{ ucfirst(str_replace('_', ' ', $session->session_type)) }}</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Counselor</p>
+                        <p class="font-medium text-sm text-gray-900 dark:text-white">{{ $session->counselor ? $session->counselor->name : 'Assigned Counselor' }}</p>
+                        @if($session->counselor && $session->counselor->email)
+                        <p class="text-xs text-gray-600 dark:text-gray-400">{{ $session->counselor->email }}</p>
+                        @endif
                     </div>
 
                     <div>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Priority</p>
-                        <span class="px-3 py-1 text-xs font-semibold rounded-full
-                            @if($session->priority === 'urgent') bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300
-                            @elseif($session->priority === 'high') bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300
-                            @elseif($session->priority === 'medium') bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300
-                            @else bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Type</p>
+                        <p class="text-sm text-gray-900 dark:text-white">{{ ucfirst(str_replace('_', ' ', $session->session_type)) }}</p>
+                    </div>
+
+                    <div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Priority</p>
+                        <span class="px-2 py-0.5 text-xs font-medium rounded-full
+                            @if($session->priority === 'urgent') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
+                            @elseif($session->priority === 'high') bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300
+                            @elseif($session->priority === 'medium') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
+                            @else bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
                             @endif">
                             {{ ucfirst($session->priority) }}
                         </span>
                     </div>
 
+                    <div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Status</p>
+                        <span class="px-2 py-0.5 text-xs font-medium rounded-full
+                            @if($session->status === 'pending') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
+                            @elseif($session->status === 'active') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
+                            @elseif($session->status === 'completed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
+                            @else bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300
+                            @endif">
+                            {{ ucfirst($session->status) }}
+                        </span>
+                    </div>
+
                     @if($session->preferred_method)
                     <div>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Preferred Method</p>
-                        <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined text-sm text-emerald-600 dark:text-emerald-400">
-                                @if($session->preferred_method === 'zoom' || $session->preferred_method === 'google_meet') videocam
-                                @elseif($session->preferred_method === 'whatsapp') chat
-                                @elseif($session->preferred_method === 'phone_call') call
-                                @else location_on
-                                @endif
-                            </span>
-                            <p class="text-sm font-medium text-gray-900 dark:text-white">{{ ucfirst(str_replace('_', ' ', $session->preferred_method)) }}</p>
-                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Method</p>
+                        <p class="text-sm text-gray-900 dark:text-white">{{ ucfirst(str_replace('_', ' ', $session->preferred_method)) }}</p>
                     </div>
                     @endif
 
-                    @if($session->meeting_link && $session->status === 'active')
-                    <div class="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border-2 border-emerald-200 dark:border-emerald-800 rounded-2xl p-6 border-t-4 border-t-emerald-500 hover:shadow-lg transition-all duration-300">
-                        <div class="flex items-center gap-2 mb-4">
+                    <div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Requested</p>
+                        <p class="text-xs text-gray-900 dark:text-white">{{ $session->created_at->diffForHumans() }}</p>
+                    </div>
+
+                    @if($session->started_at)
+                    <div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Started</p>
+                        <p class="text-xs text-gray-900 dark:text-white">{{ $session->started_at->diffForHumans() }}</p>
+                    </div>
+                    @endif
+
+                    @if($session->completed_at)
+                    <div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Completed</p>
+                        <p class="text-xs text-gray-900 dark:text-white">{{ $session->completed_at->diffForHumans() }}</p>
+                    </div>
+                    @endif
+
+                    <!-- Your Request -->
+                    <div class="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Your Request</p>
+                        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-2">
+                            <p class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">{{ $session->description }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                @if($session->meeting_link && $session->status === 'active')
+                <!-- Meeting Link Section -->
+                <div class="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+                    <div class="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border-2 border-emerald-200 dark:border-emerald-800 rounded-xl p-4 border-t-4 border-t-emerald-500">
+                        <div class="flex items-center gap-2 mb-3">
                             <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400">contacts</span>
                             <p class="text-sm font-semibold text-emerald-900 dark:text-emerald-100">
                                 Session Contact Details
@@ -262,31 +303,31 @@
                         @endphp
                         
                         @if($isZoom)
-                            <a href="{{ $link }}" target="_blank" class="block w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-4 rounded-xl font-semibold text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 mb-3 flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined">videocam</span>
+                            <a href="{{ $link }}" target="_blank" class="block w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 py-3 rounded-lg font-semibold text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 mb-2 flex items-center justify-center gap-2 text-sm">
+                                <span class="material-symbols-outlined text-sm">videocam</span>
                                 Join Zoom Meeting
                             </a>
                             <p class="text-xs text-emerald-700 dark:text-emerald-300 break-all">{{ $link }}</p>
                         @elseif($isMeet)
-                            <a href="{{ $link }}" target="_blank" class="block w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-6 py-4 rounded-xl font-semibold text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 mb-3 flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined">video_call</span>
+                            <a href="{{ $link }}" target="_blank" class="block w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-4 py-3 rounded-lg font-semibold text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 mb-2 flex items-center justify-center gap-2 text-sm">
+                                <span class="material-symbols-outlined text-sm">video_call</span>
                                 Join Google Meet
                             </a>
                             <p class="text-xs text-emerald-700 dark:text-emerald-300 break-all">{{ $link }}</p>
                         @elseif($isWhatsApp)
-                            <a href="{{ $link }}" target="_blank" class="block w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white px-6 py-4 rounded-xl font-semibold text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 mb-3 flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined">chat</span>
+                            <a href="{{ $link }}" target="_blank" class="block w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white px-4 py-3 rounded-lg font-semibold text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 mb-2 flex items-center justify-center gap-2 text-sm">
+                                <span class="material-symbols-outlined text-sm">chat</span>
                                 Open WhatsApp Chat
                             </a>
                             <p class="text-xs text-emerald-700 dark:text-emerald-300 break-all">{{ $link }}</p>
                         @elseif($isPhone)
-                            <a href="tel:{{ $link }}" class="block w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-6 py-4 rounded-xl font-semibold text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 mb-3 flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined">call</span>
+                            <a href="tel:{{ $link }}" class="block w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-4 py-3 rounded-lg font-semibold text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 mb-2 flex items-center justify-center gap-2 text-sm">
+                                <span class="material-symbols-outlined text-sm">call</span>
                                 Call {{ $link }}
                             </a>
                             <p class="text-xs text-emerald-700 dark:text-emerald-300">Your counselor will call you at the scheduled time</p>
                         @else
-                            <div class="bg-white dark:bg-gray-800 rounded-xl p-4 mb-3 border border-gray-200 dark:border-gray-700">
+                            <div class="bg-white dark:bg-gray-800 rounded-lg p-3 mb-2 border border-gray-200 dark:border-gray-700">
                                 <p class="text-sm text-gray-900 dark:text-white font-medium flex items-start gap-2">
                                     <span class="material-symbols-outlined text-sm mt-0.5">info</span>
                                     <span class="break-all">{{ $link }}</span>
@@ -298,27 +339,8 @@
                             Check your messages for detailed instructions from your counselor
                         </p>
                     </div>
-                    @endif
-
-                    <div>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Requested</p>
-                        <p class="text-sm text-gray-900 dark:text-white">{{ $session->created_at->format('M d, Y h:i A') }}</p>
-                    </div>
-
-                    @if($session->started_at)
-                    <div>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Started</p>
-                        <p class="text-sm text-gray-900 dark:text-white">{{ $session->started_at->format('M d, Y h:i A') }}</p>
-                    </div>
-                    @endif
-
-                    @if($session->completed_at)
-                    <div>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Completed</p>
-                        <p class="text-sm text-gray-900 dark:text-white">{{ $session->completed_at->format('M d, Y h:i A') }}</p>
-                    </div>
-                    @endif
                 </div>
+                @endif
 
                 <!-- Student wants follow-up indicator -->
                 @if($session->wants_followup && !$session->isFollowUp())
@@ -349,20 +371,15 @@
                 </div>
             </div>
 
-            <!-- Initial Request -->
-            <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                <div class="p-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-t-2xl border-t-4 border-t-blue-500">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                        <span class="material-symbols-outlined text-blue-600">description</span>
-                        Your Request
-                    </h3>
+            @if($session->is_anonymous)
+            <div class="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 border-2 border-purple-200 dark:border-purple-800 rounded-xl p-3 mt-4 border-t-4 border-t-purple-500">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="material-symbols-outlined text-sm text-purple-600 dark:text-purple-400">visibility_off</span>
+                    <h3 class="text-sm font-semibold text-purple-900 dark:text-purple-100">Anonymous Session</h3>
                 </div>
-                <div class="p-6">
-                    <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
-                        <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{{ $session->description }}</p>
-                    </div>
-                </div>
+                <p class="text-xs text-purple-700 dark:text-purple-300">You requested anonymity for this session.</p>
             </div>
+            @endif
         </div>
     </div>
 </div>
