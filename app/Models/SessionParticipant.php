@@ -18,11 +18,13 @@ class SessionParticipant extends Model
         'invitation_token',
         'invited_at',
         'joined_at',
+        'left_at',
     ];
 
     protected $casts = [
         'invited_at' => 'datetime',
         'joined_at' => 'datetime',
+        'left_at' => 'datetime',
     ];
 
     /**
@@ -67,6 +69,17 @@ class SessionParticipant extends Model
     }
 
     /**
+     * Mark participant as left
+     */
+    public function markAsLeft()
+    {
+        $this->update([
+            'status' => 'left',
+            'left_at' => now(),
+        ]);
+    }
+
+    /**
      * Check if participant has joined
      */
     public function hasJoined(): bool
@@ -80,6 +93,14 @@ class SessionParticipant extends Model
     public function hasDeclined(): bool
     {
         return $this->status === 'declined';
+    }
+
+    /**
+     * Check if participant has left
+     */
+    public function hasLeft(): bool
+    {
+        return $this->status === 'left';
     }
 
     /**

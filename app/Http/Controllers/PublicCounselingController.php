@@ -285,7 +285,80 @@ class PublicCounselingController extends Controller
             'message' => $validated['message'],
         ]);
 
+        // Return JSON response for AJAX requests
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Message sent successfully.'
+            ]);
+        }
+
         return back()->with('success', 'Message sent successfully.');
+    }
+    
+    public function endSession(Request $request, CounselingSession $session)
+    {
+        // Require authentication
+        if (!auth()->check()) {
+            return redirect()->route('home')->with('error', 'Please login to end your session.');
+        }
+        
+        $user = auth()->user();
+        
+        // Check if user has access to this session
+        $hasAccess = false;
+        $isInitiator = $session->isInitiator($user->id);
+        $isParticipant = $session->isParticipant($user->id);
+        
+        if ($isInitiator || $isParticipant) {
+            $hasAccess = true;
+        }
+        
+        if (!$hasAccess) {
+            abort(403, 'You do not have access to this session.');
+        }
+
+        // Only allow ending active sessions
+        if ($session->status !== 'active') {
+            return back()->with('error', 'Only active sessions can be ended.');
+        }
+
+        $validated = $request->validate([
+            'feedback' => 'nullable|string|max:1000',
+            'action' => 'required|in:end_for_all,leave_session',
+        ]);
+
+        try {
+            if ($validated['action'] === 'end_for_all') {
+                // Only initiator can end session for everyone
+                if (!$isInitiator) {
+                    return back()->with('error', 'Only the session creator can end the session for everyone.');
+                }
+                
+                $session->endForEveryone($user->id, $validated['feedback']);
+                $message = 'Session has been ended successfully for all participants.';
+                
+            } else { // leave_session
+                // Only participants can leave (not initiator)
+                if ($isInitiator) {
+                    return back()->with('error', 'As the session creator, you cannot leave the session. You can end it for everyone instead.');
+                }
+                
+                if (!$isParticipant) {
+                    return back()->with('error', 'You are not a participant in this session.');
+                }
+                
+                $session->leaveSession($user->id);
+                $message = 'You have left the session successfully.';
+            }
+            
+            return redirect()
+                ->route('public.counseling.sessions')
+                ->with('success', $message);
+                
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
     
     public function cancelSession(CounselingSession $session)

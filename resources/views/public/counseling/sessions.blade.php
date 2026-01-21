@@ -57,44 +57,77 @@
         <!-- Statistics Cards -->
         <div>
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                <span class="material-symbols-outlined text-primary">analytics</span>
+                <span class="material-symbols-outlined text-emerald-600">analytics</span>
                 Your Session Statistics
             </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Pending Requests -->
-                <div class="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-2 border-amber-200 dark:border-amber-800/50 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 hover:border-amber-300 dark:hover:border-amber-700">
+                <div class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg hover:shadow-yellow-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-500 to-yellow-600"></div>
                     <div class="flex items-center justify-between mb-4">
-                        <div class="p-3 bg-amber-50 dark:bg-amber-900/20 rounded-xl group-hover:bg-amber-100 dark:group-hover:bg-amber-900/30 transition-colors">
-                            <span class="material-symbols-outlined text-3xl text-amber-600 dark:text-amber-400">pending</span>
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm font-semibold uppercase tracking-wide">Pending Requests</p>
                         </div>
-                        <div class="w-2 h-2 bg-amber-500 rounded-full opacity-60"></div>
+                        <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-800/20 rounded-xl p-2 group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-symbols-outlined text-xl text-yellow-600 dark:text-yellow-400">pending</span>
+                        </div>
                     </div>
-                    <p class="text-4xl font-black mb-2 text-gray-900 dark:text-white">{{ $pendingSessions ?? 0 }}</p>
-                    <p class="text-amber-600 dark:text-amber-400 font-medium">Pending Requests</p>
+                    <div class="space-y-2">
+                        <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $pendingSessions ?? 0 }}</p>
+                        <div class="flex items-center">
+                            <div class="flex items-center bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded-full">
+                                <span class="material-symbols-outlined text-xs mr-1 text-yellow-600">schedule</span>
+                                <span class="text-xs font-medium text-yellow-600">Awaiting Response</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Active Sessions -->
-                <div class="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-2 border-emerald-200 dark:border-emerald-800/50 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 hover:border-emerald-300 dark:hover:border-emerald-700">
+                <div class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-emerald-600"></div>
                     <div class="flex items-center justify-between mb-4">
-                        <div class="p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900/30 transition-colors">
-                            <span class="material-symbols-outlined text-3xl text-emerald-600 dark:text-emerald-400">psychology</span>
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm font-semibold uppercase tracking-wide">Active Sessions</p>
                         </div>
-                        <div class="w-2 h-2 bg-emerald-500 rounded-full opacity-60"></div>
+                        <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 rounded-xl p-2 group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-symbols-outlined text-xl text-emerald-600 dark:text-emerald-400">psychology</span>
+                        </div>
                     </div>
-                    <p class="text-4xl font-black mb-2 text-gray-900 dark:text-white">{{ $activeSessions ?? 0 }}</p>
-                    <p class="text-emerald-600 dark:text-emerald-400 font-medium">Active Sessions</p>
+                    <div class="space-y-2">
+                        <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $activeSessions ?? 0 }}</p>
+                        <div class="flex items-center">
+                            <div class="flex items-center bg-emerald-50 dark:bg-emerald-900/20 px-2 py-1 rounded-full">
+                                <span class="material-symbols-outlined text-xs mr-1 text-emerald-600">support_agent</span>
+                                <span class="text-xs font-medium text-emerald-600">In Progress</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Completed -->
-                <div class="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-2 border-blue-200 dark:border-blue-800/50 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 hover:border-blue-300 dark:hover:border-blue-700">
+                <div class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg hover:shadow-teal-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-500 to-teal-600"></div>
                     <div class="flex items-center justify-between mb-4">
-                        <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl group-hover:bg-blue-100 dark:group-hover:bg-blue-900/30 transition-colors">
-                            <span class="material-symbols-outlined text-3xl text-blue-600 dark:text-blue-400">check_circle</span>
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 bg-teal-500 rounded-full"></div>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm font-semibold uppercase tracking-wide">Completed</p>
                         </div>
-                        <div class="w-2 h-2 bg-blue-500 rounded-full opacity-60"></div>
+                        <div class="bg-gradient-to-br from-teal-50 to-teal-100 dark:from-teal-900/20 dark:to-teal-800/20 rounded-xl p-2 group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-symbols-outlined text-xl text-teal-600 dark:text-teal-400">check_circle</span>
+                        </div>
                     </div>
-                    <p class="text-4xl font-black mb-2 text-gray-900 dark:text-white">{{ $completedSessions ?? 0 }}</p>
-                    <p class="text-blue-600 dark:text-blue-400 font-medium">Completed</p>
+                    <div class="space-y-2">
+                        <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $completedSessions ?? 0 }}</p>
+                        <div class="flex items-center">
+                            <div class="flex items-center bg-teal-50 dark:bg-teal-900/20 px-2 py-1 rounded-full">
+                                <span class="material-symbols-outlined text-xs mr-1 text-teal-600">done_all</span>
+                                <span class="text-xs font-medium text-teal-600">Finished</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -102,33 +135,43 @@
         <!-- Quick Actions -->
         <div>
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                <span class="material-symbols-outlined text-primary">bolt</span>
+                <span class="material-symbols-outlined text-emerald-600">bolt</span>
                 Quick Actions
             </h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <button onclick="openRequestModal()" class="group bg-white dark:bg-gray-800 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-primary hover:shadow-lg transition-all duration-300 w-full text-left">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden cursor-pointer" onclick="openRequestModal()">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-emerald-600"></div>
                     <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-600 dark:text-gray-400 text-xs font-semibold uppercase tracking-wide mb-1">New Session</p>
-                            <p class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">Request Counseling</p>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                                <p class="text-gray-600 dark:text-gray-400 text-xs font-semibold uppercase tracking-wide">New Session</p>
+                            </div>
+                            <p class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-emerald-600 transition-colors">Request Counseling</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Get professional support</p>
                         </div>
-                        <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
-                            <span class="material-symbols-outlined text-primary group-hover:text-white text-3xl">add_circle</span>
+                        <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 rounded-xl p-3 group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-2xl">add_circle</span>
                         </div>
                     </div>
-                </button>
+                </div>
 
-                <button onclick="document.getElementById('emergencyModal').classList.remove('hidden')" class="group bg-white dark:bg-gray-800 rounded-xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-red-500 hover:shadow-lg transition-all duration-300 w-full text-left">
+                <div class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg hover:shadow-red-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden cursor-pointer" onclick="document.getElementById('emergencyModal').classList.remove('hidden')">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-red-600"></div>
                     <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-600 dark:text-gray-400 text-xs font-semibold uppercase tracking-wide mb-1">Emergency</p>
-                            <p class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-red-500 transition-colors">Crisis Support</p>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                                <p class="text-gray-600 dark:text-gray-400 text-xs font-semibold uppercase tracking-wide">Emergency</p>
+                            </div>
+                            <p class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-red-600 transition-colors">Crisis Support</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Immediate assistance</p>
                         </div>
-                        <div class="w-14 h-14 bg-red-50 dark:bg-red-900/20 rounded-xl flex items-center justify-center group-hover:bg-red-500 group-hover:scale-110 transition-all duration-300">
-                            <span class="material-symbols-outlined text-red-500 group-hover:text-white text-3xl">emergency</span>
+                        <div class="bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20 rounded-xl p-3 group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-symbols-outlined text-red-600 dark:text-red-400 text-2xl">emergency</span>
                         </div>
                     </div>
-                </button>
+                </div>
             </div>
         </div>
     </div>
@@ -139,28 +182,28 @@
     <div class="space-y-6">
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                <span class="material-symbols-outlined text-primary">history</span>
+                <span class="material-symbols-outlined text-emerald-600">history</span>
                 Your Sessions
             </h2>
             
             <!-- Filter Buttons -->
             <div class="flex items-center gap-2 flex-wrap">
-                <button onclick="filterSessions('all')" class="filter-btn active px-4 py-2 rounded-lg bg-primary text-white font-semibold text-sm transition-all hover:shadow-md" data-filter="all">
+                <button onclick="filterSessions('all')" class="filter-btn active bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-4 py-2 rounded-xl font-semibold text-sm transition-all hover:shadow-lg hover:shadow-emerald-500/30 duration-200" data-filter="all">
                     All Sessions
                 </button>
-                <button onclick="filterSessions('pending')" class="filter-btn px-4 py-2 rounded-lg bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-medium text-sm transition-all hover:border-amber-500 hover:text-amber-600" data-filter="pending">
+                <button onclick="filterSessions('pending')" class="filter-btn bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-xl font-medium text-sm transition-all hover:border-yellow-500 hover:text-yellow-600 hover:shadow-md" data-filter="pending">
                     <span class="flex items-center gap-1">
                         <span class="material-symbols-outlined text-sm">pending</span>
                         Pending
                     </span>
                 </button>
-                <button onclick="filterSessions('active')" class="filter-btn px-4 py-2 rounded-lg bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-medium text-sm transition-all hover:border-emerald-500 hover:text-emerald-600" data-filter="active">
+                <button onclick="filterSessions('active')" class="filter-btn bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-xl font-medium text-sm transition-all hover:border-emerald-500 hover:text-emerald-600 hover:shadow-md" data-filter="active">
                     <span class="flex items-center gap-1">
                         <span class="material-symbols-outlined text-sm">psychology</span>
                         Active
                     </span>
                 </button>
-                <button onclick="filterSessions('completed')" class="filter-btn px-4 py-2 rounded-lg bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-medium text-sm transition-all hover:border-blue-500 hover:text-blue-600" data-filter="completed">
+                <button onclick="filterSessions('completed')" class="filter-btn bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-xl font-medium text-sm transition-all hover:border-teal-500 hover:text-teal-600 hover:shadow-md" data-filter="completed">
                     <span class="flex items-center gap-1">
                         <span class="material-symbols-outlined text-sm">check_circle</span>
                         Completed
@@ -170,7 +213,7 @@
         </div>
         
         @if(isset($sessions) && $sessions->count() > 0)
-        <div class="bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 shadow-xl overflow-hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
             <div class="divide-y divide-gray-200 dark:divide-gray-700">
                 @foreach($sessions as $session)
                 <div class="session-item p-6 hover:bg-gradient-to-r hover:from-gray-50 hover:to-transparent dark:hover:from-gray-700/30 dark:hover:to-transparent transition-all duration-300 group" data-status="{{ $session->status }}" data-type="{{ $session->session_type }}" data-date="{{ $session->created_at->format('Y-m-d') }}">
@@ -412,25 +455,26 @@
         </div>
         @else
         <!-- Empty State -->
-        <div class="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-2 border-emerald-200 dark:border-emerald-800/50 rounded-3xl p-16 text-center shadow-sm">
+        <div class="group bg-white dark:bg-gray-800 rounded-2xl p-16 text-center shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-teal-600"></div>
             <div class="relative inline-block mb-8">
-                <div class="w-32 h-32 mx-auto rounded-3xl bg-emerald-100 dark:bg-emerald-900/30 border-2 border-emerald-200 dark:border-emerald-800/50 flex items-center justify-center shadow-sm">
+                <div class="w-32 h-32 mx-auto rounded-2xl bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-300">
                     <span class="material-symbols-outlined text-6xl text-emerald-600 dark:text-emerald-400">support_agent</span>
                 </div>
-                <div class="absolute -top-2 -right-2 w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 border-2 border-yellow-200 dark:border-yellow-800/50 rounded-full flex items-center justify-center shadow-sm animate-bounce">
+                <div class="absolute -top-2 -right-2 w-12 h-12 bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-800/20 border border-yellow-200 dark:border-yellow-800 rounded-full flex items-center justify-center shadow-sm animate-bounce">
                     <span class="material-symbols-outlined text-yellow-600 dark:text-yellow-400 text-2xl">star</span>
                 </div>
             </div>
-            <h3 class="text-3xl font-black text-gray-900 dark:text-white mb-4">Ready to Start Your Journey?</h3>
-            <p class="text-lg text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+            <h3 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Ready to Start Your Journey?</h3>
+            <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto leading-relaxed">
                 You haven't requested any counseling sessions yet. Our professional counselors are here to support you through any challenges you're facing. Take the first step towards better mental health today.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button onclick="openRequestModal()" class="bg-white/20 backdrop-blur-sm border-2 border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-300 px-10 py-4 rounded-xl font-bold text-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:scale-105 transition-all flex items-center gap-2 shadow-sm justify-center">
+                <button onclick="openRequestModal()" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-10 py-4 rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-emerald-500/30 hover:scale-105 transition-all duration-200 flex items-center gap-2 justify-center">
                     <span class="material-symbols-outlined text-2xl">add_circle</span>
                     Request Your First Session
                 </button>
-                <button onclick="document.getElementById('infoModal').classList.remove('hidden')" class="bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-2 border-gray-300 dark:border-gray-600 px-10 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:shadow-lg transition-all flex items-center gap-2 justify-center">
+                <button onclick="document.getElementById('infoModal').classList.remove('hidden')" class="bg-white dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 px-10 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 dark:hover:bg-gray-600 hover:shadow-lg transition-all flex items-center gap-2 justify-center">
                     <span class="material-symbols-outlined text-2xl">info</span>
                     Learn More
                 </button>
@@ -540,11 +584,11 @@ function filterSessions(status) {
     // Update button styles
     filterBtns.forEach(btn => {
         if (btn.dataset.filter === status) {
-            btn.classList.remove('bg-white', 'dark:bg-gray-800', 'border-2', 'border-gray-200', 'dark:border-gray-700', 'text-gray-700', 'dark:text-gray-300');
-            btn.classList.add('bg-primary', 'text-white', 'active');
+            btn.classList.remove('bg-white', 'dark:bg-gray-800', 'border', 'border-gray-200', 'dark:border-gray-700', 'text-gray-700', 'dark:text-gray-300');
+            btn.classList.add('bg-gradient-to-r', 'from-emerald-500', 'to-teal-600', 'text-white', 'active');
         } else {
-            btn.classList.remove('bg-primary', 'text-white', 'active');
-            btn.classList.add('bg-white', 'dark:bg-gray-800', 'border-2', 'border-gray-200', 'dark:border-gray-700', 'text-gray-700', 'dark:text-gray-300');
+            btn.classList.remove('bg-gradient-to-r', 'from-emerald-500', 'to-teal-600', 'text-white', 'active');
+            btn.classList.add('bg-white', 'dark:bg-gray-800', 'border', 'border-gray-200', 'dark:border-gray-700', 'text-gray-700', 'dark:text-gray-300');
         }
     });
     

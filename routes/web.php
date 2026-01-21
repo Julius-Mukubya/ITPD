@@ -116,6 +116,7 @@ Route::prefix('counseling')->name('public.counseling.')->group(function () {
         Route::post('/request', [PublicCounselingController::class, 'storeRequest'])->name('request.store');
         Route::get('/session/{session}', [PublicCounselingController::class, 'showSession'])->name('session.show');
         Route::post('/session/{session}/message', [PublicCounselingController::class, 'sendMessage'])->name('session.message');
+        Route::patch('/session/{session}/end', [PublicCounselingController::class, 'endSession'])->name('session.end');
         Route::post('/session/{session}/follow-up', [PublicCounselingController::class, 'scheduleFollowUp'])->name('session.followup');
         Route::delete('/session/{session}', [PublicCounselingController::class, 'cancelSession'])->name('session.cancel');
         

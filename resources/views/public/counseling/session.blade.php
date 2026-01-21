@@ -100,6 +100,48 @@
                     </div>
                     @endif
 
+                    <!-- Group Participants -->
+                    @if($session->isGroupSession())
+                    <div class="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Group Participants</p>
+                        <div class="space-y-2">
+                            <!-- Session Creator -->
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold">
+                                    {{ substr($session->student->name, 0, 1) }}
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-xs font-medium text-gray-900 dark:text-white">{{ $session->student->name }}</p>
+                                    <p class="text-xs text-emerald-600 dark:text-emerald-400">Session Creator</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Other Participants -->
+                            @foreach($session->participants as $participant)
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold">
+                                    {{ substr($participant->name, 0, 1) }}
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-xs font-medium text-gray-900 dark:text-white">{{ $participant->name }}</p>
+                                    <p class="text-xs 
+                                        @if($participant->status === 'joined') text-green-600 dark:text-green-400
+                                        @elseif($participant->status === 'invited') text-yellow-600 dark:text-yellow-400
+                                        @elseif($participant->status === 'left') text-gray-500 dark:text-gray-400
+                                        @else text-red-600 dark:text-red-400
+                                        @endif">
+                                        {{ ucfirst($participant->status) }}
+                                        @if($participant->status === 'left' && $participant->left_at)
+                                            ({{ $participant->left_at->diffForHumans() }})
+                                        @endif
+                                    </p>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
+
                     <div>
                         <p class="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Requested</p>
                         <p class="text-xs text-gray-900 dark:text-white">{{ $session->created_at->diffForHumans() }}</p>
@@ -126,67 +168,37 @@
                             <p class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">{{ $session->description }}</p>
                         </div>
                     </div>
-
-                    @if($session->meeting_link && $session->status === 'active')
-                    <!-- Meeting Link Section -->
-                    <div class="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
-                        <div class="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-3">
-                            <div class="flex items-center gap-2 mb-2">
-                                <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-sm">contacts</span>
-                                <p class="text-xs font-semibold text-emerald-900 dark:text-emerald-100">
-                                    Contact Details
-                                </p>
-                            </div>
-                            
-                            @php
-                                $link = $session->meeting_link;
-                                $isZoom = str_contains($link, 'zoom.us');
-                                $isMeet = str_contains($link, 'meet.google.com');
-                                $isWhatsApp = str_contains($link, 'wa.me') || str_contains($link, 'whatsapp');
-                                $isPhone = preg_match('/^\+?[0-9\s\-\(\)]+$/', $link);
-                            @endphp
-                            
-                            @if($isZoom)
-                                <a href="{{ $link }}" target="_blank" class="block w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-3 py-2 rounded-lg font-semibold text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 mb-2 flex items-center justify-center gap-2 text-xs">
-                                    <span class="material-symbols-outlined text-sm">videocam</span>
-                                    Join Zoom
-                                </a>
-                            @elseif($isMeet)
-                                <a href="{{ $link }}" target="_blank" class="block w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-3 py-2 rounded-lg font-semibold text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 mb-2 flex items-center justify-center gap-2 text-xs">
-                                    <span class="material-symbols-outlined text-sm">video_call</span>
-                                    Join Meet
-                                </a>
-                            @elseif($isWhatsApp)
-                                <a href="{{ $link }}" target="_blank" class="block w-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white px-3 py-2 rounded-lg font-semibold text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 mb-2 flex items-center justify-center gap-2 text-xs">
-                                    <span class="material-symbols-outlined text-sm">chat</span>
-                                    WhatsApp
-                                </a>
-                            @elseif($isPhone)
-                                <a href="tel:{{ $link }}" class="block w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-3 py-2 rounded-lg font-semibold text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 mb-2 flex items-center justify-center gap-2 text-xs">
-                                    <span class="material-symbols-outlined text-sm">call</span>
-                                    Call
-                                </a>
-                            @else
-                                <div class="bg-white dark:bg-gray-800 rounded-lg p-2 mb-2 border border-gray-200 dark:border-gray-700">
-                                    <p class="text-xs text-gray-900 dark:text-white font-medium flex items-start gap-2">
-                                        <span class="material-symbols-outlined text-xs mt-0.5">info</span>
-                                        <span class="break-all">{{ $link }}</span>
-                                    </p>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                    @endif
                 </div>
 
-                @if($session->status === 'pending' || $session->status === 'active')
                 <div class="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
                     @if($session->status === 'pending')
                     <button onclick="document.getElementById('cancelModal').classList.remove('hidden')" 
                         class="w-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-4 py-2.5 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 transition-all text-sm font-medium">
                         Cancel Request
                     </button>
-                    @else
+                    @elseif($session->status === 'active')
+                        @if($session->isGroupSession())
+                            @if($session->isInitiator(auth()->id()))
+                            <button onclick="document.getElementById('endSessionModal').classList.remove('hidden')" 
+                                class="w-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-4 py-2.5 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 transition-all text-sm font-medium flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined text-base">stop_circle</span>
+                                End Session for All
+                            </button>
+                            @elseif($session->isParticipant(auth()->id()))
+                            <button onclick="document.getElementById('leaveSessionModal').classList.remove('hidden')" 
+                                class="w-full bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 px-4 py-2.5 rounded-lg hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-all text-sm font-medium flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined text-base">exit_to_app</span>
+                                Leave Session
+                            </button>
+                            @endif
+                        @else
+                        <button onclick="document.getElementById('endSessionModal').classList.remove('hidden')" 
+                            class="w-full bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 px-4 py-2.5 rounded-lg hover:bg-orange-200 dark:hover:bg-orange-900/50 transition-all text-sm font-medium flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-base">stop_circle</span>
+                            End Session
+                        </button>
+                        @endif
+                    @elseif($session->status === 'completed')
                     <button onclick="document.getElementById('followUpModal').classList.remove('hidden')" 
                         class="w-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 px-4 py-2.5 rounded-lg hover:bg-emerald-200 dark:hover:bg-emerald-900/50 transition-all text-sm font-medium flex items-center justify-center gap-2">
                         <span class="material-symbols-outlined text-base">event_repeat</span>
@@ -194,7 +206,6 @@
                     </button>
                     @endif
                 </div>
-                @endif
             </div>
 
             @if($session->is_anonymous)
@@ -209,8 +220,8 @@
         </div>
 
         <!-- Session Chat -->
-        <div class="lg:col-span-3">
-            <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 flex flex-col" style="height: calc(100vh - 12rem);">
+        <div class="lg:col-span-3" id="chatContainer">
+            <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 flex flex-col transition-all duration-300" id="chatWindow" style="height: calc(100vh - 12rem);">
                 <!-- Chat Header -->
                 <div class="p-3 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-900/50 dark:to-gray-800/50">
                     <div class="flex items-center justify-between">
@@ -241,6 +252,15 @@
                                 <span class="text-xs font-medium">Online</span>
                             </div>
                             @endif
+                            <!-- Maximize/Minimize Button -->
+                            <button onclick="toggleChatSize()" 
+                                class="p-1.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" 
+                                id="chatToggleBtn" 
+                                title="Maximize Chat">
+                                <span class="material-symbols-outlined text-lg text-gray-600 dark:text-gray-400" id="chatToggleIcon">
+                                    fullscreen
+                                </span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -311,6 +331,124 @@
                 </div>
                 @endif
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- End Session Modal -->
+<div id="endSessionModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full border border-gray-200 dark:border-gray-700 hover:shadow-3xl transition-all duration-300">
+        <div class="p-8 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-t-2xl border-t-4 border-t-orange-500">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-gradient-to-br from-orange-100 to-red-100 dark:from-orange-900/30 dark:to-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-3xl text-orange-600 dark:text-orange-400">stop_circle</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                    @if($session->isGroupSession() && $session->isInitiator(auth()->id()))
+                        End Session for Everyone
+                    @else
+                        End Session
+                    @endif
+                </h3>
+                <p class="text-gray-600 dark:text-gray-400">
+                    @if($session->isGroupSession() && $session->isInitiator(auth()->id()))
+                        Are you sure you want to end this group session for all participants?
+                    @else
+                        Are you sure you want to end this counseling session?
+                    @endif
+                </p>
+            </div>
+        </div>
+        
+        <div class="p-8">
+            <form action="{{ route('public.counseling.session.end', $session) }}" method="POST">
+                @csrf
+                @method('PATCH')
+                
+                @if($session->isGroupSession() && $session->isInitiator(auth()->id()))
+                <input type="hidden" name="action" value="end_for_all">
+                @else
+                <input type="hidden" name="action" value="end_for_all">
+                @endif
+                
+                <div class="space-y-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                            Session Feedback (Optional)
+                        </label>
+                        <textarea name="feedback" rows="3" 
+                            class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-white resize-none text-sm"
+                            placeholder="How was your session? Any feedback for your counselor?"></textarea>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-4">
+                        <p class="text-xs text-blue-800 dark:text-blue-200">
+                            <strong>Note:</strong> 
+                            @if($session->isGroupSession() && $session->isInitiator(auth()->id()))
+                                Ending the session will mark it as completed for all participants. You can schedule a follow-up session afterwards if needed.
+                            @else
+                                Ending the session will mark it as completed. You can schedule a follow-up session afterwards if needed.
+                            @endif
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-3">
+                    <button type="submit" class="flex-1 bg-gradient-to-r from-orange-600 to-red-600 text-white px-4 py-3 rounded-xl font-semibold hover:from-orange-700 hover:to-red-700 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                        @if($session->isGroupSession() && $session->isInitiator(auth()->id()))
+                            End for Everyone
+                        @else
+                            End Session
+                        @endif
+                    </button>
+                    <button type="button" onclick="document.getElementById('endSessionModal').classList.add('hidden')" 
+                        class="px-6 py-3 bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-semibold hover:from-gray-300 hover:to-gray-400 dark:hover:from-gray-600 dark:hover:to-gray-500 transition-all duration-300">
+                        Continue Session
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Leave Session Modal (for group participants) -->
+<div id="leaveSessionModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full border border-gray-200 dark:border-gray-700 hover:shadow-3xl transition-all duration-300">
+        <div class="p-8 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-orange-50 to-yellow-50 dark:from-orange-900/20 dark:to-yellow-900/20 rounded-t-2xl border-t-4 border-t-orange-500">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-gradient-to-br from-orange-100 to-yellow-100 dark:from-orange-900/30 dark:to-yellow-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-3xl text-orange-600 dark:text-orange-400">exit_to_app</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Leave Group Session</h3>
+                <p class="text-gray-600 dark:text-gray-400">Are you sure you want to leave this group session? The session will continue for other participants.</p>
+            </div>
+        </div>
+        
+        <div class="p-8">
+            <form action="{{ route('public.counseling.session.end', $session) }}" method="POST">
+                @csrf
+                @method('PATCH')
+                
+                <input type="hidden" name="action" value="leave_session">
+                
+                <div class="space-y-4 mb-6">
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-4">
+                        <p class="text-xs text-blue-800 dark:text-blue-200">
+                            <strong>Note:</strong> Leaving the session will remove you from the group chat. The session will continue for other participants and the session creator.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-3">
+                    <button type="submit" class="flex-1 bg-gradient-to-r from-orange-600 to-yellow-600 text-white px-4 py-3 rounded-xl font-semibold hover:from-orange-700 hover:to-yellow-700 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                        Leave Session
+                    </button>
+                    <button type="button" onclick="document.getElementById('leaveSessionModal').classList.add('hidden')" 
+                        class="px-6 py-3 bg-gradient-to-r from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-semibold hover:from-gray-300 hover:to-gray-400 dark:hover:from-gray-600 dark:hover:to-gray-500 transition-all duration-300">
+                        Stay in Session
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -438,15 +576,138 @@ function scrollToBottom() {
     }
 }
 
-// Linkify on page load and scroll to bottom
-document.addEventListener('DOMContentLoaded', function() {
-    linkifyAllMessages();
-    scrollToBottom();
-});
+// Chat maximize/minimize functionality
+let isChatMaximized = localStorage.getItem('chatMaximized') === 'true';
+let originalChatState = null;
 
-// Auto-refresh messages every 30 seconds for active sessions
-@if($session->status === 'active')
-setInterval(() => {
+function toggleChatSize() {
+    const chatContainer = document.getElementById('chatContainer');
+    const chatWindow = document.getElementById('chatWindow');
+    const chatToggleIcon = document.getElementById('chatToggleIcon');
+    const chatToggleBtn = document.getElementById('chatToggleBtn');
+    const sidebar = chatContainer.previousElementSibling; // Session info sidebar
+    const mainContainer = chatContainer.closest('.max-w-7xl'); // Main container
+    
+    if (!isChatMaximized) {
+        // Store original state
+        originalChatState = {
+            chatContainerClass: chatContainer.className,
+            chatWindowStyle: chatWindow.style.cssText,
+            sidebarDisplay: sidebar.style.display,
+            mainContainerClass: mainContainer.className
+        };
+        
+        // Maximize chat - make it cover entire viewport
+        chatContainer.className = 'fixed inset-0 z-[9999] bg-black/20 flex items-center justify-center p-4';
+        chatWindow.style.cssText = 'height: calc(100vh - 2rem); width: calc(100vw - 2rem); max-width: none; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);';
+        sidebar.style.display = 'none';
+        
+        // Update button
+        chatToggleIcon.textContent = 'fullscreen_exit';
+        chatToggleBtn.title = 'Minimize Chat';
+        isChatMaximized = true;
+        
+        // Store state in localStorage
+        localStorage.setItem('chatMaximized', 'true');
+        
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+        
+        // Add click outside to close functionality
+        chatContainer.addEventListener('click', function(e) {
+            if (e.target === chatContainer) {
+                toggleChatSize();
+            }
+        });
+        
+    } else {
+        // Restore original state
+        if (originalChatState) {
+            chatContainer.className = originalChatState.chatContainerClass;
+            chatWindow.style.cssText = originalChatState.chatWindowStyle;
+            sidebar.style.display = originalChatState.sidebarDisplay;
+            mainContainer.className = originalChatState.mainContainerClass;
+        }
+        
+        // Update button
+        chatToggleIcon.textContent = 'fullscreen';
+        chatToggleBtn.title = 'Maximize Chat';
+        isChatMaximized = false;
+        
+        // Remove state from localStorage
+        localStorage.removeItem('chatMaximized');
+        
+        // Restore body scroll
+        document.body.style.overflow = '';
+        
+        // Remove event listeners
+        chatContainer.removeEventListener('click', arguments.callee);
+    }
+    
+    // Scroll to bottom after resize
+    setTimeout(scrollToBottom, 100);
+}
+
+// Apply maximized state on page load
+function applyChatState() {
+    if (isChatMaximized) {
+        // Delay to ensure DOM is ready
+        setTimeout(() => {
+            toggleChatSize();
+        }, 100);
+    }
+}
+
+// Handle message form submission with AJAX to prevent page refresh
+function setupMessageForm() {
+    const messageForm = document.querySelector('form[action*="message"]');
+    if (messageForm) {
+        messageForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const messageInput = this.querySelector('input[name="message"]');
+            const submitButton = this.querySelector('button[type="submit"]');
+            
+            // Disable form during submission
+            messageInput.disabled = true;
+            submitButton.disabled = true;
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Clear the input
+                    messageInput.value = '';
+                    
+                    // Refresh messages
+                    refreshMessages();
+                } else {
+                    alert('Failed to send message. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error sending message:', error);
+                alert('Failed to send message. Please try again.');
+            })
+            .finally(() => {
+                // Re-enable form
+                messageInput.disabled = false;
+                submitButton.disabled = false;
+                messageInput.focus();
+            });
+        });
+    }
+}
+
+// Refresh messages function
+function refreshMessages() {
     fetch(window.location.href, {
         headers: {
             'X-Requested-With': 'XMLHttpRequest'
@@ -459,11 +720,32 @@ setInterval(() => {
         const newMessages = doc.getElementById('messagesContainer');
         if (newMessages) {
             document.getElementById('messagesContainer').innerHTML = newMessages.innerHTML;
-            linkifyAllMessages(); // Linkify new messages
+            linkifyAllMessages();
             scrollToBottom();
         }
     })
     .catch(error => console.log('Error refreshing messages:', error));
+}
+
+// Handle escape key to minimize chat
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && isChatMaximized) {
+        toggleChatSize();
+    }
+});
+
+// Linkify on page load and scroll to bottom
+document.addEventListener('DOMContentLoaded', function() {
+    linkifyAllMessages();
+    scrollToBottom();
+    applyChatState();
+    setupMessageForm();
+});
+
+// Auto-refresh messages every 30 seconds for active sessions
+@if($session->status === 'active')
+setInterval(() => {
+    refreshMessages();
 }, 30000);
 @endif
 </script>
