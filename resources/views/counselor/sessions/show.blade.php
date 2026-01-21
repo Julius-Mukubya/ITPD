@@ -452,27 +452,36 @@
 @if($session->status !== 'pending')
 <div class="mt-4 px-4 py-4 mb-8">
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-        <div class="flex items-center justify-between mb-3">
-            <h3 class="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                <span class="material-symbols-outlined text-sm text-primary">note_alt</span>
-                Notes
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                <span class="material-symbols-outlined text-lg text-primary">note_alt</span>
+                Session Notes
             </h3>
-            <button onclick="document.getElementById('addNoteModal').classList.remove('hidden')" 
-                class="text-primary hover:text-primary/80 transition-colors">
-                <span class="material-symbols-outlined text-sm">add_circle</span>
+            <button onclick="openNoteModal()" 
+                class="bg-primary text-white px-3 py-2 rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2 text-sm">
+                <span class="material-symbols-outlined text-sm">add</span>
+                Add Note
             </button>
         </div>
 
-        <div class="space-y-2 max-h-80 overflow-y-auto">
-            @forelse($session->notes as $note)
-            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
-                <div class="flex items-start justify-between mb-2">
-                    <div class="flex-1">
-                        @if($note->title)
-                        <h4 class="font-semibold text-gray-900 dark:text-white text-sm">{{ $note->title }}</h4>
-                        @endif
-                        <div class="flex items-center gap-2 mt-1">
-                            <span class="px-2 py-0.5 text-xs font-medium rounded-full
+        @if($session->notes->count() > 0)
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-gray-50 dark:bg-gray-700">
+                        <th class="text-left p-3 text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600">Type</th>
+                        <th class="text-left p-3 text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600">Title</th>
+                        <th class="text-left p-3 text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600">Content</th>
+                        <th class="text-left p-3 text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600">Privacy</th>
+                        <th class="text-left p-3 text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600">Date</th>
+                        <th class="text-center p-3 text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-b border-gray-200 dark:border-gray-600">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
+                    @foreach($session->notes as $note)
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                        <td class="p-3 border-b border-gray-100 dark:border-gray-700">
+                            <span class="px-2 py-1 text-xs font-medium rounded-full
                                 @if($note->type === 'progress') bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300
                                 @elseif($note->type === 'observation') bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300
                                 @elseif($note->type === 'reminder') bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300
@@ -480,39 +489,73 @@
                                 @endif">
                                 {{ ucfirst($note->type) }}
                             </span>
-                            @if($note->is_private)
-                            <span class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                                <span class="material-symbols-outlined text-xs">lock</span>
-                                Private
-                            </span>
+                        </td>
+                        <td class="p-3 border-b border-gray-100 dark:border-gray-700">
+                            @if($note->title)
+                                <span class="text-sm font-medium text-gray-900 dark:text-white">{{ $note->title }}</span>
+                            @else
+                                <span class="text-sm text-gray-400 dark:text-gray-500 italic">No title</span>
                             @endif
-                        </div>
-                    </div>
-                    <form action="{{ route('counselor.sessions.notes.delete', [$session, $note->id]) }}" method="POST" 
-                        onsubmit="return confirm('Delete this note?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="text-gray-400 hover:text-red-600 dark:hover:text-red-400">
-                            <span class="material-symbols-outlined text-sm">delete</span>
-                        </button>
-                    </form>
-                </div>
-                <p class="text-xs text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{{ $note->content }}</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    {{ $note->created_at->format('M d, h:i A') }}
-                </p>
-            </div>
-            @empty
-            <div class="text-center py-6">
-                <span class="material-symbols-outlined text-3xl text-gray-300 dark:text-gray-600 mb-2">note</span>
-                <p class="text-xs text-gray-500 dark:text-gray-400">No notes yet</p>
-                <button onclick="document.getElementById('addNoteModal').classList.remove('hidden')" 
-                    class="text-primary hover:underline text-xs mt-1">
-                    Add note
-                </button>
-            </div>
-            @endforelse
+                        </td>
+                        <td class="p-3 border-b border-gray-100 dark:border-gray-700">
+                            <div class="text-sm text-gray-700 dark:text-gray-300 max-w-md">
+                                <p class="line-clamp-2">{{ Str::limit($note->content, 100) }}</p>
+                                @if(strlen($note->content) > 100)
+                                    <button onclick="toggleNoteContent({{ $note->id }})" class="text-primary hover:underline text-xs mt-1">
+                                        Show more
+                                    </button>
+                                    <div id="note-content-{{ $note->id }}" class="hidden mt-2 p-2 bg-gray-50 dark:bg-gray-600 rounded text-xs">
+                                        {{ $note->content }}
+                                    </div>
+                                @endif
+                            </div>
+                        </td>
+                        <td class="p-3 border-b border-gray-100 dark:border-gray-700">
+                            @if($note->is_private)
+                                <span class="inline-flex items-center gap-1 text-xs text-amber-600 dark:text-amber-400">
+                                    <span class="material-symbols-outlined text-xs">lock</span>
+                                    Private
+                                </span>
+                            @else
+                                <span class="inline-flex items-center gap-1 text-xs text-green-600 dark:text-green-400">
+                                    <span class="material-symbols-outlined text-xs">public</span>
+                                    Public
+                                </span>
+                            @endif
+                        </td>
+                        <td class="p-3 border-b border-gray-100 dark:border-gray-700">
+                            <div class="text-sm text-gray-600 dark:text-gray-400">
+                                <div>{{ $note->created_at->format('M d, Y') }}</div>
+                                <div class="text-xs text-gray-500">{{ $note->created_at->format('h:i A') }}</div>
+                            </div>
+                        </td>
+                        <td class="p-3 border-b border-gray-100 dark:border-gray-700 text-center">
+                            <form action="{{ route('counselor.sessions.notes.delete', [$session, $note->id]) }}" method="POST" 
+                                onsubmit="return confirm('Delete this note?')" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 p-1 rounded transition-colors">
+                                    <span class="material-symbols-outlined text-sm">delete</span>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
+        @else
+        <div class="text-center py-12 border-2 border-dashed border-gray-200 dark:border-gray-600 rounded-lg">
+            <span class="material-symbols-outlined text-4xl text-gray-300 dark:text-gray-600 mb-3 block">note_add</span>
+            <h4 class="text-lg font-medium text-gray-900 dark:text-white mb-2">No notes yet</h4>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Start documenting this session by adding your first note.</p>
+            <button onclick="openNoteModal()" 
+                class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors inline-flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm">add</span>
+                Add First Note
+            </button>
+        </div>
+        @endif
     </div>
 </div>
 @endif
@@ -1386,9 +1429,62 @@ function scrollFullscreenChatToBottom() {
         chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 }
+
+// Toggle note content visibility
+function toggleNoteContent(noteId) {
+    const contentDiv = document.getElementById(`note-content-${noteId}`);
+    const button = event.target;
+    
+    if (contentDiv.classList.contains('hidden')) {
+        contentDiv.classList.remove('hidden');
+        button.textContent = 'Show less';
+    } else {
+        contentDiv.classList.add('hidden');
+        button.textContent = 'Show more';
+    }
+}
+
+// Modal functions with body scroll locking
+function openNoteModal() {
+    const modal = document.getElementById('addNoteModal');
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = getScrollbarWidth() + 'px';
+}
+
+function closeNoteModal() {
+    const modal = document.getElementById('addNoteModal');
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+}
+
+function getScrollbarWidth() {
+    const outer = document.createElement('div');
+    outer.style.visibility = 'hidden';
+    outer.style.overflow = 'scroll';
+    outer.style.msOverflowStyle = 'scrollbar';
+    document.body.appendChild(outer);
+    
+    const inner = document.createElement('div');
+    outer.appendChild(inner);
+    
+    const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
+    outer.parentNode.removeChild(outer);
+    
+    return scrollbarWidth;
+}
 </script>
 
 <style>
+/* Line clamp utility for truncating text */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
 /* Ensure fullscreen chat modal covers entire viewport */
 #fullscreenChatModal {
     position: fixed !important;
@@ -1413,62 +1509,64 @@ body.fullscreen-chat-active {
 @endpush
 
 <!-- Add Note Modal -->
-<div id="addNoteModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-    <div class="bg-white dark:bg-gray-800 rounded-xl p-4 max-w-lg w-full shadow-xl">
-        <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Add Session Note</h3>
-            <button onclick="document.getElementById('addNoteModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
-                <span class="material-symbols-outlined text-lg">close</span>
-            </button>
-        </div>
-        
-        <form action="{{ route('counselor.sessions.notes.add', $session) }}" method="POST" class="space-y-3">
-            @csrf
+<div id="addNoteModal" class="hidden" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 99999; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px);">
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-4 max-w-lg w-full shadow-xl relative" style="z-index: 100000;">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Add Session Note</h3>
+                <button onclick="closeNoteModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                    <span class="material-symbols-outlined text-lg">close</span>
+                </button>
+            </div>
             
-            <div class="grid grid-cols-2 gap-3">
-                <div>
-                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Note Type *</label>
-                    <select name="type" required 
-                        class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-1 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white">
-                        <option value="general">General Note</option>
-                        <option value="progress">Progress Update</option>
-                        <option value="observation">Clinical Observation</option>
-                        <option value="reminder">Reminder/Follow-up</option>
-                    </select>
+            <form action="{{ route('counselor.sessions.notes.add', $session) }}" method="POST" class="space-y-3">
+                @csrf
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Note Type *</label>
+                        <select name="type" required 
+                            class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-1 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white">
+                            <option value="general">General Note</option>
+                            <option value="progress">Progress Update</option>
+                            <option value="observation">Clinical Observation</option>
+                            <option value="reminder">Reminder/Follow-up</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Title (Optional)</label>
+                        <input type="text" name="title" placeholder="Brief title..." 
+                            class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-1 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white">
+                    </div>
                 </div>
                 
                 <div>
-                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Title (Optional)</label>
-                    <input type="text" name="title" placeholder="Brief title..." 
-                        class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-1 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white">
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Note Content *</label>
+                    <textarea name="content" rows="4" required placeholder="Write your note here..." 
+                        class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-1 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white resize-none"></textarea>
                 </div>
-            </div>
-            
-            <div>
-                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Note Content *</label>
-                <textarea name="content" rows="4" required placeholder="Write your note here..." 
-                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-1 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white resize-none"></textarea>
-            </div>
 
-            <div class="flex items-center gap-2 p-2 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                <input type="checkbox" name="is_private" id="is_private" value="1" checked 
-                    class="w-3 h-3 text-primary border-gray-300 rounded focus:ring-primary">
-                <label for="is_private" class="text-xs text-gray-700 dark:text-gray-300 flex items-center gap-1">
-                    <span class="material-symbols-outlined text-xs">lock</span>
-                    <span>Keep private (counselors only)</span>
-                </label>
-            </div>
-            
-            <div class="flex gap-2 pt-2">
-                <button type="submit" class="flex-1 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition-all">
-                    Save Note
-                </button>
-                <button type="button" onclick="document.getElementById('addNoteModal').classList.add('hidden')" 
-                    class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-all">
-                    Cancel
-                </button>
-            </div>
-        </form>
+                <div class="flex items-center gap-2 p-2 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <input type="checkbox" name="is_private" id="is_private" value="1" checked 
+                        class="w-3 h-3 text-primary border-gray-300 rounded focus:ring-primary">
+                    <label for="is_private" class="text-xs text-gray-700 dark:text-gray-300 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-xs">lock</span>
+                        <span>Keep private (counselors only)</span>
+                    </label>
+                </div>
+                
+                <div class="flex gap-2 pt-2">
+                    <button type="submit" class="flex-1 bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition-all">
+                        Save Note
+                    </button>
+                    <button type="button" onclick="closeNoteModal()" 
+                        class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-all">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
