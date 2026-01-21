@@ -212,7 +212,118 @@ class User extends Authenticatable
 
     public function unreadNotificationsCount()
     {
+        if ($this->isCounselor()) {
+            return $this->getCounselorNotificationCount();
+        }
+        
         return $this->unreadNotifications()->count();
+    }
+
+    public function getCounselorNotificationCount()
+    {
+        $pendingSessions = $this->getPendingSessionsCount();
+        $upcomingSessions = $this->getUpcomingSessionsCount();
+        $unreadMessages = $this->getUnreadSessionMessagesCount();
+        
+        return $pendingSessions + $upcomingSessions + $unreadMessages;
+    }
+
+    public function getPendingSessionsCount()
+    {
+        return $this->counselingAsProvider()
+            ->where('status', 'pending')
+            ->count();
+    }
+
+    public function getUpcomingSessionsCount()
+    {
+        return $this->counselingAsProvider()
+            ->where('status', 'active')
+            ->where('scheduled_at', '>', now())
+            ->where('scheduled_at', '<=', now()->addDays(1)) // Next 24 hours
+            ->count();
+    }
+
+    public function getUnreadSessionMessagesCount()
+    {
+        return CounselingMessage::whereHas('session', function($query) {
+                $query->where('counselor_id', $this->id);
+            })
+            ->where('sender_id', '!=', $this->id)
+            ->where('is_read', false)
+            ->count();
+    }
+
+    public function getCounselorNotifications()
+    {
+        $notifications = collect();
+
+        // Pending session requests
+        $pendingSessions = $this->counselingAsProvider()
+            ->where('status', 'pending')
+            ->with('student')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        foreach ($pendingSessions as $session) {
+            $notifications->push([
+                'type' => 'pending_session',
+                'title' => 'New Session Request',
+                'message' => "New session request from {$session->student->name}",
+                'url' => route('counselor.sessions.show', $session),
+                'time' => $session->created_at,
+                'priority' => $session->priority,
+                'icon' => 'pending',
+                'color' => 'yellow'
+            ]);
+        }
+
+        // Upcoming sessions (next 24 hours)
+        $upcomingSessions = $this->counselingAsProvider()
+            ->where('status', 'active')
+            ->where('scheduled_at', '>', now())
+            ->where('scheduled_at', '<=', now()->addDays(1))
+            ->with('student')
+            ->orderBy('scheduled_at', 'asc')
+            ->get();
+
+        foreach ($upcomingSessions as $session) {
+            $notifications->push([
+                'type' => 'upcoming_session',
+                'title' => 'Upcoming Session',
+                'message' => "Session with {$session->student->name} at " . $session->scheduled_at->format('g:i A'),
+                'url' => route('counselor.sessions.show', $session),
+                'time' => $session->scheduled_at,
+                'priority' => 'medium',
+                'icon' => 'schedule',
+                'color' => 'blue'
+            ]);
+        }
+
+        // Unread messages in sessions
+        $unreadMessages = CounselingMessage::whereHas('session', function($query) {
+                $query->where('counselor_id', $this->id);
+            })
+            ->where('sender_id', '!=', $this->id)
+            ->where('is_read', false)
+            ->with(['session.student', 'sender'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        foreach ($unreadMessages as $message) {
+            $notifications->push([
+                'type' => 'unread_message',
+                'title' => 'New Message',
+                'message' => "New message from {$message->sender->name} in session",
+                'url' => route('counselor.sessions.show', $message->session),
+                'time' => $message->created_at,
+                'priority' => 'medium',
+                'icon' => 'message',
+                'color' => 'green'
+            ]);
+        }
+
+        return $notifications->sortByDesc('time')->take(10);
     }
 
     public function getAvatarUrlAttribute()

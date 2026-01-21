@@ -148,14 +148,92 @@
                         <span class="material-symbols-outlined" id="mobileDarkModeIcon">dark_mode</span>
                     </button>
                     
-                    <a href="{{ route('notifications.index') }}" class="p-2 text-gray-700 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-white/10 relative">
-                        <span class="material-symbols-outlined">notifications</span>
-                        @if(auth()->user()->unreadNotificationsCount() > 0)
-                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                                {{ auth()->user()->unreadNotificationsCount() }}
-                            </span>
-                        @endif
-                    </a>
+                    <!-- Notifications Dropdown -->
+                    <div class="relative group">
+                        <button class="p-2 text-gray-700 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-white/10 relative">
+                            <span class="material-symbols-outlined">notifications</span>
+                            @if(auth()->user()->unreadNotificationsCount() > 0)
+                                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                                    {{ auth()->user()->unreadNotificationsCount() }}
+                                </span>
+                            @endif
+                        </button>
+                        
+                        <!-- Notifications Dropdown -->
+                        <div class="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Notifications</h3>
+                                    <a href="{{ route('notifications.index') }}" class="text-sm text-emerald-600 hover:text-emerald-700 font-medium">
+                                        View All
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="max-h-96 overflow-y-auto">
+                                @if(auth()->user()->isCounselor())
+                                    @php $notifications = auth()->user()->getCounselorNotifications(); @endphp
+                                    @if($notifications->count() > 0)
+                                        @foreach($notifications as $notification)
+                                            <a href="{{ $notification['url'] }}" class="block p-4 hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-600 last:border-b-0 transition-colors">
+                                                <div class="flex items-start gap-3">
+                                                    <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center
+                                                        @if($notification['color'] === 'yellow') bg-yellow-100 dark:bg-yellow-900/20
+                                                        @elseif($notification['color'] === 'blue') bg-blue-100 dark:bg-blue-900/20
+                                                        @elseif($notification['color'] === 'green') bg-green-100 dark:bg-green-900/20
+                                                        @else bg-gray-100 dark:bg-gray-900/20 @endif">
+                                                        <span class="material-symbols-outlined text-sm
+                                                            @if($notification['color'] === 'yellow') text-yellow-600 dark:text-yellow-400
+                                                            @elseif($notification['color'] === 'blue') text-blue-600 dark:text-blue-400
+                                                            @elseif($notification['color'] === 'green') text-green-600 dark:text-green-400
+                                                            @else text-gray-600 dark:text-gray-400 @endif">
+                                                            {{ $notification['icon'] }}
+                                                        </span>
+                                                    </div>
+                                                    <div class="flex-1 min-w-0">
+                                                        <p class="text-sm font-medium text-gray-900 dark:text-white">
+                                                            {{ $notification['title'] }}
+                                                        </p>
+                                                        <p class="text-sm text-gray-600 dark:text-gray-400 truncate">
+                                                            {{ $notification['message'] }}
+                                                        </p>
+                                                        <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                                                            {{ $notification['time']->diffForHumans() }}
+                                                        </p>
+                                                    </div>
+                                                    @if($notification['priority'] === 'urgent' || $notification['priority'] === 'high')
+                                                        <div class="flex-shrink-0">
+                                                            <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </a>
+                                        @endforeach
+                                    @else
+                                        <div class="p-6 text-center">
+                                            <span class="material-symbols-outlined text-4xl text-gray-400 dark:text-gray-600 mb-2">notifications_none</span>
+                                            <p class="text-gray-500 dark:text-gray-400">No new notifications</p>
+                                        </div>
+                                    @endif
+                                @else
+                                    @if(auth()->user()->unreadNotifications()->count() > 0)
+                                        @foreach(auth()->user()->unreadNotifications()->take(5)->get() as $notification)
+                                            <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-600 last:border-b-0">
+                                                <p class="text-sm font-medium text-gray-900 dark:text-white">{{ $notification->title }}</p>
+                                                <p class="text-sm text-gray-600 dark:text-gray-400">{{ $notification->message }}</p>
+                                                <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">{{ $notification->created_at->diffForHumans() }}</p>
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        <div class="p-6 text-center">
+                                            <span class="material-symbols-outlined text-4xl text-gray-400 dark:text-gray-600 mb-2">notifications_none</span>
+                                            <p class="text-gray-500 dark:text-gray-400">No new notifications</p>
+                                        </div>
+                                    @endif
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="relative group">
                         <button class="rounded-full hover:ring-2 hover:ring-primary/50 transition-all">
@@ -346,6 +424,17 @@
         // Initialize logout handlers
         handleLogout('logoutForm');
         handleLogout('logoutFormDropdown');
+
+        // Auto-refresh notifications every 30 seconds for counselors
+        if (document.querySelector('.group:has(.material-symbols-outlined:contains("notifications"))')) {
+            setInterval(function() {
+                // Only refresh if user is a counselor and on the notifications page
+                if (window.location.pathname.includes('/notifications')) {
+                    // Refresh the page to get updated notifications
+                    window.location.reload();
+                }
+            }, 30000); // 30 seconds
+        }
     </script>
     @stack('scripts')
 </body>
