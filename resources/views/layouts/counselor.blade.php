@@ -41,43 +41,59 @@
 </head>
 <body class="bg-background-light dark:bg-background-dark font-display">
     <div class="relative flex min-h-screen w-full">
+        <!-- Mobile Sidebar Backdrop -->
+        <div id="sidebarBackdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden hidden" onclick="closeSidebar()"></div>
+        
         <!-- Counselor Navigation -->
-        <aside class="sticky top-0 h-screen flex-col bg-white dark:bg-background-dark dark:border-r dark:border-gray-700 w-64 hidden lg:flex">
+        <aside id="sidebar" class="fixed lg:sticky top-0 left-0 h-screen flex-col bg-white dark:bg-background-dark dark:border-r dark:border-gray-700 w-64 z-50 lg:z-auto transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out lg:flex">
             <div class="flex h-full flex-col justify-between p-4">
                 <div class="flex flex-col gap-4">
-                    <div class="flex items-center gap-3 px-3">
+                    <!-- Mobile Close Button -->
+                    <div class="flex items-center justify-between lg:hidden mb-2">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDOlqqrnn7gUspf7G--ZfEAHfhFEmJb11poCmQ-Z4Zft45BLCVKpHj8Z31-CHMgkQcNe9ElWNbPm3X-593kkxtwcTHNIgMBzkAF6g-sEoJSy8Nv-8hIrnQthnN73ECoGjM7NBMhiQsRAHWYZzbtxEHIGfyIxZQHtYhjUOR4H8CASI3M-pOsBMKeP72jZ7Ude7mhcX7OfYRh8kMKavkZjjkB_vWiM2JmewfBrRt3-AZ-JKAlmx8crQT3_lUiarlATmnRdGR-OXMGXA");'></div>
+                            <h1 class="text-gray-900 dark:text-white text-sm font-medium">WellPath</h1>
+                        </div>
+                        <button onclick="closeSidebar()" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Desktop Header -->
+                    <div class="hidden lg:flex items-center gap-3 px-3">
                         <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDOlqqrnn7gUspf7G--ZfEAHfhFEmJb11poCmQ-Z4Zft45BLCVKpHj8Z31-CHMgkQcNe9ElWNbPm3X-593kkxtwcTHNIgMBzkAF6g-sEoJSy8Nv-8hIrnQthnN73ECoGjM7NBMhiQsRAHWYZzbtxEHIGfyIxZQHtYhjUOR4H8CASI3M-pOsBMKeP72jZ7Ude7mhcX7OfYRh8kMKavkZjjkB_vWiM2JmewfBrRt3-AZ-JKAlmx8crQT3_lUiarlATmnRdGR-OXMGXA");'></div>
                         <div class="flex flex-col">
                             <h1 class="text-gray-900 dark:text-white text-base font-medium leading-normal">WellPath</h1>
                             <p class="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">Counselor Portal</p>
                         </div>
                     </div>
+                    
                     <nav class="flex flex-col gap-2 mt-4">
-                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('counselor.dashboard') ? 'bg-primary/20 dark:bg-primary/30' : 'hover:bg-gray-100 dark:hover:bg-white/10' }}" href="{{ route('counselor.dashboard') }}">
+                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('counselor.dashboard') ? 'bg-primary/20 dark:bg-primary/30' : 'hover:bg-gray-100 dark:hover:bg-white/10' }}" href="{{ route('counselor.dashboard') }}" onclick="closeSidebarOnMobile()">
                             <span class="material-symbols-outlined {{ request()->routeIs('counselor.dashboard') ? 'text-primary' : 'text-gray-700 dark:text-gray-300' }}">dashboard</span>
                             <p class="{{ request()->routeIs('counselor.dashboard') ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300' }} text-sm font-medium leading-normal">Dashboard</p>
                         </a>
-                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('counselor.sessions.*') ? 'bg-primary/20 dark:bg-primary/30' : 'hover:bg-gray-100 dark:hover:bg-white/10' }}" href="{{ route('counselor.sessions.index') }}">
+                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('counselor.sessions.*') ? 'bg-primary/20 dark:bg-primary/30' : 'hover:bg-gray-100 dark:hover:bg-white/10' }}" href="{{ route('counselor.sessions.index') }}" onclick="closeSidebarOnMobile()">
                             <span class="material-symbols-outlined {{ request()->routeIs('counselor.sessions.*') ? 'text-primary' : 'text-gray-700 dark:text-gray-300' }}">support_agent</span>
                             <p class="{{ request()->routeIs('counselor.sessions.*') ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300' }} text-sm font-medium leading-normal">Sessions</p>
                         </a>
-                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('counselor.notes.*') ? 'bg-primary/20 dark:bg-primary/30' : 'hover:bg-gray-100 dark:hover:bg-white/10' }}" href="{{ route('counselor.notes.index') }}">
+                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('counselor.notes.*') ? 'bg-primary/20 dark:bg-primary/30' : 'hover:bg-gray-100 dark:hover:bg-white/10' }}" href="{{ route('counselor.notes.index') }}" onclick="closeSidebarOnMobile()">
                             <span class="material-symbols-outlined {{ request()->routeIs('counselor.notes.*') ? 'text-primary' : 'text-gray-700 dark:text-gray-300' }}">note_alt</span>
                             <p class="{{ request()->routeIs('counselor.notes.*') ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300' }} text-sm font-medium leading-normal">Session Notes</p>
                         </a>
-                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('counselor.clients') ? 'bg-primary/20 dark:bg-primary/30' : 'hover:bg-gray-100 dark:hover:bg-white/10' }}" href="{{ route('counselor.clients') }}">
+                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('counselor.clients') ? 'bg-primary/20 dark:bg-primary/30' : 'hover:bg-gray-100 dark:hover:bg-white/10' }}" href="{{ route('counselor.clients') }}" onclick="closeSidebarOnMobile()">
                             <span class="material-symbols-outlined {{ request()->routeIs('counselor.clients') ? 'text-primary' : 'text-gray-700 dark:text-gray-300' }}">school</span>
                             <p class="{{ request()->routeIs('counselor.clients') ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300' }} text-sm font-medium leading-normal">My Clients</p>
                         </a>
-                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('counselor.schedule') ? 'bg-primary/20 dark:bg-primary/30' : 'hover:bg-gray-100 dark:hover:bg-white/10' }}" href="{{ route('counselor.schedule') }}">
+                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('counselor.schedule') ? 'bg-primary/20 dark:bg-primary/30' : 'hover:bg-gray-100 dark:hover:bg-white/10' }}" href="{{ route('counselor.schedule') }}" onclick="closeSidebarOnMobile()">
                             <span class="material-symbols-outlined {{ request()->routeIs('counselor.schedule') ? 'text-primary' : 'text-gray-700 dark:text-gray-300' }}">schedule</span>
                             <p class="{{ request()->routeIs('counselor.schedule') ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300' }} text-sm font-medium leading-normal">Schedule</p>
                         </a>
-                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('counselor.reports') ? 'bg-primary/20 dark:bg-primary/30' : 'hover:bg-gray-100 dark:hover:bg-white/10' }}" href="{{ route('counselor.reports') }}">
+                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('counselor.reports') ? 'bg-primary/20 dark:bg-primary/30' : 'hover:bg-gray-100 dark:hover:bg-white/10' }}" href="{{ route('counselor.reports') }}" onclick="closeSidebarOnMobile()">
                             <span class="material-symbols-outlined {{ request()->routeIs('counselor.reports') ? 'text-primary' : 'text-gray-700 dark:text-gray-300' }}">assessment</span>
                             <p class="{{ request()->routeIs('counselor.reports') ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300' }} text-sm font-medium leading-normal">Reports</p>
                         </a>
-                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('counselor.contact-setup') ? 'bg-primary/20 dark:bg-primary/30' : 'hover:bg-gray-100 dark:hover:bg-white/10' }}" href="{{ route('counselor.contact-setup') }}">
+                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('counselor.contact-setup') ? 'bg-primary/20 dark:bg-primary/30' : 'hover:bg-gray-100 dark:hover:bg-white/10' }}" href="{{ route('counselor.contact-setup') }}" onclick="closeSidebarOnMobile()">
                             <span class="material-symbols-outlined {{ request()->routeIs('counselor.contact-setup') ? 'text-primary' : 'text-gray-700 dark:text-gray-300' }}">contact_phone</span>
                             <p class="{{ request()->routeIs('counselor.contact-setup') ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300' }} text-sm font-medium leading-normal">Contact Setup</p>
                         </a>
@@ -95,12 +111,12 @@
                         </div>
                     </button>
                     
-                    <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10" href="{{ route('home') }}">
+                    <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10" href="{{ route('home') }}" onclick="closeSidebarOnMobile()">
                         <span class="material-symbols-outlined text-gray-700 dark:text-gray-300">public</span>
                         <p class="text-gray-700 dark:text-gray-300 text-sm font-medium leading-normal">View Main Site</p>
                     </a>
                     
-                    <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10" href="{{ route('counselor.profile.edit') }}">
+                    <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10" href="{{ route('counselor.profile.edit') }}" onclick="closeSidebarOnMobile()">
                         <span class="material-symbols-outlined text-gray-700 dark:text-gray-300">settings</span>
                         <p class="text-gray-700 dark:text-gray-300 text-sm font-medium leading-normal">Profile</p>
                     </a>
@@ -117,11 +133,11 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 flex flex-col">
+        <main class="flex-1 flex flex-col lg:ml-0">
             <!-- Header -->
-            <header class="sticky top-0 z-10 flex justify-between items-center gap-2 px-4 md:px-8 py-3 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
+            <header class="sticky top-0 z-30 flex justify-between items-center gap-2 px-4 md:px-8 py-3 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
                 <div class="flex items-center gap-4">
-                    <button class="p-2 text-gray-700 dark:text-gray-300 lg:hidden" onclick="toggleSidebar()">
+                    <button class="p-2 text-gray-700 dark:text-gray-300 lg:hidden hover:bg-gray-200 dark:hover:bg-white/10 rounded-lg transition-colors" onclick="openSidebar()">
                         <span class="material-symbols-outlined">menu</span>
                     </button>
                     <h1 class="text-xl font-semibold text-gray-900 dark:text-white">@yield('page-title', 'Counselor Portal')</h1>
@@ -186,10 +202,80 @@
     </div>
 
     <script>
-        function toggleSidebar() {
-            const sidebar = document.querySelector('aside');
-            sidebar.classList.toggle('hidden');
+        // Sidebar functionality
+        function openSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            
+            sidebar.classList.remove('-translate-x-full');
+            sidebar.classList.add('translate-x-0');
+            backdrop.classList.remove('hidden');
+            
+            // Prevent body scroll when sidebar is open on mobile
+            document.body.style.overflow = 'hidden';
         }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            
+            sidebar.classList.remove('translate-x-0');
+            sidebar.classList.add('-translate-x-full');
+            backdrop.classList.add('hidden');
+            
+            // Restore body scroll
+            document.body.style.overflow = '';
+        }
+
+        function closeSidebarOnMobile() {
+            // Only close sidebar on mobile screens
+            if (window.innerWidth < 1024) {
+                closeSidebar();
+            }
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const menuButton = event.target.closest('button[onclick="openSidebar()"]');
+            
+            if (window.innerWidth < 1024 && 
+                !sidebar.contains(event.target) && 
+                !menuButton && 
+                !sidebar.classList.contains('-translate-x-full')) {
+                closeSidebar();
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 1024) {
+                // Desktop: ensure sidebar is visible and backdrop is hidden
+                const sidebar = document.getElementById('sidebar');
+                const backdrop = document.getElementById('sidebarBackdrop');
+                
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('translate-x-0');
+                backdrop.classList.add('hidden');
+                document.body.style.overflow = '';
+            } else {
+                // Mobile: ensure sidebar is hidden by default
+                const sidebar = document.getElementById('sidebar');
+                if (!sidebar.classList.contains('-translate-x-full')) {
+                    closeSidebar();
+                }
+            }
+        });
+
+        // Initialize sidebar state on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.innerWidth >= 1024) {
+                // Desktop: show sidebar
+                const sidebar = document.getElementById('sidebar');
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('translate-x-0');
+            }
+        });
 
         // Dark Mode Toggle
         const darkModeToggle = document.getElementById('darkModeToggle');

@@ -333,6 +333,7 @@ Route::middleware([
         Route::get('/clients', [CounselorSessionController::class, 'students'])->name('clients');
         Route::get('/schedule', [CounselorSessionController::class, 'schedule'])->name('schedule');
         Route::get('/reports', [CounselorSessionController::class, 'reports'])->name('reports');
+        Route::get('/reports/export', [CounselorSessionController::class, 'exportReports'])->name('reports.export');
 
         // Contact Information Setup
         Route::get('/contact-setup', [CounselorSessionController::class, 'contactSetup'])->name('contact-setup');

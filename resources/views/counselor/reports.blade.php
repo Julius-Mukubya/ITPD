@@ -9,15 +9,22 @@
         <p class="text-gray-900 dark:text-white text-2xl sm:text-3xl font-bold tracking-tight">My Reports</p>
         <p class="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Monthly statistics and session summaries</p>
     </div>
+    <div class="flex items-center gap-2">
+        <button onclick="document.getElementById('exportModal').classList.remove('hidden')" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-sm font-semibold px-6 py-3 rounded-xl flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-emerald-500/30 transition-all duration-200">
+            <span class="material-symbols-outlined text-lg">download</span>
+            Export Data
+        </button>
+    </div>
 </div>
 
 <!-- Monthly Statistics -->
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
     <!-- Current Month -->
-    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+    <div class="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-emerald-600"></div>
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ now()->format('F Y') }}</h3>
-            <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 rounded-xl p-2">
+            <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 rounded-xl p-2 group-hover:scale-110 transition-transform duration-300">
                 <span class="material-symbols-outlined text-xl text-emerald-600 dark:text-emerald-400">trending_up</span>
             </div>
         </div>
@@ -43,10 +50,11 @@
     </div>
 
     <!-- Last Month Comparison -->
-    <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+    <div class="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm hover:shadow-lg hover:shadow-teal-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-500 to-teal-600"></div>
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ now()->subMonth()->format('F Y') }}</h3>
-            <div class="bg-gradient-to-br from-teal-50 to-teal-100 dark:from-teal-900/20 dark:to-teal-800/20 rounded-xl p-2">
+            <div class="bg-gradient-to-br from-teal-50 to-teal-100 dark:from-teal-900/20 dark:to-teal-800/20 rounded-xl p-2 group-hover:scale-110 transition-transform duration-300">
                 <span class="material-symbols-outlined text-xl text-teal-600 dark:text-teal-400">history</span>
             </div>
         </div>
@@ -152,61 +160,185 @@
 
 <!-- Summary Cards -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 rounded-2xl p-6 border border-emerald-200 dark:border-emerald-800">
-        <div class="flex items-center gap-3 mb-3">
-            <div class="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center">
-                <span class="material-symbols-outlined text-white">psychology</span>
+    <div class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-emerald-600"></div>
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                <p class="text-gray-600 dark:text-gray-400 text-sm font-semibold uppercase tracking-wide">Completion Rate</p>
             </div>
-            <h3 class="font-semibold text-emerald-900 dark:text-emerald-100">Completion Rate</h3>
+            <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 rounded-xl p-2 group-hover:scale-110 transition-transform duration-300">
+                <span class="material-symbols-outlined text-xl text-emerald-600 dark:text-emerald-400">psychology</span>
+            </div>
         </div>
-        <p class="text-2xl font-bold text-emerald-900 dark:text-emerald-100">
-            @if($monthlyStats['current_month']['total'] > 0)
-                {{ round(($monthlyStats['current_month']['completed'] / $monthlyStats['current_month']['total']) * 100) }}%
-            @else
-                0%
-            @endif
-        </p>
-        <p class="text-sm text-emerald-700 dark:text-emerald-300 mt-1">This month</p>
+        <div class="space-y-2">
+            <p class="text-3xl font-bold text-gray-900 dark:text-white">
+                @if($monthlyStats['current_month']['total'] > 0)
+                    {{ round(($monthlyStats['current_month']['completed'] / $monthlyStats['current_month']['total']) * 100) }}%
+                @else
+                    0%
+                @endif
+            </p>
+            <div class="flex items-center">
+                <div class="flex items-center bg-emerald-50 dark:bg-emerald-900/20 px-2 py-1 rounded-full">
+                    <span class="material-symbols-outlined text-xs mr-1 text-emerald-600">check_circle</span>
+                    <span class="text-xs font-medium text-emerald-600">This Month</span>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-2xl p-6 border border-green-200 dark:border-green-800">
-        <div class="flex items-center gap-3 mb-3">
-            <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
-                <span class="material-symbols-outlined text-white">groups</span>
+    <div class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg hover:shadow-green-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-green-600"></div>
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                <p class="text-gray-600 dark:text-gray-400 text-sm font-semibold uppercase tracking-wide">Clients Helped</p>
             </div>
-            <h3 class="font-semibold text-green-900 dark:text-green-100">Clients Helped</h3>
+            <div class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl p-2 group-hover:scale-110 transition-transform duration-300">
+                <span class="material-symbols-outlined text-xl text-green-600 dark:text-green-400">groups</span>
+            </div>
         </div>
-        <p class="text-2xl font-bold text-green-900 dark:text-green-100">
-            {{ \App\Models\User::where('role', 'user')->whereHas('counselingSessions', function($query) {
-                $query->where('counselor_id', auth()->id())->where('status', 'completed');
-            })->count() }}
-        </p>
-        <p class="text-sm text-green-700 dark:text-green-300 mt-1">Total unique clients</p>
+        <div class="space-y-2">
+            <p class="text-3xl font-bold text-gray-900 dark:text-white">
+                {{ \App\Models\User::where('role', 'user')->whereHas('counselingSessions', function($query) {
+                    $query->where('counselor_id', auth()->id())->where('status', 'completed');
+                })->count() }}
+            </p>
+            <div class="flex items-center">
+                <div class="flex items-center bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded-full">
+                    <span class="material-symbols-outlined text-xs mr-1 text-green-600">people</span>
+                    <span class="text-xs font-medium text-green-600">Unique Clients</span>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="bg-gradient-to-br from-teal-50 to-teal-100 dark:from-teal-900/20 dark:to-teal-800/20 rounded-2xl p-6 border border-teal-200 dark:border-teal-800">
-        <div class="flex items-center gap-3 mb-3">
-            <div class="w-10 h-10 bg-teal-500 rounded-lg flex items-center justify-center">
-                <span class="material-symbols-outlined text-white">schedule</span>
+    <div class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg hover:shadow-teal-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-500 to-teal-600"></div>
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-teal-500 rounded-full"></div>
+                <p class="text-gray-600 dark:text-gray-400 text-sm font-semibold uppercase tracking-wide">Avg Session Time</p>
             </div>
-            <h3 class="font-semibold text-teal-900 dark:text-teal-100">Avg Session Time</h3>
+            <div class="bg-gradient-to-br from-teal-50 to-teal-100 dark:from-teal-900/20 dark:to-teal-800/20 rounded-xl p-2 group-hover:scale-110 transition-transform duration-300">
+                <span class="material-symbols-outlined text-xl text-teal-600 dark:text-teal-400">schedule</span>
+            </div>
         </div>
-        <p class="text-2xl font-bold text-teal-900 dark:text-teal-100">
-            @php
-                $completedWithTime = auth()->user()->counselingAsProvider()
-                    ->where('status', 'completed')
-                    ->whereNotNull('started_at')
-                    ->whereNotNull('completed_at')
-                    ->get();
-                $avgMinutes = $completedWithTime->count() > 0 
-                    ? $completedWithTime->avg(function($session) {
-                        return $session->started_at->diffInMinutes($session->completed_at);
-                    }) 
-                    : 0;
-            @endphp
-            {{ round($avgMinutes) }} min
-        </p>
-        <p class="text-sm text-teal-700 dark:text-teal-300 mt-1">Average duration</p>
+        <div class="space-y-2">
+            <p class="text-3xl font-bold text-gray-900 dark:text-white">
+                @php
+                    $completedWithTime = auth()->user()->counselingAsProvider()
+                        ->where('status', 'completed')
+                        ->whereNotNull('started_at')
+                        ->whereNotNull('completed_at')
+                        ->get();
+                    $avgMinutes = $completedWithTime->count() > 0 
+                        ? $completedWithTime->avg(function($session) {
+                            return $session->started_at->diffInMinutes($session->completed_at);
+                        }) 
+                        : 0;
+                @endphp
+                {{ round($avgMinutes) }} min
+            </p>
+            <div class="flex items-center">
+                <div class="flex items-center bg-teal-50 dark:bg-teal-900/20 px-2 py-1 rounded-full">
+                    <span class="material-symbols-outlined text-xs mr-1 text-teal-600">timer</span>
+                    <span class="text-xs font-medium text-teal-600">Average Duration</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- Export Modal -->
+<div id="exportModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" style="z-index: 9999;">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-md w-full shadow-2xl border border-gray-200 dark:border-gray-700">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Export Reports</h3>
+            <button onclick="document.getElementById('exportModal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+                <span class="material-symbols-outlined text-xl">close</span>
+            </button>
+        </div>
+
+        <form id="exportForm" method="GET" action="{{ route('counselor.reports.export') }}" class="space-y-4">
+            <!-- Export Type -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">Export Type</label>
+                <div class="space-y-2">
+                    <label class="flex items-center gap-2 p-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors">
+                        <input type="radio" name="type" value="sessions" checked class="w-4 h-4 text-emerald-600 border-gray-300 focus:ring-emerald-500">
+                        <div>
+                            <div class="font-medium text-gray-900 dark:text-white text-sm">Sessions Data</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400">Detailed session information</div>
+                        </div>
+                    </label>
+                    <label class="flex items-center gap-2 p-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors">
+                        <input type="radio" name="type" value="notes" class="w-4 h-4 text-emerald-600 border-gray-300 focus:ring-emerald-500">
+                        <div>
+                            <div class="font-medium text-gray-900 dark:text-white text-sm">Session Notes</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400">All notes and observations</div>
+                        </div>
+                    </label>
+                    <label class="flex items-center gap-2 p-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors">
+                        <input type="radio" name="type" value="summary" class="w-4 h-4 text-emerald-600 border-gray-300 focus:ring-emerald-500">
+                        <div>
+                            <div class="font-medium text-gray-900 dark:text-white text-sm">Summary Report</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400">Statistical summary</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Time Period -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">Time Period</label>
+                <select name="period" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-gray-700 dark:text-white transition-all">
+                    <option value="current_month">Current Month</option>
+                    <option value="last_month">Last Month</option>
+                    <option value="all_time">All Time</option>
+                </select>
+            </div>
+
+            <!-- Export Info -->
+            <div class="p-3 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg">
+                <div class="flex items-start gap-2">
+                    <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-sm mt-0.5">info</span>
+                    <div class="text-xs text-emerald-800 dark:text-emerald-200">
+                        <p class="font-medium mb-1">Export Information</p>
+                        <p>Data will be exported as CSV for Excel analysis.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="flex gap-2 pt-2">
+                <button type="submit" class="flex-1 bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-4 py-2 rounded-lg font-semibold hover:shadow-lg hover:shadow-emerald-500/30 transition-all duration-200 flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-sm">download</span>
+                    Export CSV
+                </button>
+                <button type="button" onclick="document.getElementById('exportModal').classList.add('hidden')" class="px-4 py-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-500 transition-all">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Handle export form submission
+document.getElementById('exportForm').addEventListener('submit', function(e) {
+    // Close modal after a short delay to allow download to start
+    setTimeout(function() {
+        document.getElementById('exportModal').classList.add('hidden');
+    }, 500);
+});
+
+// Close modal when clicking outside
+document.getElementById('exportModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        this.classList.add('hidden');
+    }
+});
+</script>
 @endsection

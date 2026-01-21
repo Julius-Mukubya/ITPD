@@ -13,39 +13,69 @@
 
 @if($students->count() > 0)
 <!-- Statistics Cards -->
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 shadow-sm">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center">
-                <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-xl">group</span>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+    <div class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-emerald-600"></div>
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                <p class="text-gray-600 dark:text-gray-400 text-sm font-semibold uppercase tracking-wide">Total Clients</p>
             </div>
-            <div>
-                <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $students->count() }}</p>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Total Clients</p>
+            <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 rounded-xl p-2 group-hover:scale-110 transition-transform duration-300">
+                <span class="material-symbols-outlined text-xl text-emerald-600 dark:text-emerald-400">group</span>
+            </div>
+        </div>
+        <div class="space-y-2">
+            <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $students->count() }}</p>
+            <div class="flex items-center">
+                <div class="flex items-center bg-emerald-50 dark:bg-emerald-900/20 px-2 py-1 rounded-full">
+                    <span class="material-symbols-outlined text-xs mr-1 text-emerald-600">people</span>
+                    <span class="text-xs font-medium text-emerald-600">All Clients</span>
+                </div>
             </div>
         </div>
     </div>
     
-    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 shadow-sm">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-xl">person</span>
+    <div class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-blue-600"></div>
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <p class="text-gray-600 dark:text-gray-400 text-sm font-semibold uppercase tracking-wide">Individual Clients</p>
             </div>
-            <div>
-                <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $students->filter(function($s) { return in_array('individual', $s->session_types ?? []); })->count() }}</p>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Individual Clients</p>
+            <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl p-2 group-hover:scale-110 transition-transform duration-300">
+                <span class="material-symbols-outlined text-xl text-blue-600 dark:text-blue-400">person</span>
+            </div>
+        </div>
+        <div class="space-y-2">
+            <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $students->filter(function($s) { return in_array('individual', $s->session_types ?? []); })->count() }}</p>
+            <div class="flex items-center">
+                <div class="flex items-center bg-blue-50 dark:bg-blue-900/20 px-2 py-1 rounded-full">
+                    <span class="material-symbols-outlined text-xs mr-1 text-blue-600">person_outline</span>
+                    <span class="text-xs font-medium text-blue-600">One-on-One</span>
+                </div>
             </div>
         </div>
     </div>
     
-    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 shadow-sm">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-                <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-xl">groups</span>
+    <div class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg hover:shadow-green-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-green-600"></div>
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                <p class="text-gray-600 dark:text-gray-400 text-sm font-semibold uppercase tracking-wide">Group Participants</p>
             </div>
-            <div>
-                <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ $students->filter(function($s) { return in_array('group', $s->session_types ?? []); })->count() }}</p>
-                <p class="text-sm text-gray-500 dark:text-gray-400">Group Participants</p>
+            <div class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl p-2 group-hover:scale-110 transition-transform duration-300">
+                <span class="material-symbols-outlined text-xl text-green-600 dark:text-green-400">groups</span>
+            </div>
+        </div>
+        <div class="space-y-2">
+            <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $students->filter(function($s) { return in_array('group', $s->session_types ?? []); })->count() }}</p>
+            <div class="flex items-center">
+                <div class="flex items-center bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded-full">
+                    <span class="material-symbols-outlined text-xs mr-1 text-green-600">group_work</span>
+                    <span class="text-xs font-medium text-green-600">Group Sessions</span>
+                </div>
             </div>
         </div>
     </div>

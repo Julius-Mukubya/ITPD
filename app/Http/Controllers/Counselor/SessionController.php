@@ -518,6 +518,209 @@ class SessionController extends Controller
         return view('counselor.reports', compact('monthlyStats', 'recentSessions'));
     }
 
+    public function exportReports(Request $request)
+    {
+        $user = auth()->user();
+        $type = $request->get('type', 'sessions'); // sessions, notes, or summary
+        $period = $request->get('period', 'current_month'); // current_month, last_month, all_time
+        
+        $filename = "counselor_report_{$type}_{$period}_" . now()->format('Y-m-d') . ".csv";
+        
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ];
+        
+        return response()->stream(function() use ($user, $type, $period) {
+            $handle = fopen('php://output', 'w');
+            
+            if ($type === 'sessions') {
+                $this->exportSessionsData($handle, $user, $period);
+            } elseif ($type === 'notes') {
+                $this->exportNotesData($handle, $user, $period);
+            } else {
+                $this->exportSummaryData($handle, $user, $period);
+            }
+            
+            fclose($handle);
+        }, 200, $headers);
+    }
+    
+    private function exportSessionsData($handle, $user, $period)
+    {
+        // CSV Headers
+        fputcsv($handle, [
+            'Session ID',
+            'Client Name',
+            'Client Email',
+            'Session Type',
+            'Status',
+            'Priority',
+            'Created Date',
+            'Started Date',
+            'Completed Date',
+            'Duration (minutes)',
+            'Subject',
+            'Reason'
+        ]);
+        
+        // Get sessions based on period
+        $query = $user->counselingAsProvider()->with('student');
+        
+        if ($period === 'current_month') {
+            $query->whereMonth('created_at', now()->month)
+                  ->whereYear('created_at', now()->year);
+        } elseif ($period === 'last_month') {
+            $lastMonth = now()->subMonth();
+            $query->whereMonth('created_at', $lastMonth->month)
+                  ->whereYear('created_at', $lastMonth->year);
+        }
+        // For 'all_time', no additional filters needed
+        
+        $sessions = $query->orderBy('created_at', 'desc')->get();
+        
+        foreach ($sessions as $session) {
+            $duration = null;
+            if ($session->started_at && $session->completed_at) {
+                $duration = $session->started_at->diffInMinutes($session->completed_at);
+            }
+            
+            fputcsv($handle, [
+                $session->id,
+                $session->student->name,
+                $session->student->email,
+                ucfirst(str_replace('_', ' ', $session->session_type)),
+                ucfirst($session->status),
+                ucfirst($session->priority),
+                $session->created_at->format('Y-m-d H:i:s'),
+                $session->started_at ? $session->started_at->format('Y-m-d H:i:s') : '',
+                $session->completed_at ? $session->completed_at->format('Y-m-d H:i:s') : '',
+                $duration,
+                $session->subject,
+                $session->reason
+            ]);
+        }
+    }
+    
+    private function exportNotesData($handle, $user, $period)
+    {
+        // CSV Headers
+        fputcsv($handle, [
+            'Note ID',
+            'Session ID',
+            'Client Name',
+            'Note Type',
+            'Title',
+            'Content',
+            'Privacy',
+            'Created Date',
+            'Updated Date'
+        ]);
+        
+        // Get notes based on period
+        $query = \App\Models\SessionNote::where('counselor_id', $user->id)
+            ->with(['session.student']);
+        
+        if ($period === 'current_month') {
+            $query->whereMonth('created_at', now()->month)
+                  ->whereYear('created_at', now()->year);
+        } elseif ($period === 'last_month') {
+            $lastMonth = now()->subMonth();
+            $query->whereMonth('created_at', $lastMonth->month)
+                  ->whereYear('created_at', $lastMonth->year);
+        }
+        
+        $notes = $query->orderBy('created_at', 'desc')->get();
+        
+        foreach ($notes as $note) {
+            fputcsv($handle, [
+                $note->id,
+                $note->session_id,
+                $note->session->student->name,
+                ucfirst($note->type),
+                $note->title,
+                strip_tags($note->content),
+                $note->is_private ? 'Private' : 'Public',
+                $note->created_at->format('Y-m-d H:i:s'),
+                $note->updated_at->format('Y-m-d H:i:s')
+            ]);
+        }
+    }
+    
+    private function exportSummaryData($handle, $user, $period)
+    {
+        // CSV Headers
+        fputcsv($handle, [
+            'Metric',
+            'Value',
+            'Period'
+        ]);
+        
+        $periodLabel = ucfirst(str_replace('_', ' ', $period));
+        
+        if ($period === 'current_month') {
+            $startDate = now()->startOfMonth();
+            $endDate = now()->endOfMonth();
+        } elseif ($period === 'last_month') {
+            $startDate = now()->subMonth()->startOfMonth();
+            $endDate = now()->subMonth()->endOfMonth();
+        } else {
+            $startDate = null;
+            $endDate = null;
+        }
+        
+        // Build query based on period
+        $sessionsQuery = $user->counselingAsProvider();
+        if ($startDate && $endDate) {
+            $sessionsQuery->whereBetween('created_at', [$startDate, $endDate]);
+        }
+        
+        $totalSessions = $sessionsQuery->count();
+        $completedSessions = (clone $sessionsQuery)->where('status', 'completed')->count();
+        $activeSessions = (clone $sessionsQuery)->where('status', 'active')->count();
+        $pendingSessions = (clone $sessionsQuery)->where('status', 'pending')->count();
+        
+        // Calculate completion rate
+        $completionRate = $totalSessions > 0 ? round(($completedSessions / $totalSessions) * 100, 2) : 0;
+        
+        // Calculate average session duration
+        $completedWithTime = (clone $sessionsQuery)
+            ->where('status', 'completed')
+            ->whereNotNull('started_at')
+            ->whereNotNull('completed_at')
+            ->get();
+        
+        $avgDuration = $completedWithTime->count() > 0 
+            ? round($completedWithTime->avg(function($session) {
+                return $session->started_at->diffInMinutes($session->completed_at);
+            }), 2)
+            : 0;
+        
+        // Unique clients helped
+        $uniqueClients = \App\Models\User::where('role', 'user')
+            ->whereHas('counselingSessions', function($query) use ($user, $startDate, $endDate) {
+                $query->where('counselor_id', $user->id);
+                if ($startDate && $endDate) {
+                    $query->whereBetween('created_at', [$startDate, $endDate]);
+                }
+            })->count();
+        
+        // Export summary data
+        $summaryData = [
+            ['Total Sessions', $totalSessions, $periodLabel],
+            ['Completed Sessions', $completedSessions, $periodLabel],
+            ['Active Sessions', $activeSessions, $periodLabel],
+            ['Pending Sessions', $pendingSessions, $periodLabel],
+            ['Completion Rate (%)', $completionRate, $periodLabel],
+            ['Average Session Duration (minutes)', $avgDuration, $periodLabel],
+            ['Unique Clients Helped', $uniqueClients, $periodLabel],
+        ];
+        
+        foreach ($summaryData as $row) {
+            fputcsv($handle, $row);
+        }
+    }
+
     public function contactSetup()
     {
         $user = auth()->user();
