@@ -2,10 +2,8 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between py-3">
             <div class="flex items-center gap-3">
-                <div class="size-6 text-primary flex-shrink-0 header-logo">
-                    <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 6H42L36 24L42 42H6L12 24L6 6Z" fill="currentColor"></path>
-                    </svg>
+                <div class="size-6 flex-shrink-0 header-logo">
+                    <img src="{{ asset('images/leaf-logo.svg') }}" alt="WellPath Logo" class="w-full h-full">
                 </div>
                 <h2 class="header-text text-base sm:text-lg font-bold leading-tight tracking-[-0.015em] hidden xs:block">WellPath</h2>
                 <h2 class="header-text text-base font-bold leading-tight tracking-[-0.015em] xs:hidden">WellPath</h2>

@@ -51,7 +51,9 @@
                     <!-- Mobile Close Button -->
                     <div class="flex items-center justify-between lg:hidden mb-2">
                         <div class="flex items-center gap-3">
-                            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDOlqqrnn7gUspf7G--ZfEAHfhFEmJb11poCmQ-Z4Zft45BLCVKpHj8Z31-CHMgkQcNe9ElWNbPm3X-593kkxtwcTHNIgMBzkAF6g-sEoJSy8Nv-8hIrnQthnN73ECoGjM7NBMhiQsRAHWYZzbtxEHIGfyIxZQHtYhjUOR4H8CASI3M-pOsBMKeP72jZ7Ude7mhcX7OfYRh8kMKavkZjjkB_vWiM2JmewfBrRt3-AZ-JKAlmx8crQT3_lUiarlATmnRdGR-OXMGXA");'></div>
+                            <div class="size-8 flex-shrink-0">
+                                <img src="{{ asset('images/leaf-logo.svg') }}" alt="WellPath Logo" class="w-full h-full">
+                            </div>
                             <h1 class="text-gray-900 dark:text-white text-sm font-medium">WellPath</h1>
                         </div>
                         <button onclick="closeSidebar()" class="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
@@ -61,7 +63,9 @@
                     
                     <!-- Desktop Header -->
                     <div class="hidden lg:flex items-center gap-3 px-3">
-                        <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDOlqqrnn7gUspf7G--ZfEAHfhFEmJb11poCmQ-Z4Zft45BLCVKpHj8Z31-CHMgkQcNe9ElWNbPm3X-593kkxtwcTHNIgMBzkAF6g-sEoJSy8Nv-8hIrnQthnN73ECoGjM7NBMhiQsRAHWYZzbtxEHIGfyIxZQHtYhjUOR4H8CASI3M-pOsBMKeP72jZ7Ude7mhcX7OfYRh8kMKavkZjjkB_vWiM2JmewfBrRt3-AZ-JKAlmx8crQT3_lUiarlATmnRdGR-OXMGXA");'></div>
+                        <div class="size-10 flex-shrink-0">
+                            <img src="{{ asset('images/leaf-logo.svg') }}" alt="WellPath Logo" class="w-full h-full">
+                        </div>
                         <div class="flex flex-col">
                             <h1 class="text-gray-900 dark:text-white text-base font-medium leading-normal">WellPath</h1>
                             <p class="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">Counselor Portal</p>
