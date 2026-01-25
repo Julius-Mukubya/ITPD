@@ -34,7 +34,7 @@
                         Login to Book Session
                     </button>
                 @endauth
-                <a href="#counselors" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 transition-all duration-200 transform hover:scale-105">
+                <a href="#counselors-filters" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 transition-all duration-200 transform hover:scale-105 scroll-to-filters">
                     <span class="material-symbols-outlined !text-xl">visibility</span>
                     Browse Counselors
                 </a>
@@ -44,7 +44,7 @@
 </section>
 
 <!-- Filter Section -->
-<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div id="counselors-filters" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
         <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
             <!-- Search Bar -->
@@ -280,6 +280,31 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     let currentFilter = 'all';
+    
+    // Smooth scroll functionality for Browse Counselors button
+    const scrollToFiltersBtn = document.querySelector('.scroll-to-filters');
+    if (scrollToFiltersBtn) {
+        scrollToFiltersBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const filtersSection = document.getElementById('counselors-filters');
+            if (filtersSection) {
+                // Calculate header height for offset
+                const header = document.querySelector('header');
+                const headerHeight = header ? header.offsetHeight : 80; // fallback to 80px
+                const additionalOffset = 20; // Extra spacing for better UX
+                
+                // Get the position of the filters section
+                const elementPosition = filtersSection.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerHeight - additionalOffset;
+                
+                // Smooth scroll to the calculated position
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    }
     
     // Get all counselor cards
     const counselorCards = document.querySelectorAll('article.group');

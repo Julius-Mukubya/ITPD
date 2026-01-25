@@ -339,61 +339,44 @@
     </div>
 </div>
 
-<!-- Emergency Contact Card -->
-<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="bg-gradient-to-br from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 rounded-2xl border-2 border-red-200 dark:border-red-800 p-6 shadow-lg">
-        <div class="flex items-start gap-4">
-            <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
-                <span class="material-symbols-outlined text-red-600 dark:text-red-400 text-2xl">emergency</span>
-            </div>
-            <div class="flex-1">
-                <h3 class="text-lg font-bold text-red-900 dark:text-red-100 mb-2">Need Immediate Help?</h3>
-                <p class="text-sm text-red-800 dark:text-red-200 mb-4">If you're experiencing a mental health emergency, please reach out immediately.</p>
-                <div class="flex flex-wrap gap-3">
-                    <a href="tel:0800212121" class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium text-sm">
-                        <span class="material-symbols-outlined text-sm">phone</span>
-                        Call 0800 21 21 21 (Toll Free)
-                    </a>
-                    <button onclick="document.getElementById('emergencyModal').classList.remove('hidden')" class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-50 dark:hover:bg-gray-700 transition-colors font-medium text-sm border border-red-200 dark:border-red-800">
-                        <span class="material-symbols-outlined text-sm">info</span>
-                        View All Crisis Resources
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Crisis Support Modal -->
-@include('components.crisis-support-modal')
-
 <!-- CTA Section -->
-<div class="py-20 bg-gradient-to-r from-primary/10 via-background-light to-emerald-500/10 dark:from-primary/20 dark:via-background-dark dark:to-emerald-500/20">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl md:text-4xl font-black text-[#111816] dark:text-white mb-6">
-            Ready to Take the First Step?
-        </h2>
-        <p class="text-xl text-[#61897c] dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-            Your mental health journey starts with a single step. Our counselors are here to support you every step of the way.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            @auth
-                <a href="{{ route('public.counseling.sessions') }}" class="inline-flex items-center gap-2 bg-primary text-white px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                    <span class="material-symbols-outlined !text-xl">psychology</span>
-                    Request Counseling Session
-                </a>
-            @else
-                <button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="inline-flex items-center gap-2 bg-primary text-white px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                    <span class="material-symbols-outlined !text-xl">login</span>
-                    Login to Get Started
-                </button>
-            @endauth
+<section class="py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative bg-gradient-to-r from-primary/10 to-green-50 dark:from-gray-800 dark:to-gray-800/50 rounded-2xl p-8 border border-primary/20 dark:border-gray-700 overflow-hidden">
+            <!-- Decorative Icons -->
+            <div class="absolute top-4 left-4 opacity-10">
+                <span class="material-symbols-outlined text-6xl text-primary">psychology</span>
+            </div>
+            <div class="absolute bottom-4 right-4 opacity-10">
+                <span class="material-symbols-outlined text-6xl text-primary">support_agent</span>
+            </div>
+            
+            <div class="relative text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/20 rounded-full mb-4">
+                    <span class="material-symbols-outlined text-3xl text-primary">favorite</span>
+                </div>
+                <h3 class="text-xl font-bold text-[#111816] dark:text-white mb-2">Ready to Take the First Step?</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">Your mental health journey starts with a single step. Our counselors are here to support you every step of the way.</p>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    @auth
+                        <a href="{{ route('public.counseling.sessions') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
+                            <span class="material-symbols-outlined text-base">psychology</span>
+                            <span>Request Counseling Session</span>
+                        </a>
+                    @else
+                        <button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
+                            <span class="material-symbols-outlined text-base">login</span>
+                            <span>Login to Get Started</span>
+                        </button>
+                    @endauth
+                </div>
+                <p class="text-gray-500 dark:text-gray-400 text-xs mt-4">
+                    All counseling services are free and confidential for students
+                </p>
+            </div>
         </div>
-        <p class="text-[#61897c] dark:text-gray-400 text-sm mt-6">
-            All counseling services are free and confidential for students
-        </p>
     </div>
-</div>
+</section>
 
 @include('components.login-modal')
 @endsection

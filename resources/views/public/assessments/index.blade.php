@@ -24,13 +24,9 @@
             <h1 class="text-4xl lg:text-6xl font-black text-white tracking-tight mb-6">Self-Assessment Tools</h1>
             <p class="text-xl lg:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-8">Take confidential, evidence-based assessments to better understand your mental health and wellbeing. These tools are free and anonymous.</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#assessments" class="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                <a href="#assessments-filters" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-lg backdrop-saturate-150">
                     <span class="material-symbols-outlined !text-xl">quiz</span>
-                    Take Assessment
-                </a>
-                <a href="{{ route('public.counseling.index') }}" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 transition-all duration-200 transform hover:scale-105">
-                    <span class="material-symbols-outlined !text-xl">support_agent</span>
-                    Get Professional Help
+                    Browse Assessments
                 </a>
             </div>
         </div>
@@ -58,7 +54,7 @@
         </div>
 
         <!-- Filter Section -->
-        <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
+        <div id="assessments-filters" class="bg-white dark:bg-gray-800/50 rounded-2xl p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
             <div class="flex flex-wrap items-center gap-4">
                 <span class="text-sm font-semibold text-[#111816] dark:text-gray-300 flex items-center gap-2">
                     <span class="material-symbols-outlined text-primary">filter_list</span>
@@ -84,7 +80,7 @@
         </div>
 
         <!-- Assessment Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="assessments-grid">
+        <div id="assessments" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="assessments-grid">
             
             @if($assessments && $assessments->count() > 0)
                 @foreach($assessments as $assessment)
@@ -394,6 +390,33 @@
 
 @push('scripts')
 <script>
+// Smooth scroll functionality for Browse Assessments button
+document.addEventListener('DOMContentLoaded', function() {
+    const browseAssessmentsBtn = document.querySelector('a[href="#assessments-filters"]');
+    if (browseAssessmentsBtn) {
+        browseAssessmentsBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const filtersSection = document.getElementById('assessments-filters');
+            if (filtersSection) {
+                // Calculate header height for offset
+                const header = document.querySelector('header');
+                const headerHeight = header ? header.offsetHeight : 80; // fallback to 80px
+                const additionalOffset = 20; // Extra spacing for better UX
+                
+                // Get the position of the filters section
+                const elementPosition = filtersSection.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerHeight - additionalOffset;
+                
+                // Smooth scroll to the calculated position
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    }
+});
+
 function filterAssessments(category, clickedButton) {
     // Update button states - reset all buttons first
     document.querySelectorAll('.filter-btn').forEach(btn => {
