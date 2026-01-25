@@ -9,16 +9,29 @@ use Illuminate\Support\Str;
 
 class PublicForumController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $categories = ForumCategory::withCount('posts')->get();
         
-        $posts = ForumPost::with(['user', 'category'])
-            ->withCount(['comments', 'upvoteRecords'])
-            ->latest()
+        $query = ForumPost::with(['user', 'category'])
+            ->withCount(['comments', 'upvoteRecords']);
+        
+        // Filter by category if specified
+        if ($request->has('category') && $request->category !== 'all') {
+            $category = ForumCategory::where('slug', $request->category)->first();
+            if ($category) {
+                $query->where('category_id', $category->id);
+            }
+        }
+        
+        // Sort by upvotes (descending) then by latest
+        $posts = $query->orderBy('upvotes', 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate(15);
 
-        return view('public.forum.index', compact('categories', 'posts'));
+        $selectedCategory = $request->category ?? 'all';
+
+        return view('public.forum.index', compact('categories', 'posts', 'selectedCategory'));
     }
 
     public function show($id)
