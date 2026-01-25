@@ -106,13 +106,31 @@ class PublicForumController extends Controller
             'parent_id' => 'nullable|exists:forum_comments,id',
         ]);
 
-        \App\Models\ForumComment::create([
+        $comment = \App\Models\ForumComment::create([
             'post_id' => $post->id,
             'user_id' => auth()->id(),
             'parent_id' => $request->parent_id,
             'comment' => $request->comment,
             'is_anonymous' => $request->is_anonymous ?? false,
         ]);
+
+        // If it's an AJAX request, return JSON
+        if ($request->wantsJson() || $request->ajax()) {
+            $user = auth()->user();
+            return response()->json([
+                'success' => true,
+                'message' => 'Comment posted successfully!',
+                'comment' => [
+                    'id' => $comment->id,
+                    'comment' => $comment->comment,
+                    'is_anonymous' => $comment->is_anonymous,
+                    'author_name' => $comment->is_anonymous ? 'Anonymous User' : $user->name,
+                    'author_initial' => $comment->is_anonymous ? '?' : strtoupper(substr($user->name, 0, 2)),
+                    'created_at' => $comment->created_at->toISOString(),
+                    'upvotes' => 0,
+                ]
+            ]);
+        }
 
         return back()->with('success', 'Comment posted!');
     }

@@ -25,35 +25,79 @@
 @endif
 
 <!-- Hero Section -->
-<section class="bg-gradient-to-br from-teal-50 via-green-50 to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="py-8">
+<section class="relative overflow-hidden h-96">
+    <!-- Background Image -->
+    <div class="absolute inset-0">
+        @php
+            $categoryImages = [
+                'general' => 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80',
+                'mental-health' => 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80',
+                'stress-anxiety' => 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80',
+                'academic-support' => 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80',
+                'substance-use' => 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80',
+                'relationships' => 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80',
+                'self-care' => 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80',
+                'success-stories' => 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80',
+            ];
+            $categoryImage = $categoryImages[$category->slug] ?? $categoryImages['general'];
+        @endphp
+        <img src="{{ $categoryImage }}" 
+             alt="{{ $category->name }} discussions" 
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black/50"></div>
+    </div>
+    
+    <!-- Content -->
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
+        <div class="w-full">
             <!-- Breadcrumb -->
-            <nav class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mb-6">
-                <a href="{{ route('public.forum.index') }}" class="hover:text-primary transition-colors">Forum</a>
+            <nav class="flex items-center gap-2 text-sm text-white/80 mb-6">
+                <a href="{{ route('public.forum.index') }}" class="hover:text-white transition-colors flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm">arrow_back</span>
+                    Forum
+                </a>
                 <span class="material-symbols-outlined text-xs">chevron_right</span>
-                <span class="text-gray-900 dark:text-white font-medium">{{ $category->name }}</span>
+                <span class="text-white font-medium">{{ $category->name }}</span>
             </nav>
             
-            <!-- Category Header -->
-            <div class="flex items-start gap-6">
-                <div class="w-20 h-20 bg-gradient-to-br from-primary to-green-600 rounded-2xl flex items-center justify-center shadow-lg">
-                    <span class="material-symbols-outlined text-white text-3xl">{{ $category->icon ?? 'forum' }}</span>
-                </div>
-                <div class="flex-1">
-                    <h1 class="text-4xl lg:text-5xl font-black text-secondary dark:text-white tracking-tight mb-4">{{ $category->name }}</h1>
-                    <p class="text-base lg:text-lg text-gray-600 dark:text-gray-400 max-w-3xl">{{ $category->description ?? 'Discussions in this category' }}</p>
-                    <div class="flex items-center gap-4 mt-4 text-sm text-gray-500 dark:text-gray-400">
-                        <span class="flex items-center gap-1">
-                            <span class="material-symbols-outlined text-sm">article</span>
-                            {{ $posts->total() }} {{ Str::plural('discussion', $posts->total()) }}
-                        </span>
-                        <span>•</span>
-                        <span class="flex items-center gap-1">
-                            <span class="material-symbols-outlined text-sm">groups</span>
-                            Active community
-                        </span>
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-6">
+                    <div class="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg border border-white/30">
+                        <span class="material-symbols-outlined text-white text-3xl">{{ $category->icon ?? 'forum' }}</span>
                     </div>
+                    <div>
+                        <h1 class="text-4xl lg:text-5xl font-black text-white tracking-tight mb-4">{{ $category->name }}</h1>
+                        <p class="text-lg text-white/90 max-w-2xl mb-4">{{ $category->description ?? 'Discussions in this category' }}</p>
+                        <div class="flex items-center gap-4 text-sm text-white/80">
+                            <span class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">article</span>
+                                {{ $posts->total() }} {{ Str::plural('discussion', $posts->total()) }}
+                            </span>
+                            <span>•</span>
+                            <span class="flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">groups</span>
+                                Active community
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex flex-col gap-3">
+                    <a href="{{ route('public.forum.index') }}" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-6 py-3 rounded-xl font-bold hover:bg-white/30 transition-all duration-200 transform hover:scale-105">
+                        <span class="material-symbols-outlined">forum</span>
+                        All Categories
+                    </a>
+                    @auth
+                        <button onclick="openCreateDiscussionModal({{ $category->id }})" class="inline-flex items-center gap-2 bg-white text-primary px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                            <span class="material-symbols-outlined">add_circle</span>
+                            New Discussion
+                        </button>
+                    @else
+                        <button onclick="openLoginModal()" class="inline-flex items-center gap-2 bg-white text-primary px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                            <span class="material-symbols-outlined">login</span>
+                            Login to Post
+                        </button>
+                    @endauth
                 </div>
             </div>
         </div>

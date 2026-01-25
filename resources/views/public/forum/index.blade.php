@@ -44,7 +44,7 @@
             <p class="text-xl lg:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-8">Connect with peers, share experiences, and find support in a safe, moderated environment. Join the conversation today.</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 @auth
-                    <button onclick="document.getElementById('createDiscussionModal').classList.remove('hidden')" class="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                    <button onclick="openCreateDiscussionModal()" class="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
                         <span class="material-symbols-outlined !text-xl">add_circle</span>
                         Start Discussion
                     </button>
@@ -206,7 +206,7 @@
             <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">No discussions yet</h3>
             <p class="text-gray-600 dark:text-gray-400 mb-6">Be the first to start a conversation in this category!</p>
             @auth
-                <button onclick="document.getElementById('createDiscussionModal').classList.remove('hidden')" class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors">
+                <button onclick="openCreateDiscussionModal()" class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors">
                     <span class="material-symbols-outlined">add</span>
                     Start Discussion
                 </button>
@@ -295,7 +295,7 @@
 @include('components.create-discussion-modal')
 
 <!-- Floating Action Button (Mobile) -->
-<button onclick="document.getElementById('createDiscussionModal').classList.remove('hidden')" 
+<button onclick="openCreateDiscussionModal()" 
         class="fixed bottom-6 right-6 w-14 h-14 bg-primary text-white rounded-full shadow-lg hover:bg-primary/90 transition-all duration-200 transform hover:scale-110 z-40 md:hidden flex items-center justify-center">
     <span class="material-symbols-outlined text-2xl">add</span>
 </button>
@@ -329,6 +329,36 @@ function filterByCategory(categorySlug) {
         currentUrl.searchParams.set('category', categorySlug);
     }
     window.location.href = currentUrl.toString();
+}
+
+function openCreateDiscussionModal(categoryId = null) {
+    const modal = document.getElementById('createDiscussionModal');
+    const modalContent = document.getElementById('modalContent');
+    const categorySelect = document.getElementById('modal_category_id');
+    
+    if (!modal || !modalContent) {
+        console.error('Modal elements not found');
+        return;
+    }
+    
+    // Pre-select category if provided
+    if (categoryId && categorySelect) {
+        categorySelect.value = categoryId;
+    }
+    
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    
+    // Animate modal in
+    setTimeout(() => {
+        modalContent.classList.remove('scale-95', 'opacity-0');
+        modalContent.classList.add('scale-100', 'opacity-100');
+    }, 10);
+    
+    // Focus on title input
+    setTimeout(() => {
+        document.getElementById('modal_title')?.focus();
+    }, 150);
 }
 
 // Smooth scroll to discussions when coming from hero section
