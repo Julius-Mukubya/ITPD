@@ -161,6 +161,11 @@
         <x-signup-modal />
     @endguest
     
+    <!-- Profile Modal (for authenticated users) -->
+    @auth
+        @include('components.profile-modal')
+    @endauth
+    
     @stack('scripts')
     
     <!-- Notification Script -->

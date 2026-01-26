@@ -17,48 +17,72 @@ class ProfileController extends Controller
     {
         $user = auth()->user();
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'phone' => 'nullable|string',
-            'avatar' => 'nullable|image|max:1024',
-        ]);
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email,' . $user->id,
+                'phone' => 'nullable|string',
+                'avatar' => 'nullable|image|max:1024',
+            ]);
 
-        if ($request->hasFile('avatar')) {
-            if ($user->avatar) {
-                Storage::disk('public')->delete($user->avatar);
+            if ($request->hasFile('avatar')) {
+                if ($user->avatar) {
+                    Storage::disk('public')->delete($user->avatar);
+                }
+                $validated['avatar'] = $request->file('avatar')->store('avatars', 'public');
             }
-            $validated['avatar'] = $request->file('avatar')->store('avatars', 'public');
+
+            $user->update($validated);
+
+            // Handle AJAX requests
+            if ($request->ajax()) {
+                return response()->json(['success' => true, 'message' => 'Profile updated successfully!']);
+            }
+
+            // Redirect counselors to their dashboard
+            if ($user->isCounselor()) {
+                return redirect()->route('counselor.dashboard')->with('success', 'Profile updated successfully!');
+            }
+
+            return back()->with('success', 'Profile updated successfully!');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax()) {
+                return response()->json(['errors' => $e->errors()], 422);
+            }
+            throw $e;
         }
-
-        $user->update($validated);
-
-        // Redirect counselors to their dashboard
-        if ($user->isCounselor()) {
-            return redirect()->route('counselor.dashboard')->with('success', 'Profile updated successfully!');
-        }
-
-        return back()->with('success', 'Profile updated successfully!');
     }
 
     public function updatePassword(Request $request)
     {
-        $validated = $request->validate([
-            'current_password' => 'required|current_password',
-            'password' => ['required', 'confirmed', Password::defaults()],
-        ]);
+        try {
+            $validated = $request->validate([
+                'current_password' => 'required|current_password',
+                'password' => ['required', 'confirmed', Password::defaults()],
+            ]);
 
-        $user = auth()->user();
-        $user->update([
-            'password' => Hash::make($validated['password']),
-        ]);
+            $user = auth()->user();
+            $user->update([
+                'password' => Hash::make($validated['password']),
+            ]);
 
-        // Redirect counselors to their dashboard
-        if ($user->isCounselor()) {
-            return redirect()->route('counselor.dashboard')->with('success', 'Password updated successfully!');
+            // Handle AJAX requests
+            if ($request->ajax()) {
+                return response()->json(['success' => true, 'message' => 'Password updated successfully!']);
+            }
+
+            // Redirect counselors to their dashboard
+            if ($user->isCounselor()) {
+                return redirect()->route('counselor.dashboard')->with('success', 'Password updated successfully!');
+            }
+
+            return back()->with('success', 'Password updated successfully!');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            if ($request->ajax()) {
+                return response()->json(['errors' => $e->errors()], 422);
+            }
+            throw $e;
         }
-
-        return back()->with('success', 'Password updated successfully!');
     }
 
     public function updateVideoPreferences(Request $request)
@@ -105,10 +129,6 @@ class ProfileController extends Controller
 
     public function destroy(Request $request)
     {
-        $request->validate([
-            'password' => 'required|current_password',
-        ]);
-
         $user = auth()->user();
 
         auth()->logout();

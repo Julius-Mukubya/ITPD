@@ -11,22 +11,22 @@
         <!-- Status Badge -->
         <div class="absolute top-4 left-4">
             <span class="bg-white/90 backdrop-blur-sm 
-                @if($status === 'active') text-green-700
-                @elseif($status === 'upcoming') text-blue-700
-                @elseif($status === 'completed') text-gray-700
-                @else text-primary
-                @endif px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+                @if($status === 'active') text-primary bg-primary/10
+                @elseif($status === 'upcoming') text-primary bg-primary/10
+                @elseif($status === 'completed') text-green-700 bg-green-100
+                @else text-primary bg-primary/10
+                @endif px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 border border-primary/20">
                 @if($status === 'active')
-                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    <span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
                     Active
                 @elseif($status === 'upcoming')
-                    <span class="material-symbols-outlined !text-sm">schedule</span>
+                    <span class="material-symbols-outlined !text-sm text-primary">schedule</span>
                     Upcoming
                 @elseif($status === 'completed')
-                    <span class="material-symbols-outlined !text-sm">check_circle</span>
+                    <span class="material-symbols-outlined !text-sm text-green-600">check_circle</span>
                     Completed
                 @else
-                    <span class="material-symbols-outlined !text-sm">campaign</span>
+                    <span class="material-symbols-outlined !text-sm text-primary">campaign</span>
                     Campaign
                 @endif
             </span>
@@ -35,7 +35,7 @@
         <!-- Participants Badge -->
         @if($participants)
         <div class="absolute top-4 right-4">
-            <span class="bg-white/90 backdrop-blur-sm text-gray-800 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+            <span class="bg-primary/10 backdrop-blur-sm text-primary border border-primary/20 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
                 <span class="material-symbols-outlined !text-sm">group</span>
                 {{ $participants }}
             </span>
@@ -56,16 +56,16 @@
         <div class="flex items-center text-primary font-semibold text-sm group-hover:gap-2 transition-all">
             @if($status === 'active')
                 <span>Join Campaign</span>
-                <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">volunteer_activism</span>
+                <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform text-primary">volunteer_activism</span>
             @elseif($status === 'upcoming')
                 <span>Learn More</span>
-                <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">schedule</span>
+                <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform text-primary">schedule</span>
             @elseif($status === 'completed')
                 <span>View Details</span>
-                <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">visibility</span>
+                <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform text-primary">visibility</span>
             @else
                 <span>Learn More</span>
-                <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform text-primary">arrow_forward</span>
             @endif
         </div>
     </div>

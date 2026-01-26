@@ -6,6 +6,7 @@ use App\Models\ContentReview;
 use App\Models\EducationalContent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class ContentReviewController extends Controller
@@ -41,9 +42,13 @@ class ContentReviewController extends Controller
                 'approved_at' => now()
             ]);
 
+            // Force refresh the review and content
+            $existingReview->refresh();
+
             // Get fresh content with updated stats
             $content = EducationalContent::find($existingReview->educational_content_id);
             $content->clearReviewCache(); // Clear any cached review data
+            $content->refresh(); // Force refresh from database
 
             return response()->json([
                 'success' => true,
@@ -69,9 +74,13 @@ class ContentReviewController extends Controller
             'approved_at' => now()
         ]);
 
+        // Force refresh the review
+        $review->refresh();
+
         // Refresh content to get updated stats
         $content = EducationalContent::find($content->id);
         $content->clearReviewCache(); // Clear any cached review data
+        $content->refresh(); // Force refresh from database
 
         return response()->json([
             'success' => true,
@@ -115,23 +124,46 @@ class ContentReviewController extends Controller
 
         $oldData = $review->toArray();
         
-        $review->update([
-            'rating' => $request->rating,
-            'review' => $request->review,
-            'is_helpful' => $request->is_helpful
-        ]);
+        // Use database transaction to ensure consistency
+        DB::transaction(function () use ($request, $review) {
+            $review->update([
+                'rating' => $request->rating,
+                'review' => $request->review,
+                'is_helpful' => $request->is_helpful
+            ]);
+        });
 
-        // Get fresh content with updated stats - force refresh from database
+        // Force complete refresh - clear all model caches and get fresh instance
+        $review->refresh();
+        
+        // Get completely fresh content instance from database
         $content = EducationalContent::find($review->educational_content_id);
-        $content->clearReviewCache(); // Clear any cached review data
+        
+        // Clear any cached review data and force fresh calculations
+        $content->clearReviewCache();
+        
+        // Force refresh the content model and clear query cache
+        $content->refresh();
+        
+        // Clear Laravel's query cache to ensure fresh data
+        DB::flushQueryLog();
+        
+        // Get fresh stats by forcing new queries
+        $freshStats = [
+            'average_rating' => $content->fresh()->formatted_average_rating,
+            'total_reviews' => $content->fresh()->total_reviews,
+            'rating_distribution' => $content->fresh()->rating_distribution,
+            'helpful_percentage' => $content->fresh()->helpful_percentage
+        ];
 
         \Log::info('Review updated', [
             'old_data' => $oldData,
             'new_data' => $review->fresh()->toArray(),
-            'updated_stats' => [
-                'average_rating' => $content->formatted_average_rating,
-                'total_reviews' => $content->total_reviews,
-                'helpful_percentage' => $content->helpful_percentage
+            'content_id' => $review->educational_content_id,
+            'fresh_content_stats' => $freshStats,
+            'direct_db_check' => [
+                'total_approved_reviews' => ContentReview::where('educational_content_id', $review->educational_content_id)->where('is_approved', true)->count(),
+                'average_rating_direct' => ContentReview::where('educational_content_id', $review->educational_content_id)->where('is_approved', true)->avg('rating')
             ]
         ]);
 
@@ -139,12 +171,7 @@ class ContentReviewController extends Controller
             'success' => true,
             'message' => 'Your review has been updated!',
             'review' => $review->fresh()->load('user'),
-            'stats' => [
-                'average_rating' => $content->formatted_average_rating,
-                'total_reviews' => $content->total_reviews,
-                'rating_distribution' => $content->rating_distribution,
-                'helpful_percentage' => $content->helpful_percentage
-            ]
+            'stats' => $freshStats
         ]);
     }
 

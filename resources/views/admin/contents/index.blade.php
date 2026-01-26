@@ -92,10 +92,10 @@
                             <a href="{{ route('admin.contents.edit', $content) }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400">
                                 <span class="material-symbols-outlined text-sm">edit</span>
                             </a>
-                            <form action="{{ route('admin.contents.destroy', $content) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this content?')">
+                            <form action="{{ route('admin.contents.destroy', $content) }}" method="POST" class="delete-form">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-800 dark:text-red-400">
+                                <button type="button" onclick="showDeleteModal(this.closest('form'), 'Are you sure you want to delete this content? This action cannot be undone.')" class="text-red-600 hover:text-red-800 dark:text-red-400">
                                     <span class="material-symbols-outlined text-sm">delete</span>
                                 </button>
                             </form>

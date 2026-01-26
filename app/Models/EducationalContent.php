@@ -105,9 +105,11 @@ class EducationalContent extends Model
 
     public function getAverageRatingAttribute()
     {
-        // Clear any cached relationships to ensure fresh data
-        $this->unsetRelation('approvedReviews');
-        return $this->approvedReviews()->avg('rating') ?: 0;
+        // Always get fresh data from database, don't use cached relationships
+        // Use a fresh query to ensure we get the latest data
+        return ContentReview::where('educational_content_id', $this->id)
+            ->where('is_approved', true)
+            ->avg('rating') ?: 0;
     }
 
     public function getFormattedAverageRatingAttribute()
@@ -117,20 +119,24 @@ class EducationalContent extends Model
 
     public function getTotalReviewsAttribute()
     {
-        // Clear any cached relationships to ensure fresh data
-        $this->unsetRelation('approvedReviews');
-        return $this->approvedReviews()->count();
+        // Always get fresh data from database, don't use cached relationships
+        return ContentReview::where('educational_content_id', $this->id)
+            ->where('is_approved', true)
+            ->count();
     }
 
     public function getRatingDistributionAttribute()
     {
-        // Clear any cached relationships to ensure fresh data
-        $this->unsetRelation('approvedReviews');
-        
         $distribution = [];
+        $totalReviews = $this->total_reviews;
+        
         for ($i = 1; $i <= 5; $i++) {
-            $count = $this->approvedReviews()->where('rating', $i)->count();
-            $percentage = $this->total_reviews > 0 ? ($count / $this->total_reviews) * 100 : 0;
+            // Always get fresh data from database using direct query
+            $count = ContentReview::where('educational_content_id', $this->id)
+                ->where('is_approved', true)
+                ->where('rating', $i)
+                ->count();
+            $percentage = $totalReviews > 0 ? ($count / $totalReviews) * 100 : 0;
             $distribution[$i] = [
                 'count' => $count,
                 'percentage' => round($percentage, 1)
@@ -141,13 +147,19 @@ class EducationalContent extends Model
 
     public function getHelpfulPercentageAttribute()
     {
-        // Clear any cached relationships to ensure fresh data
-        $this->unsetRelation('approvedReviews');
+        // Always get fresh data from database using direct queries
+        $totalFeedback = ContentReview::where('educational_content_id', $this->id)
+            ->where('is_approved', true)
+            ->whereNotNull('is_helpful')
+            ->count();
         
-        $totalFeedback = $this->approvedReviews()->whereNotNull('is_helpful')->count();
         if ($totalFeedback === 0) return 0;
         
-        $helpfulCount = $this->approvedReviews()->where('is_helpful', true)->count();
+        $helpfulCount = ContentReview::where('educational_content_id', $this->id)
+            ->where('is_approved', true)
+            ->where('is_helpful', true)
+            ->count();
+            
         return round(($helpfulCount / $totalFeedback) * 100, 1);
     }
 
@@ -175,6 +187,11 @@ class EducationalContent extends Model
         $cachedAttributes = ['average_rating', 'formatted_average_rating', 'total_reviews', 'rating_distribution', 'helpful_percentage'];
         foreach ($cachedAttributes as $attribute) {
             unset($this->attributes[$attribute]);
+        }
+        
+        // Also clear the appends cache if it exists
+        if (property_exists($this, 'accessorCache')) {
+            $this->accessorCache = [];
         }
         
         return $this;

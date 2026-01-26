@@ -118,16 +118,9 @@
                     <td class="px-6 py-4">{{ $counselor->created_at->format('M d, Y') }}</td>
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-3">
-                            <a href="{{ route('admin.users.edit', $counselor) }}" class="text-green-600 hover:text-green-800 dark:text-green-400" title="Edit">
-                                <span class="material-symbols-outlined text-sm">edit</span>
+                            <a href="{{ route('admin.users.show', $counselor) }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400" title="View Details">
+                                <span class="material-symbols-outlined text-sm">visibility</span>
                             </a>
-                            <form action="{{ route('admin.users.destroy', $counselor) }}" method="POST" onsubmit="return confirm('Are you sure?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-800 dark:text-red-400" title="Delete">
-                                    <span class="material-symbols-outlined text-sm">delete</span>
-                                </button>
-                            </form>
                         </div>
                     </td>
                 </tr>
@@ -146,8 +139,12 @@
     </div>
 </div>
 
-<!-- Recent Sessions Table -->
+<!-- Recent Counseling Sessions Table -->
 <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+    <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Recent Counseling Sessions</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400">Latest counseling sessions across all counselors</p>
+    </div>
     <div class="overflow-x-auto">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 dark:text-gray-300 uppercase bg-gray-50 dark:bg-gray-700">

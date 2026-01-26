@@ -93,14 +93,17 @@
                 <td class="px-6 py-4 text-gray-600 dark:text-gray-400">{{ $user->created_at->format('M d, Y') }}</td>
                 <td class="px-6 py-4">
                     <div class="flex items-center gap-2">
-                        <a href="{{ route('admin.users.edit', $user) }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400">
+                        <a href="{{ route('admin.users.show', $user) }}" class="text-green-600 hover:text-green-800 dark:text-green-400" title="View Details">
+                            <span class="material-symbols-outlined text-sm">visibility</span>
+                        </a>
+                        <a href="{{ route('admin.users.edit', $user) }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400" title="Edit User">
                             <span class="material-symbols-outlined text-sm">edit</span>
                         </a>
                         @if($user->id !== auth()->id())
-                        <form action="{{ route('admin.users.destroy', $user) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+                        <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="delete-form">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="text-red-600 hover:text-red-800 dark:text-red-400">
+                            <button type="button" onclick="showDeleteModal(this.closest('form'), 'Are you sure you want to delete this user? This action cannot be undone.')" class="text-red-600 hover:text-red-800 dark:text-red-400">
                                 <span class="material-symbols-outlined text-sm">delete</span>
                             </button>
                         </form>

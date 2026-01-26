@@ -167,10 +167,10 @@
                                     </a>
                                 @endif
                                 <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
-                                <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                <button onclick="openProfileModal()" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors w-full text-left">
                                     <span class="material-symbols-outlined text-blue-600">person</span>
                                     <span>Profile Settings</span>
-                                </a>
+                                </button>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit" class="w-full flex items-center gap-3 px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
@@ -286,10 +286,10 @@
                         Dashboard
                     </a>
                 @endif
-                <a href="{{ route('profile.edit') }}" class="flex items-center justify-center gap-2 w-full bg-gray-200 dark:bg-gray-800 text-[#111816] dark:text-white py-3 px-4 rounded-lg font-bold hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">
+                <button onclick="openProfileModal(); toggleMobileSidebar();" class="flex items-center justify-center gap-2 w-full bg-gray-200 dark:bg-gray-800 text-[#111816] dark:text-white py-3 px-4 rounded-lg font-bold hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">
                     <span class="material-symbols-outlined">person</span>
                     Profile
-                </a>
+                </button>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="flex items-center justify-center gap-2 w-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 py-3 px-4 rounded-lg font-bold hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors">

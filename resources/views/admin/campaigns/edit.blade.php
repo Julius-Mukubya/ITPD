@@ -124,10 +124,10 @@
                         name="type"
                         class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white">
                     <option value="">Select Type</option>
-                    <option value="awareness" {{ old('type', $campaign->type) === 'awareness' ? 'selected' : '' }}>Awareness</option>
-                    <option value="education" {{ old('type', $campaign->type) === 'education' ? 'selected' : '' }}>Education</option>
-                    <option value="prevention" {{ old('type', $campaign->type) === 'prevention' ? 'selected' : '' }}>Prevention</option>
-                    <option value="support" {{ old('type', $campaign->type) === 'support' ? 'selected' : '' }}>Support</option>
+                    <option value="awareness" {{ old('type', $campaign->type) === 'awareness' ? 'selected' : '' }}>Awareness Campaign</option>
+                    <option value="workshop" {{ old('type', $campaign->type) === 'workshop' ? 'selected' : '' }}>Workshop</option>
+                    <option value="webinar" {{ old('type', $campaign->type) === 'webinar' ? 'selected' : '' }}>Webinar</option>
+                    <option value="event" {{ old('type', $campaign->type) === 'event' ? 'selected' : '' }}>Event</option>
                 </select>
                 @error('type')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -146,8 +146,57 @@
                     <option value="draft" {{ old('status', $campaign->status) === 'draft' ? 'selected' : '' }}>Draft</option>
                     <option value="active" {{ old('status', $campaign->status) === 'active' ? 'selected' : '' }}>Active</option>
                     <option value="completed" {{ old('status', $campaign->status) === 'completed' ? 'selected' : '' }}>Completed</option>
+                    <option value="cancelled" {{ old('status', $campaign->status) === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                 </select>
                 @error('status')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Location -->
+            <div class="md:col-span-2">
+                <label for="location" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Location (Optional)
+                </label>
+                <input type="text" 
+                       id="location" 
+                       name="location" 
+                       value="{{ old('location', $campaign->location) }}"
+                       placeholder="e.g., Main Hall, Online, Building A Room 101"
+                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white">
+                @error('location')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Max Participants -->
+            <div>
+                <label for="max_participants" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Max Participants (Optional)
+                </label>
+                <input type="number" 
+                       id="max_participants" 
+                       name="max_participants" 
+                       value="{{ old('max_participants', $campaign->max_participants) }}"
+                       min="1"
+                       placeholder="Leave empty for unlimited"
+                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white">
+                @error('max_participants')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Detailed Content -->
+            <div class="md:col-span-2">
+                <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Detailed Content (Optional)
+                </label>
+                <textarea id="content" 
+                          name="content" 
+                          rows="6"
+                          placeholder="Add detailed information about the campaign..."
+                          class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white">{{ old('content', $campaign->content) }}</textarea>
+                @error('content')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
@@ -183,18 +232,40 @@
                 <label for="banner_image" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Banner Image
                 </label>
+                
+                <!-- Current Image -->
                 @if($campaign->banner_image)
-                    <div class="mb-3">
-                        <img src="{{ $campaign->banner_url }}" alt="Current banner" class="w-32 h-20 object-cover rounded-lg">
-                        <p class="text-sm text-gray-500 mt-1">Current banner image</p>
+                    <div class="mb-4">
+                        <div class="relative w-full h-64 rounded-lg overflow-hidden border-2 border-gray-200 dark:border-gray-600 bg-gray-100 dark:bg-gray-900">
+                            <img id="current_banner" src="{{ $campaign->banner_url }}" alt="Current banner" class="w-full h-full object-cover">
+                            <div class="absolute top-2 left-2 bg-black/50 text-white px-2 py-1 rounded text-xs">Current Image</div>
+                        </div>
                     </div>
                 @endif
+
+                <!-- Image Preview for New Upload -->
+                <div id="banner_preview_container" class="hidden mb-4">
+                    <div class="relative w-full h-64 rounded-lg overflow-hidden border-2 border-primary bg-gray-100 dark:bg-gray-900">
+                        <img id="banner_preview" src="" alt="Banner Preview" class="w-full h-full object-cover">
+                        <div class="absolute top-2 left-2 bg-primary text-white px-2 py-1 rounded text-xs">New Image Preview</div>
+                        <button type="button" onclick="clearBannerPreview()" class="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-2 shadow-lg transition-all">
+                            <span class="material-symbols-outlined text-sm">close</span>
+                        </button>
+                    </div>
+                </div>
+
                 <input type="file" 
                        id="banner_image" 
                        name="banner_image" 
                        accept="image/*"
-                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white">
-                <p class="text-sm text-gray-500 mt-1">Upload a new image to replace the current banner</p>
+                       onchange="previewBanner(event)"
+                       class="block w-full text-sm text-gray-500 dark:text-gray-400
+                       file:mr-4 file:py-2 file:px-4
+                       file:rounded-lg file:border-0
+                       file:text-sm file:font-semibold
+                       file:bg-primary file:text-white
+                       hover:file:opacity-90 file:cursor-pointer">
+                <p class="text-sm text-gray-500 mt-1">Upload a new image to replace the current banner. Recommended size: 1200x400px. Max 2MB</p>
                 @error('banner_image')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -215,6 +286,31 @@
 
 @push('scripts')
 <script>
+function previewBanner(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('banner_preview');
+            const container = document.getElementById('banner_preview_container');
+            
+            preview.src = e.target.result;
+            container.classList.remove('hidden');
+        }
+        reader.readAsDataURL(file);
+    }
+}
+
+function clearBannerPreview() {
+    const input = document.getElementById('banner_image');
+    const preview = document.getElementById('banner_preview');
+    const container = document.getElementById('banner_preview_container');
+    
+    input.value = '';
+    preview.src = '';
+    container.classList.add('hidden');
+}
+
 function validateDateTime() {
     const startDate = document.querySelector('input[name="start_date"]').value;
     const startTime = document.querySelector('input[name="start_time"]').value || '00:00';

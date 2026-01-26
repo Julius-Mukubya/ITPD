@@ -245,6 +245,9 @@
         </main>
     </div>
 
+    <!-- Delete Confirmation Modal -->
+    @include('components.delete-confirmation-modal')
+
     <script>
         // Mobile Menu Toggle
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');

@@ -276,7 +276,8 @@ window.setRating = function(rating) {
         currentRatingInput.value = rating;
     }
     
-    const stars = document.querySelectorAll('.star-btn');
+    // Only update the user's rating stars in the form, NOT the overall rating display
+    const stars = document.querySelectorAll('#star-rating .star-btn');
     stars.forEach((star, index) => {
         const starIcon = star.querySelector('.material-symbols-outlined');
         if (index < rating) {
@@ -390,7 +391,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let reviewsPage = 1;
     let reviewsLoading = false;
     
-    // Initialize rating display
+    // Initialize user's rating display (only for the form, not the overall rating)
     if (currentRating > 0) {
         setRating(currentRating);
     }
@@ -459,21 +460,24 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.success) {
                 showToast(data.message, 'success');
                 
-                // Update the UI immediately with the returned stats
-                if (data.stats) {
-                    updateReviewStats(data.stats);
-                }
-                
-                // Update the existing review display if it's an update
-                if (isUpdate) {
-                    updateExistingReviewDisplay(data.review);
-                    cancelEdit();
-                } else {
-                    // For new reviews, reload to show the new review in the list
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1000);
-                }
+                // Add a longer delay to ensure database consistency
+                setTimeout(() => {
+                    // Update the UI with the returned stats
+                    if (data.stats) {
+                        updateReviewStats(data.stats);
+                    }
+                    
+                    // Update the existing review display if it's an update
+                    if (isUpdate) {
+                        updateExistingReviewDisplay(data.review);
+                        cancelEdit();
+                    } else {
+                        // For new reviews, reload to show the new review in the list
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 500);
+                    }
+                }, 300); // Increased delay to ensure database consistency
             } else {
                 showToast(data.message || 'An error occurred', 'error');
             }

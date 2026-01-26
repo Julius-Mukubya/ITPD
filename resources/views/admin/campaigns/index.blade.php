@@ -98,10 +98,10 @@
                         <a href="{{ route('admin.campaigns.edit', $campaign) }}" class="text-blue-600 hover:text-blue-800 p-1 rounded">
                             <span class="material-symbols-outlined text-sm">edit</span>
                         </a>
-                        <form action="{{ route('admin.campaigns.destroy', $campaign) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this campaign?')">
+                        <form action="{{ route('admin.campaigns.destroy', $campaign) }}" method="POST" class="inline delete-form">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="text-red-600 hover:text-red-800 p-1 rounded">
+                            <button type="button" onclick="showDeleteModal(this.closest('form'), 'Are you sure you want to delete this campaign? This action cannot be undone.')" class="text-red-600 hover:text-red-800 p-1 rounded">
                                 <span class="material-symbols-outlined text-sm">delete</span>
                             </button>
                         </form>

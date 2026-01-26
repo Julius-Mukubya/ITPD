@@ -223,10 +223,10 @@
                     Edit Campaign
                 </a>
                 
-                <form action="{{ route('admin.campaigns.destroy', $campaign) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this campaign? This action cannot be undone.')">
+                <form action="{{ route('admin.campaigns.destroy', $campaign) }}" method="POST" class="delete-form">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="w-full bg-red-600 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-red-700">
+                    <button type="button" onclick="showDeleteModal(this.closest('form'), 'Are you sure you want to delete this campaign? This action cannot be undone.')" class="w-full bg-red-600 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-red-700">
                         <span class="material-symbols-outlined text-sm">delete</span>
                         Delete Campaign
                     </button>

@@ -111,10 +111,10 @@
                             <a href="{{ route('admin.assessments.edit', $assessment) }}" class="text-green-600 hover:text-green-800 dark:text-green-400" title="Edit">
                                 <span class="material-symbols-outlined text-sm">edit</span>
                             </a>
-                            <form action="{{ route('admin.assessments.destroy', $assessment) }}" method="POST" onsubmit="return confirm('Are you sure? This will delete the assessment and all its questions.')">
+                            <form action="{{ route('admin.assessments.destroy', $assessment) }}" method="POST" class="delete-form">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:text-red-800 dark:text-red-400" title="Delete">
+                                <button type="button" onclick="showDeleteModal(this.closest('form'), 'Are you sure you want to delete this assessment? This will delete the assessment and all its questions.')" class="text-red-600 hover:text-red-800 dark:text-red-400" title="Delete">
                                     <span class="material-symbols-outlined text-sm">delete</span>
                                 </button>
                             </form>

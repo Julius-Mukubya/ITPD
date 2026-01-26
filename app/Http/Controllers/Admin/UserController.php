@@ -65,6 +65,50 @@ class UserController extends Controller
             ->with('success', 'User created successfully!');
     }
 
+    public function show(User $user)
+    {
+        try {
+            // Debug: Check if user exists
+            if (!$user) {
+                return redirect()->route('admin.users.index')
+                    ->with('error', 'User not found.');
+            }
+
+            // Load related data based on user role
+            $data = ['user' => $user];
+            
+            // Only load sessions if the user has the appropriate role
+            if ($user->role === 'counselor') {
+                try {
+                    $data['sessions'] = $user->counselingAsProvider()
+                        ->with(['student', 'counselor'])
+                        ->latest()
+                        ->paginate(10);
+                } catch (\Exception $e) {
+                    \Log::error('Error loading counselor sessions: ' . $e->getMessage());
+                    $data['sessions'] = collect(); // Empty collection as fallback
+                }
+            } elseif ($user->role === 'user') {
+                try {
+                    $data['sessions'] = $user->counselingSessions()
+                        ->with(['student', 'counselor'])
+                        ->latest()
+                        ->paginate(10);
+                } catch (\Exception $e) {
+                    \Log::error('Error loading user sessions: ' . $e->getMessage());
+                    $data['sessions'] = collect(); // Empty collection as fallback
+                }
+            }
+            
+            return view('admin.users.show', $data);
+        } catch (\Exception $e) {
+            \Log::error('Error in UserController@show: ' . $e->getMessage());
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            return redirect()->route('admin.users.index')
+                ->with('error', 'Unable to load user details. Please try again.');
+        }
+    }
+
     public function edit(User $user)
     {
         return view('admin.users.edit', compact('user'));
