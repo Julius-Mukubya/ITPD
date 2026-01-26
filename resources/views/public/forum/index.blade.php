@@ -54,7 +54,7 @@
                         Login to Participate
                     </button>
                 @endauth
-                <a href="#discussions" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 transition-all duration-200 transform hover:scale-105">
+                <a href="#forum-filters" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 transition-all duration-200 transform hover:scale-105">
                     <span class="material-symbols-outlined !text-xl">visibility</span>
                     Browse Discussions
                 </a>
@@ -83,32 +83,53 @@
     </div>
 
     <!-- Filter Section -->
-    <div id="discussions" class="mb-8">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-            <div>
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Community Discussions</h2>
-                <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">Sorted by most upvoted and recent activity</p>
-            </div>
-            
-            <!-- Category Filter -->
-            <div class="flex items-center gap-3">
-                <label for="categoryFilter" class="text-sm font-medium text-gray-700 dark:text-gray-300">Filter by category:</label>
-                <select id="categoryFilter" onchange="filterByCategory(this.value)" class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-primary">
-                    <option value="all" {{ $selectedCategory === 'all' ? 'selected' : '' }}>All Categories</option>
-                    @foreach($categories as $category)
-                        <option value="{{ $category->slug }}" {{ $selectedCategory === $category->slug ? 'selected' : '' }}>
-                            {{ $category->name }} ({{ $category->posts_count }})
-                        </option>
-                    @endforeach
-                </select>
+    <div id="forum-filters" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-4 sm:p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
+            <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                <!-- Search Bar -->
+                <div class="relative flex-1 max-w-md w-full sm:w-auto">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-[#61897c] dark:text-gray-400 !text-xl">search</span>
+                    <input type="text" id="search-input" placeholder="Search discussions..." 
+                           class="w-full pl-12 pr-4 py-3 rounded-xl border border-[#f0f4f3] dark:border-gray-700 bg-white dark:bg-gray-900 text-[#111816] dark:text-white placeholder-[#61897c] dark:placeholder-gray-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200">
+                </div>
+                
+                <!-- Category Filter -->
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <span class="text-sm font-semibold text-[#111816] dark:text-gray-300 flex items-center gap-2 whitespace-nowrap">
+                        <span class="material-symbols-outlined text-primary">filter_list</span>
+                        <span>Category:</span>
+                    </span>
+                    <div class="relative flex-1 sm:flex-initial">
+                        <select id="category-filter" class="appearance-none rounded-xl h-10 pl-4 pr-10 border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111816] dark:text-white text-sm font-medium focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 w-full sm:min-w-[200px] cursor-pointer hover:border-primary/50">
+                            <option value="all" {{ $selectedCategory === 'all' ? 'selected' : '' }}>All Categories</option>
+                            @foreach($categories as $category)
+                            <option value="{{ $category->slug }}" {{ $selectedCategory === $category->slug ? 'selected' : '' }}>{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                        <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 pointer-events-none">expand_more</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Discussions Section Header -->
+    <div id="discussions" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+        <div class="text-center">
+            <h2 class="text-3xl font-bold text-[#111816] dark:text-white mb-4">Community Discussions</h2>
+            <p class="text-[#61897c] dark:text-gray-400 max-w-2xl mx-auto">Sorted by most upvoted and recent activity</p>
+        </div>
+    </div>
+
     <!-- Discussions List -->
-    <div class="space-y-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="space-y-6" id="discussions-container">
         @forelse($posts as $post)
-        <article class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-all duration-200 hover:border-primary/30">
+        <article class="discussion-post bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-all duration-200 hover:border-primary/30" 
+                 data-category="{{ $post->category->slug ?? 'general' }}" 
+                 data-title="{{ strtolower($post->title) }}" 
+                 data-content="{{ strtolower(strip_tags($post->content)) }}"
+                 data-author="{{ $post->is_anonymous ? 'anonymous' : strtolower($post->user->name ?? 'user') }}">
             <div class="flex items-start gap-4">
                 <!-- Author Avatar -->
                 <div class="flex-shrink-0">
@@ -184,10 +205,33 @@
                             </div>
 
                             <!-- Comments -->
-                            <a href="{{ route('public.forum.show', $post->id) }}" class="flex items-center gap-1 text-gray-500 hover:text-primary transition-colors px-2 py-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <span class="material-symbols-outlined !text-sm">chat_bubble</span>
-                                <span class="text-sm font-medium">{{ $post->comments_count ?? 0 }}</span>
-                            </a>
+                            <div class="relative comments-preview-container">
+                                <a href="{{ route('public.forum.show', $post->id) }}" class="flex items-center gap-1 text-gray-500 hover:text-primary transition-colors px-2 py-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" 
+                                   data-post-id="{{ $post->id }}"
+                                   onmouseenter="showCommentsPreview(this, {{ $post->id }})"
+                                   onmouseleave="hideCommentsPreview()">
+                                    <span class="material-symbols-outlined !text-sm">chat_bubble</span>
+                                    <span class="text-sm font-medium">{{ $post->comments_count ?? 0 }}</span>
+                                </a>
+                                
+                                <!-- Comments Preview Tooltip -->
+                                <div id="comments-preview-{{ $post->id }}" class="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-80 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-4 z-50 hidden">
+                                    <div class="comments-preview-content">
+                                        <div class="loading-state text-center text-gray-500 dark:text-gray-400 text-sm py-4">
+                                            <div class="animate-spin w-5 h-5 border-2 border-primary border-t-transparent rounded-full mx-auto mb-2"></div>
+                                            Loading comments...
+                                        </div>
+                                        <div class="comments-content hidden"></div>
+                                        <div class="no-comments-state hidden text-center text-gray-500 dark:text-gray-400 text-sm py-2">
+                                            <span class="material-symbols-outlined text-2xl mb-1">chat_bubble_outline</span>
+                                            <div>No comments yet</div>
+                                            <div class="text-xs">Be the first to comment!</div>
+                                        </div>
+                                    </div>
+                                    <!-- Tooltip Arrow (pointing up) -->
+                                    <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-gray-200 dark:border-b-gray-700"></div>
+                                </div>
+                            </div>
 
                             <!-- Read More -->
                             <a href="{{ route('public.forum.show', $post->id) }}" class="text-primary hover:text-primary/80 text-sm font-semibold px-3 py-1 rounded-lg hover:bg-primary/10 transition-colors">
@@ -218,43 +262,52 @@
             @endauth
         </div>
         @endforelse
-    </div>
+        
+        <!-- No Results Message (hidden by default) -->
+        <div id="no-results-message" class="hidden text-center py-12">
+            <div class="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="material-symbols-outlined text-4xl text-gray-400">search_off</span>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">No discussions found</h3>
+            <p class="text-gray-600 dark:text-gray-400 mb-6">Try adjusting your search terms or category filter.</p>
+        </div>
+        </div>
 
-    <!-- Pagination -->
-    @if($posts->hasPages())
-    <div class="mt-8">
-        {{ $posts->appends(request()->query())->links() }}
-    </div>
-    @endif
+        <!-- Pagination -->
+        @if($posts->hasPages())
+        <div class="mt-8">
+            {{ $posts->appends(request()->query())->links() }}
+        </div>
+        @endif
 
-    <!-- Community Guidelines -->
-    <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-2xl p-8 border border-emerald-200 dark:border-emerald-800 mt-12">
-        <div class="flex items-start gap-4">
-            <span class="material-symbols-outlined text-primary text-3xl flex-shrink-0">verified_user</span>
-            <div>
-                <h3 class="text-xl font-bold text-emerald-900 dark:text-emerald-100 mb-4">Community Guidelines</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-emerald-800 dark:text-emerald-200">
-                    <div class="flex items-start gap-2">
-                        <span class="material-symbols-outlined text-lg">check_circle</span>
-                        <span>Be respectful and supportive of others</span>
-                    </div>
-                    <div class="flex items-start gap-2">
-                        <span class="material-symbols-outlined text-lg">check_circle</span>
-                        <span>Keep discussions relevant and constructive</span>
-                    </div>
-                    <div class="flex items-start gap-2">
-                        <span class="material-symbols-outlined text-lg">check_circle</span>
-                        <span>Protect your privacy and that of others</span>
-                    </div>
-                    <div class="flex items-start gap-2">
-                        <span class="material-symbols-outlined text-lg">check_circle</span>
-                        <span>Report inappropriate content to moderators</span>
+        <!-- Community Guidelines -->
+        <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-2xl p-8 border border-emerald-200 dark:border-emerald-800 mt-12">
+            <div class="flex items-start gap-4">
+                <span class="material-symbols-outlined text-primary text-3xl flex-shrink-0">verified_user</span>
+                <div>
+                    <h3 class="text-xl font-bold text-emerald-900 dark:text-emerald-100 mb-4">Community Guidelines</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-emerald-800 dark:text-emerald-200">
+                        <div class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-lg">check_circle</span>
+                            <span>Be respectful and supportive of others</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-lg">check_circle</span>
+                            <span>Keep discussions relevant and constructive</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-lg">check_circle</span>
+                            <span>Protect your privacy and that of others</span>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-lg">check_circle</span>
+                            <span>Report inappropriate content to moderators</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 <!-- CTA Section -->
 @guest
@@ -316,19 +369,214 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
+    
+    /* Comments preview tooltip styling */
+    .comments-preview-container:hover [id^="comments-preview-"] {
+        display: block;
+    }
+    
+    /* Loading spinner animation */
+    .animate-spin {
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    
+    /* Custom scrollbar for comments preview */
+    .comments-preview-content .max-h-48::-webkit-scrollbar {
+        width: 4px;
+    }
+    
+    .comments-preview-content .max-h-48::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 2px;
+    }
+    
+    .comments-preview-content .max-h-48::-webkit-scrollbar-thumb {
+        background: #14eba3;
+        border-radius: 2px;
+    }
+    
+    .comments-preview-content .max-h-48::-webkit-scrollbar-thumb:hover {
+        background: #12d494;
+    }
 </style>
 @endpush
 
 @push('scripts')
 <script>
+// Global variables for filtering
+let currentCategory = 'all';
+let currentSearchTerm = '';
+let previewTimeout;
+
+function showCommentsPreview(element, postId) {
+    // Clear any existing timeout
+    clearTimeout(previewTimeout);
+    
+    // Hide any other open previews
+    document.querySelectorAll('[id^="comments-preview-"]').forEach(preview => {
+        preview.classList.add('hidden');
+    });
+    
+    // Show the preview after a short delay
+    previewTimeout = setTimeout(() => {
+        const preview = document.getElementById(`comments-preview-${postId}`);
+        if (preview) {
+            preview.classList.remove('hidden');
+            
+            // Check if comments are already loaded
+            const commentsContent = preview.querySelector('.comments-content');
+            if (!commentsContent.hasAttribute('data-loaded')) {
+                loadComments(postId);
+            }
+        }
+    }, 300); // 300ms delay
+}
+
+function loadComments(postId) {
+    const preview = document.getElementById(`comments-preview-${postId}`);
+    if (!preview) return;
+    
+    const loadingState = preview.querySelector('.loading-state');
+    const commentsContent = preview.querySelector('.comments-content');
+    const noCommentsState = preview.querySelector('.no-comments-state');
+    
+    // Show loading state
+    loadingState.classList.remove('hidden');
+    commentsContent.classList.add('hidden');
+    noCommentsState.classList.add('hidden');
+    
+    // Fetch comments via AJAX
+    fetch(`/forum/${postId}/comments`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.comments.length > 0) {
+                // Build comments HTML
+                let commentsHtml = '<div class="space-y-3 max-h-48 overflow-y-auto">';
+                
+                data.comments.forEach(comment => {
+                    const initial = comment.is_anonymous ? '?' : comment.author.charAt(0).toUpperCase();
+                    commentsHtml += `
+                        <div class="flex gap-2 text-sm">
+                            <div class="w-6 h-6 bg-gradient-to-br from-primary to-green-600 rounded-full flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
+                                ${initial}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="font-medium text-gray-900 dark:text-white text-xs">
+                                    ${comment.author}
+                                </div>
+                                <div class="text-gray-600 dark:text-gray-400 text-xs line-clamp-2">
+                                    ${comment.comment}
+                                </div>
+                                <div class="text-gray-400 text-xs mt-1">
+                                    ${comment.created_at}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                if (data.has_more) {
+                    commentsHtml += `
+                        <div class="text-center text-xs text-gray-500 dark:text-gray-400 pt-2 border-t border-gray-200 dark:border-gray-700">
+                            +${data.total - 3} more comments
+                        </div>
+                    `;
+                }
+                
+                commentsHtml += '</div>';
+                commentsContent.innerHTML = commentsHtml;
+                
+                // Show comments content
+                loadingState.classList.add('hidden');
+                commentsContent.classList.remove('hidden');
+                commentsContent.setAttribute('data-loaded', 'true');
+            } else {
+                // Show no comments state
+                loadingState.classList.add('hidden');
+                noCommentsState.classList.remove('hidden');
+                commentsContent.setAttribute('data-loaded', 'true');
+            }
+        })
+        .catch(error => {
+            console.error('Error loading comments:', error);
+            // Show error state
+            loadingState.classList.add('hidden');
+            commentsContent.innerHTML = '<div class="text-center text-red-500 text-sm py-2">Failed to load comments</div>';
+            commentsContent.classList.remove('hidden');
+            commentsContent.setAttribute('data-loaded', 'true');
+        });
+}
+
+function hideCommentsPreview() {
+    // Clear the timeout
+    clearTimeout(previewTimeout);
+    
+    // Hide preview after a short delay to allow moving to the tooltip
+    previewTimeout = setTimeout(() => {
+        document.querySelectorAll('[id^="comments-preview-"]').forEach(preview => {
+            preview.classList.add('hidden');
+        });
+    }, 200); // 200ms delay
+}
+
 function filterByCategory(categorySlug) {
-    const currentUrl = new URL(window.location);
-    if (categorySlug === 'all') {
-        currentUrl.searchParams.delete('category');
-    } else {
-        currentUrl.searchParams.set('category', categorySlug);
+    currentCategory = categorySlug;
+    applyFilters();
+    updateCategoryButtons(categorySlug);
+}
+
+function updateCategoryButtons(activeCategory) {
+    // Update dropdown selection
+    const categoryDropdown = document.getElementById('category-filter');
+    if (categoryDropdown) {
+        categoryDropdown.value = activeCategory;
     }
-    window.location.href = currentUrl.toString();
+}
+
+function applyFilters() {
+    const posts = document.querySelectorAll('.discussion-post');
+    const noResultsMessage = document.getElementById('no-results-message');
+    let visibleCount = 0;
+
+    posts.forEach(post => {
+        const postCategory = post.getAttribute('data-category');
+        const postTitle = post.getAttribute('data-title');
+        const postContent = post.getAttribute('data-content');
+        const postAuthor = post.getAttribute('data-author');
+        
+        // Check category filter
+        const categoryMatch = currentCategory === 'all' || postCategory === currentCategory;
+        
+        // Check search filter
+        const searchMatch = currentSearchTerm === '' || 
+            postTitle.includes(currentSearchTerm.toLowerCase()) ||
+            postContent.includes(currentSearchTerm.toLowerCase()) ||
+            postAuthor.includes(currentSearchTerm.toLowerCase());
+        
+        if (categoryMatch && searchMatch) {
+            post.style.display = 'block';
+            visibleCount++;
+        } else {
+            post.style.display = 'none';
+        }
+    });
+
+    // Show/hide no results message
+    if (visibleCount === 0) {
+        noResultsMessage.classList.remove('hidden');
+    } else {
+        noResultsMessage.classList.add('hidden');
+    }
+}
+
+function handleSearch(searchTerm) {
+    currentSearchTerm = searchTerm;
+    applyFilters();
 }
 
 function openCreateDiscussionModal(categoryId = null) {
@@ -361,15 +609,57 @@ function openCreateDiscussionModal(categoryId = null) {
     }, 150);
 }
 
-// Smooth scroll to discussions when coming from hero section
+// Initialize filtering functionality
 document.addEventListener('DOMContentLoaded', function() {
+    // Handle category filter dropdown
+    const categoryDropdown = document.getElementById('category-filter');
+    
+    if (categoryDropdown) {
+        categoryDropdown.addEventListener('change', function(e) {
+            const category = e.target.value;
+            filterByCategory(category);
+        });
+    }
+    
+    // Handle search input
+    const searchInput = document.getElementById('search-input');
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+            handleSearch(e.target.value);
+        });
+    }
+    
+    // Set initial category state
+    const initialCategory = '{{ $selectedCategory }}' || 'all';
+    currentCategory = initialCategory;
+    updateCategoryButtons(initialCategory);
+    
+    // Smooth scroll to discussions when coming from hero section
     const hash = window.location.hash;
-    if (hash === '#discussions') {
+    if (hash === '#forum-filters') {
         setTimeout(() => {
-            document.getElementById('discussions').scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'start' 
-            });
+            const filtersSection = document.getElementById('forum-filters');
+            if (filtersSection) {
+                // Use a very large fixed offset to ensure filter is fully visible
+                const elementPosition = filtersSection.offsetTop;
+                const offsetPosition = elementPosition - 250; // Much larger 250px offset
+                
+                window.scrollTo({
+                    top: Math.max(0, offsetPosition), // Ensure we don't scroll above page top
+                    behavior: 'smooth'
+                });
+            }
+        }, 100);
+    } else if (hash === '#discussions') {
+        setTimeout(() => {
+            const discussionsSection = document.getElementById('discussions');
+            if (discussionsSection) {
+                discussionsSection.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }
         }, 100);
     }
 });

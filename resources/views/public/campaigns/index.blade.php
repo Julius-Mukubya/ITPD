@@ -22,22 +22,18 @@
             </div>
             <h1 class="text-4xl lg:text-6xl font-black text-white tracking-tight mb-6">Join Our Awareness Campaigns</h1>
             <p class="text-xl lg:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-8">Be part of transformative initiatives that promote mental health awareness, substance education, and campus wellbeing. Together, we're building a supportive community for all students.</p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <div class="flex justify-center">
                 @auth
-                    <a href="#active-campaigns" class="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                    <a href="#active-campaigns" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-lg">
                         <span class="material-symbols-outlined !text-xl">volunteer_activism</span>
                         Join a Campaign
                     </a>
                 @else
-                    <button onclick="openLoginModal()" class="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                    <button onclick="openLoginModal()" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-lg">
                         <span class="material-symbols-outlined !text-xl">login</span>
                         Login to Join
                     </button>
                 @endauth
-                <a href="{{ route('public.forum.index') }}" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 transition-all duration-200 transform hover:scale-105">
-                    <span class="material-symbols-outlined !text-xl">forum</span>
-                    Join Community
-                </a>
             </div>
         </div>
     </div>
@@ -386,14 +382,10 @@
                 </div>
                 <h3 class="text-xl font-bold text-[#111816] dark:text-white mb-2">Need More Support?</h3>
                 <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">Connect with our counselors or join the community for personalized guidance and peer support.</p>
-                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <div class="flex justify-center">
                     <a href="{{ route('public.counseling.index') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
                         <span class="material-symbols-outlined text-base">psychology</span>
                         <span>Get Counseling</span>
-                    </a>
-                    <a href="{{ route('public.forum.index') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-700 text-[#111816] dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg font-semibold hover:border-primary hover:text-primary transition-colors text-sm">
-                        <span class="material-symbols-outlined text-base">forum</span>
-                        <span>Join Community</span>
                     </a>
                 </div>
             </div>
