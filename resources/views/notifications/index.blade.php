@@ -12,7 +12,7 @@
     </div>
     
     @if($notifications->where('read_at', null)->count() > 0)
-    <form action="{{ route('notifications.markAllAsRead') }}" method="POST">
+    <form action="{{ route('notifications.mark-all-read') }}" method="POST">
         @csrf
         @method('PATCH')
         <button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg hover:opacity-90 flex items-center gap-2 font-medium">
@@ -22,6 +22,8 @@
     </form>
     @endif
 </div>
+
+
 
 <!-- Notifications List -->
 <div class="bg-gradient-to-br from-white to-emerald-50/30 dark:from-gray-800 dark:to-emerald-950/20 rounded-2xl border border-emerald-100 dark:border-emerald-900/30 shadow-lg shadow-emerald-500/5 overflow-hidden">
@@ -40,15 +42,40 @@
                                             quiz
                                             @break
                                         @case('content')
+                                        @case('content_created')
                                             article
                                             @break
                                         @case('counseling')
+                                        @case('counseling_session')
                                             support_agent
                                             @break
                                         @case('campaign')
+                                        @case('campaign_created')
                                             campaign
                                             @break
-
+                                        @case('user_registered')
+                                            person_add
+                                            @break
+                                        @default
+                                            notifications
+                                    @endswitch
+                                @elseif(isset($notification->type))
+                                    @switch($notification->type)
+                                        @case('quiz')
+                                            quiz
+                                            @break
+                                        @case('content_created')
+                                            article
+                                            @break
+                                        @case('counseling_session')
+                                            support_agent
+                                            @break
+                                        @case('campaign_created')
+                                            campaign
+                                            @break
+                                        @case('user_registered')
+                                            person_add
+                                            @break
                                         @default
                                             notifications
                                     @endswitch
@@ -64,10 +91,10 @@
                         <div class="flex items-start justify-between gap-4">
                             <div class="flex-1">
                                 <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-1">
-                                    {{ $notification->data['title'] ?? 'Notification' }}
+                                    {{ $notification->data['title'] ?? $notification->title ?? 'Notification' }}
                                 </h3>
                                 <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                                    {{ $notification->data['message'] ?? 'You have a new notification' }}
+                                    {{ $notification->data['message'] ?? $notification->message ?? 'You have a new notification' }}
                                 </p>
                                 <div class="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-500">
                                     <span class="flex items-center gap-1">
@@ -125,4 +152,5 @@
         </div>
     @endif
 </div>
+
 @endsection

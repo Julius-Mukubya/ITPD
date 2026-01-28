@@ -16,7 +16,7 @@
 </div>
 
 <!-- Key Metrics Overview -->
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
     <div class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-emerald-600"></div>
         <div class="flex items-center justify-between mb-4">
@@ -105,6 +105,29 @@
                     <span class="text-xs font-medium text-emerald-600">{{ $data['this_week_assessments'] }}</span>
                 </div>
                 <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">this week</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-blue-600"></div>
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <p class="text-gray-600 dark:text-gray-400 text-sm font-semibold uppercase tracking-wide">System Activity</p>
+            </div>
+            <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl p-2 group-hover:scale-110 transition-transform duration-300">
+                <span class="material-symbols-outlined text-xl text-blue-600 dark:text-blue-400">notifications</span>
+            </div>
+        </div>
+        <div class="space-y-2">
+            <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $data['total_notifications'] }}</p>
+            <div class="flex items-center">
+                <div class="flex items-center bg-blue-50 dark:bg-blue-900/20 px-2 py-1 rounded-full">
+                    <span class="material-symbols-outlined text-xs mr-1 text-blue-600">{{ $data['unread_notifications'] > 0 ? 'notifications_active' : 'notifications' }}</span>
+                    <span class="text-xs font-medium text-blue-600">{{ $data['unread_notifications'] }}</span>
+                </div>
+                <span class="text-xs text-gray-500 dark:text-gray-400 ml-2">unread</span>
             </div>
         </div>
     </div>

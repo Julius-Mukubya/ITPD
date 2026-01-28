@@ -42,7 +42,7 @@ class CampaignController extends Controller
 
     public function show(Campaign $campaign)
     {
-        $campaign->load('creator');
+        $campaign->load('creator', 'contacts');
         $campaign->loadCount('participants');
 
         $isRegistered = auth()->check() && $campaign->isUserRegistered(auth()->id());

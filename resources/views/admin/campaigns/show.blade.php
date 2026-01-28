@@ -48,73 +48,56 @@
         </div>
         @endif
 
-        <!-- Participants -->
+        <!-- Campaign Overview -->
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Participants</h2>
-                <span class="text-sm text-gray-500 dark:text-gray-400">
-                    {{ $campaign->participants->count() }} 
-                    @if($campaign->max_participants)
-                        / {{ $campaign->max_participants }}
-                    @endif
-                    registered
-                </span>
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Campaign Overview</h2>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Duration</label>
+                    <div class="mt-1 text-sm text-gray-900 dark:text-white">
+                        {{ $campaign->start_date && $campaign->end_date ? $campaign->start_date->diffInDays($campaign->end_date) : 0 }} days
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Campaign Type</label>
+                    <div class="mt-1 text-sm text-gray-900 dark:text-white">
+                        {{ ucfirst($campaign->type ?? 'General') }}
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Current Status</label>
+                    <div class="mt-1 text-sm text-gray-900 dark:text-white">
+                        @if($campaign->start_date && $campaign->end_date)
+                            @if(now()->between($campaign->start_date, $campaign->end_date))
+                                Active
+                            @elseif(now()->lt($campaign->start_date))
+                                Upcoming
+                            @else
+                                Completed
+                            @endif
+                        @else
+                            {{ ucfirst($campaign->status) }}
+                        @endif
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Created</label>
+                    <div class="mt-1 text-sm text-gray-900 dark:text-white">
+                        {{ $campaign->created_at->format('M Y') }}
+                    </div>
+                </div>
             </div>
             
-            @if($campaign->participants->count() > 0)
-                <div class="space-y-3">
-                    @foreach($campaign->participants->take(10) as $participant)
-                        <div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                            <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-semibold">
-                                {{ substr($participant->display_name ?? 'U', 0, 1) }}
-                            </div>
-                            <div class="flex-1">
-                                <div class="font-medium text-gray-900 dark:text-white">
-                                    {{ $participant->display_name ?? 'Unknown User' }}
-                                    @if($participant->is_guest_registration)
-                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 ml-2">
-                                            Guest
-                                        </span>
-                                    @endif
-                                </div>
-                                <div class="text-sm text-gray-500 dark:text-gray-400">
-                                    @if($participant->is_guest_registration)
-                                        {{ $participant->guest_email }}
-                                    @else
-                                        {{ $participant->user->email ?? 'No email' }}
-                                    @endif
-                                </div>
-                                <div class="text-xs text-gray-400 dark:text-gray-500">
-                                    Registered {{ $participant->created_at->format('M d, Y') }}
-                                </div>
-                            </div>
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                @if($participant->status === 'registered') bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300
-                                @elseif($participant->status === 'attended') bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300
-                                @else bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300
-                                @endif">
-                                {{ ucfirst($participant->status) }}
-                            </span>
-                        </div>
-                    @endforeach
-                    
-                    @if($campaign->participants->count() > 10)
-                        <div class="text-center py-3">
-                            <span class="text-sm text-gray-500 dark:text-gray-400">
-                                And {{ $campaign->participants->count() - 10 }} more participants...
-                            </span>
-                        </div>
-                    @endif
+            <div class="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                    <span class="material-symbols-outlined text-lg text-primary">info</span>
+                    <span>This is an informational campaign. Interested parties can contact the organizers using the contact information provided.</span>
                 </div>
-            @else
-                <div class="text-center py-8">
-                    <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="material-symbols-outlined text-2xl text-gray-400">group</span>
-                    </div>
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-1">No participants yet</h3>
-                    <p class="text-gray-500 dark:text-gray-400">Participants will appear here once they register.</p>
-                </div>
-            @endif
+            </div>
         </div>
     </div>
 
@@ -185,13 +168,6 @@
                 </div>
                 @endif
 
-                @if($campaign->max_participants)
-                <div>
-                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Max Participants</label>
-                    <div class="mt-1 text-sm text-gray-900 dark:text-white">{{ $campaign->max_participants }}</div>
-                </div>
-                @endif
-
                 <div>
                     <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Created By</label>
                     <div class="mt-1 text-sm text-gray-900 dark:text-white">{{ $campaign->creator->name ?? 'Unknown' }}</div>
@@ -211,6 +187,107 @@
                 </div>
                 @endif
             </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">contact_support</span>
+                Contact Information
+            </h3>
+            
+            @if($campaign->contacts && $campaign->contacts->count() > 0)
+                <div class="space-y-4">
+                    @foreach($campaign->contacts as $contact)
+                        <div class="pb-4 {{ !$loop->last ? 'border-b border-gray-200 dark:border-gray-600' : '' }}">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="text-sm font-medium text-gray-900 dark:text-white">{{ $contact->name }}</h4>
+                                @if($contact->is_primary)
+                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-primary text-white">
+                                        Primary
+                                    </span>
+                                @endif
+                            </div>
+                            
+                            @if($contact->title)
+                                <div class="mb-3">
+                                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Title</label>
+                                    <div class="mt-1 text-sm text-gray-900 dark:text-white">{{ $contact->title }}</div>
+                                </div>
+                            @endif
+                            
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Email</label>
+                                    <div class="mt-1 text-sm text-gray-900 dark:text-white">
+                                        <a href="mailto:{{ $contact->email }}" class="text-primary hover:underline">
+                                            {{ $contact->email }}
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Phone</label>
+                                    <div class="mt-1 text-sm text-gray-900 dark:text-white">
+                                        <a href="tel:{{ str_replace(' ', '', $contact->phone) }}" class="text-primary hover:underline">
+                                            {{ $contact->phone }}
+                                        </a>
+                                    </div>
+                                </div>
+
+                                @if($contact->office_location)
+                                <div>
+                                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Office Location</label>
+                                    <div class="mt-1 text-sm text-gray-900 dark:text-white">{{ $contact->office_location }}</div>
+                                </div>
+                                @endif
+
+                                @if($contact->office_hours)
+                                <div>
+                                    <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Office Hours</label>
+                                    <div class="mt-1 text-sm text-gray-900 dark:text-white">{{ $contact->office_hours }}</div>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <!-- Fallback to old contact fields if no contacts exist -->
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Email</label>
+                        <div class="mt-1 text-sm text-gray-900 dark:text-white">
+                            <a href="mailto:{{ $campaign->contact_email ?? 'wellness@wellpath.edu' }}" class="text-primary hover:underline">
+                                {{ $campaign->contact_email ?? 'wellness@wellpath.edu' }}
+                            </a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Phone</label>
+                        <div class="mt-1 text-sm text-gray-900 dark:text-white">
+                            <a href="tel:{{ str_replace(' ', '', $campaign->contact_phone ?? '+256123456789') }}" class="text-primary hover:underline">
+                                {{ $campaign->contact_phone ?? '+256 123 456 789' }}
+                            </a>
+                        </div>
+                    </div>
+
+                    @if($campaign->contact_office)
+                    <div>
+                        <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Office Location</label>
+                        <div class="mt-1 text-sm text-gray-900 dark:text-white">{{ $campaign->contact_office }}</div>
+                    </div>
+                    @endif
+
+                    @if($campaign->contact_hours)
+                    <div>
+                        <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Office Hours</label>
+                        <div class="mt-1 text-sm text-gray-900 dark:text-white">{{ $campaign->contact_hours }}</div>
+                    </div>
+                    @endif
+                </div>
+            @endif
         </div>
 
         <!-- Actions -->

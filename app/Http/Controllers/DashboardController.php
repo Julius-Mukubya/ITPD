@@ -392,6 +392,12 @@ class DashboardController extends Controller
             'last_backup' => now()->subHours(6)->format('Y-m-d H:i'),
             'storage_usage' => 75, // percentage
             
+            // Notification Statistics
+            'total_notifications' => \DB::table('notifications')->count(),
+            'unread_notifications' => \DB::table('notifications')->where('is_read', false)->count(),
+            'today_notifications' => \DB::table('notifications')->whereDate('created_at', today())->count(),
+            'this_week_notifications' => \DB::table('notifications')->where('created_at', '>=', now()->subWeek())->count(),
+            
             // Forum & Community Statistics
             'total_forum_posts' => ForumPost::count(),
             'this_week_posts' => ForumPost::where('created_at', '>=', now()->subWeek())->count(),

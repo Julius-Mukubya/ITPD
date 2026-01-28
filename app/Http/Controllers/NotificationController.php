@@ -13,9 +13,22 @@ class NotificationController extends Controller
             return $this->counselorNotifications();
         }
 
-        $notifications = auth()->user()->notifications()
-            ->latest()
+        // Get notifications from the custom notifications table
+        $notifications = \DB::table('notifications')
+            ->where('user_id', auth()->id())
+            ->orderBy('created_at', 'desc')
             ->paginate(20);
+
+        // Convert to collection with proper data structure
+        $notifications->getCollection()->transform(function ($notification) {
+            $notification->data = json_decode($notification->data, true) ?: [];
+            $notification->data['type'] = $notification->type;
+            $notification->data['title'] = $notification->title;
+            $notification->data['message'] = $notification->message;
+            $notification->read_at = $notification->is_read ? $notification->updated_at : null;
+            $notification->created_at = \Carbon\Carbon::parse($notification->created_at);
+            return $notification;
+        });
 
         return view('notifications.index', compact('notifications'));
     }
@@ -61,8 +74,14 @@ class NotificationController extends Controller
 
     public function markAsRead($id)
     {
-        $notification = auth()->user()->notifications()->findOrFail($id);
-        $notification->markAsRead();
+        \DB::table('notifications')
+            ->where('id', $id)
+            ->where('user_id', auth()->id())
+            ->update([
+                'is_read' => true,
+                'read_at' => now(),
+                'updated_at' => now()
+            ]);
 
         return back();
     }
@@ -73,7 +92,14 @@ class NotificationController extends Controller
             return $this->markCounselorNotificationsAsRead();
         }
 
-        auth()->user()->notifications()->unread()->each(fn($n) => $n->markAsRead());
+        \DB::table('notifications')
+            ->where('user_id', auth()->id())
+            ->where('is_read', false)
+            ->update([
+                'is_read' => true,
+                'read_at' => now(),
+                'updated_at' => now()
+            ]);
 
         return back()->with('success', 'All notifications marked as read.');
     }
@@ -106,5 +132,34 @@ class NotificationController extends Controller
         $message->markAsRead();
         
         return response()->json(['success' => true]);
+    }
+
+    public function createSystemNotification($type, $title, $message, $url = null, $userId = null)
+    {
+        // Create a system notification using the custom notifications table
+        $notificationData = [
+            'type' => $type,
+            'title' => $title,
+            'message' => $message,
+            'data' => json_encode(['url' => $url]),
+            'is_read' => false,
+            'created_at' => now(),
+            'updated_at' => now()
+        ];
+
+        if ($userId) {
+            // Send to specific user
+            $notificationData['user_id'] = $userId;
+            \DB::table('notifications')->insert($notificationData);
+        } else {
+            // Send to all admin users
+            $admins = \App\Models\User::where('role', 'admin')->get();
+            foreach ($admins as $admin) {
+                $notificationData['user_id'] = $admin->id;
+                \DB::table('notifications')->insert($notificationData);
+            }
+        }
+
+        return true;
     }
 }

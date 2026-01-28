@@ -140,13 +140,13 @@
                             <span class="material-symbols-outlined {{ request()->routeIs('admin.counseling.*') ? 'text-primary' : 'text-gray-700 dark:text-gray-300' }}">support_agent</span>
                             <p class="{{ request()->routeIs('admin.counseling.*') ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300' }} text-sm font-medium leading-normal">Counseling</p>
                         </a>
-                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('admin.reports.*') ? 'bg-primary/20 dark:bg-primary/30' : 'hover:bg-gray-100 dark:hover:bg-white/10' }}" href="{{ route('admin.reports.index') }}">
-                            <span class="material-symbols-outlined {{ request()->routeIs('admin.reports.*') ? 'text-primary' : 'text-gray-700 dark:text-gray-300' }}">summarize</span>
-                            <p class="{{ request()->routeIs('admin.reports.*') ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300' }} text-sm font-medium leading-normal">Reports</p>
-                        </a>
                         <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('admin.campaigns.*') ? 'bg-primary/20 dark:bg-primary/30' : 'hover:bg-gray-100 dark:hover:bg-white/10' }}" href="{{ route('admin.campaigns.index') }}">
                             <span class="material-symbols-outlined {{ request()->routeIs('admin.campaigns.*') ? 'text-primary' : 'text-gray-700 dark:text-gray-300' }}">campaign</span>
                             <p class="{{ request()->routeIs('admin.campaigns.*') ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300' }} text-sm font-medium leading-normal">Campaigns</p>
+                        </a>
+                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('admin.reports.*') ? 'bg-primary/20 dark:bg-primary/30' : 'hover:bg-gray-100 dark:hover:bg-white/10' }}" href="{{ route('admin.reports.index') }}">
+                            <span class="material-symbols-outlined {{ request()->routeIs('admin.reports.*') ? 'text-primary' : 'text-gray-700 dark:text-gray-300' }}">summarize</span>
+                            <p class="{{ request()->routeIs('admin.reports.*') ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300' }} text-sm font-medium leading-normal">Reports</p>
                         </a>
                     </nav>
                 </div>

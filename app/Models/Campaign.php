@@ -49,6 +49,16 @@ class Campaign extends Model
         return $this->hasMany(CampaignParticipant::class);
     }
 
+    public function contacts()
+    {
+        return $this->hasMany(CampaignContact::class)->ordered();
+    }
+
+    public function primaryContact()
+    {
+        return $this->hasOne(CampaignContact::class)->where('is_primary', true);
+    }
+
     // Scopes
     public function scopeActive($query)
     {

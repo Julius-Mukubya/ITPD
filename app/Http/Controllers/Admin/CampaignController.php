@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Campaign;
+use App\Models\CampaignContact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -26,7 +27,7 @@ class CampaignController extends Controller
 
     public function show(Campaign $campaign)
     {
-        $campaign->load('creator', 'participants');
+        $campaign->load('creator', 'participants', 'contacts');
         return view('admin.campaigns.show', compact('campaign'));
     }
 
@@ -47,6 +48,15 @@ class CampaignController extends Controller
                 'max_participants' => 'nullable|integer|min:1',
                 'status' => 'required|in:draft,active,completed,cancelled',
                 'is_featured' => 'boolean',
+                // Contact validation
+                'contacts' => 'required|array|min:1',
+                'contacts.*.name' => 'required|string|max:255',
+                'contacts.*.title' => 'nullable|string|max:255',
+                'contacts.*.email' => 'required|email|max:255',
+                'contacts.*.phone' => 'required|string|max:20',
+                'contacts.*.office_location' => 'nullable|string|max:255',
+                'contacts.*.office_hours' => 'nullable|string|max:255',
+                'contacts.*.is_primary' => 'boolean',
             ]);
 
             // Custom validation for datetime comparison
@@ -66,7 +76,14 @@ class CampaignController extends Controller
                     ->store('campaign-banners', 'public');
             }
 
+            // Remove contacts from main data
+            $contacts = $validated['contacts'];
+            unset($validated['contacts']);
+
             $campaign = Campaign::create($validated);
+
+            // Create contacts
+            $this->createCampaignContacts($campaign, $contacts);
 
             return redirect()->route('admin.campaigns.index')
                 ->with('success', 'Campaign "' . $campaign->title . '" created successfully!');
@@ -84,6 +101,7 @@ class CampaignController extends Controller
 
     public function edit(Campaign $campaign)
     {
+        $campaign->load('contacts');
         return view('admin.campaigns.edit', compact('campaign'));
     }
 
@@ -103,6 +121,15 @@ class CampaignController extends Controller
             'max_participants' => 'nullable|integer|min:1',
             'status' => 'required|in:draft,active,completed,cancelled',
             'is_featured' => 'boolean',
+            // Contact validation
+            'contacts' => 'required|array|min:1',
+            'contacts.*.name' => 'required|string|max:255',
+            'contacts.*.title' => 'nullable|string|max:255',
+            'contacts.*.email' => 'required|email|max:255',
+            'contacts.*.phone' => 'required|string|max:20',
+            'contacts.*.office_location' => 'nullable|string|max:255',
+            'contacts.*.office_hours' => 'nullable|string|max:255',
+            'contacts.*.is_primary' => 'boolean',
         ]);
 
         // Custom validation for datetime comparison
@@ -123,10 +150,50 @@ class CampaignController extends Controller
                 ->store('campaign-banners', 'public');
         }
 
+        // Remove contacts from main data
+        $contacts = $validated['contacts'];
+        unset($validated['contacts']);
+
         $campaign->update($validated);
+
+        // Update contacts
+        $campaign->contacts()->delete(); // Remove existing contacts
+        $this->createCampaignContacts($campaign, $contacts);
 
         return redirect()->route('admin.campaigns.index')
             ->with('success', 'Campaign updated successfully!');
+    }
+
+    private function createCampaignContacts($campaign, $contacts)
+    {
+        $hasPrimary = false;
+        
+        foreach ($contacts as $index => $contactData) {
+            // Ensure only one primary contact
+            if (isset($contactData['is_primary']) && $contactData['is_primary']) {
+                if ($hasPrimary) {
+                    $contactData['is_primary'] = false;
+                } else {
+                    $hasPrimary = true;
+                }
+            }
+            
+            $campaign->contacts()->create([
+                'name' => $contactData['name'],
+                'title' => $contactData['title'] ?? null,
+                'email' => $contactData['email'],
+                'phone' => $contactData['phone'],
+                'office_location' => $contactData['office_location'] ?? null,
+                'office_hours' => $contactData['office_hours'] ?? null,
+                'is_primary' => $contactData['is_primary'] ?? false,
+                'sort_order' => $index,
+            ]);
+        }
+        
+        // If no primary contact was set, make the first one primary
+        if (!$hasPrimary && $campaign->contacts()->count() > 0) {
+            $campaign->contacts()->first()->update(['is_primary' => true]);
+        }
     }
 
     public function destroy(Campaign $campaign)

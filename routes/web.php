@@ -180,7 +180,7 @@ Route::middleware([
     Route::prefix('notifications')->name('notifications.')->group(function () {
         Route::get('/', [NotificationController::class, 'index'])->name('index');
         Route::patch('/{id}/read', [NotificationController::class, 'markAsRead'])->name('read');
-        Route::post('/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('mark-all-read');
+        Route::patch('/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('mark-all-read');
         Route::post('/mark-message-read', [NotificationController::class, 'markMessageAsRead'])->name('mark-message-read');
     });
     

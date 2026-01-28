@@ -335,80 +335,136 @@
                     @endif
 
                     <!-- Contact Details -->
-                    <div class="bg-primary/5 dark:bg-primary/10 rounded-xl p-4 mb-6">
-                        <h4 class="font-semibold text-[#111816] dark:text-white mb-3 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-primary !text-lg">contact_phone</span>
-                            Get In Touch
-                        </h4>
-                        <div class="space-y-3 text-sm">
-                            <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
-                                <span class="material-symbols-outlined text-primary !text-lg">email</span>
-                                <div>
-                                    <div class="font-medium text-[#111816] dark:text-white">Email</div>
-                                    <div>{{ $campaign->contact_email ?? 'wellness@wellpath.edu' }}</div>
+                    @if($campaign->contacts && $campaign->contacts->count() > 0)
+                        @foreach($campaign->contacts as $contact)
+                            <div class="bg-primary/5 dark:bg-primary/10 rounded-xl p-4 mb-6 {{ $contact->is_primary ? 'border-2 border-primary/20' : '' }}">
+                                <h4 class="font-semibold text-[#111816] dark:text-white mb-3 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-primary !text-lg">contact_phone</span>
+                                    {{ $contact->name }}
+                                    @if($contact->is_primary)
+                                        <span class="text-xs bg-primary text-white px-2 py-1 rounded-full">Primary</span>
+                                    @endif
+                                </h4>
+                                
+                                @if($contact->title)
+                                    <p class="text-sm text-[#61897c] dark:text-gray-400 mb-3">{{ $contact->title }}</p>
+                                @endif
+                                
+                                <div class="space-y-3 text-sm">
+                                    <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
+                                        <span class="material-symbols-outlined text-primary !text-lg">email</span>
+                                        <div>
+                                            <div class="font-medium text-[#111816] dark:text-white">Email</div>
+                                            <div>{{ $contact->email }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
+                                        <span class="material-symbols-outlined text-primary !text-lg">phone</span>
+                                        <div>
+                                            <div class="font-medium text-[#111816] dark:text-white">Phone</div>
+                                            <div>{{ $contact->phone }}</div>
+                                        </div>
+                                    </div>
+                                    @if($contact->office_location)
+                                    <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
+                                        <span class="material-symbols-outlined text-primary !text-lg">location_on</span>
+                                        <div>
+                                            <div class="font-medium text-[#111816] dark:text-white">Office</div>
+                                            <div>{{ $contact->office_location }}</div>
+                                        </div>
+                                    </div>
+                                    @endif
+                                    @if($contact->office_hours)
+                                    <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
+                                        <span class="material-symbols-outlined text-primary !text-lg">schedule</span>
+                                        <div>
+                                            <div class="font-medium text-[#111816] dark:text-white">Office Hours</div>
+                                            <div>{{ $contact->office_hours }}</div>
+                                        </div>
+                                    </div>
+                                    @endif
+                                </div>
+                                
+                                <!-- Quick Actions for this contact -->
+                                <div class="flex gap-2 mt-4">
+                                    <a href="mailto:{{ $contact->email }}?subject=Inquiry about {{ $campaign->title }}" 
+                                       class="flex-1 bg-primary text-white py-2 px-3 rounded-lg font-semibold hover:bg-primary/90 transition-all duration-200 text-center text-sm">
+                                        <span class="flex items-center justify-center gap-2">
+                                            <span class="material-symbols-outlined !text-sm">email</span>
+                                            Email
+                                        </span>
+                                    </a>
+                                    <a href="tel:{{ str_replace(' ', '', $contact->phone) }}" 
+                                       class="flex-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 py-2 px-3 rounded-lg font-semibold hover:bg-green-200 dark:hover:bg-green-900/50 transition-all duration-200 text-center text-sm">
+                                        <span class="flex items-center justify-center gap-2">
+                                            <span class="material-symbols-outlined !text-sm">phone</span>
+                                            Call
+                                        </span>
+                                    </a>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
-                                <span class="material-symbols-outlined text-primary !text-lg">phone</span>
-                                <div>
-                                    <div class="font-medium text-[#111816] dark:text-white">Phone</div>
-                                    <div>{{ $campaign->contact_phone ?? '+256 123 456 789' }}</div>
+                        @endforeach
+                    @else
+                        <!-- Fallback to old contact fields if no contacts exist -->
+                        <div class="bg-primary/5 dark:bg-primary/10 rounded-xl p-4 mb-6">
+                            <h4 class="font-semibold text-[#111816] dark:text-white mb-3 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary !text-lg">contact_phone</span>
+                                Get In Touch
+                            </h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
+                                    <span class="material-symbols-outlined text-primary !text-lg">email</span>
+                                    <div>
+                                        <div class="font-medium text-[#111816] dark:text-white">Email</div>
+                                        <div>{{ $campaign->contact_email ?? 'wellness@wellpath.edu' }}</div>
+                                    </div>
                                 </div>
-                            </div>
-                            @if($campaign->contact_office)
-                            <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
-                                <span class="material-symbols-outlined text-primary !text-lg">location_on</span>
-                                <div>
-                                    <div class="font-medium text-[#111816] dark:text-white">Office</div>
-                                    <div>{{ $campaign->contact_office }}</div>
+                                <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
+                                    <span class="material-symbols-outlined text-primary !text-lg">phone</span>
+                                    <div>
+                                        <div class="font-medium text-[#111816] dark:text-white">Phone</div>
+                                        <div>{{ $campaign->contact_phone ?? '+256 123 456 789' }}</div>
+                                    </div>
                                 </div>
-                            </div>
-                            @else
-                            <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
-                                <span class="material-symbols-outlined text-primary !text-lg">location_on</span>
-                                <div>
-                                    <div class="font-medium text-[#111816] dark:text-white">Office</div>
-                                    <div>Student Wellness Center, Room 201</div>
+                                @if($campaign->contact_office)
+                                <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
+                                    <span class="material-symbols-outlined text-primary !text-lg">location_on</span>
+                                    <div>
+                                        <div class="font-medium text-[#111816] dark:text-white">Office</div>
+                                        <div>{{ $campaign->contact_office }}</div>
+                                    </div>
                                 </div>
-                            </div>
-                            @endif
-                            @if($campaign->contact_hours)
-                            <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
-                                <span class="material-symbols-outlined text-primary !text-lg">schedule</span>
-                                <div>
-                                    <div class="font-medium text-[#111816] dark:text-white">Office Hours</div>
-                                    <div>{{ $campaign->contact_hours }}</div>
+                                @endif
+                                @if($campaign->contact_hours)
+                                <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
+                                    <span class="material-symbols-outlined text-primary !text-lg">schedule</span>
+                                    <div>
+                                        <div class="font-medium text-[#111816] dark:text-white">Office Hours</div>
+                                        <div>{{ $campaign->contact_hours }}</div>
+                                    </div>
                                 </div>
+                                @endif
                             </div>
-                            @else
-                            <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
-                                <span class="material-symbols-outlined text-primary !text-lg">schedule</span>
-                                <div>
-                                    <div class="font-medium text-[#111816] dark:text-white">Office Hours</div>
-                                    <div>Mon-Fri: 8:00 AM - 5:00 PM</div>
-                                </div>
+                            
+                            <!-- Quick Actions -->
+                            <div class="space-y-3 mt-4">
+                                <a href="mailto:{{ $campaign->contact_email ?? 'wellness@wellpath.edu' }}?subject=Inquiry about {{ $campaign->title }}" 
+                                   class="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl block text-center">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="material-symbols-outlined !text-lg">email</span>
+                                        Send Email
+                                    </span>
+                                </a>
+                                <a href="tel:{{ str_replace(' ', '', $campaign->contact_phone ?? '+256123456789') }}" 
+                                   class="w-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 py-3 rounded-xl font-semibold hover:bg-green-200 dark:hover:bg-green-900/50 transition-all duration-200 block text-center">
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="material-symbols-outlined !text-lg">phone</span>
+                                        Call Now
+                                    </span>
+                                </a>
                             </div>
-                            @endif
                         </div>
-                    </div>
-
-                    <!-- Quick Actions -->
-                    <div class="space-y-3">
-                        <a href="mailto:{{ $campaign->contact_email ?? 'wellness@wellpath.edu' }}?subject=Inquiry about {{ $campaign->title }}" 
-                           class="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl block text-center">
-                            <span class="flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined !text-lg">email</span>
-                                Send Email
-                            </span>
-                        </a>
-                        <a href="tel:{{ str_replace(' ', '', $campaign->contact_phone ?? '+256123456789') }}" 
-                           class="w-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 py-3 rounded-xl font-semibold hover:bg-green-200 dark:hover:bg-green-900/50 transition-all duration-200 block text-center">
-                            <span class="flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined !text-lg">phone</span>
-                                Call Now
-                            </span>
-                        </a>
-                    </div>
+                    @endif
                 </div>
 
                 <!-- Share Campaign -->

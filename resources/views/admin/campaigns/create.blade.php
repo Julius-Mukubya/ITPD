@@ -121,39 +121,71 @@
                     <span class="material-symbols-outlined text-primary">contact_support</span>
                     Contact Information
                 </h3>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Provide contact details for participants to reach out about this campaign.</p>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Add one or more contacts for participants to reach out about this campaign.</p>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Contact Email *</label>
-                        <input type="email" name="contact_email" value="{{ old('contact_email', 'wellness@wellpath.edu') }}" required
-                            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
-                        @error('contact_email')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
-                    </div>
+                <div id="contacts-container">
+                    <!-- Initial contact form -->
+                    <div class="contact-form border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-4">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Contact #1</h4>
+                            <div class="flex items-center gap-2">
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" name="contacts[0][is_primary]" value="1" checked class="rounded">
+                                    <span class="text-sm text-gray-700 dark:text-gray-300">Primary Contact</span>
+                                </label>
+                                <button type="button" class="remove-contact text-red-600 hover:text-red-800 hidden" onclick="removeContact(this)">
+                                    <span class="material-symbols-outlined">delete</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Contact Name *</label>
+                                <input type="text" name="contacts[0][name]" value="{{ old('contacts.0.name', 'Campaign Coordinator') }}" required
+                                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
+                            </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Contact Phone *</label>
-                        <input type="tel" name="contact_phone" value="{{ old('contact_phone', '+256 123 456 789') }}" required
-                            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
-                        @error('contact_phone')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
-                    </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title/Role</label>
+                                <input type="text" name="contacts[0][title]" value="{{ old('contacts.0.title') }}" 
+                                    placeholder="e.g., Wellness Coordinator"
+                                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
+                            </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Office Location (Optional)</label>
-                        <input type="text" name="contact_office" value="{{ old('contact_office') }}" 
-                            placeholder="e.g., Student Wellness Center, Room 201"
-                            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
-                        @error('contact_office')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
-                    </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email *</label>
+                                <input type="email" name="contacts[0][email]" value="{{ old('contacts.0.email', 'wellness@wellpath.edu') }}" required
+                                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
+                            </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Office Hours (Optional)</label>
-                        <input type="text" name="contact_hours" value="{{ old('contact_hours') }}" 
-                            placeholder="e.g., Mon-Fri: 8:00 AM - 5:00 PM"
-                            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
-                        @error('contact_hours')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Phone *</label>
+                                <input type="tel" name="contacts[0][phone]" value="{{ old('contacts.0.phone', '+256 123 456 789') }}" required
+                                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Office Location</label>
+                                <input type="text" name="contacts[0][office_location]" value="{{ old('contacts.0.office_location') }}" 
+                                    placeholder="e.g., Student Wellness Center, Room 201"
+                                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Office Hours</label>
+                                <input type="text" name="contacts[0][office_hours]" value="{{ old('contacts.0.office_hours') }}" 
+                                    placeholder="e.g., Mon-Fri: 8:00 AM - 5:00 PM"
+                                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
+                            </div>
+                        </div>
                     </div>
                 </div>
+                
+                <button type="button" id="add-contact" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2">
+                    <span class="material-symbols-outlined">add</span>
+                    Add Another Contact
+                </button>
             </div>
 
             <div>
@@ -205,6 +237,8 @@
 
 @push('scripts')
 <script>
+let contactIndex = 1;
+
 function previewBanner(event) {
     const file = event.target.files[0];
     if (file) {
@@ -228,6 +262,106 @@ function clearBannerPreview() {
     input.value = '';
     preview.src = '';
     container.classList.add('hidden');
+}
+
+function addContact() {
+    const container = document.getElementById('contacts-container');
+    const contactHtml = `
+        <div class="contact-form border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-4">
+            <div class="flex items-center justify-between mb-4">
+                <h4 class="font-medium text-gray-900 dark:text-white">Contact #${contactIndex + 1}</h4>
+                <div class="flex items-center gap-2">
+                    <label class="flex items-center gap-2">
+                        <input type="checkbox" name="contacts[${contactIndex}][is_primary]" value="1" class="rounded primary-checkbox">
+                        <span class="text-sm text-gray-700 dark:text-gray-300">Primary Contact</span>
+                    </label>
+                    <button type="button" class="remove-contact text-red-600 hover:text-red-800" onclick="removeContact(this)">
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Contact Name *</label>
+                    <input type="text" name="contacts[${contactIndex}][name]" required
+                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title/Role</label>
+                    <input type="text" name="contacts[${contactIndex}][title]" 
+                        placeholder="e.g., Wellness Coordinator"
+                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email *</label>
+                    <input type="email" name="contacts[${contactIndex}][email]" required
+                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Phone *</label>
+                    <input type="tel" name="contacts[${contactIndex}][phone]" required
+                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Office Location</label>
+                    <input type="text" name="contacts[${contactIndex}][office_location]" 
+                        placeholder="e.g., Student Wellness Center, Room 201"
+                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Office Hours</label>
+                    <input type="text" name="contacts[${contactIndex}][office_hours]" 
+                        placeholder="e.g., Mon-Fri: 8:00 AM - 5:00 PM"
+                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
+                </div>
+            </div>
+        </div>
+    `;
+    
+    container.insertAdjacentHTML('beforeend', contactHtml);
+    contactIndex++;
+    updateRemoveButtons();
+}
+
+function removeContact(button) {
+    const contactForm = button.closest('.contact-form');
+    contactForm.remove();
+    updateRemoveButtons();
+    updateContactNumbers();
+}
+
+function updateRemoveButtons() {
+    const contactForms = document.querySelectorAll('.contact-form');
+    const removeButtons = document.querySelectorAll('.remove-contact');
+    
+    removeButtons.forEach(button => {
+        button.classList.toggle('hidden', contactForms.length <= 1);
+    });
+}
+
+function updateContactNumbers() {
+    const contactForms = document.querySelectorAll('.contact-form');
+    contactForms.forEach((form, index) => {
+        const header = form.querySelector('h4');
+        header.textContent = `Contact #${index + 1}`;
+    });
+}
+
+function handlePrimaryCheckbox(checkbox) {
+    if (checkbox.checked) {
+        // Uncheck all other primary checkboxes
+        document.querySelectorAll('.primary-checkbox').forEach(cb => {
+            if (cb !== checkbox) {
+                cb.checked = false;
+            }
+        });
+    }
 }
 
 function validateDateTime() {
@@ -269,6 +403,16 @@ document.addEventListener('DOMContentLoaded', function() {
     dateTimeInputs.forEach(input => {
         input.addEventListener('change', validateDateTime);
         input.addEventListener('blur', validateDateTime);
+    });
+    
+    // Add contact button
+    document.getElementById('add-contact').addEventListener('click', addContact);
+    
+    // Primary checkbox handling
+    document.addEventListener('change', function(e) {
+        if (e.target.classList.contains('primary-checkbox')) {
+            handlePrimaryCheckbox(e.target);
+        }
     });
     
     // Handle form submission
