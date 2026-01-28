@@ -186,14 +186,99 @@
                 description="Get involved in our featured initiatives to promote a healthy and safe campus environment."
             />
             @if(isset($activeCampaigns) && $activeCampaigns->count() > 0)
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-12 max-w-5xl mx-auto">
                     @foreach($activeCampaigns->take(2) as $campaign)
-                    <x-campaign-card 
-                        :title="$campaign->title"
-                        :description="$campaign->description"
-                        :image="$campaign->banner_image ? $campaign->banner_url : 'https://lh3.googleusercontent.com/aida-public/AB6AXuAwMb1C6MtZohZ1eKj35TLv2GRwHxtebwwtcIyoiKVjFHFn_B9GvgNA4sAOEpEklaHgWJhvgYRFrxlrKsZYFL9EW7KMeKnDYhkx3SY2uLUF0PvOgmFKCJw2PZWnYEKqYydHlRUMP5uzn0tlgh57_Kdn8DD4cStq8lJxOdV2OVatvClqef6yur4lj7arsClsRFtvvwWDEj0VdbZpwtP76ebmYNeatBGOTQzbreTDo1BrztNhb3ruUgMB2GOgaUYgkKIFa_ybhunxUA'"
-                        :url="route('campaigns.show', $campaign)"
-                    />
+                    <article class="group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:border-primary/30 transform hover:-translate-y-1">
+                        <!-- Image Container -->
+                        <div class="relative overflow-hidden">
+                            @if($campaign->banner_image)
+                                <img src="{{ $campaign->banner_url }}" alt="{{ $campaign->title }}" 
+                                     class="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-110">
+                            @else
+                                <div class="w-full h-48 bg-gradient-to-br from-primary/20 to-green-500/20 flex items-center justify-center">
+                                    <div class="text-center">
+                                        <div class="w-12 h-12 bg-primary/30 rounded-full flex items-center justify-center mb-2 mx-auto">
+                                            <span class="material-symbols-outlined text-primary !text-xl">campaign</span>
+                                        </div>
+                                        <p class="text-[#111816] dark:text-white font-medium text-sm">{{ $campaign->title }}</p>
+                                    </div>
+                                </div>
+                            @endif
+                            
+                            <!-- Overlay Gradient -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            
+                            <!-- Status Badge -->
+                            <div class="absolute top-3 left-3">
+                                <div class="flex items-center gap-1.5 bg-green-500 text-white px-2.5 py-1 rounded-full text-xs font-bold shadow-lg">
+                                    <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
+                                    Active
+                                </div>
+                            </div>
+                            
+                            <!-- Campaign Type Badge -->
+                            <div class="absolute top-3 right-3">
+                                <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs font-semibold text-[#111816] dark:text-white shadow-lg">
+                                    {{ ucfirst($campaign->type ?? 'General') }}
+                                </div>
+                            </div>
+                            
+                            <!-- Hover Action -->
+                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <div class="bg-primary/90 backdrop-blur-sm rounded-full p-3 transform scale-75 group-hover:scale-100 transition-transform duration-300 shadow-2xl">
+                                    <span class="material-symbols-outlined text-white !text-xl">arrow_forward</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Content -->
+                        <div class="p-5">
+                            <!-- Title -->
+                            <h3 class="text-lg font-bold text-[#111816] dark:text-white mb-2 group-hover:text-primary dark:group-hover:text-primary transition-colors duration-200 line-clamp-2">
+                                {{ $campaign->title }}
+                            </h3>
+                            
+                            <!-- Description -->
+                            <p class="text-[#61897c] dark:text-gray-400 text-sm leading-relaxed mb-4 line-clamp-3">
+                                {{ Str::limit($campaign->description, 100) }}
+                            </p>
+                            
+                            <!-- Campaign Details -->
+                            <div class="flex items-center justify-between mb-4 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                                <div class="flex items-center gap-1.5 text-[#61897c] dark:text-gray-400">
+                                    <span class="material-symbols-outlined !text-base">calendar_today</span>
+                                    <span class="text-xs font-medium">
+                                        {{ $campaign->start_date->format('M d') }} - {{ $campaign->end_date->format('M d') }}
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-1 text-[#61897c] dark:text-gray-400">
+                                    <span class="material-symbols-outlined !text-base">schedule</span>
+                                    <span class="text-xs font-medium">
+                                        @if($campaign->end_date && $campaign->end_date->isFuture())
+                                            {{ $campaign->end_date->diffInDays(now()) }}d left
+                                        @else
+                                            Ongoing
+                                        @endif
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <!-- Action Buttons -->
+                            <div class="flex gap-2">
+                                <a href="{{ route('campaigns.show', $campaign) }}" 
+                                   class="flex-1 bg-gradient-to-r from-primary to-green-500 text-white text-center py-2.5 rounded-lg font-semibold text-sm hover:from-primary/90 hover:to-green-500/90 transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg">
+                                    <span class="flex items-center justify-center gap-1.5">
+                                        <span class="material-symbols-outlined !text-base">info</span>
+                                        Learn More
+                                    </span>
+                                </a>
+                                <a href="{{ route('campaigns.show', $campaign) }}" 
+                                   class="px-3 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-[#61897c] dark:text-gray-400 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-all duration-200">
+                                    <span class="material-symbols-outlined !text-base">contact_support</span>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
                     @endforeach
                 </div>
             @else
@@ -471,6 +556,68 @@ document.addEventListener('DOMContentLoaded', function() {
             observer.observe(card);
         });
     }
+    
+    // Animate Campaign Cards on scroll
+    const campaignCards = document.querySelectorAll('article.group');
+    
+    if (campaignCards.length > 0) {
+        // Set initial state
+        campaignCards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+        });
+        
+        const campaignObserverOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const campaignObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.transition = 'all 0.6s ease-out';
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, index * 150);
+                    campaignObserver.unobserve(entry.target);
+                }
+            });
+        }, campaignObserverOptions);
+        
+        campaignCards.forEach(card => {
+            campaignObserver.observe(card);
+        });
+    }
 });
 </script>
+@endpush
+
+@push('styles')
+<style>
+    /* Smooth animations */
+    .animate-pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+    
+    /* Line clamping */
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+</style>
 @endpush
