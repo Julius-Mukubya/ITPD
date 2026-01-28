@@ -24,14 +24,14 @@
             <p class="text-xl lg:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-8">Be part of transformative initiatives that promote mental health awareness, substance education, and campus wellbeing. Together, we're building a supportive community for all students.</p>
             <div class="flex justify-center">
                 @auth
-                    <a href="#active-campaigns" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                        <span class="material-symbols-outlined !text-xl">volunteer_activism</span>
-                        Join a Campaign
-                    </a>
+                    <button onclick="scrollToCampaigns()" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                        <span class="material-symbols-outlined !text-xl">explore</span>
+                        Browse Campaigns
+                    </button>
                 @else
-                    <button onclick="openLoginModal()" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                        <span class="material-symbols-outlined !text-xl">login</span>
-                        Login to Join
+                    <button onclick="scrollToCampaigns()" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                        <span class="material-symbols-outlined !text-xl">explore</span>
+                        Browse Campaigns
                     </button>
                 @endauth
             </div>
@@ -46,8 +46,11 @@
             <!-- Search Bar -->
             <div class="relative flex-1 max-w-md">
                 <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-[#61897c] dark:text-gray-400 !text-xl">search</span>
-                <input type="text" placeholder="Search campaigns..." 
-                       class="w-full pl-12 pr-4 py-3 rounded-xl border border-[#f0f4f3] dark:border-gray-700 bg-white dark:bg-gray-900 text-[#111816] dark:text-white placeholder-[#61897c] dark:placeholder-gray-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200">
+                <input type="text" id="campaign-search" placeholder="Search campaigns..." 
+                       class="w-full pl-12 pr-12 py-3 rounded-xl border border-[#f0f4f3] dark:border-gray-700 bg-white dark:bg-gray-900 text-[#111816] dark:text-white placeholder-[#61897c] dark:placeholder-gray-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200">
+                <button type="button" id="clear-search" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white transition-colors duration-200 opacity-0 pointer-events-none">
+                    <span class="material-symbols-outlined !text-lg">close</span>
+                </button>
             </div>
             
             <!-- Filter Buttons -->
@@ -69,28 +72,28 @@
     </div>
 </div>
 
-<!-- Enhanced Active Campaigns -->
-@if(isset($activeCampaigns) && $activeCampaigns->count() > 0)
+<!-- Dynamic Campaign Section -->
 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="flex flex-col flex-1 gap-10">
-        <!-- Active Campaigns Section -->
-        <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-8 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
+        <!-- Campaign Section -->
+        <div id="campaigns-section" class="bg-white dark:bg-gray-800/50 rounded-2xl p-8 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
             <div class="text-center mb-8">
-                <div class="inline-flex items-center gap-2 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                    <span class="material-symbols-outlined !text-lg">play_circle</span>
-                    Active Now
+                <div id="section-badge" class="inline-flex items-center gap-2 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                    <span id="badge-icon" class="material-symbols-outlined !text-lg">campaign</span>
+                    <span id="badge-text">All Campaigns</span>
                 </div>
-                <h2 class="text-3xl font-bold text-[#111816] dark:text-white mb-4">
-                    Join Active Campaigns
+                <h2 id="section-title" class="text-3xl font-bold text-[#111816] dark:text-white mb-4">
+                    Wellness Campaigns
                 </h2>
-                <p class="text-[#61897c] dark:text-gray-400 max-w-2xl mx-auto">
-                    These campaigns are currently running and accepting new participants. Join now to make a difference!
+                <p id="section-description" class="text-[#61897c] dark:text-gray-400 max-w-2xl mx-auto">
+                    Explore our comprehensive collection of wellness campaigns designed to support your mental health and wellbeing journey.
                 </p>
             </div>
             
             <!-- Active Campaigns Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                @foreach($activeCampaigns as $campaign)
+            <div id="active-campaigns-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                @if(isset($activeCampaigns) && $activeCampaigns->count() > 0)
+                    @foreach($activeCampaigns as $campaign)
                 <article class="group bg-gray-50 dark:bg-gray-800/50 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:border-primary/30 transform hover:-translate-y-1">
                 <!-- Image Container -->
                 <div class="relative overflow-hidden">
@@ -119,21 +122,10 @@
                         </div>
                     </div>
                     
-                    <!-- Registration Status & Participants Badge -->
-                    <div class="absolute top-4 right-4 flex flex-col gap-2">
-                        @auth
-                            @if(isset($campaign->is_user_registered) && $campaign->is_user_registered)
-                                <div class="bg-green-500 text-white px-3 py-1.5 rounded-full text-sm font-bold shadow-lg">
-                                    <span class="flex items-center gap-1">
-                                        <span class="material-symbols-outlined !text-sm">check</span>
-                                        Joined
-                                    </span>
-                                </div>
-                            @endif
-                        @endauth
-                        <div class="flex items-center gap-1 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm px-3 py-1.5 rounded-full text-sm font-semibold text-[#111816] dark:text-white shadow-lg">
-                            <span class="material-symbols-outlined !text-sm">group</span>
-                            {{ $campaign->participants_count ?? 0 }}
+                    <!-- Campaign Type Badge -->
+                    <div class="absolute top-4 right-4">
+                        <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm px-3 py-1.5 rounded-full text-sm font-semibold text-[#111816] dark:text-white shadow-lg">
+                            {{ ucfirst($campaign->type ?? 'General') }}
                         </div>
                     </div>
                     
@@ -188,68 +180,28 @@
                     
                     <!-- Action Buttons -->
                     <div class="flex gap-3">
-                        @auth
-                            @if(isset($campaign->is_user_registered) && $campaign->is_user_registered)
-                                <a href="{{ route('campaigns.show', $campaign) }}" 
-                                   class="flex-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-center py-4 rounded-xl font-bold hover:bg-green-200 dark:hover:bg-green-900/50 transition-all duration-200">
-                                    <span class="flex items-center justify-center gap-2">
-                                        <span class="material-symbols-outlined !text-lg">check_circle</span>
-                                        Registered
-                                    </span>
-                                </a>
-                            @else
-                                <a href="{{ route('campaigns.show', $campaign) }}" 
-                                   class="flex-1 bg-gradient-to-r from-primary to-green-500 text-white text-center py-4 rounded-xl font-bold hover:from-primary/90 hover:to-green-500/90 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
-                                    <span class="flex items-center justify-center gap-2">
-                                        <span class="material-symbols-outlined !text-lg">volunteer_activism</span>
-                                        Register Now
-                                    </span>
-                                </a>
-                            @endif
-                        @else
-                            <a href="{{ route('campaigns.show', $campaign) }}" 
-                               class="flex-1 bg-gradient-to-r from-primary to-green-500 text-white text-center py-4 rounded-xl font-bold hover:from-primary/90 hover:to-green-500/90 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
-                                <span class="flex items-center justify-center gap-2">
-                                    <span class="material-symbols-outlined !text-lg">volunteer_activism</span>
-                                    Register Now
-                                </span>
-                            </a>
-                        @endauth
+                        <a href="{{ route('campaigns.show', $campaign) }}" 
+                           class="flex-1 bg-gradient-to-r from-primary to-green-500 text-white text-center py-4 rounded-xl font-bold hover:from-primary/90 hover:to-green-500/90 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                            <span class="flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined !text-lg">info</span>
+                                Learn More
+                            </span>
+                        </a>
                         <a href="{{ route('campaigns.show', $campaign) }}" 
                            class="px-4 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-[#61897c] dark:text-gray-400 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-all duration-200">
-                            <span class="material-symbols-outlined !text-lg">info</span>
+                            <span class="material-symbols-outlined !text-lg">contact_support</span>
                         </a>
                     </div>
                 </div>
             </article>
             @endforeach
-        </div>
-    </div>
-</div>
-@endif
-
-<!-- Enhanced Upcoming Campaigns -->
-@if(isset($upcomingCampaigns) && $upcomingCampaigns->count() > 0)
-<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 {{ isset($activeCampaigns) && $activeCampaigns->count() > 0 ? '' : 'py-12' }}">
-    <div class="flex flex-col flex-1 gap-10">
-        <!-- Upcoming Campaigns Section -->
-        <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-8 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
-            <div class="text-center mb-8">
-                <div class="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-full text-sm font-semibold mb-4">
-                    <span class="material-symbols-outlined !text-lg">schedule</span>
-                    Coming Soon
-                </div>
-                <h2 class="text-3xl font-bold text-[#111816] dark:text-white mb-4">
-                    Upcoming Campaigns
-                </h2>
-                <p class="text-[#61897c] dark:text-gray-400 max-w-2xl mx-auto">
-                    Get ready for these exciting campaigns launching soon. Mark your calendar and be the first to participate!
-                </p>
+                @endif
             </div>
-            
+
             <!-- Upcoming Campaigns Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-                @foreach($upcomingCampaigns as $campaign)
+            <div id="upcoming-campaigns-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" style="display: none;">
+                @if(isset($upcomingCampaigns) && $upcomingCampaigns->count() > 0)
+                    @foreach($upcomingCampaigns as $campaign)
                 <article class="group bg-gray-50 dark:bg-gray-800/50 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:border-primary/30 transform hover:-translate-y-1">
                 <!-- Image Container -->
                 <div class="relative overflow-hidden">
@@ -257,10 +209,10 @@
                         <img src="{{ $campaign->banner_url }}" alt="{{ $campaign->title }}" 
                              class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105">
                     @else
-                        <div class="w-full h-48 bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center">
+                        <div class="w-full h-48 bg-gradient-to-br from-green-500/20 to-primary/20 flex items-center justify-center">
                             <div class="text-center">
-                                <div class="w-12 h-12 bg-blue-500/30 rounded-full flex items-center justify-center mb-2 mx-auto">
-                                    <span class="material-symbols-outlined text-blue-600 !text-xl">event</span>
+                                <div class="w-12 h-12 bg-green-500/30 rounded-full flex items-center justify-center mb-2 mx-auto">
+                                    <span class="material-symbols-outlined text-green-600 !text-xl">event</span>
                                 </div>
                                 <p class="text-[#111816] dark:text-white font-medium text-sm">Coming Soon</p>
                             </div>
@@ -272,7 +224,7 @@
                     
                     <!-- Status Badge -->
                     <div class="absolute top-4 left-4">
-                        <div class="flex items-center gap-2 bg-blue-500 text-white px-3 py-1.5 rounded-full text-sm font-bold shadow-lg">
+                        <div class="flex items-center gap-2 bg-green-500 text-white px-3 py-1.5 rounded-full text-sm font-bold shadow-lg">
                             <span class="material-symbols-outlined !text-sm">schedule</span>
                             Upcoming
                         </div>
@@ -293,7 +245,7 @@
                 <!-- Content -->
                 <div class="p-6">
                     <!-- Title -->
-                    <h3 class="text-xl font-bold text-[#111816] dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200 line-clamp-2">
+                    <h3 class="text-xl font-bold text-[#111816] dark:text-white mb-3 group-hover:text-primary dark:group-hover:text-primary transition-colors duration-200 line-clamp-2">
                         {{ $campaign->title }}
                     </h3>
                     
@@ -303,11 +255,11 @@
                     </p>
                     
                     <!-- Launch Date -->
-                    <div class="flex items-center gap-2 mb-6 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
-                        <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 !text-lg">event</span>
+                    <div class="flex items-center gap-2 mb-6 p-3 bg-green-50 dark:bg-green-900/20 rounded-xl">
+                        <span class="material-symbols-outlined text-green-600 dark:text-green-400 !text-lg">event</span>
                         <div>
                             <div class="text-sm font-semibold text-[#111816] dark:text-white">Launches</div>
-                            <div class="text-sm text-blue-600 dark:text-blue-400 font-medium">
+                            <div class="text-sm text-green-600 dark:text-green-400 font-medium">
                                 {{ $campaign->start_date->format('M d, Y') }}
                                 @if($campaign->start_time)
                                     <br>{{ \Carbon\Carbon::parse($campaign->start_time)->format('g:i A') }}
@@ -319,34 +271,46 @@
                     <!-- Action Buttons -->
                     <div class="flex gap-3">
                         <a href="{{ route('campaigns.show', $campaign) }}" 
-                           class="flex-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-center py-3 rounded-xl font-semibold hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-all duration-200 transform hover:scale-105">
+                           class="flex-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-center py-3 rounded-xl font-semibold hover:bg-green-200 dark:hover:bg-green-900/50 transition-all duration-200 transform hover:scale-105">
                             Learn More
                         </a>
-                        <button class="px-4 py-3 bg-gray-100 dark:bg-gray-700 text-[#61897c] dark:text-gray-400 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-                            <span class="material-symbols-outlined !text-lg">notifications</span>
-                        </button>
+                        <a href="{{ route('campaigns.show', $campaign) }}" class="px-4 py-3 bg-gray-100 dark:bg-gray-700 text-[#61897c] dark:text-gray-400 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                            <span class="material-symbols-outlined !text-lg">contact_support</span>
+                        </a>
                     </div>
                 </div>
             </article>
             @endforeach
+                @endif
+            </div>
+
+            <!-- Empty State -->
+            <div id="campaigns-empty-state" class="text-center py-12" style="display: none;">
+                <div class="w-32 h-32 bg-gradient-to-br from-primary/20 to-primary/10 rounded-full flex items-center justify-center mx-auto mb-8">
+                    <span class="material-symbols-outlined text-primary !text-6xl">campaign</span>
+                </div>
+                <h3 id="campaigns-empty-title" class="text-2xl font-bold text-[#111816] dark:text-white mb-4">No Campaigns Found</h3>
+                <p id="campaigns-empty-description" class="text-[#61897c] dark:text-gray-400 max-w-2xl mx-auto mb-8">
+                    We couldn't find any campaigns matching your current filter. Try selecting a different filter or check back later.
+                </p>
+            </div>
         </div>
     </div>
 </div>
-@endif
 
 <!-- Enhanced Default State -->
 @if((!isset($activeCampaigns) || $activeCampaigns->count() === 0) && (!isset($upcomingCampaigns) || $upcomingCampaigns->count() === 0))
 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="flex flex-col flex-1 gap-10">
         <!-- Empty State -->
-        <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-12 shadow-sm border border-[#f0f4f3] dark:border-gray-800 text-center">
+        <div id="empty-state" class="bg-white dark:bg-gray-800/50 rounded-2xl p-12 shadow-sm border border-[#f0f4f3] dark:border-gray-800 text-center">
             <div class="w-32 h-32 bg-gradient-to-br from-primary/20 to-primary/10 rounded-full flex items-center justify-center mx-auto mb-8">
                 <span class="material-symbols-outlined text-primary !text-6xl">campaign</span>
             </div>
-            <h2 class="text-3xl font-bold text-[#111816] dark:text-white mb-4">
+            <h2 id="empty-title" class="text-3xl font-bold text-[#111816] dark:text-white mb-4">
                 No Campaigns Available
             </h2>
-            <p class="text-[#61897c] dark:text-gray-400 max-w-2xl mx-auto mb-8">
+            <p id="empty-description" class="text-[#61897c] dark:text-gray-400 max-w-2xl mx-auto mb-8">
                 We're currently preparing exciting new wellness campaigns for the community. Check back soon for upcoming initiatives and events!
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -444,22 +408,176 @@
 
 @push('scripts')
 <script>
+// Scroll to campaigns function
+function scrollToCampaigns() {
+    // Try to find active campaigns section first, then upcoming campaigns, then any campaign section
+    const activeCampaigns = document.querySelector('#active-campaigns');
+    const upcomingCampaigns = document.querySelector('#upcoming-campaigns');
+    const campaignSection = document.querySelector('.bg-white.dark\\:bg-gray-800\\/50.rounded-2xl');
+    
+    let targetElement = activeCampaigns || upcomingCampaigns || campaignSection;
+    
+    if (targetElement) {
+        targetElement.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+        });
+    } else {
+        // Fallback: scroll to the first campaign card or section
+        const firstCampaignCard = document.querySelector('article.group');
+        if (firstCampaignCard) {
+            firstCampaignCard.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Search functionality
-    const searchInput = document.querySelector('input[placeholder="Search campaigns..."]');
-    const filterButtons = document.querySelectorAll('.flex.items-center.gap-2.bg-gray-100 button');
+    const searchInput = document.getElementById('campaign-search');
+    const clearSearchBtn = document.getElementById('clear-search');
+    const filterButtons = document.querySelectorAll('div.bg-gray-100.dark\\:bg-gray-800 button');
     
-    // Search input handler
+    console.log('Found filter buttons:', filterButtons.length);
+    
+    // Search input handler with debounce
     if (searchInput) {
+        let searchTimeout;
+        
         searchInput.addEventListener('input', function(e) {
-            // Add search functionality here
-            console.log('Searching for:', e.target.value);
+            const searchTerm = e.target.value.toLowerCase().trim();
+            
+            // Show/hide clear button
+            if (clearSearchBtn) {
+                if (searchTerm.length > 0) {
+                    clearSearchBtn.style.opacity = '1';
+                    clearSearchBtn.style.pointerEvents = 'auto';
+                } else {
+                    clearSearchBtn.style.opacity = '0';
+                    clearSearchBtn.style.pointerEvents = 'none';
+                }
+            }
+            
+            // Clear previous timeout
+            clearTimeout(searchTimeout);
+            
+            // Debounce search for better performance
+            searchTimeout = setTimeout(() => {
+                performSearch(searchTerm);
+            }, 150);
         });
+    }
+    
+    // Search function
+    function performSearch(searchTerm) {
+        console.log('Searching for:', searchTerm);
+        
+        // Get all campaign cards
+        const allCampaignCards = document.querySelectorAll('article.group');
+        
+        if (searchTerm === '') {
+            // Show all campaigns if search is empty
+            allCampaignCards.forEach(card => {
+                card.style.display = 'block';
+            });
+            
+            // Update empty states
+            updateEmptyStates();
+        } else {
+            // Filter campaigns based on search term
+            let visibleCount = 0;
+            
+            allCampaignCards.forEach(card => {
+                // Get text content from various elements
+                const title = card.querySelector('h3')?.textContent.toLowerCase() || '';
+                const description = card.querySelector('p')?.textContent.toLowerCase() || '';
+                const type = card.querySelector('.bg-white\\/90, .bg-gray-900\\/90')?.textContent.toLowerCase() || '';
+                const status = card.querySelector('.bg-green-500')?.textContent.toLowerCase() || '';
+                const dates = card.querySelector('.flex.items-center.gap-2')?.textContent.toLowerCase() || '';
+                
+                // Check if search term matches any field
+                const matches = title.includes(searchTerm) || 
+                              description.includes(searchTerm) || 
+                              type.includes(searchTerm) ||
+                              status.includes(searchTerm) ||
+                              dates.includes(searchTerm);
+                
+                if (matches) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Update empty states based on search results
+            updateEmptyStatesForSearch(searchTerm, visibleCount);
+        }
+    }
+    
+    // Clear search button handler
+    if (clearSearchBtn) {
+        clearSearchBtn.addEventListener('click', function() {
+            if (searchInput) {
+                searchInput.value = '';
+                searchInput.dispatchEvent(new Event('input')); // Trigger the input event
+                searchInput.focus();
+            }
+        });
+    }
+    
+    // Function to update empty states after search
+    function updateEmptyStatesForSearch(searchTerm, visibleCount) {
+        const activeGrid = document.getElementById('active-campaigns-grid');
+        const upcomingGrid = document.getElementById('upcoming-campaigns-grid');
+        const emptyState = document.getElementById('campaigns-empty-state');
+        const emptyTitle = document.getElementById('campaigns-empty-title');
+        const emptyDescription = document.getElementById('campaigns-empty-description');
+        
+        if (visibleCount === 0) {
+            // Hide grids and show empty state
+            if (activeGrid) activeGrid.style.display = 'none';
+            if (upcomingGrid) upcomingGrid.style.display = 'none';
+            if (emptyState) emptyState.style.display = 'block';
+            if (emptyTitle) emptyTitle.textContent = 'No Campaigns Found';
+            if (emptyDescription) emptyDescription.textContent = `No campaigns match your search for "${searchTerm}". Try different keywords or clear the search to see all campaigns.`;
+        } else {
+            // Show grids and hide empty state
+            if (emptyState) emptyState.style.display = 'none';
+            
+            // Show grids that have visible campaigns
+            const activeGridHasVisible = activeGrid && activeGrid.querySelectorAll('article.group[style*="block"], article.group:not([style*="none"])').length > 0;
+            const upcomingGridHasVisible = upcomingGrid && upcomingGrid.querySelectorAll('article.group[style*="block"], article.group:not([style*="none"])').length > 0;
+            
+            if (activeGridHasVisible && activeGrid) activeGrid.style.display = 'grid';
+            if (upcomingGridHasVisible && upcomingGrid) upcomingGrid.style.display = 'grid';
+        }
+    }
+    
+    // Function to update empty states normally
+    function updateEmptyStates() {
+        const activeGrid = document.getElementById('active-campaigns-grid');
+        const upcomingGrid = document.getElementById('upcoming-campaigns-grid');
+        const emptyState = document.getElementById('campaigns-empty-state');
+        
+        // Get current filter type
+        const activeButton = document.querySelector('div.bg-gray-100.dark\\:bg-gray-800 button.bg-primary');
+        const filterType = activeButton ? activeButton.textContent.trim().toLowerCase() : 'all campaigns';
+        
+        // Re-run the filter logic
+        updateCampaignSection(filterType);
     }
     
     // Filter button handlers
     filterButtons.forEach(button => {
         button.addEventListener('click', function() {
+            // Clear search input when filter is applied
+            if (searchInput) {
+                searchInput.value = '';
+            }
+            
             // Remove active state from all buttons
             filterButtons.forEach(btn => {
                 btn.className = btn.className.replace(/bg-primary text-white/, 'text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white');
@@ -468,9 +586,190 @@ document.addEventListener('DOMContentLoaded', function() {
             // Add active state to clicked button
             this.className = this.className.replace(/text-\[#61897c\] dark:text-gray-400 hover:text-\[#111816\] dark:hover:text-white/, 'bg-primary text-white');
             
-            console.log('Filter changed to:', this.textContent.trim());
+            const filterType = this.textContent.trim().toLowerCase();
+            
+            // Reset all campaign cards to be visible before applying filter
+            const allCampaignCards = document.querySelectorAll('article.group');
+            allCampaignCards.forEach(card => {
+                card.style.display = 'block';
+            });
+            
+            updateCampaignSection(filterType);
+            
+            console.log('Filter changed to:', filterType);
         });
     });
+
+    // Initialize page with "All Campaigns" filter on load
+    updateCampaignSection('all campaigns');
+
+    // Function to update campaign section based on filter
+    function updateCampaignSection(filterType) {
+        console.log('updateCampaignSection called with:', filterType);
+        
+        const badge = document.getElementById('section-badge');
+        const badgeIcon = document.getElementById('badge-icon');
+        const badgeText = document.getElementById('badge-text');
+        const title = document.getElementById('section-title');
+        const description = document.getElementById('section-description');
+        const activeGrid = document.getElementById('active-campaigns-grid');
+        const upcomingGrid = document.getElementById('upcoming-campaigns-grid');
+        const emptyState = document.getElementById('campaigns-empty-state');
+        const emptyTitle = document.getElementById('campaigns-empty-title');
+        const emptyDescription = document.getElementById('campaigns-empty-description');
+
+        console.log('Found elements:', {
+            badge: !!badge,
+            badgeIcon: !!badgeIcon,
+            badgeText: !!badgeText,
+            title: !!title,
+            description: !!description,
+            activeGrid: !!activeGrid,
+            upcomingGrid: !!upcomingGrid,
+            activeGridChildren: activeGrid ? activeGrid.children.length : 0,
+            upcomingGridChildren: upcomingGrid ? upcomingGrid.children.length : 0,
+            activeGridArticles: activeGrid ? activeGrid.querySelectorAll('article.group').length : 0,
+            upcomingGridArticles: upcomingGrid ? upcomingGrid.querySelectorAll('article.group').length : 0,
+            activeGridHTML: activeGrid ? activeGrid.innerHTML.substring(0, 200) : 'null'
+        });
+
+        // Hide all grids initially
+        if (activeGrid) activeGrid.style.display = 'none';
+        if (upcomingGrid) upcomingGrid.style.display = 'none';
+        if (emptyState) emptyState.style.display = 'none';
+
+        switch(filterType) {
+            case 'all campaigns':
+                if (badge) {
+                    badge.className = 'inline-flex items-center gap-2 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 px-4 py-2 rounded-full text-sm font-semibold mb-4';
+                }
+                if (badgeIcon) badgeIcon.textContent = 'campaign';
+                if (badgeText) badgeText.textContent = 'All Campaigns';
+                if (title) title.textContent = 'Wellness Campaigns';
+                if (description) description.textContent = 'Explore our comprehensive collection of wellness campaigns designed to support your mental health and wellbeing journey.';
+                
+                // Show both active and upcoming campaigns
+                let hasActiveCampaigns = false;
+                let hasUpcomingCampaigns = false;
+                
+                // Check for active campaigns (look for actual campaign articles)
+                if (activeGrid) {
+                    const activeCampaignCards = activeGrid.querySelectorAll('article.group');
+                    const hasContent = activeGrid.innerHTML.trim().length > 50; // Check if there's meaningful content
+                    console.log('Active grid check:', {
+                        articles: activeCampaignCards.length,
+                        hasContent: hasContent,
+                        innerHTML: activeGrid.innerHTML.substring(0, 100)
+                    });
+                    
+                    if (activeCampaignCards.length > 0 || hasContent) {
+                        activeGrid.style.display = 'grid';
+                        hasActiveCampaigns = true;
+                    }
+                }
+                
+                // Check for upcoming campaigns
+                if (upcomingGrid) {
+                    const upcomingCampaignCards = upcomingGrid.querySelectorAll('article.group');
+                    const hasContent = upcomingGrid.innerHTML.trim().length > 50; // Check if there's meaningful content
+                    console.log('Upcoming grid check:', {
+                        articles: upcomingCampaignCards.length,
+                        hasContent: hasContent,
+                        innerHTML: upcomingGrid.innerHTML.substring(0, 100)
+                    });
+                    
+                    if (upcomingCampaignCards.length > 0 || hasContent) {
+                        upcomingGrid.style.display = 'grid';
+                        hasUpcomingCampaigns = true;
+                    }
+                }
+                
+                // Show empty state if no campaigns
+                if (!hasActiveCampaigns && !hasUpcomingCampaigns) {
+                    if (emptyState) emptyState.style.display = 'block';
+                    if (emptyTitle) emptyTitle.textContent = 'No Campaigns Available';
+                    if (emptyDescription) emptyDescription.textContent = 'We couldn\'t find any campaigns matching your current filter. Try selecting a different filter or check back later.';
+                }
+                break;
+
+            case 'active':
+                if (badge) {
+                    badge.className = 'inline-flex items-center gap-2 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 px-4 py-2 rounded-full text-sm font-semibold mb-4';
+                }
+                if (badgeIcon) badgeIcon.textContent = 'play_circle';
+                if (badgeText) badgeText.textContent = 'Active Now';
+                if (title) title.textContent = 'Active Campaigns';
+                if (description) description.textContent = 'These campaigns are currently running. Contact us to learn more about how you can get involved and make a difference!';
+                
+                if (activeGrid) {
+                    const activeCampaignCards = activeGrid.querySelectorAll('article.group');
+                    const hasContent = activeGrid.innerHTML.trim().length > 50;
+                    console.log('Active filter - grid check:', {
+                        articles: activeCampaignCards.length,
+                        hasContent: hasContent
+                    });
+                    
+                    if (activeCampaignCards.length > 0 || hasContent) {
+                        activeGrid.style.display = 'grid';
+                    } else {
+                        if (emptyState) emptyState.style.display = 'block';
+                        if (emptyTitle) emptyTitle.textContent = 'No Active Campaigns';
+                        if (emptyDescription) emptyDescription.textContent = 'There are currently no active campaigns running. Check back soon or explore our upcoming campaigns!';
+                    }
+                } else {
+                    if (emptyState) emptyState.style.display = 'block';
+                    if (emptyTitle) emptyTitle.textContent = 'No Active Campaigns';
+                    if (emptyDescription) emptyDescription.textContent = 'There are currently no active campaigns running. Check back soon or explore our upcoming campaigns!';
+                }
+                break;
+
+            case 'upcoming':
+                if (badge) {
+                    badge.className = 'inline-flex items-center gap-2 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 px-4 py-2 rounded-full text-sm font-semibold mb-4';
+                }
+                if (badgeIcon) badgeIcon.textContent = 'schedule';
+                if (badgeText) badgeText.textContent = 'Coming Soon';
+                if (title) title.textContent = 'Upcoming Campaigns';
+                if (description) description.textContent = 'Get ready for these exciting campaigns launching soon. Contact us for more information and stay updated on launch dates!';
+                
+                if (upcomingGrid) {
+                    const upcomingCampaignCards = upcomingGrid.querySelectorAll('article.group');
+                    const hasContent = upcomingGrid.innerHTML.trim().length > 50;
+                    console.log('Upcoming filter - grid check:', {
+                        articles: upcomingCampaignCards.length,
+                        hasContent: hasContent
+                    });
+                    
+                    if (upcomingCampaignCards.length > 0 || hasContent) {
+                        upcomingGrid.style.display = 'grid';
+                    } else {
+                        if (emptyState) emptyState.style.display = 'block';
+                        if (emptyTitle) emptyTitle.textContent = 'No Upcoming Campaigns';
+                        if (emptyDescription) emptyDescription.textContent = 'There are currently no upcoming campaigns scheduled. Check back later for new announcements!';
+                    }
+                } else {
+                    if (emptyState) emptyState.style.display = 'block';
+                    if (emptyTitle) emptyTitle.textContent = 'No Upcoming Campaigns';
+                    if (emptyDescription) emptyDescription.textContent = 'There are currently no upcoming campaigns scheduled. Check back later for new announcements!';
+                }
+                break;
+
+            case 'completed':
+                if (badge) {
+                    badge.className = 'inline-flex items-center gap-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-full text-sm font-semibold mb-4';
+                }
+                if (badgeIcon) badgeIcon.textContent = 'check_circle';
+                if (badgeText) badgeText.textContent = 'Completed';
+                if (title) title.textContent = 'Completed Campaigns';
+                if (description) description.textContent = 'View our past campaigns and their impact on the community. These successful initiatives have made a lasting difference.';
+                
+                // For now, show empty state for completed campaigns
+                if (emptyState) emptyState.style.display = 'block';
+                if (emptyTitle) emptyTitle.textContent = 'No Completed Campaigns to Display';
+                if (emptyDescription) emptyDescription.textContent = 'Completed campaigns are archived and not currently displayed. Contact us for information about past campaign impacts and results.';
+                break;
+        }
+    }
     
     // Intersection Observer for animations
     const observerOptions = {
