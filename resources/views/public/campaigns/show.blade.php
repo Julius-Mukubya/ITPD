@@ -32,9 +32,16 @@
              class="w-full h-80 sm:h-96 lg:h-[500px] object-cover">
     @else
         <div class="w-full h-80 sm:h-96 lg:h-[500px] bg-gradient-to-br 
-            @if($campaign->status === 'active') from-green-500 via-primary to-green-600
-            @elseif($campaign->status === 'upcoming') from-blue-500 via-purple-600 to-blue-700
-            @else from-gray-500 via-gray-600 to-gray-700
+            @if($campaign->start_date && $campaign->end_date)
+                @if(now()->between($campaign->start_date, $campaign->end_date)) from-green-500 via-primary to-green-600
+                @elseif(now()->lt($campaign->start_date)) from-blue-500 via-purple-600 to-blue-700
+                @else from-gray-500 via-gray-600 to-gray-700
+                @endif
+            @else
+                @if($campaign->status === 'active') from-green-500 via-primary to-green-600
+                @elseif($campaign->status === 'upcoming') from-blue-500 via-purple-600 to-blue-700
+                @else from-gray-500 via-gray-600 to-gray-700
+                @endif
             @endif flex items-center justify-center">
             <div class="text-center text-white">
                 <div class="w-32 h-32 bg-white/20 rounded-full flex items-center justify-center mb-6 mx-auto">
@@ -55,19 +62,39 @@
                 <!-- Status Badge -->
                 <div class="flex items-center gap-3 mb-6">
                     <div class="flex items-center gap-2 
-                        @if($campaign->status === 'active') bg-green-500 
-                        @elseif($campaign->status === 'upcoming') bg-blue-500 
-                        @else bg-gray-500 
-                        @endif text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
-                        @if($campaign->status === 'active')
-                            <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-                            Active Campaign
-                        @elseif($campaign->status === 'upcoming')
-                            <span class="material-symbols-outlined !text-sm">schedule</span>
-                            Upcoming Campaign
+                        @if($campaign->start_date && $campaign->end_date)
+                            @if(now()->between($campaign->start_date, $campaign->end_date)) bg-green-500 
+                            @elseif(now()->lt($campaign->start_date)) bg-blue-500 
+                            @else bg-gray-500 
+                            @endif
                         @else
-                            <span class="material-symbols-outlined !text-sm">check_circle</span>
-                            Completed Campaign
+                            @if($campaign->status === 'active') bg-green-500 
+                            @elseif($campaign->status === 'upcoming') bg-blue-500 
+                            @else bg-gray-500 
+                            @endif
+                        @endif text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                        @if($campaign->start_date && $campaign->end_date)
+                            @if(now()->between($campaign->start_date, $campaign->end_date))
+                                <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                                Active Campaign
+                            @elseif(now()->lt($campaign->start_date))
+                                <span class="material-symbols-outlined !text-sm">schedule</span>
+                                Upcoming Campaign
+                            @else
+                                <span class="material-symbols-outlined !text-sm">check_circle</span>
+                                Completed Campaign
+                            @endif
+                        @else
+                            @if($campaign->status === 'active')
+                                <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                                Active Campaign
+                            @elseif($campaign->status === 'upcoming')
+                                <span class="material-symbols-outlined !text-sm">schedule</span>
+                                Upcoming Campaign
+                            @else
+                                <span class="material-symbols-outlined !text-sm">check_circle</span>
+                                Completed Campaign
+                            @endif
                         @endif
                     </div>
                     <div class="text-white/80 text-sm">
@@ -201,16 +228,28 @@
                         <div class="text-sm font-medium text-[#61897c] dark:text-gray-400">Days Duration</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-3xl font-black text-primary mb-2">FREE</div>
-                        <div class="text-sm font-medium text-[#61897c] dark:text-gray-400">To Participate</div>
-                    </div>
-                    <div class="text-center">
                         <div class="text-3xl font-black text-primary mb-2">24/7</div>
                         <div class="text-sm font-medium text-[#61897c] dark:text-gray-400">Support</div>
                     </div>
                     <div class="text-center">
                         <div class="text-3xl font-black text-primary mb-2">{{ ucfirst($campaign->type ?? 'General') }}</div>
                         <div class="text-sm font-medium text-[#61897c] dark:text-gray-400">Campaign Type</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-black text-primary mb-2">
+                            @if($campaign->max_participants)
+                                {{ $campaign->max_participants }}
+                            @else
+                                Open
+                            @endif
+                        </div>
+                        <div class="text-sm font-medium text-[#61897c] dark:text-gray-400">
+                            @if($campaign->max_participants)
+                                Max Participants
+                            @else
+                                Participation
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
@@ -227,37 +266,72 @@
                         Campaign Information
                     </h3>
                     
-                    @if($campaign->status === 'active')
-                        <div class="text-center mb-6">
-                            <div class="w-16 h-16 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span class="material-symbols-outlined text-green-600 dark:text-green-400 !text-2xl">campaign</span>
+                    @if($campaign->start_date && $campaign->end_date)
+                        @if(now()->between($campaign->start_date, $campaign->end_date))
+                            <div class="text-center mb-6">
+                                <div class="w-16 h-16 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span class="material-symbols-outlined text-green-600 dark:text-green-400 !text-2xl">campaign</span>
+                                </div>
+                                <p class="font-semibold text-green-600 dark:text-green-400 mb-2">Campaign Active</p>
+                                <p class="text-sm text-[#61897c] dark:text-gray-400">This campaign is currently running. Contact us for more information.</p>
                             </div>
-                            <p class="font-semibold text-green-600 dark:text-green-400 mb-2">Campaign Active</p>
-                            <p class="text-sm text-[#61897c] dark:text-gray-400">This campaign is currently running. Contact us for more information.</p>
-                        </div>
-                    @elseif($campaign->status === 'upcoming')
-                        <div class="text-center mb-6">
-                            <div class="w-16 h-16 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span class="material-symbols-outlined text-green-600 dark:text-green-400 !text-2xl">schedule</span>
+                        @elseif(now()->lt($campaign->start_date))
+                            <div class="text-center mb-6">
+                                <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 !text-2xl">schedule</span>
+                                </div>
+                                <p class="font-semibold text-[#111816] dark:text-white mb-2">Coming Soon</p>
+                                <p class="text-sm text-[#61897c] dark:text-gray-400 mb-4">
+                                    Campaign starts {{ $campaign->start_date->format('M d, Y') }}
+                                    @if($campaign->start_time)
+                                        at {{ \Carbon\Carbon::parse($campaign->start_time)->format('g:i A') }}
+                                    @endif
+                                </p>
                             </div>
-                            <p class="font-semibold text-[#111816] dark:text-white mb-2">Coming Soon</p>
-                            <p class="text-sm text-[#61897c] dark:text-gray-400 mb-4">
-                                Campaign starts {{ $campaign->start_date ? $campaign->start_date->format('M d, Y') : 'soon' }}
-                                @if($campaign->start_time)
-                                    at {{ \Carbon\Carbon::parse($campaign->start_time)->format('g:i A') }}
-                                @endif
-                            </p>
-                        </div>
+                        @else
+                            <div class="text-center mb-6">
+                                <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span class="material-symbols-outlined text-gray-400 !text-2xl">check_circle</span>
+                                </div>
+                                <p class="font-semibold text-[#111816] dark:text-white mb-2">Campaign Ended</p>
+                                <p class="text-sm text-[#61897c] dark:text-gray-400 mb-4">
+                                    This campaign concluded on {{ $campaign->end_date->format('M d, Y') }}
+                                </p>
+                            </div>
+                        @endif
                     @else
-                        <div class="text-center mb-6">
-                            <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span class="material-symbols-outlined text-gray-400 !text-2xl">check_circle</span>
+                        @if($campaign->status === 'active')
+                            <div class="text-center mb-6">
+                                <div class="w-16 h-16 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span class="material-symbols-outlined text-green-600 dark:text-green-400 !text-2xl">campaign</span>
+                                </div>
+                                <p class="font-semibold text-green-600 dark:text-green-400 mb-2">Campaign Active</p>
+                                <p class="text-sm text-[#61897c] dark:text-gray-400">This campaign is currently running. Contact us for more information.</p>
                             </div>
-                            <p class="font-semibold text-[#111816] dark:text-white mb-2">Campaign Ended</p>
-                            <p class="text-sm text-[#61897c] dark:text-gray-400 mb-4">
-                                This campaign concluded on {{ $campaign->end_date ? $campaign->end_date->format('M d, Y') : 'recently' }}
-                            </p>
-                        </div>
+                        @elseif($campaign->status === 'upcoming')
+                            <div class="text-center mb-6">
+                                <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 !text-2xl">schedule</span>
+                                </div>
+                                <p class="font-semibold text-[#111816] dark:text-white mb-2">Coming Soon</p>
+                                <p class="text-sm text-[#61897c] dark:text-gray-400 mb-4">
+                                    Campaign starts {{ $campaign->start_date ? $campaign->start_date->format('M d, Y') : 'soon' }}
+                                    @if($campaign->start_time)
+                                        at {{ \Carbon\Carbon::parse($campaign->start_time)->format('g:i A') }}
+                                    @endif
+                                </p>
+                            </div>
+                        @else
+                            <div class="text-center mb-6">
+                                <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span class="material-symbols-outlined text-gray-400 !text-2xl">check_circle</span>
+                                </div>
+                                <p class="font-semibold text-[#111816] dark:text-white mb-2">Campaign Ended</p>
+                                <p class="text-sm text-[#61897c] dark:text-gray-400 mb-4">
+                                    This campaign concluded on {{ $campaign->end_date ? $campaign->end_date->format('M d, Y') : 'recently' }}
+                                </p>
+                            </div>
+                        @endif
                     @endif
 
                     <!-- Contact Details -->
@@ -314,37 +388,6 @@
                                 Call Now
                             </span>
                         </a>
-                    </div>
-                </div>
-
-                <!-- Campaign Organizer -->
-                <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
-                    <h3 class="text-lg font-bold text-[#111816] dark:text-white mb-4 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-primary">person</span>
-                        Campaign Organizer
-                    </h3>
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
-                            <span class="material-symbols-outlined text-primary">person</span>
-                        </div>
-                        <div>
-                            <div class="font-semibold text-[#111816] dark:text-white">
-                                {{ $campaign->creator ? $campaign->creator->name : 'WellPath Team' }}
-                            </div>
-                            <div class="text-sm text-[#61897c] dark:text-gray-400">Campaign Coordinator</div>
-                        </div>
-                    </div>
-                    <div class="mt-4 pt-4 border-t border-[#f0f4f3] dark:border-gray-700">
-                        <div class="space-y-2 text-sm">
-                            <div class="flex items-center gap-2 text-[#61897c] dark:text-gray-400">
-                                <span class="material-symbols-outlined !text-lg">email</span>
-                                <span>wellness@wellpath.edu</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-[#61897c] dark:text-gray-400">
-                                <span class="material-symbols-outlined !text-lg">phone</span>
-                                <span>+256 123 456 789</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
