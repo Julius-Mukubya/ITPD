@@ -115,6 +115,47 @@
                 @error('content')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
             </div>
 
+            <!-- Contact Information Section -->
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">contact_support</span>
+                    Contact Information
+                </h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Provide contact details for participants to reach out about this campaign.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Contact Email *</label>
+                        <input type="email" name="contact_email" value="{{ old('contact_email', 'wellness@wellpath.edu') }}" required
+                            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
+                        @error('contact_email')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Contact Phone *</label>
+                        <input type="tel" name="contact_phone" value="{{ old('contact_phone', '+256 123 456 789') }}" required
+                            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
+                        @error('contact_phone')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Office Location (Optional)</label>
+                        <input type="text" name="contact_office" value="{{ old('contact_office') }}" 
+                            placeholder="e.g., Student Wellness Center, Room 201"
+                            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
+                        @error('contact_office')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Office Hours (Optional)</label>
+                        <input type="text" name="contact_hours" value="{{ old('contact_hours') }}" 
+                            placeholder="e.g., Mon-Fri: 8:00 AM - 5:00 PM"
+                            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
+                        @error('contact_hours')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+                    </div>
+                </div>
+            </div>
+
             <div>
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Campaign Banner</label>
                 
@@ -139,28 +180,24 @@
                 @error('banner')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
             </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Campaign Status *</label>
-                <select name="status" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
-                    <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Draft</option>
-                    <option value="active" {{ old('status', 'active') == 'active' ? 'selected' : '' }}>Active</option>
-                    <option value="completed" {{ old('status') == 'completed' ? 'selected' : '' }}>Completed</option>
-                    <option value="cancelled" {{ old('status') == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
-                </select>
-                @error('status')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
-            </div>
-
-            <div>
+            <div class="flex gap-4">
+                <label class="flex items-center gap-2">
+                    <input type="checkbox" name="is_published" value="1" {{ old('is_published') ? 'checked' : '' }} class="rounded">
+                    <span class="text-sm text-gray-700 dark:text-gray-300">Publish immediately</span>
+                </label>
                 <label class="flex items-center gap-2">
                     <input type="checkbox" name="is_featured" value="1" {{ old('is_featured') ? 'checked' : '' }} class="rounded">
-                    <span class="text-sm text-gray-700 dark:text-gray-300">Feature this campaign on homepage</span>
+                    <span class="text-sm text-gray-700 dark:text-gray-300">Feature this campaign</span>
                 </label>
             </div>
+
+            <!-- Hidden status field that will be set based on publish checkbox -->
+            <input type="hidden" name="status" value="draft">
         </div>
 
         <div class="flex gap-3 mt-8">
-            <button type="submit" class="bg-primary text-white px-8 py-3 rounded-lg hover:opacity-90 font-semibold">Create Campaign</button>
-            <a href="{{ route('admin.campaigns.index') }}" class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-8 py-3 rounded-lg hover:opacity-90 font-semibold">Cancel</a>
+            <button type="submit" class="bg-primary text-white px-6 py-3 rounded-lg hover:opacity-90 font-semibold">Add Campaign</button>
+            <a href="{{ route('admin.campaigns.index') }}" class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-6 py-3 rounded-lg hover:opacity-90 font-semibold">Cancel</a>
         </div>
     </form>
 </div>
@@ -234,8 +271,19 @@ document.addEventListener('DOMContentLoaded', function() {
         input.addEventListener('blur', validateDateTime);
     });
     
-    // Validate on form submission
+    // Handle form submission
     document.querySelector('form').addEventListener('submit', function(e) {
+        // Set status based on publish checkbox
+        const isPublished = document.querySelector('input[name="is_published"]').checked;
+        const statusField = document.querySelector('input[name="status"]');
+        
+        if (isPublished) {
+            statusField.value = 'active';
+        } else {
+            statusField.value = 'draft';
+        }
+        
+        // Validate date/time before submitting
         if (!validateDateTime()) {
             e.preventDefault();
         }

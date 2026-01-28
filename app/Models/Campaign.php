@@ -23,6 +23,10 @@ class Campaign extends Model
         'end_time',
         'location',
         'max_participants',
+        'contact_email',
+        'contact_phone',
+        'contact_office',
+        'contact_hours',
         'status',
         'is_featured',
     ];

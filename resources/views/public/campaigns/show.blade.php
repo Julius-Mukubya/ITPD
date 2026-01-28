@@ -345,16 +345,25 @@
                                 <span class="material-symbols-outlined text-primary !text-lg">email</span>
                                 <div>
                                     <div class="font-medium text-[#111816] dark:text-white">Email</div>
-                                    <div>wellness@wellpath.edu</div>
+                                    <div>{{ $campaign->contact_email ?? 'wellness@wellpath.edu' }}</div>
                                 </div>
                             </div>
                             <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
                                 <span class="material-symbols-outlined text-primary !text-lg">phone</span>
                                 <div>
                                     <div class="font-medium text-[#111816] dark:text-white">Phone</div>
-                                    <div>+256 123 456 789</div>
+                                    <div>{{ $campaign->contact_phone ?? '+256 123 456 789' }}</div>
                                 </div>
                             </div>
+                            @if($campaign->contact_office)
+                            <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
+                                <span class="material-symbols-outlined text-primary !text-lg">location_on</span>
+                                <div>
+                                    <div class="font-medium text-[#111816] dark:text-white">Office</div>
+                                    <div>{{ $campaign->contact_office }}</div>
+                                </div>
+                            </div>
+                            @else
                             <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
                                 <span class="material-symbols-outlined text-primary !text-lg">location_on</span>
                                 <div>
@@ -362,6 +371,16 @@
                                     <div>Student Wellness Center, Room 201</div>
                                 </div>
                             </div>
+                            @endif
+                            @if($campaign->contact_hours)
+                            <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
+                                <span class="material-symbols-outlined text-primary !text-lg">schedule</span>
+                                <div>
+                                    <div class="font-medium text-[#111816] dark:text-white">Office Hours</div>
+                                    <div>{{ $campaign->contact_hours }}</div>
+                                </div>
+                            </div>
+                            @else
                             <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
                                 <span class="material-symbols-outlined text-primary !text-lg">schedule</span>
                                 <div>
@@ -369,19 +388,20 @@
                                     <div>Mon-Fri: 8:00 AM - 5:00 PM</div>
                                 </div>
                             </div>
+                            @endif
                         </div>
                     </div>
 
                     <!-- Quick Actions -->
                     <div class="space-y-3">
-                        <a href="mailto:wellness@wellpath.edu?subject=Inquiry about {{ $campaign->title }}" 
+                        <a href="mailto:{{ $campaign->contact_email ?? 'wellness@wellpath.edu' }}?subject=Inquiry about {{ $campaign->title }}" 
                            class="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl block text-center">
                             <span class="flex items-center justify-center gap-2">
                                 <span class="material-symbols-outlined !text-lg">email</span>
                                 Send Email
                             </span>
                         </a>
-                        <a href="tel:+256123456789" 
+                        <a href="tel:{{ str_replace(' ', '', $campaign->contact_phone ?? '+256123456789') }}" 
                            class="w-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 py-3 rounded-xl font-semibold hover:bg-green-200 dark:hover:bg-green-900/50 transition-all duration-200 block text-center">
                             <span class="flex items-center justify-center gap-2">
                                 <span class="material-symbols-outlined !text-lg">phone</span>
@@ -427,7 +447,7 @@
             Interested in learning more about this campaign? Contact our wellness team for detailed information and how you can get involved.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="mailto:wellness@wellpath.edu?subject=Inquiry about {{ $campaign->title }}" class="inline-flex items-center gap-2 bg-primary text-white px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-lg">
+            <a href="mailto:{{ $campaign->contact_email ?? 'wellness@wellpath.edu' }}?subject=Inquiry about {{ $campaign->title }}" class="inline-flex items-center gap-2 bg-primary text-white px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-lg">
                 <span class="material-symbols-outlined !text-xl">email</span>
                 Contact Us
             </a>
