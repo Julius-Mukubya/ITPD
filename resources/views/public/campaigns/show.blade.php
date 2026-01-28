@@ -94,10 +94,12 @@
                             {{ $campaign->end_date ? $campaign->end_date->format('M d, Y') : 'TBD' }}
                         </span>
                     </div>
+                    @if($campaign->location)
                     <div class="flex items-center gap-2">
-                        <span class="material-symbols-outlined !text-xl">group</span>
-                        <span class="font-medium">{{ $campaign->participants ? $campaign->participants()->count() : 0 }} participants</span>
+                        <span class="material-symbols-outlined !text-xl">location_on</span>
+                        <span class="font-medium">{{ $campaign->location }}</span>
                     </div>
+                    @endif
                     <div class="flex items-center gap-2">
                         <span class="material-symbols-outlined !text-xl">person</span>
                         <span class="font-medium">By {{ $campaign->creator ? $campaign->creator->name : 'WellPath Team' }}</span>
@@ -185,17 +187,13 @@
                 </div>
             </div>
 
-            <!-- Impact & Statistics -->
+            <!-- Campaign Details & Statistics -->
             <div class="bg-gradient-to-br from-primary/10 to-green-500/10 dark:from-primary/20 dark:to-green-500/20 rounded-3xl p-8 border border-primary/20">
                 <h3 class="text-2xl font-bold text-[#111816] dark:text-white mb-8 flex items-center gap-3">
-                    <span class="material-symbols-outlined text-primary !text-2xl">trending_up</span>
-                    Campaign Impact
+                    <span class="material-symbols-outlined text-primary !text-2xl">info</span>
+                    Campaign Details
                 </h3>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    <div class="text-center">
-                        <div class="text-3xl font-black text-primary mb-2">{{ $campaign->participants ? $campaign->participants()->count() : 0 }}</div>
-                        <div class="text-sm font-medium text-[#61897c] dark:text-gray-400">Participants</div>
-                    </div>
                     <div class="text-center">
                         <div class="text-3xl font-black text-primary mb-2">
                             {{ $campaign->start_date && $campaign->end_date ? $campaign->start_date->diffInDays($campaign->end_date) : 0 }}
@@ -203,12 +201,16 @@
                         <div class="text-sm font-medium text-[#61897c] dark:text-gray-400">Days Duration</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-3xl font-black text-primary mb-2">100%</div>
-                        <div class="text-sm font-medium text-[#61897c] dark:text-gray-400">Free to Join</div>
+                        <div class="text-3xl font-black text-primary mb-2">FREE</div>
+                        <div class="text-sm font-medium text-[#61897c] dark:text-gray-400">To Participate</div>
                     </div>
                     <div class="text-center">
                         <div class="text-3xl font-black text-primary mb-2">24/7</div>
                         <div class="text-sm font-medium text-[#61897c] dark:text-gray-400">Support</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-black text-primary mb-2">{{ ucfirst($campaign->type ?? 'General') }}</div>
+                        <div class="text-sm font-medium text-[#61897c] dark:text-gray-400">Campaign Type</div>
                     </div>
                 </div>
             </div>
@@ -218,246 +220,100 @@
         <div class="lg:col-span-1">
             <div class="sticky top-24 space-y-8">
 
-                <!-- Join Campaign Card -->
-                <div id="registration-form" class="bg-white dark:bg-gray-800/50 rounded-2xl p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
+                <!-- Campaign Contact Information -->
+                <div id="contact-info" class="bg-white dark:bg-gray-800/50 rounded-2xl p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
                     <h3 class="text-xl font-bold text-[#111816] dark:text-white mb-4 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-primary">volunteer_activism</span>
-                        Join Campaign
+                        <span class="material-symbols-outlined text-primary">contact_support</span>
+                        Campaign Information
                     </h3>
                     
-                    @auth
-                        @if($campaign->status === 'active')
-                            @if($isRegistered)
-                                <!-- Already Registered -->
-                                <div class="text-center mb-6">
-                                    <div class="w-16 h-16 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <span class="material-symbols-outlined text-green-600 dark:text-green-400 !text-2xl">check_circle</span>
-                                    </div>
-                                    <p class="font-semibold text-green-600 dark:text-green-400 mb-2">You're Registered!</p>
-                                    <p class="text-sm text-[#61897c] dark:text-gray-400">You're part of this campaign. Check your dashboard for updates and activities.</p>
-                                </div>
-                                
-                                <!-- Registration Benefits -->
-                                <div class="bg-green-50 dark:bg-green-900/20 rounded-xl p-4 mb-6">
-                                    <h4 class="font-semibold text-green-800 dark:text-green-300 mb-2 flex items-center gap-2">
-                                        <span class="material-symbols-outlined !text-lg">star</span>
-                                        Your Benefits
-                                    </h4>
-                                    <ul class="text-sm text-green-700 dark:text-green-400 space-y-1">
-                                        <li class="flex items-center gap-2">
-                                            <span class="material-symbols-outlined !text-sm">notifications</span>
-                                            Campaign updates & reminders
-                                        </li>
-                                        <li class="flex items-center gap-2">
-                                            <span class="material-symbols-outlined !text-sm">event</span>
-                                            Access to all activities
-                                        </li>
-                                        <li class="flex items-center gap-2">
-                                            <span class="material-symbols-outlined !text-sm">certificate</span>
-                                            Participation certificate
-                                        </li>
-                                        <li class="flex items-center gap-2">
-                                            <span class="material-symbols-outlined !text-sm">support</span>
-                                            Priority support access
-                                        </li>
-                                    </ul>
-                                </div>
-                                
-                                <div class="space-y-3">
-                                    <a href="{{ route('student.campaigns.index') }}" class="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl block text-center">
-                                        View My Campaigns
-                                    </a>
-                                    <form method="POST" action="{{ route('campaigns.unregister', $campaign) }}" onsubmit="return confirm('Are you sure you want to leave this campaign?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 py-3 rounded-xl font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200">
-                                            Leave Campaign
-                                        </button>
-                                    </form>
-                                </div>
-                            @else
-                                <!-- Registration Form -->
-                                <div class="text-center mb-6">
-                                    <div class="text-3xl font-black text-primary mb-2">FREE</div>
-                                    <p class="text-sm text-[#61897c] dark:text-gray-400">Open to all students</p>
-                                </div>
-                                
-                                <!-- Registration Benefits Preview -->
-                                <div class="bg-primary/5 dark:bg-primary/10 rounded-xl p-4 mb-6">
-                                    <h4 class="font-semibold text-[#111816] dark:text-white mb-3 flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-primary !text-lg">volunteer_activism</span>
-                                        What You'll Get
-                                    </h4>
-                                    <ul class="text-sm text-[#61897c] dark:text-gray-400 space-y-2">
-                                        <li class="flex items-center gap-2">
-                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
-                                            Exclusive campaign materials & resources
-                                        </li>
-                                        <li class="flex items-center gap-2">
-                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
-                                            Direct updates on activities & events
-                                        </li>
-                                        <li class="flex items-center gap-2">
-                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
-                                            Connect with like-minded students
-                                        </li>
-                                        <li class="flex items-center gap-2">
-                                            <span class="w-2 h-2 bg-primary rounded-full"></span>
-                                            Certificate of participation
-                                        </li>
-                                    </ul>
-                                </div>
-                                
-                                <form method="POST" action="{{ route('campaigns.register', $campaign) }}">
-                                    @csrf
-                                    <button type="submit" class="w-full bg-gradient-to-r from-primary to-green-500 text-white py-4 rounded-xl font-bold hover:from-primary/90 hover:to-green-500/90 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
-                                        <span class="flex items-center justify-center gap-2">
-                                            <span class="material-symbols-outlined !text-xl">volunteer_activism</span>
-                                            Register for Campaign
-                                        </span>
-                                    </button>
-                                </form>
-                                
-                                <p class="text-xs text-[#61897c] dark:text-gray-400 text-center mt-3">
-                                    By registering, you agree to participate actively and receive campaign communications.
-                                </p>
-                            @endif
-                        @elseif($campaign->status === 'upcoming')
-                            <!-- Upcoming Campaign -->
-                            <div class="text-center py-6">
-                                <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 !text-2xl">schedule</span>
-                                </div>
-                                <p class="font-semibold text-[#111816] dark:text-white mb-2">Coming Soon</p>
-                                <p class="text-sm text-[#61897c] dark:text-gray-400 mb-4">
-                                    Campaign starts {{ $campaign->start_date ? $campaign->start_date->format('M d, Y') : 'soon' }}
-                                    @if($campaign->start_time)
-                                        at {{ \Carbon\Carbon::parse($campaign->start_time)->format('g:i A') }}
-                                    @endif
-                                </p>
-                                
-                                <!-- Pre-registration if available -->
-                                <div class="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 mb-4">
-                                    <p class="text-sm text-blue-800 dark:text-blue-300 mb-3">
-                                        Get notified when registration opens!
-                                    </p>
-                                    <button class="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors">
-                                        <span class="flex items-center justify-center gap-2">
-                                            <span class="material-symbols-outlined !text-lg">notifications</span>
-                                            Notify Me
-                                        </span>
-                                    </button>
-                                </div>
-                            </div>
-                        @else
-                            <!-- Campaign Ended -->
-                            <div class="text-center py-6">
-                                <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <span class="material-symbols-outlined text-gray-400 !text-2xl">check_circle</span>
-                                </div>
-                                <p class="font-semibold text-[#111816] dark:text-white mb-2">Campaign Ended</p>
-                                <p class="text-sm text-[#61897c] dark:text-gray-400 mb-4">
-                                    This campaign concluded on {{ $campaign->end_date ? $campaign->end_date->format('M d, Y') : 'recently' }}
-                                </p>
-                                <a href="{{ route('campaigns.index') }}" class="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-semibold">
-                                    <span class="material-symbols-outlined !text-lg">campaign</span>
-                                    View Active Campaigns
-                                </a>
-                            </div>
-                        @endif
-                    @else
-                        <!-- Guest Registration Form -->
+                    @if($campaign->status === 'active')
                         <div class="text-center mb-6">
-                            <div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span class="material-symbols-outlined text-primary !text-2xl">person_add</span>
+                            <div class="w-16 h-16 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="material-symbols-outlined text-green-600 dark:text-green-400 !text-2xl">campaign</span>
                             </div>
-                            <div class="text-3xl font-black text-primary mb-2">FREE</div>
-                            <p class="text-sm text-[#61897c] dark:text-gray-400 mb-4">Register with your details below</p>
+                            <p class="font-semibold text-green-600 dark:text-green-400 mb-2">Campaign Active</p>
+                            <p class="text-sm text-[#61897c] dark:text-gray-400">This campaign is currently running. Contact us for more information.</p>
                         </div>
-
-                        <!-- Registration Form -->
-                        <form method="POST" action="{{ route('campaigns.register', $campaign) }}" class="space-y-4">
-                            @csrf
-                            
-                            <!-- Personal Information -->
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-[#111816] dark:text-white mb-2">Full Name *</label>
-                                    <input type="text" name="guest_name" value="{{ old('guest_name') }}" required
-                                           class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-[#111816] dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                                           placeholder="Enter your full name">
-                                    @error('guest_name')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-[#111816] dark:text-white mb-2">Email Address *</label>
-                                    <input type="email" name="guest_email" value="{{ old('guest_email') }}" required
-                                           class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-[#111816] dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                                           placeholder="your.email@example.com">
-                                    @error('guest_email')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-[#111816] dark:text-white mb-2">Phone Number *</label>
-                                    <input type="tel" name="guest_phone" value="{{ old('guest_phone') }}" required
-                                           class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-[#111816] dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                                           placeholder="+256 700 000 000">
-                                    @error('guest_phone')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
-                                </div>
+                    @elseif($campaign->status === 'upcoming')
+                        <div class="text-center mb-6">
+                            <div class="w-16 h-16 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="material-symbols-outlined text-green-600 dark:text-green-400 !text-2xl">schedule</span>
                             </div>
-
-
-
-                            <!-- Motivation -->
-                            <div>
-                                <label class="block text-sm font-medium text-[#111816] dark:text-white mb-2">Why do you want to join this campaign? (Optional)</label>
-                                <textarea name="motivation" rows="3"
-                                          class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-[#111816] dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 resize-none"
-                                          placeholder="Share your motivation for joining this campaign...">{{ old('motivation') }}</textarea>
-                                @error('motivation')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
-                            </div>
-
-                            <!-- Submit Button -->
-                            <button type="submit" class="w-full bg-gradient-to-r from-primary to-green-500 text-white py-4 rounded-xl font-bold hover:from-primary/90 hover:to-green-500/90 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
-                                <span class="flex items-center justify-center gap-2">
-                                    <span class="material-symbols-outlined !text-xl">volunteer_activism</span>
-                                    Register for Campaign
-                                </span>
-                            </button>
-                        </form>
-
-                        <!-- Alternative Login Option -->
-                        <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-                            <p class="text-center text-sm text-[#61897c] dark:text-gray-400 mb-4">
-                                Already have an account?
+                            <p class="font-semibold text-[#111816] dark:text-white mb-2">Coming Soon</p>
+                            <p class="text-sm text-[#61897c] dark:text-gray-400 mb-4">
+                                Campaign starts {{ $campaign->start_date ? $campaign->start_date->format('M d, Y') : 'soon' }}
+                                @if($campaign->start_time)
+                                    at {{ \Carbon\Carbon::parse($campaign->start_time)->format('g:i A') }}
+                                @endif
                             </p>
-                            <div class="flex gap-3">
-                                <button onclick="openLoginModal()" class="flex-1 bg-white dark:bg-gray-800 border border-primary text-primary py-3 rounded-xl font-semibold hover:bg-primary/5 dark:hover:bg-primary/10 transition-all duration-200">
-                                    <span class="flex items-center justify-center gap-2">
-                                        <span class="material-symbols-outlined !text-lg">login</span>
-                                        Login
-                                    </span>
-                                </button>
-                                <button onclick="openSignupModal()" class="flex-1 bg-gray-100 dark:bg-gray-700 text-[#61897c] dark:text-gray-300 py-3 rounded-xl font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-200">
-                                    <span class="flex items-center justify-center gap-2">
-                                        <span class="material-symbols-outlined !text-lg">person_add</span>
-                                        Sign Up
-                                    </span>
-                                </button>
+                        </div>
+                    @else
+                        <div class="text-center mb-6">
+                            <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="material-symbols-outlined text-gray-400 !text-2xl">check_circle</span>
+                            </div>
+                            <p class="font-semibold text-[#111816] dark:text-white mb-2">Campaign Ended</p>
+                            <p class="text-sm text-[#61897c] dark:text-gray-400 mb-4">
+                                This campaign concluded on {{ $campaign->end_date ? $campaign->end_date->format('M d, Y') : 'recently' }}
+                            </p>
+                        </div>
+                    @endif
+
+                    <!-- Contact Details -->
+                    <div class="bg-primary/5 dark:bg-primary/10 rounded-xl p-4 mb-6">
+                        <h4 class="font-semibold text-[#111816] dark:text-white mb-3 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary !text-lg">contact_phone</span>
+                            Get In Touch
+                        </h4>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
+                                <span class="material-symbols-outlined text-primary !text-lg">email</span>
+                                <div>
+                                    <div class="font-medium text-[#111816] dark:text-white">Email</div>
+                                    <div>wellness@wellpath.edu</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
+                                <span class="material-symbols-outlined text-primary !text-lg">phone</span>
+                                <div>
+                                    <div class="font-medium text-[#111816] dark:text-white">Phone</div>
+                                    <div>+256 123 456 789</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
+                                <span class="material-symbols-outlined text-primary !text-lg">location_on</span>
+                                <div>
+                                    <div class="font-medium text-[#111816] dark:text-white">Office</div>
+                                    <div>Student Wellness Center, Room 201</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
+                                <span class="material-symbols-outlined text-primary !text-lg">schedule</span>
+                                <div>
+                                    <div class="font-medium text-[#111816] dark:text-white">Office Hours</div>
+                                    <div>Mon-Fri: 8:00 AM - 5:00 PM</div>
+                                </div>
                             </div>
                         </div>
-                    @endauth
-                    
-                    <!-- Participation Stats -->
-                    <div class="mt-6 pt-6 border-t border-[#f0f4f3] dark:border-gray-700">
-                        <div class="flex items-center justify-between text-sm text-[#61897c] dark:text-gray-400 mb-2">
-                            <span>{{ $campaign->participants ? $campaign->participants()->count() : 0 }} participants</span>
-                            <span>{{ $campaign->participants ? min(100, ($campaign->participants()->count() / 200) * 100) : 0 }}% capacity</span>
-                        </div>
-                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                            <div class="bg-primary h-2 rounded-full transition-all duration-500" 
-                                 style="width: {{ $campaign->participants ? min(100, ($campaign->participants()->count() / 200) * 100) : 0 }}%"></div>
-                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="space-y-3">
+                        <a href="mailto:wellness@wellpath.edu?subject=Inquiry about {{ $campaign->title }}" 
+                           class="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl block text-center">
+                            <span class="flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined !text-lg">email</span>
+                                Send Email
+                            </span>
+                        </a>
+                        <a href="tel:+256123456789" 
+                           class="w-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 py-3 rounded-xl font-semibold hover:bg-green-200 dark:hover:bg-green-900/50 transition-all duration-200 block text-center">
+                            <span class="flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined !text-lg">phone</span>
+                                Call Now
+                            </span>
+                        </a>
                     </div>
                 </div>
 
@@ -518,70 +374,27 @@
     </div>
 </div>
 
-<!-- Call to Action Section -->
-@if($campaign->status === 'active')
+<!-- Contact Information Section -->
 <div class="py-20 bg-gradient-to-r from-primary/10 via-background-light to-green-500/10 dark:from-primary/20 dark:via-background-dark dark:to-green-500/20">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        @auth
-            @if(!$isRegistered)
-                <h2 class="text-3xl md:text-4xl font-black text-[#111816] dark:text-white mb-6">
-                    Ready to Make a Difference?
-                </h2>
-                <p class="text-xl text-[#61897c] dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-                    Join {{ $campaign->participants ? $campaign->participants()->count() : 0 }} other students in this important wellness initiative and help create positive change on campus.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <form method="POST" action="{{ route('campaigns.register', $campaign) }}" class="inline">
-                        @csrf
-                        <button type="submit" class="inline-flex items-center gap-2 bg-primary text-white px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                            <span class="material-symbols-outlined !text-xl">volunteer_activism</span>
-                            Register for Campaign
-                        </button>
-                    </form>
-                    <a href="{{ route('campaigns.index') }}" class="inline-flex items-center gap-2 bg-white dark:bg-gray-800 border border-[#f0f4f3] dark:border-gray-700 text-[#111816] dark:text-white px-8 py-4 rounded-xl font-bold hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 transform hover:scale-105">
-                        <span class="material-symbols-outlined !text-xl">campaign</span>
-                        View All Campaigns
-                    </a>
-                </div>
-            @else
-                <h2 class="text-3xl md:text-4xl font-black text-[#111816] dark:text-white mb-6">
-                    You're Part of Something Great!
-                </h2>
-                <p class="text-xl text-[#61897c] dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-                    Thank you for joining this campaign! Stay engaged and check your student dashboard for updates, activities, and ways to contribute.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="{{ route('student.campaigns.index') }}" class="inline-flex items-center gap-2 bg-primary text-white px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                        <span class="material-symbols-outlined !text-xl">dashboard</span>
-                        My Campaign Dashboard
-                    </a>
-                    <a href="{{ route('campaigns.index') }}" class="inline-flex items-center gap-2 bg-white dark:bg-gray-800 border border-[#f0f4f3] dark:border-gray-700 text-[#111816] dark:text-white px-8 py-4 rounded-xl font-bold hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 transform hover:scale-105">
-                        <span class="material-symbols-outlined !text-xl">campaign</span>
-                        Explore More Campaigns
-                    </a>
-                </div>
-            @endif
-        @else
-            <h2 class="text-3xl md:text-4xl font-black text-[#111816] dark:text-white mb-6">
-                Join the Movement
-            </h2>
-            <p class="text-xl text-[#61897c] dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-                Register using the form above or create an account to join {{ $campaign->participants ? $campaign->participants()->count() : 0 }} other students working towards positive change on campus.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button onclick="document.getElementById('registration-form').scrollIntoView({behavior: 'smooth'})" class="inline-flex items-center gap-2 bg-primary text-white px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                    <span class="material-symbols-outlined !text-xl">edit</span>
-                    Fill Registration Form
-                </button>
-                <button onclick="openSignupModal()" class="inline-flex items-center gap-2 bg-white dark:bg-gray-800 border border-[#f0f4f3] dark:border-gray-700 text-[#111816] dark:text-white px-8 py-4 rounded-xl font-bold hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 transform hover:scale-105">
-                    <span class="material-symbols-outlined !text-xl">person_add</span>
-                    Create Account Instead
-                </button>
-            </div>
-        @endauth
+        <h2 class="text-3xl md:text-4xl font-black text-[#111816] dark:text-white mb-6">
+            Get More Information
+        </h2>
+        <p class="text-xl text-[#61897c] dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+            Interested in learning more about this campaign? Contact our wellness team for detailed information and how you can get involved.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="mailto:wellness@wellpath.edu?subject=Inquiry about {{ $campaign->title }}" class="inline-flex items-center gap-2 bg-primary text-white px-8 py-4 rounded-xl font-bold hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                <span class="material-symbols-outlined !text-xl">email</span>
+                Contact Us
+            </a>
+            <a href="{{ route('campaigns.index') }}" class="inline-flex items-center gap-2 bg-white dark:bg-gray-800 border border-[#f0f4f3] dark:border-gray-700 text-[#111816] dark:text-white px-8 py-4 rounded-xl font-bold hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 transform hover:scale-105">
+                <span class="material-symbols-outlined !text-xl">campaign</span>
+                View All Campaigns
+            </a>
+        </div>
     </div>
 </div>
-@endif
 
 @endsection
 
