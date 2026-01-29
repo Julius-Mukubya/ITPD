@@ -155,6 +155,9 @@
     <!-- Crisis Support Modal (Available on all pages) -->
     @include('components.crisis-support-modal')
     
+    <!-- Assessment Result Modal -->
+    @include('components.assessment-result-modal')
+    
     <!-- Authentication Modals -->
     @guest
         <x-login-modal />

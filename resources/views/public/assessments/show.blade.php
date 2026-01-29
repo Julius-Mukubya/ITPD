@@ -294,6 +294,49 @@ document.getElementById('prevBtn').addEventListener('click', function() {
     }
 });
 
+// Handle form submission via AJAX
+document.getElementById('assessmentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const submitBtn = document.getElementById('submitBtn');
+    const originalText = submitBtn.innerHTML;
+    
+    // Show loading state
+    submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin mr-2">refresh</span>Submitting...';
+    submitBtn.disabled = true;
+    
+    // Prepare form data
+    const formData = new FormData(this);
+    
+    // Submit via AJAX
+    fetch(this.action, {
+        method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json',
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Open the result modal
+            openAssessmentResultModal(data.data);
+        } else {
+            showToast('Error processing assessment. Please try again.', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Error submitting assessment. Please try again.', 'error');
+    })
+    .finally(() => {
+        // Restore button state
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    });
+});
+
 function updateProgress() {
     const percent = (currentQuestion / totalQuestions) * 100;
     
@@ -310,6 +353,44 @@ function updateProgress() {
     if (sidebarCurrentQuestion) sidebarCurrentQuestion.textContent = currentQuestion;
     if (sidebarProgressPercent) sidebarProgressPercent.textContent = Math.round(percent);
     if (sidebarProgressBar) sidebarProgressBar.style.width = percent + '%';
+}
+
+// Toast notification function
+function showToast(message, type = 'info') {
+    // Create toast element
+    const toast = document.createElement('div');
+    toast.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transform transition-all duration-300 translate-x-full ${
+        type === 'success' ? 'bg-green-500 text-white' : 
+        type === 'error' ? 'bg-red-500 text-white' : 
+        type === 'warning' ? 'bg-yellow-500 text-white' :
+        'bg-blue-500 text-white'
+    }`;
+    
+    toast.innerHTML = `
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm">
+                ${type === 'success' ? 'check_circle' : type === 'error' ? 'error' : type === 'warning' ? 'warning' : 'info'}
+            </span>
+            <span class="text-sm font-medium">${message}</span>
+        </div>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    // Animate in
+    setTimeout(() => {
+        toast.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        toast.classList.add('translate-x-full');
+        setTimeout(() => {
+            if (document.body.contains(toast)) {
+                document.body.removeChild(toast);
+            }
+        }, 300);
+    }, 5000);
 }
 </script>
 @endpush

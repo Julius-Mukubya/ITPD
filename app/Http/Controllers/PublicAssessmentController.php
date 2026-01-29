@@ -203,7 +203,7 @@ class PublicAssessmentController extends Controller
             $gradientClass = $this->getGradientClass($type);
             $markerColor = $this->getMarkerColor($percentage);
             
-            return view('public.assessments.result', [
+            $resultData = [
                 'assessmentName' => $dbAssessment->full_name ?? $dbAssessment->name,
                 'resultTitle' => $this->getResultTitle($type),
                 'score' => $score,
@@ -214,7 +214,18 @@ class PublicAssessmentController extends Controller
                 'showUrgentHelp' => $showUrgentHelp,
                 'gradientClass' => $gradientClass,
                 'markerColor' => $markerColor,
-            ]);
+                'isAuthenticated' => auth()->check(),
+            ];
+            
+            // Return JSON for AJAX requests
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'data' => $resultData
+                ]);
+            }
+            
+            return view('public.assessments.result', $resultData);
         }
         
         // Fallback to hardcoded assessment
@@ -241,7 +252,7 @@ class PublicAssessmentController extends Controller
         $gradientClass = $this->getGradientClass($type);
         $markerColor = $this->getMarkerColor($percentage);
 
-        return view('public.assessments.result', [
+        $resultData = [
             'assessmentName' => $assessment['name'],
             'resultTitle' => $this->getResultTitle($type),
             'score' => $score,
@@ -252,7 +263,18 @@ class PublicAssessmentController extends Controller
             'showUrgentHelp' => $showUrgentHelp,
             'gradientClass' => $gradientClass,
             'markerColor' => $markerColor,
-        ]);
+            'isAuthenticated' => auth()->check(),
+        ];
+        
+        // Return JSON for AJAX requests
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'data' => $resultData
+            ]);
+        }
+
+        return view('public.assessments.result', $resultData);
     }
 
     private function interpretScoreFromDatabase($assessment, $percentage, $type, $score, $maxScore)
