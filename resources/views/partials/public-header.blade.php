@@ -132,13 +132,23 @@
                     <!-- Profile Dropdown -->
                     <div class="hidden sm:block relative group">
                         <button class="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                            @if(auth()->user()->avatar)
-                                <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="size-9 sm:size-10 rounded-full object-cover border-2 border-primary">
-                            @else
-                                <div class="size-9 sm:size-10 bg-gradient-to-br from-primary to-green-600 rounded-full flex items-center justify-center text-sm font-bold text-white border-2 border-primary">
-                                    {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
-                                </div>
-                            @endif
+                            <div class="relative">
+                                @if(auth()->user()->avatar)
+                                    <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="size-9 sm:size-10 rounded-full object-cover border-2 border-primary">
+                                @else
+                                    <div class="size-9 sm:size-10 bg-gradient-to-br from-primary to-green-600 rounded-full flex items-center justify-center text-sm font-bold text-white border-2 border-primary">
+                                        {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
+                                    </div>
+                                @endif
+                                @php
+                                    $unreadCount = auth()->user()->unreadNotificationsCount();
+                                @endphp
+                                @if($unreadCount > 0)
+                                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center border-2 border-white dark:border-gray-800">
+                                        {{ $unreadCount > 99 ? '99+' : $unreadCount }}
+                                    </span>
+                                @endif
+                            </div>
                             <span class="material-symbols-outlined text-sm text-[#111816] dark:text-white">expand_more</span>
                         </button>
                         
@@ -150,21 +160,53 @@
                             </div>
                             <div class="p-2">
                                 <!-- User Menu -->
-                                <a href="{{ route('public.counseling.sessions') }}" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                    <span class="material-symbols-outlined text-green-600">psychology</span>
-                                    <span>My Counseling</span>
+                                <a href="{{ route('public.counseling.sessions') }}" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined text-green-600">psychology</span>
+                                        <span>My Counseling</span>
+                                    </div>
+                                    @php
+                                        $sessionsCount = auth()->user()->allCounselingSessions()->count();
+                                    @endphp
+                                    @if($sessionsCount > 0)
+                                        <span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $sessionsCount }}</span>
+                                    @endif
                                 </a>
-                                <a href="{{ route('public.assessments.index') }}" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                    <span class="material-symbols-outlined text-blue-600">quiz</span>
-                                    <span>My Assessments</span>
+                                <a href="{{ route('public.assessments.index') }}" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined text-blue-600">quiz</span>
+                                        <span>My Assessments</span>
+                                    </div>
+                                    @php
+                                        $assessmentsCount = auth()->user()->assessmentAttempts()->count();
+                                    @endphp
+                                    @if($assessmentsCount > 0)
+                                        <span class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $assessmentsCount }}</span>
+                                    @endif
                                 </a>
-                                <a href="{{ route('public.forum.index') }}" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                    <span class="material-symbols-outlined text-purple-600">forum</span>
-                                    <span>My Posts</span>
+                                <a href="{{ route('public.forum.index') }}" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined text-purple-600">forum</span>
+                                        <span>My Posts</span>
+                                    </div>
+                                    @php
+                                        $postsCount = auth()->user()->forumPosts()->count();
+                                    @endphp
+                                    @if($postsCount > 0)
+                                        <span class="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $postsCount }}</span>
+                                    @endif
                                 </a>
-                                <a href="{{ route('campaigns.index') }}" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                    <span class="material-symbols-outlined text-orange-600">campaign</span>
-                                    <span>My Campaigns</span>
+                                <a href="{{ route('campaigns.index') }}" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined text-orange-600">campaign</span>
+                                        <span>My Campaigns</span>
+                                    </div>
+                                    @php
+                                        $campaignsCount = auth()->user()->campaignParticipations()->count();
+                                    @endphp
+                                    @if($campaignsCount > 0)
+                                        <span class="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $campaignsCount }}</span>
+                                    @endif
                                 </a>
                                 @if(auth()->user()->role !== 'user')
                                     <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
@@ -175,6 +217,16 @@
                                     </a>
                                 @endif
                                 <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+                                <!-- Notifications -->
+                                <a href="{{ route('notifications.index') }}" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined text-blue-600">notifications</span>
+                                        <span>Notifications</span>
+                                    </div>
+                                    @if($unreadCount > 0)
+                                        <span class="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $unreadCount > 99 ? '99+' : $unreadCount }}</span>
+                                    @endif
+                                </a>
                                 <button onclick="openProfileModal()" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors w-full text-left">
                                     <span class="material-symbols-outlined text-blue-600">person</span>
                                     <span>Profile Settings</span>
