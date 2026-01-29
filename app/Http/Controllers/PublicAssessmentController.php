@@ -289,6 +289,79 @@ class PublicAssessmentController extends Controller
         return view('public.assessments.result', $resultData);
     }
 
+    public function lastResult($type)
+    {
+        if (!auth()->check()) {
+            abort(403, 'Authentication required');
+        }
+
+        // Get the assessment
+        $assessment = Assessment::where('type', $type)->with('questions')->first();
+        if (!$assessment) {
+            abort(404, 'Assessment not found');
+        }
+
+        // Get user's last attempt for this assessment
+        $lastAttempt = auth()->user()->assessmentAttempts()
+            ->where('assessment_id', $assessment->id)
+            ->with(['responses.question'])
+            ->orderBy('taken_at', 'desc')
+            ->first();
+
+        if (!$lastAttempt) {
+            return redirect()->route('public.assessments.index')
+                ->with('error', 'No previous results found for this assessment.');
+        }
+
+        // Calculate score and interpretation
+        $score = $lastAttempt->total_score;
+        $maxScore = 0;
+        
+        // Calculate max score based on question options
+        foreach ($assessment->questions as $question) {
+            $options = is_array($question->options) ? $question->options : json_decode($question->options, true);
+            if (is_array($options) && !empty($options)) {
+                $scores = array_column($options, 'score');
+                $maxScore += max($scores);
+            }
+        }
+
+        $percentage = $maxScore > 0 ? ($score / $maxScore) * 100 : 0;
+
+        // Get interpretation
+        [$severityLevel, $interpretation, $recommendations, $showUrgentHelp] = $this->interpretScoreFromDatabase($assessment, $percentage, $type, $score, $maxScore);
+
+        // Set gradient and marker colors
+        $gradientClass = $this->getGradientClass($type);
+        $markerColor = $this->getMarkerColor($percentage);
+
+        $resultData = [
+            'assessmentName' => $assessment->full_name ?? $assessment->name,
+            'resultTitle' => $this->getResultTitle($type),
+            'score' => $score,
+            'maxScore' => $maxScore,
+            'severityLevel' => $severityLevel,
+            'interpretation' => $interpretation,
+            'recommendations' => $recommendations,
+            'showUrgentHelp' => $showUrgentHelp,
+            'gradientClass' => $gradientClass,
+            'markerColor' => $markerColor,
+            'isAuthenticated' => true,
+            'takenAt' => $lastAttempt->taken_at,
+            'isLastResult' => true,
+        ];
+
+        // Return JSON for AJAX requests
+        if (request()->expectsJson() || request()->ajax()) {
+            return response()->json([
+                'success' => true,
+                'data' => $resultData
+            ]);
+        }
+
+        return view('public.assessments.result', $resultData);
+    }
+
     private function interpretScoreFromDatabase($assessment, $percentage, $type, $score, $maxScore)
     {
         $guidelines = is_array($assessment->scoring_guidelines) 

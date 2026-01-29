@@ -64,72 +64,128 @@
 </section>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <!-- Info Banner -->
-    <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-6 mb-8">
-        <div class="flex gap-4">
-            <span class="material-symbols-outlined text-primary text-3xl flex-shrink-0">info</span>
-            <div class="flex-1">
-                <h3 class="font-bold text-emerald-900 dark:text-emerald-100 mb-2">Safe & Supportive Space</h3>
-                <p class="text-sm text-emerald-800 dark:text-emerald-200 mb-3">
-                    Our community forum is moderated by professional counselors to ensure a respectful and supportive environment for all members.
-                </p>
-                @guest
-                <button onclick="openSignupModal()" class="bg-primary text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
-                    Sign Up to Join the Discussion
-                </button>
-                @endguest
-            </div>
-        </div>
-    </div>
-
     <!-- Filter Section -->
     <div id="forum-filters" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-4 sm:p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
-            <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
+            <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
                 <!-- Search Bar -->
-                <div class="relative flex-1 max-w-md w-full sm:w-auto">
+                <div class="relative flex-1 max-w-md w-full lg:w-auto">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-[#61897c] dark:text-gray-400 !text-xl">search</span>
                     <input type="text" id="search-input" placeholder="Search discussions..." 
                            class="w-full pl-12 pr-4 py-3 rounded-xl border border-[#f0f4f3] dark:border-gray-700 bg-white dark:bg-gray-900 text-[#111816] dark:text-white placeholder-[#61897c] dark:placeholder-gray-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200">
                 </div>
                 
-                <!-- Category Filter -->
-                <div class="flex items-center gap-3 w-full sm:w-auto">
-                    <span class="text-sm font-semibold text-[#111816] dark:text-gray-300 flex items-center gap-2 whitespace-nowrap">
-                        <span class="material-symbols-outlined text-primary">filter_list</span>
-                        <span>Category:</span>
-                    </span>
-                    <div class="relative flex-1 sm:flex-initial">
-                        <select id="category-filter" class="appearance-none rounded-xl h-10 pl-4 pr-10 border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111816] dark:text-white text-sm font-medium focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 w-full sm:min-w-[200px] cursor-pointer hover:border-primary/50">
-                            <option value="all" {{ $selectedCategory === 'all' ? 'selected' : '' }}>All Categories</option>
-                            @foreach($categories as $category)
-                            <option value="{{ $category->slug }}" {{ $selectedCategory === $category->slug ? 'selected' : '' }}>{{ $category->name }}</option>
-                            @endforeach
-                        </select>
-                        <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 pointer-events-none">expand_more</span>
+                <!-- Filters Container -->
+                <div class="flex flex-col sm:flex-row gap-4 items-center w-full lg:w-auto">
+                    <!-- Post Type Filter -->
+                    @auth
+                    <div class="flex items-center gap-3 w-full sm:w-auto">
+                        <span class="text-sm font-semibold text-[#111816] dark:text-gray-300 flex items-center gap-2 whitespace-nowrap">
+                            <span class="material-symbols-outlined text-primary">person</span>
+                            <span>Posts:</span>
+                        </span>
+                        <div class="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl">
+                            <button id="all-posts-btn" onclick="filterByPostType('all')" class="post-filter-btn px-3 py-2 rounded-lg bg-primary text-white font-semibold text-xs transition-all duration-200 transform hover:scale-105 shadow-sm">
+                                All Posts
+                            </button>
+                            <button id="my-posts-btn" onclick="filterByPostType('my')" class="post-filter-btn px-3 py-2 rounded-lg text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white font-medium text-xs transition-colors">
+                                My Posts
+                            </button>
+                            <button id="others-posts-btn" onclick="filterByPostType('others')" class="post-filter-btn px-3 py-2 rounded-lg text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white font-medium text-xs transition-colors">
+                                Others' Posts
+                            </button>
+                        </div>
                     </div>
+                    @endauth
+                    
+                    <!-- Category Filter -->
+                    <div class="flex items-center gap-3 w-full sm:w-auto">
+                        <span class="text-sm font-semibold text-[#111816] dark:text-gray-300 flex items-center gap-2 whitespace-nowrap">
+                            <span class="material-symbols-outlined text-primary">filter_list</span>
+                            <span>Category:</span>
+                        </span>
+                        <div class="relative flex-1 sm:flex-initial">
+                            <select id="category-filter" class="appearance-none rounded-xl h-10 pl-4 pr-10 border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111816] dark:text-white text-sm font-medium focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 w-full sm:min-w-[200px] cursor-pointer hover:border-primary/50">
+                                <option value="all" {{ $selectedCategory === 'all' ? 'selected' : '' }}>All Categories</option>
+                                @foreach($categories as $category)
+                                <option value="{{ $category->slug }}" {{ $selectedCategory === $category->slug ? 'selected' : '' }}>{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 pointer-events-none">expand_more</span>
+                        </div>
+                    </div>
+                    
+
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Discussions Section Header -->
-    <div id="discussions" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-        <div class="text-center">
-            <h2 class="text-3xl font-bold text-[#111816] dark:text-white mb-4">Community Discussions</h2>
-            <p class="text-[#61897c] dark:text-gray-400 max-w-2xl mx-auto">Sorted by most upvoted and recent activity</p>
-        </div>
-    </div>
-
-    <!-- Discussions List -->
+    <!-- Discussions List with Fixed Sidebar -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="space-y-6" id="discussions-container">
+        <div class="flex gap-6">
+            <!-- Fixed Sidebar -->
+            <div class="hidden lg:block w-64 flex-shrink-0">
+                <div class="sticky top-24 space-y-4">
+                    <!-- New Post Button -->
+                    @auth
+                    <button onclick="openCreateDiscussionModal()" class="w-full flex items-center justify-center gap-2 bg-primary text-white px-6 py-4 rounded-xl font-semibold text-sm hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                        <span class="material-symbols-outlined !text-lg">add_circle</span>
+                        <span>New Post</span>
+                    </button>
+                    @else
+                    <button onclick="openLoginModal()" class="w-full flex items-center justify-center gap-2 bg-primary text-white px-6 py-4 rounded-xl font-semibold text-sm hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                        <span class="material-symbols-outlined !text-lg">login</span>
+                        <span>Login to Post</span>
+                    </button>
+                    @endauth
+                    
+                    <!-- Quick Stats Card -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-sm">
+                        <h3 class="font-semibold text-gray-900 dark:text-white mb-3 text-sm">Community Stats</h3>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">Total Posts</span>
+                                <span class="font-semibold text-gray-900 dark:text-white">{{ $posts->total() }}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">Categories</span>
+                                <span class="font-semibold text-gray-900 dark:text-white">{{ $categories->count() }}</span>
+                            </div>
+                            @auth
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">My Posts</span>
+                                <span class="font-semibold text-gray-900 dark:text-white">{{ $posts->where('user_id', auth()->id())->count() }}</span>
+                            </div>
+                            @endauth
+                        </div>
+                    </div>
+                    
+                    <!-- Popular Categories -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-sm">
+                        <h3 class="font-semibold text-gray-900 dark:text-white mb-3 text-sm">Popular Categories</h3>
+                        <div class="space-y-2">
+                            @foreach($categories->take(5) as $category)
+                            <button onclick="filterByCategory('{{ $category->slug }}')" class="w-full text-left flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm">
+                                <span class="text-gray-700 dark:text-gray-300">{{ $category->name }}</span>
+                                <span class="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 px-2 py-1 rounded-full">{{ $category->posts_count ?? 0 }}</span>
+                            </button>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Discussions Content -->
+            <div class="flex-1 min-w-0">
+                <div class="space-y-6" id="discussions-container">
         @forelse($posts as $post)
         <article class="discussion-post bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-all duration-200 hover:border-primary/30" 
                  data-category="{{ $post->category->slug ?? 'general' }}" 
                  data-title="{{ strtolower($post->title) }}" 
                  data-content="{{ strtolower(strip_tags($post->content)) }}"
-                 data-author="{{ $post->is_anonymous ? 'anonymous' : strtolower($post->user->name ?? 'user') }}">
+                 data-author="{{ $post->is_anonymous ? 'anonymous' : strtolower($post->user->name ?? 'user') }}"
+                 data-author-id="{{ $post->user_id ?? 0 }}">
             <div class="flex items-start gap-4">
                 <!-- Author Avatar -->
                 <div class="flex-shrink-0">
@@ -271,6 +327,8 @@
             <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">No discussions found</h3>
             <p class="text-gray-600 dark:text-gray-400 mb-6">Try adjusting your search terms or category filter.</p>
         </div>
+                </div>
+            </div>
         </div>
 
         <!-- Pagination -->
@@ -279,6 +337,19 @@
             {{ $posts->appends(request()->query())->links() }}
         </div>
         @endif
+
+        <!-- Safe & Supportive Space Info -->
+        <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-6 mt-12">
+            <div class="flex gap-4">
+                <span class="material-symbols-outlined text-primary text-3xl flex-shrink-0">info</span>
+                <div class="flex-1">
+                    <h3 class="font-bold text-emerald-900 dark:text-emerald-100 mb-2">Safe & Supportive Space</h3>
+                    <p class="text-sm text-emerald-800 dark:text-emerald-200">
+                        Our community forum is moderated by professional counselors to ensure a respectful and supportive environment for all members.
+                    </p>
+                </div>
+            </div>
+        </div>
 
         <!-- Community Guidelines -->
         <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-2xl p-8 border border-emerald-200 dark:border-emerald-800 mt-12">
@@ -410,8 +481,10 @@
 <script>
 // Global variables for filtering
 let currentCategory = 'all';
+let currentPostType = 'all';
 let currentSearchTerm = '';
 let previewTimeout;
+let currentUserId = {{ auth()->id() ?? 'null' }};
 
 function showCommentsPreview(element, postId) {
     // Clear any existing timeout
@@ -548,9 +621,20 @@ function applyFilters() {
         const postTitle = post.getAttribute('data-title');
         const postContent = post.getAttribute('data-content');
         const postAuthor = post.getAttribute('data-author');
+        const postAuthorId = parseInt(post.getAttribute('data-author-id'));
         
         // Check category filter
         const categoryMatch = currentCategory === 'all' || postCategory === currentCategory;
+        
+        // Check post type filter
+        let postTypeMatch = true;
+        if (currentPostType === 'my' && currentUserId) {
+            postTypeMatch = postAuthorId === currentUserId;
+        } else if (currentPostType === 'others' && currentUserId) {
+            postTypeMatch = postAuthorId !== currentUserId;
+        } else if (currentPostType === 'all') {
+            postTypeMatch = true;
+        }
         
         // Check search filter
         const searchMatch = currentSearchTerm === '' || 
@@ -558,7 +642,7 @@ function applyFilters() {
             postContent.includes(currentSearchTerm.toLowerCase()) ||
             postAuthor.includes(currentSearchTerm.toLowerCase());
         
-        if (categoryMatch && searchMatch) {
+        if (categoryMatch && postTypeMatch && searchMatch) {
             post.style.display = 'block';
             visibleCount++;
         } else {
@@ -571,6 +655,27 @@ function applyFilters() {
         noResultsMessage.classList.remove('hidden');
     } else {
         noResultsMessage.classList.add('hidden');
+    }
+}
+
+function filterByPostType(postType) {
+    currentPostType = postType;
+    applyFilters();
+    updatePostTypeButtons(postType);
+}
+
+function updatePostTypeButtons(activeType) {
+    // Update button styles
+    document.querySelectorAll('.post-filter-btn').forEach(btn => {
+        btn.classList.remove('bg-primary', 'text-white', 'font-semibold', 'shadow-sm');
+        btn.classList.add('text-[#61897c]', 'dark:text-gray-400', 'hover:text-[#111816]', 'dark:hover:text-white', 'font-medium');
+    });
+    
+    // Activate the selected button
+    const activeButton = document.getElementById(`${activeType}-posts-btn`);
+    if (activeButton) {
+        activeButton.classList.remove('text-[#61897c]', 'dark:text-gray-400', 'hover:text-[#111816]', 'dark:hover:text-white', 'font-medium');
+        activeButton.classList.add('bg-primary', 'text-white', 'font-semibold', 'shadow-sm');
     }
 }
 

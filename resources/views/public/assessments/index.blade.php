@@ -76,6 +76,12 @@
                     <span class="material-symbols-outlined !text-base">sentiment_worried</span>
                     <span>Stress & Anxiety</span>
                 </button>
+                @auth
+                <button data-filter="completed" class="filter-btn flex h-10 items-center justify-center gap-1.5 rounded-xl bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-[#111816] dark:text-gray-300 px-4 text-sm font-medium hover:border-primary transition-all duration-200">
+                    <span class="material-symbols-outlined !text-base">check_circle</span>
+                    <span>Completed</span>
+                </button>
+                @endauth
             </div>
         </div>
 
@@ -113,7 +119,8 @@
                         in_array($assessment->type, ['audit', 'dudit', 'cage']) ? 'substance' : 
                         (in_array($assessment->type, ['phq9', 'dass21']) ? 'mental-health' : 
                         (in_array($assessment->type, ['gad7', 'pss']) ? 'stress' : 'other'))
-                    }}">
+                    }}"
+                    @auth data-completed="{{ $completedAssessments->has($assessment->id) ? 'true' : 'false' }}" @endauth>
                     <!-- Image Section -->
                     <div class="relative h-48 overflow-hidden">
                         <img src="{{ $assessmentImage }}" alt="{{ $assessment->full_name ?? $assessment->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
@@ -182,10 +189,16 @@
                         <!-- Start Link -->
                         @auth
                             @if($userAttempt)
-                                <a href="{{ route('public.assessments.show', $assessment->type) }}" class="flex items-center justify-center gap-2 text-primary font-semibold text-sm group-hover:gap-3 transition-all">
-                                    <span>Retake Assessment</span>
-                                    <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">refresh</span>
-                                </a>
+                                <div class="flex gap-2">
+                                    <button onclick="viewLastScore('{{ $assessment->type }}')" class="flex-1 flex items-center justify-center gap-1 text-blue-600 dark:text-blue-400 font-semibold text-sm hover:text-blue-700 dark:hover:text-blue-300 transition-colors border border-blue-200 dark:border-blue-700 rounded-lg py-2">
+                                        <span class="material-symbols-outlined text-sm">visibility</span>
+                                        <span>View Last Score</span>
+                                    </button>
+                                    <a href="{{ route('public.assessments.show', $assessment->type) }}" class="flex-1 flex items-center justify-center gap-1 text-primary font-semibold text-sm group-hover:gap-2 transition-all bg-primary/10 hover:bg-primary/20 rounded-lg py-2">
+                                        <span>Retake</span>
+                                        <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">refresh</span>
+                                    </a>
+                                </div>
                             @else
                                 <a href="{{ route('public.assessments.show', $assessment->type) }}" class="flex items-center justify-center gap-2 text-primary font-semibold text-sm group-hover:gap-3 transition-all">
                                     <span>Start Assessment</span>
@@ -477,9 +490,18 @@ function filterAssessments(category, clickedButton) {
     // Filter cards with smooth animation
     const cards = document.querySelectorAll('.assessment-card, article:not(.assessment-card)');
     cards.forEach(card => {
-        const shouldShow = category === 'all' || 
-                          (card.dataset && card.dataset.category === category) ||
-                          (!card.dataset && category === 'all');
+        let shouldShow = false;
+        
+        if (category === 'all') {
+            shouldShow = true;
+        } else if (category === 'completed') {
+            // Only show completed assessments for authenticated users
+            shouldShow = card.getAttribute('data-completed') === 'true';
+        } else {
+            // Category-based filtering
+            shouldShow = (card.dataset && card.dataset.category === category) ||
+                        (!card.dataset && category === 'all');
+        }
         
         if (shouldShow) {
             card.style.display = 'block';
@@ -510,6 +532,156 @@ document.addEventListener('DOMContentLoaded', function() {
             filterAssessments(category, this);
         });
     });
+    
+    // Handle hash navigation for completed assessments
+    function handleCompletedHash() {
+        console.log('Hash navigation triggered, current hash:', window.location.hash);
+        
+        if (window.location.hash === '#completed') {
+            console.log('Processing #completed hash');
+            
+            // First activate the completed filter
+            const completedBtn = document.querySelector('[data-filter="completed"]');
+            console.log('Found completed button:', completedBtn);
+            
+            if (completedBtn) {
+                console.log('Activating completed filter');
+                filterAssessments('completed', completedBtn);
+            }
+            
+            // Then scroll to filters section after a short delay
+            setTimeout(() => {
+                const filtersSection = document.getElementById('assessments-filters');
+                console.log('Found filters section:', filtersSection);
+                
+                if (filtersSection) {
+                    // Calculate header height for offset
+                    const header = document.querySelector('header');
+                    const headerHeight = header ? header.offsetHeight : 80;
+                    const additionalOffset = 20; // Spacing for better visibility
+                    
+                    console.log('Header height:', headerHeight, 'Additional offset:', additionalOffset);
+                    
+                    // Get the current position of the filters section
+                    const elementRect = filtersSection.getBoundingClientRect();
+                    const elementTop = elementRect.top + window.pageYOffset;
+                    const offsetPosition = elementTop - headerHeight - additionalOffset;
+                    
+                    console.log('Element top:', elementTop, 'Scroll to position:', offsetPosition);
+                    
+                    // Smooth scroll to the calculated position
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    console.log('Scroll initiated');
+                } else {
+                    console.log('Filters section not found');
+                }
+            }, 100); // Short delay to ensure filter is applied first
+        }
+    }
+    
+    // Handle hash on page load - wait for page to fully load
+    window.addEventListener('load', function() {
+        console.log('Window loaded, checking hash in 200ms');
+        setTimeout(handleCompletedHash, 200);
+    });
+    
+    // Also handle on DOMContentLoaded as backup
+    console.log('Setting up hash handler on DOMContentLoaded');
+    setTimeout(handleCompletedHash, 300);
+    
+    // Handle hash changes (if user navigates back/forward)
+    window.addEventListener('hashchange', function() {
+        console.log('Hash changed to:', window.location.hash);
+        handleCompletedHash();
+    });
 });
+
+// Function to view last score
+function viewLastScore(assessmentType) {
+    // Show loading state
+    const button = event.target.closest('button');
+    const originalText = button.innerHTML;
+    button.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">refresh</span><span>Loading...</span>';
+    button.disabled = true;
+    
+    // Fetch last result via AJAX
+    fetch(`/assessments/${assessmentType}/last-result`, {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Add taken date to the result data
+            if (data.data.takenAt) {
+                data.data.takenAtFormatted = new Date(data.data.takenAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+            // Open the result modal with last score data
+            openAssessmentResultModal(data.data);
+        } else {
+            showToast('Error loading last result. Please try again.', 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Error loading last result. Please try again.', 'error');
+    })
+    .finally(() => {
+        // Restore button state
+        button.innerHTML = originalText;
+        button.disabled = false;
+    });
+}
+
+// Toast notification function
+function showToast(message, type = 'info') {
+    // Create toast element
+    const toast = document.createElement('div');
+    toast.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transform transition-all duration-300 translate-x-full ${
+        type === 'success' ? 'bg-green-500 text-white' : 
+        type === 'error' ? 'bg-red-500 text-white' : 
+        type === 'warning' ? 'bg-yellow-500 text-white' :
+        'bg-blue-500 text-white'
+    }`;
+    
+    toast.innerHTML = `
+        <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm">
+                ${type === 'success' ? 'check_circle' : type === 'error' ? 'error' : type === 'warning' ? 'warning' : 'info'}
+            </span>
+            <span class="text-sm font-medium">${message}</span>
+        </div>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    // Animate in
+    setTimeout(() => {
+        toast.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        toast.classList.add('translate-x-full');
+        setTimeout(() => {
+            if (document.body.contains(toast)) {
+                document.body.removeChild(toast);
+            }
+        }, 300);
+    }, 5000);
+}
 </script>
 @endpush

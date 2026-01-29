@@ -36,28 +36,8 @@
     </div>
 </section>
 
-<!-- Statistics & Info Section -->
-<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="space-y-8">
-        <!-- Info Banner -->
-        <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border-2 border-emerald-200 dark:border-emerald-800 rounded-2xl p-6 shadow-sm">
-            <div class="flex gap-4">
-                <div class="flex-shrink-0">
-                    <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center">
-                        <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-2xl">info</span>
-                    </div>
-                </div>
-                <div class="flex-1">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Confidential Support Available</h3>
-                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">Our trained counselors provide confidential support for academic, personal, and mental health concerns. For emergencies, <button onclick="document.getElementById('emergencyModal').classList.remove('hidden')" class="text-red-600 dark:text-red-400 underline font-semibold hover:text-red-700 dark:hover:text-red-300 transition-colors">click here for crisis support</button>.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Sessions List -->
-<div id="sessions" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+<div id="sessions" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="space-y-6">
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
@@ -66,8 +46,8 @@
             </h2>
             
             <div class="flex items-center gap-4">
-                <!-- Request Session Button -->
-                <button onclick="openRequestModal()" class="bg-gradient-to-r from-primary to-green-500 text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:shadow-lg hover:shadow-primary/30 transition-all duration-200 transform hover:scale-105 flex items-center gap-2">
+                <!-- Request Session Button (Mobile) -->
+                <button onclick="openRequestModal()" class="lg:hidden bg-gradient-to-r from-primary to-green-500 text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:shadow-lg hover:shadow-primary/30 transition-all duration-200 transform hover:scale-105 flex items-center gap-2">
                     <span class="material-symbols-outlined !text-lg">add_circle</span>
                     Request Session
                 </button>
@@ -90,47 +70,192 @@
             </div>
         </div>
         
-        @if(isset($sessions) && $sessions->count() > 0)
-        <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
-            <div class="divide-y divide-gray-200 dark:divide-gray-700">
-                @foreach($sessions as $session)
-                <div class="session-item p-6 hover:bg-gradient-to-r hover:from-gray-50 hover:to-transparent dark:hover:from-gray-700/30 dark:hover:to-transparent transition-all duration-300 group" data-status="{{ $session->status }}" data-type="{{ $session->session_type }}" data-date="{{ $session->created_at->format('Y-m-d') }}">
+        <!-- Sessions Content with Fixed Sidebar -->
+        <div class="flex gap-6">
+            <!-- Fixed Sidebar -->
+            <div class="hidden lg:block w-64 flex-shrink-0">
+                <div class="sticky top-24 space-y-4">
+                    <!-- Request Session Button -->
+                    <button onclick="openRequestModal()" class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-green-500 text-white px-6 py-4 rounded-xl font-semibold text-sm hover:shadow-lg hover:shadow-primary/30 transition-all duration-200 transform hover:scale-105">
+                        <span class="material-symbols-outlined !text-lg">add_circle</span>
+                        <span>Request Session</span>
+                    </button>
+                    
+                    <!-- Quick Stats Card -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-sm">
+                        <h3 class="font-semibold text-gray-900 dark:text-white mb-3 text-sm">Session Overview</h3>
+                        <div class="space-y-2 text-sm">
+                            @if(isset($sessions) && $sessions->count() > 0)
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">Total Sessions</span>
+                                <span class="font-semibold text-gray-900 dark:text-white">{{ $sessions->count() }}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">Pending</span>
+                                <span class="font-semibold text-amber-600">{{ $sessions->where('status', 'pending')->count() }}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">Active</span>
+                                <span class="font-semibold text-emerald-600">{{ $sessions->where('status', 'active')->count() }}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">Completed</span>
+                                <span class="font-semibold text-blue-600">{{ $sessions->where('status', 'completed')->count() }}</span>
+                            </div>
+                            @else
+                            <div class="text-center text-gray-500 dark:text-gray-400 py-4">
+                                <span class="material-symbols-outlined text-2xl mb-2 block">support_agent</span>
+                                <p class="text-xs">No sessions yet</p>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions Card -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 shadow-sm">
+                        <h3 class="font-semibold text-gray-900 dark:text-white mb-3 text-sm">Quick Actions</h3>
+                        <div class="space-y-2">
+                            <button onclick="document.getElementById('emergencyModal').classList.remove('hidden')" class="w-full text-left flex items-center gap-2 p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors text-sm text-red-600 dark:text-red-400">
+                                <span class="material-symbols-outlined text-sm">emergency</span>
+                                <span>Crisis Support</span>
+                            </button>
+                            <a href="{{ route('content.index') }}" class="w-full text-left flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm text-gray-700 dark:text-gray-300">
+                                <span class="material-symbols-outlined text-sm">library_books</span>
+                                <span>Browse Resources</span>
+                            </a>
+                            <a href="{{ route('public.counseling.index') }}" class="w-full text-left flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm text-gray-700 dark:text-gray-300">
+                                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                                <span>Back to Services</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Sessions Content -->
+            <div class="flex-1 min-w-0">
+                @if(isset($sessions) && $sessions->count() > 0)
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            @foreach($sessions as $session)
+            <div class="session-item bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden group" data-status="{{ $session->status }}" data-type="{{ $session->session_type }}" data-date="{{ $session->created_at->format('Y-m-d') }}">
+                @php
+                    // Check if this is a group session where the user is a participant (not the primary student)
+                    $isGroupParticipant = $session->session_type === 'group' && $session->student_id !== auth()->id();
+                    $participantRecord = null;
+                    
+                    if ($isGroupParticipant) {
+                        $participantRecord = $session->participants()
+                            ->where('email', auth()->user()->email)
+                            ->first();
+                    }
+                @endphp
+                
+                <!-- Card Header with Status -->
+                <div class="relative h-48 overflow-hidden">
+                    <!-- Background Image -->
                     @php
-                        // Check if this is a group session where the user is a participant (not the primary student)
-                        $isGroupParticipant = $session->session_type === 'group' && $session->student_id !== auth()->id();
-                        $participantRecord = null;
+                        $sessionImages = [
+                            'individual' => [
+                                'pending' => 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                                'active' => 'https://images.unsplash.com/photo-1544027993-37dbfe43562a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                                'completed' => 'https://images.unsplash.com/photo-1519834785169-98be25ec3f84?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80'
+                            ],
+                            'group' => [
+                                'pending' => 'https://images.unsplash.com/photo-1544027993-37dbfe43562a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+                                'active' => 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2088&q=80',
+                                'completed' => 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80'
+                            ]
+                        ];
                         
-                        if ($isGroupParticipant) {
-                            $participantRecord = $session->participants()
-                                ->where('email', auth()->user()->email)
-                                ->first();
-                        }
+                        $sessionType = $session->session_type === 'group' ? 'group' : 'individual';
+                        $sessionStatus = $session->status;
+                        $imageUrl = $sessionImages[$sessionType][$sessionStatus] ?? $sessionImages['individual']['active'];
+                        
+                        $imageAlts = [
+                            'individual' => [
+                                'pending' => 'Scheduled individual counseling session',
+                                'active' => 'Active individual counseling session',
+                                'completed' => 'Completed individual counseling session'
+                            ],
+                            'group' => [
+                                'pending' => 'Scheduled group therapy session',
+                                'active' => 'Active group counseling session',
+                                'completed' => 'Completed group therapy session'
+                            ]
+                        ];
+                        
+                        $imageAlt = $imageAlts[$sessionType][$sessionStatus] ?? 'Counseling session';
                     @endphp
                     
+                    <img src="{{ $imageUrl }}" 
+                         alt="{{ $imageAlt }}" 
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    
+                    <!-- Gradient Overlay -->
+                    <div class="absolute inset-0 
+                        @if($session->status === 'pending') bg-gradient-to-t from-amber-900/80 via-amber-900/40 to-transparent
+                        @elseif($session->status === 'active') bg-gradient-to-t from-emerald-900/80 via-emerald-900/40 to-transparent
+                        @else bg-gradient-to-t from-blue-900/80 via-blue-900/40 to-transparent
+                        @endif"></div>
+                    
+                    <!-- Status Badge -->
+                    <div class="absolute top-4 right-4">
+                        <span class="px-3 py-1.5 rounded-full text-xs font-bold backdrop-blur-sm
+                            @if($session->status === 'pending') bg-amber-100/90 text-amber-700 dark:bg-amber-900/60 dark:text-amber-300
+                            @elseif($session->status === 'active') bg-emerald-100/90 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300
+                            @else bg-blue-100/90 text-blue-700 dark:bg-blue-900/60 dark:text-blue-300
+                            @endif">
+                            {{ ucfirst($session->status) }}
+                        </span>
+                    </div>
+                    
+                    <!-- Session Type Badge -->
+                    <div class="absolute top-4 left-4">
+                        <div class="flex items-center gap-1 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-semibold text-gray-700">
+                            <span class="material-symbols-outlined text-sm">
+                                @if($session->session_type === 'group') group @else person @endif
+                            </span>
+                            <span>{{ ucfirst(str_replace('_', ' ', $session->session_type)) }}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Session Icon -->
+                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+                        <div class="w-16 h-16 rounded-2xl border-2 border-white/30 bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg group-hover:scale-105 transition-all duration-300">
+                            <span class="material-symbols-outlined text-3xl text-white">
+                                @if($session->status === 'pending') schedule
+                                @elseif($session->status === 'active') psychology
+                                @else check_circle
+                                @endif
+                            </span>
+                        </div>
+                        @if($session->status === 'active')
+                        <div class="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
+                        @endif
+                    </div>
+                </div>
+                
+                <!-- Card Content -->
+                <div class="p-6">
                     @if($isGroupParticipant && $participantRecord && $participantRecord->status === 'invited')
                         <!-- Group Session Invitation -->
-                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-4 mb-4">
-                            <div class="flex items-center gap-3 mb-3">
-                                <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-xl">group</span>
-                                </div>
-                                <div>
-                                    <h4 class="font-semibold text-blue-900 dark:text-blue-100">Group Session Invitation</h4>
-                                    <p class="text-sm text-blue-700 dark:text-blue-300">You've been invited to join this group counseling session</p>
-                                </div>
+                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-3 mb-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-sm">group</span>
+                                <span class="text-xs font-semibold text-blue-900 dark:text-blue-100">Group Invitation</span>
                             </div>
                             <div class="flex gap-2">
                                 <form method="POST" action="{{ route('public.counseling.session.accept-invitation', $session) }}" class="inline">
                                     @csrf
-                                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1">
-                                        <span class="material-symbols-outlined text-sm">check</span>
+                                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-xs">check</span>
                                         Accept
                                     </button>
                                 </form>
                                 <form method="POST" action="{{ route('public.counseling.session.decline-invitation', $session) }}" class="inline">
                                     @csrf
-                                    <button type="submit" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1">
-                                        <span class="material-symbols-outlined text-sm">close</span>
+                                    <button type="submit" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-xs">close</span>
                                         Decline
                                     </button>
                                 </form>
@@ -138,198 +263,122 @@
                         </div>
                     @endif
                     
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-5">
-                            <div class="relative">
-                                <div class="w-16 h-16 rounded-2xl border-2 
-                                    @if($session->status === 'pending') border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20
-                                    @elseif($session->status === 'active') border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-900/20
-                                    @else border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20
-                                    @endif
-                                    flex items-center justify-center shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-300">
-                                    <span class="material-symbols-outlined text-3xl
-                                        @if($session->status === 'pending') text-amber-600 dark:text-amber-400
-                                        @elseif($session->status === 'active') text-emerald-600 dark:text-emerald-400
-                                        @else text-blue-600 dark:text-blue-400
-                                        @endif">
-                                        @if($session->status === 'pending') pending
-                                        @elseif($session->status === 'active') psychology
-                                        @else check_circle
-                                        @endif
-                                    </span>
-                                </div>
-                                @if($session->status === 'active')
-                                <div class="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-gray-800 animate-pulse"></div>
-                                @endif
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">
-                                    {{ ucfirst(str_replace('_', ' ', $session->session_type)) }}
-                                    @if($isGroupParticipant)
-                                        <span class="text-sm font-normal text-blue-600 dark:text-blue-400">(Participant)</span>
-                                    @endif
-                                </h3>
-                                <div class="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
-                                    <span class="flex items-center gap-1">
-                                        <span class="material-symbols-outlined text-sm">calendar_today</span>
-                                        {{ $session->created_at->format('M d, Y') }}
-                                    </span>
-                                    @if($session->counselor)
-                                    <span class="flex items-center gap-1">
-                                        <span class="material-symbols-outlined text-sm">person</span>
-                                        {{ $session->counselor->name }}
-                                    </span>
-                                    @endif
-                                    @if($isGroupParticipant && $participantRecord)
-                                    <span class="flex items-center gap-1">
-                                        <span class="material-symbols-outlined text-sm">info</span>
-                                        Status: {{ ucfirst($participantRecord->status) }}
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
+                    <!-- Session Title -->
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">
+                        {{ ucfirst(str_replace('_', ' ', $session->session_type)) }}
+                        @if($isGroupParticipant)
+                            <span class="text-sm font-normal text-blue-600 dark:text-blue-400">(Participant)</span>
+                        @endif
+                    </h3>
+                    
+                    <!-- Session Details -->
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                            <span class="material-symbols-outlined text-sm">calendar_today</span>
+                            <span>{{ $session->created_at->format('M d, Y') }}</span>
                         </div>
-                        <div class="flex items-center gap-4">
-                            <span class="px-4 py-2 rounded-xl text-sm font-bold
-                                @if($session->status === 'pending') bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300
-                                @elseif($session->status === 'active') bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300
-                                @else bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300
-                                @endif">
-                                {{ ucfirst($session->status) }}
-                            </span>
-                            @if($session->status === 'active' && (!$isGroupParticipant || ($participantRecord && $participantRecord->status === 'joined')))
-                            <button onclick="toggleContactInfo({{ $session->id }})" class="bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/30 text-sm font-medium transition-all duration-300 flex items-center gap-2">
+                        @if($session->counselor)
+                        <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                            <span class="material-symbols-outlined text-sm">person</span>
+                            <span>{{ $session->counselor->name }}</span>
+                        </div>
+                        @endif
+                        @if($isGroupParticipant && $participantRecord)
+                        <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                            <span class="material-symbols-outlined text-sm">info</span>
+                            <span>Status: {{ ucfirst($participantRecord->status) }}</span>
+                        </div>
+                        @endif
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col gap-2">
+                        @if($session->status === 'active' && (!$isGroupParticipant || ($participantRecord && $participantRecord->status === 'joined')))
+                            <button onclick="toggleContactInfo({{ $session->id }})" class="w-full bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2">
                                 <span class="material-symbols-outlined text-sm">contact_phone</span>
                                 <span>Share Contact</span>
                             </button>
-                            <a href="{{ route('public.counseling.session.show', $session) }}" class="bg-white/20 backdrop-blur-sm border-2 border-primary/30 text-primary px-6 py-2.5 rounded-xl hover:bg-primary/10 hover:scale-105 text-sm font-bold transition-all duration-300 flex items-center gap-2">
+                            <a href="{{ route('public.counseling.session.show', $session) }}" class="w-full bg-primary text-white px-4 py-2.5 rounded-lg hover:bg-primary/90 hover:scale-105 text-sm font-bold transition-all duration-300 flex items-center justify-center gap-2">
                                 <span>Continue</span>
                                 <span class="material-symbols-outlined text-lg">arrow_forward</span>
                             </a>
-                            @elseif($isGroupParticipant && $participantRecord && $participantRecord->status === 'invited')
-                            <span class="text-blue-600 dark:text-blue-400 font-semibold text-sm">Invitation Pending</span>
-                            @else
-                            <a href="{{ route('public.counseling.session.show', $session) }}" class="text-primary hover:text-primary/80 font-semibold text-sm flex items-center gap-1 transition-colors">
+                        @elseif($isGroupParticipant && $participantRecord && $participantRecord->status === 'invited')
+                            <div class="text-center text-blue-600 dark:text-blue-400 font-semibold text-sm py-2">
+                                Invitation Pending
+                            </div>
+                        @else
+                            <a href="{{ route('public.counseling.session.show', $session) }}" class="w-full text-primary hover:text-primary/80 font-semibold text-sm flex items-center justify-center gap-1 transition-colors py-2">
                                 <span>View Details</span>
                                 <span class="material-symbols-outlined text-lg">arrow_forward</span>
                             </a>
-                            @endif
-                        </div>
+                        @endif
+                    </div>
+                </div>
+                
+                <!-- Contact Information Panel (Hidden by default) -->
+                <div id="contact-info-{{ $session->id }}" class="hidden border-t border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-4">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-lg">contact_phone</span>
+                        <h4 class="font-semibold text-blue-900 dark:text-blue-100 text-sm">Share Contact Info</h4>
                     </div>
                     
-                    <!-- Contact Information Panel (Hidden by default) -->
-                    <div id="contact-info-{{ $session->id }}" class="hidden mt-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-4">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-                                <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-xl">contact_phone</span>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-blue-900 dark:text-blue-100">Share Your Contact Information</h4>
-                                <p class="text-sm text-blue-700 dark:text-blue-300">Your counselor can use this information to reach you if needed</p>
+                    <form id="contact-form-{{ $session->id }}" class="space-y-3">
+                        @csrf
+                        <input type="hidden" name="session_id" value="{{ $session->id }}">
+                        
+                        <!-- Phone Number -->
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-blue-900 dark:text-blue-100">Phone Number</label>
+                            <input type="tel" name="phone" value="{{ auth()->user()->phone ?? '' }}" 
+                                   placeholder="Enter your phone number"
+                                   class="w-full px-3 py-2 border border-blue-200 dark:border-blue-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-blue-900/20 dark:text-white text-sm">
+                        </div>
+                        
+                        <!-- WhatsApp -->
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-blue-900 dark:text-blue-100">WhatsApp</label>
+                            <input type="tel" name="whatsapp" value="{{ auth()->user()->phone ?? '' }}" 
+                                   placeholder="WhatsApp number"
+                                   class="w-full px-3 py-2 border border-blue-200 dark:border-blue-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-blue-900/20 dark:text-white text-sm">
+                        </div>
+                        
+                        <!-- Preferred Contact Method -->
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-blue-900 dark:text-blue-100">Preferred Method</label>
+                            <div class="flex gap-2">
+                                <label class="flex items-center gap-1 bg-white dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg px-2 py-1 cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/40 transition-colors text-xs">
+                                    <input type="radio" name="preferred_contact" value="phone" class="text-blue-600 focus:ring-blue-500">
+                                    <span>Phone</span>
+                                </label>
+                                <label class="flex items-center gap-1 bg-white dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg px-2 py-1 cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/40 transition-colors text-xs">
+                                    <input type="radio" name="preferred_contact" value="whatsapp" class="text-blue-600 focus:ring-blue-500">
+                                    <span>WhatsApp</span>
+                                </label>
                             </div>
                         </div>
                         
-                        <form id="contact-form-{{ $session->id }}" class="space-y-4">
-                            @csrf
-                            <input type="hidden" name="session_id" value="{{ $session->id }}">
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <!-- Phone Number -->
-                                <div class="space-y-2">
-                                    <label class="flex items-center gap-2 text-sm font-medium text-blue-900 dark:text-blue-100">
-                                        <span class="material-symbols-outlined text-sm">phone</span>
-                                        Phone Number
-                                    </label>
-                                    <div class="relative">
-                                        <input type="tel" name="phone" value="{{ auth()->user()->phone ?? '' }}" 
-                                               placeholder="Enter your phone number"
-                                               class="w-full px-3 py-2 pl-10 border border-blue-200 dark:border-blue-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-blue-900/20 dark:text-white text-sm">
-                                        <span class="material-symbols-outlined absolute left-3 top-2.5 text-blue-500 text-sm">phone</span>
-                                    </div>
-                                </div>
-                                
-                                <!-- WhatsApp -->
-                                <div class="space-y-2">
-                                    <label class="flex items-center gap-2 text-sm font-medium text-blue-900 dark:text-blue-100">
-                                        <span class="material-symbols-outlined text-sm">chat</span>
-                                        WhatsApp
-                                    </label>
-                                    <div class="relative">
-                                        <input type="tel" name="whatsapp" value="{{ auth()->user()->phone ?? '' }}" 
-                                               placeholder="WhatsApp number"
-                                               class="w-full px-3 py-2 pl-10 border border-blue-200 dark:border-blue-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-blue-900/20 dark:text-white text-sm">
-                                        <span class="material-symbols-outlined absolute left-3 top-2.5 text-green-500 text-sm">chat</span>
-                                    </div>
-                                </div>
-                                
-                                <!-- Email -->
-                                <div class="space-y-2">
-                                    <label class="flex items-center gap-2 text-sm font-medium text-blue-900 dark:text-blue-100">
-                                        <span class="material-symbols-outlined text-sm">email</span>
-                                        Email
-                                    </label>
-                                    <div class="relative">
-                                        <input type="email" name="email" value="{{ auth()->user()->email }}" readonly
-                                               class="w-full px-3 py-2 pl-10 border border-blue-200 dark:border-blue-700 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-white text-sm">
-                                        <span class="material-symbols-outlined absolute left-3 top-2.5 text-blue-500 text-sm">email</span>
-                                    </div>
-                                </div>
+                        <!-- Action Buttons -->
+                        <div class="flex gap-2 pt-2">
+                            <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1">
+                                <span class="material-symbols-outlined text-xs">share</span>
+                                Share
+                            </button>
+                            <button type="button" onclick="toggleContactInfo({{ $session->id }})" class="px-3 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg text-xs font-medium transition-colors">
+                                Cancel
+                            </button>
+                        </div>
+                        
+                        <!-- Success Message -->
+                        <div id="contact-success-{{ $session->id }}" class="hidden mt-2 p-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+                            <div class="flex items-center gap-1 text-green-700 dark:text-green-300">
+                                <span class="material-symbols-outlined text-xs">check_circle</span>
+                                <span class="text-xs font-medium">Contact info shared!</span>
                             </div>
-                            
-                            <!-- Preferred Contact Method -->
-                            <div class="space-y-2">
-                                <label class="text-sm font-medium text-blue-900 dark:text-blue-100">Preferred Contact Method</label>
-                                <div class="flex flex-wrap gap-2">
-                                    <label class="flex items-center gap-2 bg-white dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/40 transition-colors">
-                                        <input type="radio" name="preferred_contact" value="phone" class="text-blue-600 focus:ring-blue-500">
-                                        <span class="material-symbols-outlined text-sm text-blue-600">phone</span>
-                                        <span class="text-sm text-blue-900 dark:text-blue-100">Phone Call</span>
-                                    </label>
-                                    <label class="flex items-center gap-2 bg-white dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/40 transition-colors">
-                                        <input type="radio" name="preferred_contact" value="whatsapp" class="text-blue-600 focus:ring-blue-500">
-                                        <span class="material-symbols-outlined text-sm text-green-600">chat</span>
-                                        <span class="text-sm text-blue-900 dark:text-blue-100">WhatsApp</span>
-                                    </label>
-                                    <label class="flex items-center gap-2 bg-white dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg px-3 py-2 cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/40 transition-colors">
-                                        <input type="radio" name="preferred_contact" value="email" class="text-blue-600 focus:ring-blue-500">
-                                        <span class="material-symbols-outlined text-sm text-blue-600">email</span>
-                                        <span class="text-sm text-blue-900 dark:text-blue-100">Email</span>
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <!-- Notes -->
-                            <div class="space-y-2">
-                                <label class="text-sm font-medium text-blue-900 dark:text-blue-100">Additional Notes (Optional)</label>
-                                <textarea name="contact_notes" rows="2" 
-                                          placeholder="Any specific instructions for contacting you..."
-                                          class="w-full px-3 py-2 border border-blue-200 dark:border-blue-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-blue-900/20 dark:text-white text-sm resize-none"></textarea>
-                            </div>
-                            
-                            <!-- Action Buttons -->
-                            <div class="flex gap-3 pt-2">
-                                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-sm">share</span>
-                                    Share Contact Info
-                                </button>
-                                <button type="button" onclick="toggleContactInfo({{ $session->id }})" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-sm">close</span>
-                                    Cancel
-                                </button>
-                            </div>
-                            
-                            <!-- Success Message (Hidden by default) -->
-                            <div id="contact-success-{{ $session->id }}" class="hidden mt-3 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-                                <div class="flex items-center gap-2 text-green-700 dark:text-green-300">
-                                    <span class="material-symbols-outlined text-sm">check_circle</span>
-                                    <span class="text-sm font-medium">Contact information shared successfully!</span>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
-                @endforeach
             </div>
+            @endforeach
         </div>
         @else
         <!-- Empty State -->
@@ -359,8 +408,29 @@
             </div>
         </div>
         @endif
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- Confidential Support Banner -->
+<section class="py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border-2 border-emerald-200 dark:border-emerald-800 rounded-2xl p-6 shadow-sm">
+            <div class="flex gap-4">
+                <div class="flex-shrink-0">
+                    <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center">
+                        <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-2xl">info</span>
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Confidential Support Available</h3>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">Our trained counselors provide confidential support for academic, personal, and mental health concerns. For emergencies, <button onclick="document.getElementById('emergencyModal').classList.remove('hidden')" class="text-red-600 dark:text-red-400 underline font-semibold hover:text-red-700 dark:hover:text-red-300 transition-colors">click here for crisis support</button>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <!-- CTA Section -->
 <section class="py-12">

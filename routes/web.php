@@ -135,6 +135,7 @@ Route::prefix('assessments')->name('public.assessments.')->group(function () {
     Route::get('/', [PublicAssessmentController::class, 'index'])->name('index');
     Route::get('/{type}', [PublicAssessmentController::class, 'show'])->name('show');
     Route::post('/{type}/result', [PublicAssessmentController::class, 'result'])->name('result');
+    Route::get('/{type}/last-result', [PublicAssessmentController::class, 'lastResult'])->name('last-result')->middleware('auth');
 });
 
 // Public Forum Routes

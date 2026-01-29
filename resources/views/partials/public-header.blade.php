@@ -172,7 +172,7 @@
                                         <span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $sessionsCount }}</span>
                                     @endif
                                 </a>
-                                <a href="{{ route('public.assessments.index') }}" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                <a href="{{ route('public.assessments.index') }}#completed" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                     <div class="flex items-center gap-3">
                                         <span class="material-symbols-outlined text-blue-600">quiz</span>
                                         <span>My Assessments</span>
@@ -196,18 +196,6 @@
                                         <span class="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $postsCount }}</span>
                                     @endif
                                 </a>
-                                <a href="{{ route('campaigns.index') }}" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                    <div class="flex items-center gap-3">
-                                        <span class="material-symbols-outlined text-orange-600">campaign</span>
-                                        <span>My Campaigns</span>
-                                    </div>
-                                    @php
-                                        $campaignsCount = auth()->user()->campaignParticipations()->count();
-                                    @endphp
-                                    @if($campaignsCount > 0)
-                                        <span class="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $campaignsCount }}</span>
-                                    @endif
-                                </a>
                                 @if(auth()->user()->role !== 'user')
                                     <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
                                     <!-- Admin/Counselor Menu -->
@@ -217,16 +205,6 @@
                                     </a>
                                 @endif
                                 <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
-                                <!-- Notifications -->
-                                <a href="{{ route('notifications.index') }}" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                    <div class="flex items-center gap-3">
-                                        <span class="material-symbols-outlined text-blue-600">notifications</span>
-                                        <span>Notifications</span>
-                                    </div>
-                                    @if($unreadCount > 0)
-                                        <span class="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $unreadCount > 99 ? '99+' : $unreadCount }}</span>
-                                    @endif
-                                </a>
                                 <button onclick="openProfileModal()" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors w-full text-left">
                                     <span class="material-symbols-outlined text-blue-600">person</span>
                                     <span>Profile Settings</span>

@@ -293,13 +293,6 @@
                                     <p class="text-xs text-gray-600 dark:text-gray-400">Keep your identity confidential</p>
                                 </div>
                             </label>
-                            <label class="flex items-start p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-all">
-                                <input type="checkbox" name="follow_up" value="1" class="mt-0.5 text-primary focus:ring-primary rounded">
-                                <div class="ml-2">
-                                    <span class="font-medium text-gray-900 dark:text-white text-sm">Follow-up Sessions</span>
-                                    <p class="text-xs text-gray-600 dark:text-gray-400">Schedule regular sessions</p>
-                                </div>
-                            </label>
                         </div>
                     </div>
                 </div>
