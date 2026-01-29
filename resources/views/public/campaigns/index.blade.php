@@ -91,7 +91,7 @@
             </div>
             
             <!-- Active Campaigns Grid -->
-            <div id="active-campaigns-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div id="active-campaigns-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                 @if(isset($activeCampaigns) && $activeCampaigns->count() > 0)
                     @foreach($activeCampaigns as $campaign)
                 <article class="group bg-gray-50 dark:bg-gray-800/50 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:border-primary/30 transform hover:-translate-y-1">
@@ -99,14 +99,14 @@
                 <div class="relative overflow-hidden">
                     @if($campaign->banner_image)
                         <img src="{{ $campaign->banner_url }}" alt="{{ $campaign->title }}" 
-                             class="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-110">
+                             class="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-110">
                     @else
-                        <div class="w-full h-64 bg-gradient-to-br from-primary/20 to-green-500/20 flex items-center justify-center">
+                        <div class="w-full h-48 bg-gradient-to-br from-primary/20 to-green-500/20 flex items-center justify-center">
                             <div class="text-center">
-                                <div class="w-16 h-16 bg-primary/30 rounded-full flex items-center justify-center mb-3 mx-auto">
-                                    <span class="material-symbols-outlined text-primary !text-2xl">campaign</span>
+                                <div class="w-12 h-12 bg-primary/30 rounded-full flex items-center justify-center mb-2 mx-auto">
+                                    <span class="material-symbols-outlined text-primary !text-xl">campaign</span>
                                 </div>
-                                <p class="text-[#111816] dark:text-white font-semibold">{{ $campaign->title }}</p>
+                                <p class="text-[#111816] dark:text-white font-semibold text-sm">{{ $campaign->title }}</p>
                             </div>
                         </div>
                     @endif
@@ -131,46 +131,43 @@
                     
                     <!-- Hover Action -->
                     <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div class="bg-primary/90 backdrop-blur-sm rounded-full p-4 transform scale-75 group-hover:scale-100 transition-transform duration-300 shadow-2xl">
-                            <span class="material-symbols-outlined text-white !text-2xl">arrow_forward</span>
+                        <div class="bg-primary/90 backdrop-blur-sm rounded-full p-3 transform scale-75 group-hover:scale-100 transition-transform duration-300 shadow-2xl">
+                            <span class="material-symbols-outlined text-white !text-xl">arrow_forward</span>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Content -->
-                <div class="p-8">
+                <div class="p-6">
                     <!-- Title -->
-                    <h3 class="text-2xl font-bold text-[#111816] dark:text-white mb-3 group-hover:text-primary dark:group-hover:text-primary transition-colors duration-200">
+                    <h3 class="text-xl font-bold text-[#111816] dark:text-white mb-3 group-hover:text-primary dark:group-hover:text-primary transition-colors duration-200 line-clamp-2">
                         {{ $campaign->title }}
                     </h3>
                     
                     <!-- Description -->
-                    <p class="text-[#61897c] dark:text-gray-400 leading-relaxed mb-6">
-                        {{ Str::limit($campaign->description, 150) }}
+                    <p class="text-[#61897c] dark:text-gray-400 leading-relaxed mb-4 text-sm line-clamp-3">
+                        {{ Str::limit($campaign->description, 120) }}
                     </p>
                     
                     <!-- Campaign Details -->
-                    <div class="flex items-center justify-between mb-6 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
+                    <div class="flex items-center justify-between mb-4 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
                         <div class="flex items-center gap-2 text-[#61897c] dark:text-gray-400">
                             <span class="material-symbols-outlined !text-lg">calendar_today</span>
-                            <span class="text-sm font-medium">
-                                {{ $campaign->start_date->format('M d') }} - {{ $campaign->end_date->format('M d, Y') }}
+                            <span class="text-xs font-medium">
+                                {{ $campaign->start_date->format('M d') }} - {{ $campaign->end_date->format('M d') }}
                                 @if($campaign->start_time)
                                     <br><span class="flex items-center gap-1 mt-1">
-                                        <span class="material-symbols-outlined !text-sm">schedule</span>
+                                        <span class="material-symbols-outlined !text-xs">schedule</span>
                                         {{ \Carbon\Carbon::parse($campaign->start_time)->format('g:i A') }}
-                                        @if($campaign->end_time)
-                                            - {{ \Carbon\Carbon::parse($campaign->end_time)->format('g:i A') }}
-                                        @endif
                                     </span>
                                 @endif
                             </span>
                         </div>
-                        <div class="flex items-center gap-2 text-[#61897c] dark:text-gray-400">
+                        <div class="flex items-center gap-1 text-[#61897c] dark:text-gray-400">
                             <span class="material-symbols-outlined !text-lg">schedule</span>
-                            <span class="text-sm font-medium">
+                            <span class="text-xs font-medium">
                                 @if($campaign->end_date && $campaign->end_date->isFuture())
-                                    {{ $campaign->end_date->diffInDays(now()) }} days left
+                                    {{ $campaign->end_date->diffInDays(now()) }}d left
                                 @else
                                     Ongoing
                                 @endif
@@ -179,16 +176,16 @@
                     </div>
                     
                     <!-- Action Buttons -->
-                    <div class="flex gap-3">
+                    <div class="flex gap-2">
                         <a href="{{ route('campaigns.show', $campaign) }}" 
-                           class="flex-1 bg-gradient-to-r from-primary to-green-500 text-white text-center py-4 rounded-xl font-bold hover:from-primary/90 hover:to-green-500/90 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                           class="flex-1 bg-gradient-to-r from-primary to-green-500 text-white text-center py-3 rounded-xl font-semibold hover:from-primary/90 hover:to-green-500/90 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-sm">
                             <span class="flex items-center justify-center gap-2">
                                 <span class="material-symbols-outlined !text-lg">info</span>
                                 Learn More
                             </span>
                         </a>
                         <a href="{{ route('campaigns.show', $campaign) }}" 
-                           class="px-4 py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-[#61897c] dark:text-gray-400 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-all duration-200">
+                           class="px-3 py-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-[#61897c] dark:text-gray-400 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-primary dark:hover:text-primary transition-all duration-200">
                             <span class="material-symbols-outlined !text-lg">contact_support</span>
                         </a>
                     </div>

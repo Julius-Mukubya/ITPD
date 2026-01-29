@@ -53,127 +53,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Statistics Cards -->
-        <div>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                <span class="material-symbols-outlined text-emerald-600">analytics</span>
-                Your Session Statistics
-            </h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Pending Requests -->
-                <div class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg hover:shadow-yellow-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-yellow-500 to-yellow-600"></div>
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-2">
-                            <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm font-semibold uppercase tracking-wide">Pending Requests</p>
-                        </div>
-                        <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-800/20 rounded-xl p-2 group-hover:scale-110 transition-transform duration-300">
-                            <span class="material-symbols-outlined text-xl text-yellow-600 dark:text-yellow-400">pending</span>
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $pendingSessions ?? 0 }}</p>
-                        <div class="flex items-center">
-                            <div class="flex items-center bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded-full">
-                                <span class="material-symbols-outlined text-xs mr-1 text-yellow-600">schedule</span>
-                                <span class="text-xs font-medium text-yellow-600">Awaiting Response</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Active Sessions -->
-                <div class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-emerald-600"></div>
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-2">
-                            <div class="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm font-semibold uppercase tracking-wide">Active Sessions</p>
-                        </div>
-                        <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 rounded-xl p-2 group-hover:scale-110 transition-transform duration-300">
-                            <span class="material-symbols-outlined text-xl text-emerald-600 dark:text-emerald-400">psychology</span>
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $activeSessions ?? 0 }}</p>
-                        <div class="flex items-center">
-                            <div class="flex items-center bg-emerald-50 dark:bg-emerald-900/20 px-2 py-1 rounded-full">
-                                <span class="material-symbols-outlined text-xs mr-1 text-emerald-600">support_agent</span>
-                                <span class="text-xs font-medium text-emerald-600">In Progress</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Completed -->
-                <div class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg hover:shadow-teal-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-teal-500 to-teal-600"></div>
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-2">
-                            <div class="w-2 h-2 bg-teal-500 rounded-full"></div>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm font-semibold uppercase tracking-wide">Completed</p>
-                        </div>
-                        <div class="bg-gradient-to-br from-teal-50 to-teal-100 dark:from-teal-900/20 dark:to-teal-800/20 rounded-xl p-2 group-hover:scale-110 transition-transform duration-300">
-                            <span class="material-symbols-outlined text-xl text-teal-600 dark:text-teal-400">check_circle</span>
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $completedSessions ?? 0 }}</p>
-                        <div class="flex items-center">
-                            <div class="flex items-center bg-teal-50 dark:bg-teal-900/20 px-2 py-1 rounded-full">
-                                <span class="material-symbols-outlined text-xs mr-1 text-teal-600">done_all</span>
-                                <span class="text-xs font-medium text-teal-600">Finished</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                <span class="material-symbols-outlined text-emerald-600">bolt</span>
-                Quick Actions
-            </h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden cursor-pointer" onclick="openRequestModal()">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-emerald-600"></div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex-1">
-                            <div class="flex items-center gap-2 mb-2">
-                                <div class="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                                <p class="text-gray-600 dark:text-gray-400 text-xs font-semibold uppercase tracking-wide">New Session</p>
-                            </div>
-                            <p class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-emerald-600 transition-colors">Request Counseling</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Get professional support</p>
-                        </div>
-                        <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 rounded-xl p-3 group-hover:scale-110 transition-transform duration-300">
-                            <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-2xl">add_circle</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="group bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg hover:shadow-red-500/10 transition-all duration-300 hover:-translate-y-1 relative overflow-hidden cursor-pointer" onclick="document.getElementById('emergencyModal').classList.remove('hidden')">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-red-600"></div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex-1">
-                            <div class="flex items-center gap-2 mb-2">
-                                <div class="w-2 h-2 bg-red-500 rounded-full"></div>
-                                <p class="text-gray-600 dark:text-gray-400 text-xs font-semibold uppercase tracking-wide">Emergency</p>
-                            </div>
-                            <p class="text-xl font-bold text-gray-900 dark:text-white group-hover:text-red-600 transition-colors">Crisis Support</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Immediate assistance</p>
-                        </div>
-                        <div class="bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20 rounded-xl p-3 group-hover:scale-110 transition-transform duration-300">
-                            <span class="material-symbols-outlined text-red-600 dark:text-red-400 text-2xl">emergency</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -186,29 +65,28 @@
                 Your Sessions
             </h2>
             
-            <!-- Filter Buttons -->
-            <div class="flex items-center gap-2 flex-wrap">
-                <button onclick="filterSessions('all')" class="filter-btn active bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-4 py-2 rounded-xl font-semibold text-sm transition-all hover:shadow-lg hover:shadow-emerald-500/30 duration-200" data-filter="all">
-                    All Sessions
+            <div class="flex items-center gap-4">
+                <!-- Request Session Button -->
+                <button onclick="openRequestModal()" class="bg-gradient-to-r from-primary to-green-500 text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:shadow-lg hover:shadow-primary/30 transition-all duration-200 transform hover:scale-105 flex items-center gap-2">
+                    <span class="material-symbols-outlined !text-lg">add_circle</span>
+                    Request Session
                 </button>
-                <button onclick="filterSessions('pending')" class="filter-btn bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-xl font-medium text-sm transition-all hover:border-yellow-500 hover:text-yellow-600 hover:shadow-md" data-filter="pending">
-                    <span class="flex items-center gap-1">
-                        <span class="material-symbols-outlined text-sm">pending</span>
+                
+                <!-- Filter Buttons -->
+                <div class="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl">
+                    <button onclick="filterSessions('all')" class="filter-btn px-4 py-2 rounded-lg bg-primary text-white font-semibold text-sm transition-all duration-200 transform hover:scale-105 shadow-sm" data-filter="all">
+                        All Sessions
+                    </button>
+                    <button onclick="filterSessions('pending')" class="filter-btn px-4 py-2 rounded-lg text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white font-medium text-sm transition-colors" data-filter="pending">
                         Pending
-                    </span>
-                </button>
-                <button onclick="filterSessions('active')" class="filter-btn bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-xl font-medium text-sm transition-all hover:border-emerald-500 hover:text-emerald-600 hover:shadow-md" data-filter="active">
-                    <span class="flex items-center gap-1">
-                        <span class="material-symbols-outlined text-sm">psychology</span>
+                    </button>
+                    <button onclick="filterSessions('active')" class="filter-btn px-4 py-2 rounded-lg text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white font-medium text-sm transition-colors" data-filter="active">
                         Active
-                    </span>
-                </button>
-                <button onclick="filterSessions('completed')" class="filter-btn bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-xl font-medium text-sm transition-all hover:border-teal-500 hover:text-teal-600 hover:shadow-md" data-filter="completed">
-                    <span class="flex items-center gap-1">
-                        <span class="material-symbols-outlined text-sm">check_circle</span>
+                    </button>
+                    <button onclick="filterSessions('completed')" class="filter-btn px-4 py-2 rounded-lg text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white font-medium text-sm transition-colors" data-filter="completed">
                         Completed
-                    </span>
-                </button>
+                    </button>
+                </div>
             </div>
         </div>
         
@@ -584,11 +462,11 @@ function filterSessions(status) {
     // Update button styles
     filterBtns.forEach(btn => {
         if (btn.dataset.filter === status) {
-            btn.classList.remove('bg-white', 'dark:bg-gray-800', 'border', 'border-gray-200', 'dark:border-gray-700', 'text-gray-700', 'dark:text-gray-300');
-            btn.classList.add('bg-gradient-to-r', 'from-emerald-500', 'to-teal-600', 'text-white', 'active');
+            btn.classList.remove('text-[#61897c]', 'dark:text-gray-400', 'hover:text-[#111816]', 'dark:hover:text-white');
+            btn.classList.add('bg-primary', 'text-white', 'font-semibold', 'shadow-sm');
         } else {
-            btn.classList.remove('bg-gradient-to-r', 'from-emerald-500', 'to-teal-600', 'text-white', 'active');
-            btn.classList.add('bg-white', 'dark:bg-gray-800', 'border', 'border-gray-200', 'dark:border-gray-700', 'text-gray-700', 'dark:text-gray-300');
+            btn.classList.remove('bg-primary', 'text-white', 'font-semibold', 'shadow-sm');
+            btn.classList.add('text-[#61897c]', 'dark:text-gray-400', 'hover:text-[#111816]', 'dark:hover:text-white');
         }
     });
     

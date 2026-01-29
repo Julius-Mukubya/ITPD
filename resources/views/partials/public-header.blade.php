@@ -63,6 +63,14 @@
                                         <div class="font-medium">Request Session</div>
                                     </div>
                                 </a>
+                            @else
+                                <div class="border-t border-gray-200 dark:border-gray-600 my-2"></div>
+                                <button onclick="openLoginModal()" class="block w-full px-4 py-3 text-sm text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined">login</span>
+                                        <div class="font-medium">Login to Request Session</div>
+                                    </div>
+                                </button>
                             @endauth
                         </div>
                     </div>
@@ -237,6 +245,8 @@
                         @auth
                             <a class="block text-primary hover:text-primary/80 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" href="{{ route('public.counseling.sessions') }}">My Sessions</a>
                             <a class="block text-primary font-medium px-4 py-2 rounded-lg hover:bg-primary/10 transition-colors" href="{{ route('public.counseling.sessions') }}">Request Session</a>
+                        @else
+                            <button onclick="openLoginModal(); toggleMobileSidebar();" class="block w-full text-left text-primary font-medium px-4 py-2 rounded-lg hover:bg-primary/10 transition-colors">Login to Request Session</button>
                         @endauth
                     </div>
                 </div>
