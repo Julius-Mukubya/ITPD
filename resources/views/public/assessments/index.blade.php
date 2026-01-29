@@ -133,6 +133,28 @@
                                 5-15 min
                             </div>
                         </div>
+                        
+                        @auth
+                            @php
+                                $userAttempt = $completedAssessments->get($assessment->id);
+                            @endphp
+                            @if($userAttempt)
+                                <!-- Completion Badge -->
+                                <div class="absolute bottom-4 left-4">
+                                    <div class="flex items-center gap-1 bg-green-500/90 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-semibold text-white">
+                                        <span class="material-symbols-outlined !text-sm">check_circle</span>
+                                        Completed
+                                    </div>
+                                </div>
+                                
+                                <!-- Last Taken Date -->
+                                <div class="absolute bottom-4 right-4">
+                                    <div class="bg-black/60 backdrop-blur-sm px-2 py-1 rounded text-xs text-white">
+                                        {{ $userAttempt->taken_at->format('M j, Y') }}
+                                    </div>
+                                </div>
+                            @endif
+                        @endauth
                     </div>
                     
                     <!-- Content Section -->
@@ -148,13 +170,34 @@
                         <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
                             <span class="material-symbols-outlined !text-base">quiz</span>
                             <span>{{ $assessment->questions->count() }} questions</span>
+                            @auth
+                                @if($userAttempt)
+                                    <span class="text-green-600 dark:text-green-400 font-semibold ml-2">
+                                        • Last score: {{ $userAttempt->total_score ?? 'N/A' }}
+                                    </span>
+                                @endif
+                            @endauth
                         </div>
                         
                         <!-- Start Link -->
-                        <a href="{{ route('public.assessments.show', $assessment->type) }}" class="flex items-center justify-center gap-2 text-primary font-semibold text-sm group-hover:gap-3 transition-all">
-                            <span>Start Assessment</span>
-                            <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                        </a>
+                        @auth
+                            @if($userAttempt)
+                                <a href="{{ route('public.assessments.show', $assessment->type) }}" class="flex items-center justify-center gap-2 text-primary font-semibold text-sm group-hover:gap-3 transition-all">
+                                    <span>Retake Assessment</span>
+                                    <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">refresh</span>
+                                </a>
+                            @else
+                                <a href="{{ route('public.assessments.show', $assessment->type) }}" class="flex items-center justify-center gap-2 text-primary font-semibold text-sm group-hover:gap-3 transition-all">
+                                    <span>Start Assessment</span>
+                                    <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                </a>
+                            @endif
+                        @else
+                            <a href="{{ route('public.assessments.show', $assessment->type) }}" class="flex items-center justify-center gap-2 text-primary font-semibold text-sm group-hover:gap-3 transition-all">
+                                <span>Start Assessment</span>
+                                <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                            </a>
+                        @endauth
                     </div>
                 </article>
                 @endforeach

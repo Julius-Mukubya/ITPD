@@ -103,7 +103,19 @@ class PublicAssessmentController extends Controller
         // Get assessments from database
         $assessments = Assessment::active()->with('questions')->get();
         
-        return view('public.assessments.index', compact('assessments'));
+        // Get user's completed assessments if authenticated
+        $completedAssessments = [];
+        if (auth()->check()) {
+            $completedAssessments = auth()->user()->assessmentAttempts()
+                ->with('assessment')
+                ->get()
+                ->groupBy('assessment_id')
+                ->map(function ($attempts) {
+                    return $attempts->sortByDesc('taken_at')->first();
+                });
+        }
+        
+        return view('public.assessments.index', compact('assessments', 'completedAssessments'));
     }
 
     public function show($type)
