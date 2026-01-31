@@ -40,6 +40,10 @@
 </head>
 <body class="bg-background-light dark:bg-background-dark font-display">
     @yield('content')
+    
+    <!-- Toast Notifications -->
+    @include('components.toast-notifications')
+    
     @stack('scripts')
 </body>
 </html>

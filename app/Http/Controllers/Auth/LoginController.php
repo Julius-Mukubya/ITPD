@@ -24,6 +24,9 @@ class LoginController extends Controller
 
             $user = Auth::user();
             
+            // Add success flash message for toast display on destination page
+            $request->session()->flash('success', 'Login successful! Welcome back, ' . $user->name . '.');
+            
             // Determine redirect URL based on user role
             if ($user->role === 'admin') {
                 $redirectUrl = route('admin.dashboard');

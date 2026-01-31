@@ -12,6 +12,11 @@ use App\Http\Controllers\{
     PublicCounselingController,
     PublicForumController
 };
+use App\Http\Controllers\Auth\{
+    LoginController as AuthLoginController,
+    RegisterController as AuthRegisterController,
+    LogoutController as AuthLogoutController
+};
 use App\Http\Controllers\Student\{
     AssessmentController as StudentAssessmentController,
     CounselingController as StudentCounselingController,
@@ -27,8 +32,6 @@ use App\Http\Controllers\Admin\{
     SettingsController as AdminSettingsController
 };
 use App\Http\Controllers\Counselor\SessionController as CounselorSessionController;
-use App\Http\Controllers\Auth\LoginController as AuthLoginController;
-use App\Http\Controllers\Auth\RegisterController as AuthRegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +56,12 @@ Route::get('/csrf-token', function () {
 // AJAX Authentication Routes
 Route::post('/ajax/login', [AuthLoginController::class, 'ajaxLogin'])->name('ajax.login');
 Route::post('/ajax/register', [AuthRegisterController::class, 'ajaxRegister'])->name('ajax.register');
+
+// Regular Authentication Routes
+Route::post('/register', [AuthRegisterController::class, 'register'])->name('register');
+
+// Custom logout route with toast message
+Route::post('/logout', [AuthLogoutController::class, 'logout'])->name('logout')->middleware('auth');
 
 // Public Content Routes
 Route::prefix('content')->name('content.')->group(function () {

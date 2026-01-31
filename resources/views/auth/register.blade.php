@@ -49,7 +49,7 @@
                             </div>
                         @endif
 
-                        <form method="POST" action="{{ route('register') }}" class="space-y-6">
+                        <form method="POST" action="{{ route('register') }}" class="space-y-6" enctype="multipart/form-data">
                             @csrf
 
                             <!-- Name Field -->
@@ -65,6 +65,34 @@
                                        autofocus
                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
                                        placeholder="Enter your full name">
+                            </div>
+
+                            <!-- Profile Picture Field -->
+                            <div>
+                                <label for="avatar" class="block text-sm font-medium text-[#111816] dark:text-white mb-2">
+                                    Profile Picture (Optional)
+                                </label>
+                                <div class="flex items-center gap-4">
+                                    <!-- Avatar Preview -->
+                                    <div class="relative">
+                                        <div id="pageAvatarPreview" class="w-16 h-16 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-600 dark:to-gray-700 flex items-center justify-center overflow-hidden border-2 border-gray-300 dark:border-gray-600">
+                                            <span class="material-symbols-outlined text-2xl text-gray-500 dark:text-gray-400">person</span>
+                                        </div>
+                                        <div class="absolute bottom-0 right-0 bg-primary rounded-full p-1 shadow-lg">
+                                            <span class="material-symbols-outlined text-white text-xs">photo_camera</span>
+                                        </div>
+                                    </div>
+                                    <!-- Upload Button -->
+                                    <div class="flex-1">
+                                        <input type="file" id="avatar" name="avatar" accept="image/*" class="hidden" onchange="previewPageAvatar(this)">
+                                        <button type="button" onclick="document.getElementById('avatar').click()" 
+                                                class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center gap-2">
+                                            <span class="material-symbols-outlined text-sm">upload</span>
+                                            Choose Photo
+                                        </button>
+                                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">JPG, PNG or GIF. Max size 2MB</p>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Email Field -->
@@ -178,4 +206,42 @@
         </div>
     </div>
 </div>
+
+<script>
+function previewPageAvatar(input) {
+    const file = input.files[0];
+    const preview = document.getElementById('pageAvatarPreview');
+    
+    if (file) {
+        // Validate file size (2MB)
+        if (file.size > 2 * 1024 * 1024) {
+            alert('File size must be less than 2MB');
+            input.value = '';
+            resetPageAvatarPreview();
+            return;
+        }
+        
+        // Validate file type
+        if (!file.type.match(/^image\/(jpeg|jpg|png|gif)$/)) {
+            alert('Please select a valid image file (JPG, PNG, or GIF)');
+            input.value = '';
+            resetPageAvatarPreview();
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.innerHTML = `<img src="${e.target.result}" alt="Avatar Preview" class="w-full h-full object-cover">`;
+        };
+        reader.readAsDataURL(file);
+    } else {
+        resetPageAvatarPreview();
+    }
+}
+
+function resetPageAvatarPreview() {
+    const preview = document.getElementById('pageAvatarPreview');
+    preview.innerHTML = '<span class="material-symbols-outlined text-2xl text-gray-500 dark:text-gray-400">person</span>';
+}
+</script>
 @endsection

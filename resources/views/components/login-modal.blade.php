@@ -14,34 +14,9 @@
 
         <!-- Modal Body -->
         <div class="p-4">
-            <!-- Error Messages Container -->
-            <div id="loginErrors" class="hidden mb-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <span class="material-symbols-outlined text-red-400 text-lg">error</span>
-                    </div>
-                    <div class="ml-2">
-                        <h3 class="text-xs font-medium text-red-800 dark:text-red-200">
-                            There were some errors with your submission
-                        </h3>
-                        <div id="loginErrorsList" class="mt-1 text-xs text-red-700 dark:text-red-300">
-                            <ul class="list-disc list-inside space-y-1"></ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- Error Messages Container - REMOVED, using toasts instead -->
 
-            <!-- Success Message Container -->
-            <div id="loginSuccess" class="hidden mb-3 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <span class="material-symbols-outlined text-green-400 text-lg">check_circle</span>
-                    </div>
-                    <div class="ml-2">
-                        <p id="loginSuccessMessage" class="text-xs font-medium text-green-800 dark:text-green-200"></p>
-                    </div>
-                </div>
-            </div>
+            <!-- Success Message Container - REMOVED, using toasts instead -->
 
             <form id="loginForm" class="space-y-4">
 
@@ -137,9 +112,6 @@ function closeLoginModal() {
     document.body.style.overflow = 'auto';
     // Clear form
     document.getElementById('loginForm').reset();
-    // Hide messages
-    document.getElementById('loginErrors').classList.add('hidden');
-    document.getElementById('loginSuccess').classList.add('hidden');
 }
 
 function switchToSignup() {
@@ -169,17 +141,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const submitBtn = document.getElementById('loginSubmitBtn');
         const btnText = document.getElementById('loginBtnText');
         const btnLoading = document.getElementById('loginBtnLoading');
-        const errorsDiv = document.getElementById('loginErrors');
-        const successDiv = document.getElementById('loginSuccess');
         
         // Show loading state
         submitBtn.disabled = true;
         btnText.classList.add('hidden');
         btnLoading.classList.remove('hidden');
-        
-        // Hide previous messages
-        errorsDiv.classList.add('hidden');
-        successDiv.classList.add('hidden');
         
         try {
             const formData = new FormData(this);
@@ -200,8 +166,10 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('Response data:', data);
             
             if (response.ok) {
-                // Success - redirect to intended page or dashboard
-                console.log('Login successful, redirecting...');
+                // Success - close modal and redirect immediately (toast will show on destination page)
+                closeLoginModal();
+                
+                // Redirect immediately to avoid showing toast on wrong page
                 if (data.redirect) {
                     window.location.href = data.redirect;
                 } else {
@@ -210,28 +178,19 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 // Handle validation errors
                 if (data.errors) {
-                    const errorsList = document.querySelector('#loginErrorsList ul');
-                    errorsList.innerHTML = '';
-                    
+                    // Show each error as a separate toast
                     Object.values(data.errors).flat().forEach(error => {
-                        const li = document.createElement('li');
-                        li.textContent = error;
-                        errorsList.appendChild(li);
+                        showToast(error, 'error');
                     });
-                    
-                    errorsDiv.classList.remove('hidden');
                 } else if (data.message) {
-                    const errorsList = document.querySelector('#loginErrorsList ul');
-                    errorsList.innerHTML = `<li>${data.message}</li>`;
-                    errorsDiv.classList.remove('hidden');
+                    // Handle other error messages
+                    showToast(data.message, 'error');
                 }
             }
         } catch (error) {
             console.error('Login error:', error);
-            // Show generic error
-            const errorsList = document.querySelector('#loginErrorsList ul');
-            errorsList.innerHTML = '<li>An error occurred. Please try again.</li>';
-            errorsDiv.classList.remove('hidden');
+            // Show generic error toast
+            showToast('An error occurred. Please try again.', 'error');
         } finally {
             // Reset loading state
             submitBtn.disabled = false;
