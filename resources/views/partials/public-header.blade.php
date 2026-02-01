@@ -196,6 +196,20 @@
                                         <span class="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $postsCount }}</span>
                                     @endif
                                 </a>
+                                <a href="{{ route('content.index', ['bookmarked' => 1]) }}#resources" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined text-orange-600">bookmark</span>
+                                        <span>My Bookmarks</span>
+                                    </div>
+                                    @php
+                                        $bookmarksCount = auth()->user()->bookmarks()
+                                            ->where('bookmarkable_type', \App\Models\EducationalContent::class)
+                                            ->count();
+                                    @endphp
+                                    @if($bookmarksCount > 0)
+                                        <span class="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $bookmarksCount }}</span>
+                                    @endif
+                                </a>
                                 @if(auth()->user()->role !== 'user')
                                     <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
                                     <!-- Admin/Counselor Menu -->
@@ -290,6 +304,23 @@
                     <span class="material-symbols-outlined">forum</span>
                     <span class="font-medium">Community Forum</span>
                 </a>
+                
+                @auth
+                    <a class="flex items-center justify-between text-primary hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary/80 px-4 py-3 rounded-lg transition-colors" href="{{ route('content.index', ['bookmarked' => 1]) }}#resources">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined">bookmark</span>
+                            <span class="font-medium">My Bookmarks</span>
+                        </div>
+                        @php
+                            $bookmarksCount = auth()->user()->bookmarks()
+                                ->where('bookmarkable_type', \App\Models\EducationalContent::class)
+                                ->count();
+                        @endphp
+                        @if($bookmarksCount > 0)
+                            <span class="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $bookmarksCount }}</span>
+                        @endif
+                    </a>
+                @endauth
                 
                 <a class="flex items-center gap-3 text-primary hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary/80 px-4 py-3 rounded-lg transition-colors" href="{{ route('campaigns.index') }}">
                     <span class="material-symbols-outlined">campaign</span>

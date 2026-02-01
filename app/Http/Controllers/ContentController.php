@@ -11,6 +11,13 @@ class ContentController extends Controller
     {
         $query = EducationalContent::published()->with(['category', 'author']);
 
+        // Filter by bookmarks (for authenticated users)
+        if ($request->filled('bookmarked') && auth()->check()) {
+            $query->whereHas('bookmarks', function($q) {
+                $q->where('user_id', auth()->id());
+            });
+        }
+
         // Filter by category
         if ($request->filled('category')) {
             $query->where('category_id', $request->category);

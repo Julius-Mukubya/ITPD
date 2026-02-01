@@ -59,7 +59,7 @@
     <div class="flex flex-col flex-1 gap-10">
 
         <!-- Enhanced Filters Section -->
-        <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-4 sm:p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
+        <div id="filters-section" class="bg-white dark:bg-gray-800/50 rounded-2xl p-4 sm:p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
             <!-- Mobile Layout -->
             <div class="block lg:hidden space-y-4">
                 <!-- Category Filter - Full Width on Mobile -->
@@ -422,6 +422,16 @@
 
 @push('styles')
 <style>
+    /* Smooth scrolling for the entire page */
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    /* Scroll margin to account for fixed header */
+    #filters-section {
+        scroll-margin-top: 100px;
+    }
+    
     .line-clamp-1 {
         display: -webkit-box;
         -webkit-line-clamp: 1;
@@ -1117,6 +1127,47 @@ document.addEventListener('DOMContentLoaded', function() {
         card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(card);
     });
+
+    // Auto-scroll to filters section if bookmarked parameter is present
+    function scrollToFiltersIfBookmarked() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const hash = window.location.hash;
+        
+        if (urlParams.get('bookmarked') === '1' && hash === '#resources') {
+            setTimeout(() => {
+                // Find the filters section by ID
+                const filtersSection = document.getElementById('filters-section');
+                
+                if (filtersSection) {
+                    // Calculate offset for fixed header (approximately 80px) plus some padding
+                    const headerHeight = 100; // Increased to account for header + padding
+                    const elementPosition = filtersSection.getBoundingClientRect().top + window.pageYOffset;
+                    const offsetPosition = elementPosition - headerHeight;
+                    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    // Fallback to resources section with offset
+                    const resourcesSection = document.getElementById('resources');
+                    if (resourcesSection) {
+                        const headerHeight = 120; // Extra space to show filters above
+                        const elementPosition = resourcesSection.getBoundingClientRect().top + window.pageYOffset;
+                        const offsetPosition = elementPosition - headerHeight;
+                        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            }, 150); // Slightly longer delay to ensure page is fully loaded
+        }
+    }
+
+    // Call the scroll function
+    scrollToFiltersIfBookmarked();
 });
 </script>
 @endpush
