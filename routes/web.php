@@ -171,6 +171,11 @@ Route::prefix('forum')->name('public.forum.')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/content-flags', [ContentFlagController::class, 'store'])->name('content-flags.store');
     Route::delete('/content-flags', [ContentFlagController::class, 'destroy'])->name('content-flags.destroy');
+    
+    // Session Feedback Routes
+    Route::post('/sessions/{session}/feedback', [\App\Http\Controllers\SessionFeedbackController::class, 'store'])->name('sessions.feedback.store');
+    Route::put('/sessions/{session}/feedback/{feedback}', [\App\Http\Controllers\SessionFeedbackController::class, 'update'])->name('sessions.feedback.update');
+    Route::delete('/sessions/{session}/feedback/{feedback}', [\App\Http\Controllers\SessionFeedbackController::class, 'destroy'])->name('sessions.feedback.destroy');
 });
 
 // Authenticated Routes

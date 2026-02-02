@@ -73,6 +73,11 @@ class CounselingSession extends Model
         return $this->hasMany(SessionParticipant::class, 'counseling_session_id');
     }
 
+    public function feedback()
+    {
+        return $this->hasMany(SessionFeedback::class, 'counseling_session_id');
+    }
+
     // Follow-up session relationships
     public function parentSession()
     {
@@ -277,5 +282,37 @@ class CounselingSession extends Model
             default:
                 return ['text' => 'Normal', 'color' => 'gray'];
         }
+    }
+
+    // Feedback helper methods
+    public function canReceiveFeedback()
+    {
+        return $this->status === 'completed';
+    }
+
+    public function hasFeedbackFrom($userId, $feedbackType)
+    {
+        return $this->feedback()
+            ->where('user_id', $userId)
+            ->where('feedback_type', $feedbackType)
+            ->exists();
+    }
+
+    public function getFeedbackFrom($userId, $feedbackType)
+    {
+        return $this->feedback()
+            ->where('user_id', $userId)
+            ->where('feedback_type', $feedbackType)
+            ->first();
+    }
+
+    public function getStudentFeedback()
+    {
+        return $this->feedback()->studentToCounselor()->first();
+    }
+
+    public function getCounselorFeedback()
+    {
+        return $this->feedback()->counselorToStudent()->first();
     }
 }

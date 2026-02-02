@@ -232,6 +232,24 @@
                         {{ ucfirst($session->status) }}
                     </span>
                     
+                    @if($session->status === 'completed')
+                        @php
+                            $userFeedbackType = $session->student_id === auth()->id() ? 'student_to_counselor' : 'counselor_to_student';
+                            $hasFeedback = $session->hasFeedbackFrom(auth()->id(), $userFeedbackType);
+                        @endphp
+                        @if($hasFeedback)
+                        <span class="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 flex items-center gap-1">
+                            <span class="material-symbols-outlined !text-xs">rate_review</span>
+                            Feedback Given
+                        </span>
+                        @else
+                        <span class="px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300 flex items-center gap-1">
+                            <span class="material-symbols-outlined !text-xs">rate_review</span>
+                            Feedback Pending
+                        </span>
+                        @endif
+                    @endif
+                    
                     @if($session->status === 'active' && (!$isGroupParticipant || $participantStatus === 'joined'))
                     <a href="{{ route('student.counseling.show', $session) }}" class="bg-primary text-white px-4 py-2 rounded-lg hover:opacity-90 text-sm font-medium">
                         Continue
@@ -240,6 +258,20 @@
                     <a href="{{ route('student.counseling.show', $session) }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:opacity-90 text-sm font-medium">
                         View
                     </a>
+                    @elseif($session->status === 'completed')
+                        @php
+                            $userFeedbackType = $session->student_id === auth()->id() ? 'student_to_counselor' : 'counselor_to_student';
+                            $hasFeedback = $session->hasFeedbackFrom(auth()->id(), $userFeedbackType);
+                        @endphp
+                        <a href="{{ route('student.counseling.show', $session) }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:opacity-90 text-sm font-medium">
+                            View Details
+                        </a>
+                        @if(!$hasFeedback)
+                        <button onclick="openFeedbackModal({{ $session->id }})" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-4 py-2 rounded-lg hover:from-emerald-600 hover:to-teal-700 transition-all text-sm font-medium flex items-center gap-1">
+                            <span class="material-symbols-outlined !text-sm">rate_review</span>
+                            Leave Feedback
+                        </button>
+                        @endif
                     @endif
                 </div>
             </div>
@@ -272,6 +304,7 @@
 
 <!-- Emergency Support Modal -->
 @include('components.crisis-support-modal')
+@include('components.session-feedback-modal')
 
 <!-- Info Modal -->
 <div id="infoModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">

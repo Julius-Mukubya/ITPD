@@ -133,6 +133,73 @@
             <p class="text-xs text-purple-700 dark:text-purple-300">Student requested anonymity.</p>
         </div>
         @endif
+
+        <!-- Session Feedback -->
+        @if($session->status === 'completed')
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 mt-4">
+            <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-600 text-sm">rate_review</span>
+                Session Feedback
+            </h3>
+            
+            @php
+                $studentFeedback = $session->getStudentFeedback();
+                $counselorFeedback = $session->getCounselorFeedback();
+                $userFeedback = $session->getFeedbackFrom(auth()->id(), 'counselor_to_student');
+            @endphp
+            
+            <!-- Counselor's Feedback -->
+            @if($userFeedback)
+            <div class="mb-3 p-3 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg">
+                <div class="flex items-start justify-between mb-1">
+                    <h4 class="font-semibold text-emerald-900 dark:text-emerald-100 text-xs">Your Feedback</h4>
+                    @if($userFeedback->rating)
+                    <div class="text-yellow-500 text-xs">{{ $userFeedback->rating_stars }}</div>
+                    @endif
+                </div>
+                <p class="text-emerald-800 dark:text-emerald-200 text-xs">{{ Str::limit($userFeedback->feedback_text, 100) }}</p>
+                <p class="text-xs text-emerald-600 dark:text-emerald-400 mt-1">
+                    {{ $userFeedback->created_at->diffForHumans() }}
+                </p>
+            </div>
+            @else
+            <div class="mb-3 p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg">
+                <div class="text-center">
+                    <span class="material-symbols-outlined text-gray-400 text-lg mb-1 block">rate_review</span>
+                    <p class="text-gray-600 dark:text-gray-400 text-xs mb-2">Share feedback about this session</p>
+                    <button onclick="openFeedbackModal({{ $session->id }})" 
+                        class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-3 py-1.5 rounded-lg font-semibold hover:from-emerald-600 hover:to-teal-700 transition-all flex items-center gap-1 text-xs mx-auto">
+                        <span class="material-symbols-outlined text-xs">add</span>
+                        Add Feedback
+                    </button>
+                </div>
+            </div>
+            @endif
+            
+            <!-- Student's Feedback -->
+            @if($studentFeedback)
+            <div class="p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                <div class="flex items-start justify-between mb-1">
+                    <h4 class="font-semibold text-blue-900 dark:text-blue-100 text-xs">Student's Feedback</h4>
+                    @if($studentFeedback->rating)
+                    <div class="text-yellow-500 text-xs">{{ $studentFeedback->rating_stars }}</div>
+                    @endif
+                </div>
+                <p class="text-blue-800 dark:text-blue-200 text-xs">{{ Str::limit($studentFeedback->feedback_text, 100) }}</p>
+                <p class="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                    From {{ $studentFeedback->author_name }} • {{ $studentFeedback->created_at->diffForHumans() }}
+                </p>
+            </div>
+            @else
+            <div class="p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg">
+                <div class="text-center">
+                    <span class="material-symbols-outlined text-gray-400 text-sm mb-1 block">schedule</span>
+                    <p class="text-gray-600 dark:text-gray-400 text-xs">Waiting for student's feedback</p>
+                </div>
+            </div>
+            @endif
+        </div>
+        @endif
     </div>
 
     <!-- Chat Area -->
@@ -1662,7 +1729,25 @@ body.fullscreen-chat-active {
             </div>
         </form>
     </div>
+    @elseif($session->status === 'completed')
+    <div class="p-4 border-t border-gray-200 dark:border-gray-700 bg-green-50 dark:bg-green-900/20">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3 text-green-700 dark:text-green-300">
+                <span class="material-symbols-outlined">check_circle</span>
+                <p class="text-sm font-medium">This session has been completed.</p>
+            </div>
+            @if(!$session->hasFeedbackFrom(auth()->id(), 'counselor_to_student'))
+            <button onclick="openFeedbackModal({{ $session->id }})" 
+                class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-4 py-2 rounded-lg font-semibold hover:from-emerald-600 hover:to-teal-700 transition-all flex items-center gap-2 text-sm">
+                <span class="material-symbols-outlined text-sm">rate_review</span>
+                Leave Feedback
+            </button>
+            @endif
+        </div>
+    </div>
     @endif
 </div>
+
+@include('components.session-feedback-modal')
 
 @endsection

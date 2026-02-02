@@ -3,24 +3,23 @@
 @section('title', 'Flag Details - Admin')
 
 @section('content')
-<div class="p-6">
-    <!-- Header -->
-    <div class="flex justify-between items-center mb-6">
-        <div>
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Flag Details</h1>
-            <p class="text-gray-600 dark:text-gray-400">Review flagged content and take appropriate action</p>
-        </div>
-        <a href="{{ route('admin.content-flags.index') }}" 
-           class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
-            Back to Flags
-        </a>
+<div class="flex flex-wrap justify-between items-center gap-3 mb-6">
+    <div class="flex flex-col gap-1">
+        <p class="text-gray-900 dark:text-white text-3xl font-bold tracking-tight">Flag Details</p>
+        <p class="text-gray-500 dark:text-gray-400 text-base font-normal">Review flagged content and take appropriate action</p>
     </div>
+    <a href="{{ route('admin.content-flags.index') }}" 
+       class="bg-gray-500 text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center gap-2 hover:opacity-90">
+        <span class="material-symbols-outlined" style="font-size: 20px;">arrow_back</span>
+        Back to Flags
+    </a>
+</div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Flag Information -->
         <div class="lg:col-span-2 space-y-6">
             <!-- Flag Details Card -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+            <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Flag Information</h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -84,7 +83,7 @@
             </div>
 
             <!-- Flagged Content -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+            <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Flagged Content</h2>
                 
                 @if($flag->flaggable)
@@ -93,9 +92,7 @@
                         <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
                             <div class="flex items-start space-x-3 mb-3">
                                 <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path>
-                                    </svg>
+                                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">forum</span>
                                 </div>
                                 <div class="flex-1">
                                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ $flag->flaggable->title }}</h3>
@@ -124,9 +121,7 @@
                         <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
                             <div class="flex items-start space-x-3 mb-3">
                                 <div class="w-10 h-10 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-                                    </svg>
+                                    <span class="material-symbols-outlined text-green-600 dark:text-green-400">chat_bubble</span>
                                 </div>
                                 <div class="flex-1">
                                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Comment</h3>
@@ -147,9 +142,9 @@
                     @endif
                 @else
                     <div class="text-center py-8">
-                        <svg class="w-12 h-12 mx-auto mb-4 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                        </svg>
+                        <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="material-symbols-outlined text-4xl text-gray-400">delete</span>
+                        </div>
                         <p class="text-lg font-medium text-gray-900 dark:text-white">Content Deleted</p>
                         <p class="text-sm text-gray-500 dark:text-gray-400">The flagged content has been removed.</p>
                     </div>
@@ -161,7 +156,7 @@
         <div class="space-y-6">
             @if($flag->status === 'pending')
             <!-- Review Actions -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+            <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Review Actions</h3>
                 
                 <form method="POST" action="{{ route('admin.content-flags.update', $flag) }}">
@@ -202,7 +197,7 @@
             @endif
 
             <!-- Flag Statistics -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+            <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Content Statistics</h3>
                 
                 @if($flag->flaggable)
@@ -237,7 +232,7 @@
 
             <!-- Other Flags for Same Content -->
             @if($flag->flaggable && $flag->flaggable->flags()->where('id', '!=', $flag->id)->exists())
-            <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+            <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Other Flags</h3>
                 
                 <div class="space-y-3">
@@ -262,7 +257,6 @@
             @endif
         </div>
     </div>
-</div>
 
 <script>
 // Show/hide action field based on status selection
