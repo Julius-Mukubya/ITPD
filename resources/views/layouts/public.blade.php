@@ -173,6 +173,9 @@
     @include('components.privacy-modal')
     @include('components.terms-modal')
     
+    <!-- Flag Content Modal -->
+    @include('components.flag-content-modal')
+    
     @stack('scripts')
     
     <!-- Notification Script -->

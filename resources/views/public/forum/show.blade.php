@@ -161,6 +161,16 @@
                                 <span class="material-symbols-outlined">share</span>
                                 <span>Share</span>
                             </button>
+
+                            <!-- Flag Button -->
+                            <button onclick="openFlagModal('App\\Models\\ForumPost', {{ $post->id }})" 
+                                    data-flag-type="App\Models\ForumPost" 
+                                    data-flag-id="{{ $post->id }}"
+                                    class="flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-gray-200 dark:border-gray-600 {{ $post->isFlaggedBy(auth()->id()) ? 'text-red-600 dark:text-red-400 border-red-200 dark:border-red-800' : 'text-gray-600 dark:text-gray-400 hover:border-red-200 hover:text-red-600 dark:hover:border-red-800 dark:hover:text-red-400' }} transition-all duration-200 font-semibold"
+                                    title="{{ $post->isFlaggedBy(auth()->id()) ? 'Content flagged' : 'Flag content' }}">
+                                <span class="material-symbols-outlined">flag</span>
+                                <span>Flag</span>
+                            </button>
                         @else
                             <button onclick="openLoginModal()" class="flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-primary hover:text-primary transition-all duration-200 font-semibold">
                                 <span class="material-symbols-outlined">thumb_up</span>
@@ -317,6 +327,20 @@
                                     <div class="text-gray-700 dark:text-gray-300 leading-relaxed pl-13">
                                         {{ $comment->comment ?? $comment->content ?? '' }}
                                     </div>
+
+                                    <!-- Comment Actions -->
+                                    @auth
+                                    <div class="flex items-center gap-3 mt-3 pl-13">
+                                        <button onclick="openFlagModal('App\\Models\\ForumComment', {{ $comment->id }})" 
+                                                data-flag-type="App\Models\ForumComment" 
+                                                data-flag-id="{{ $comment->id }}"
+                                                class="flex items-center gap-1 px-2 py-1 rounded-lg text-xs {{ $comment->isFlaggedBy(auth()->id()) ? 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-600' }} transition-all duration-200"
+                                                title="{{ $comment->isFlaggedBy(auth()->id()) ? 'Comment flagged' : 'Flag comment' }}">
+                                            <span class="material-symbols-outlined !text-sm">flag</span>
+                                            <span>Flag</span>
+                                        </button>
+                                    </div>
+                                    @endauth
                                 </div>
                                 
                                 <!-- Replies -->
@@ -368,6 +392,20 @@
                                                     </div>
                                                 </div>
                                                 <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed pl-11">{{ $reply->comment ?? $reply->content ?? '' }}</p>
+                                                
+                                                <!-- Reply Actions -->
+                                                @auth
+                                                <div class="flex items-center gap-3 mt-2 pl-11">
+                                                    <button onclick="openFlagModal('App\\Models\\ForumComment', {{ $reply->id }})" 
+                                                            data-flag-type="App\Models\ForumComment" 
+                                                            data-flag-id="{{ $reply->id }}"
+                                                            class="flex items-center gap-1 px-2 py-1 rounded-lg text-xs {{ $reply->isFlaggedBy(auth()->id()) ? 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-600' }} transition-all duration-200"
+                                                            title="{{ $reply->isFlaggedBy(auth()->id()) ? 'Reply flagged' : 'Flag reply' }}">
+                                                        <span class="material-symbols-outlined !text-xs">flag</span>
+                                                        <span>Flag</span>
+                                                    </button>
+                                                </div>
+                                                @endauth
                                             </div>
                                         </div>
                                     </div>

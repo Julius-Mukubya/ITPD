@@ -10,7 +10,8 @@ use App\Http\Controllers\{
     NotificationController,
     PublicAssessmentController,
     PublicCounselingController,
-    PublicForumController
+    PublicForumController,
+    ContentFlagController
 };
 use App\Http\Controllers\Auth\{
     LoginController as AuthLoginController,
@@ -164,6 +165,12 @@ Route::prefix('forum')->name('public.forum.')->group(function () {
         Route::post('/{id}/upvote', [PublicForumController::class, 'upvote'])->name('upvote');
         Route::post('/comment/{commentId}/upvote', [PublicForumController::class, 'upvoteComment'])->name('comment.upvote');
     });
+});
+
+// Content Flagging Routes (requires auth)
+Route::middleware('auth')->group(function () {
+    Route::post('/content-flags', [ContentFlagController::class, 'store'])->name('content-flags.store');
+    Route::delete('/content-flags', [ContentFlagController::class, 'destroy'])->name('content-flags.destroy');
 });
 
 // Authenticated Routes
@@ -433,6 +440,14 @@ Route::middleware([
             Route::patch('/email/update', [AdminSettingsController::class, 'updateEmail'])->name('email.update');
             Route::patch('/security/update', [AdminSettingsController::class, 'updateSecurity'])->name('security.update');
             Route::patch('/content/update', [AdminSettingsController::class, 'updateContent'])->name('content.update');
+        });
+
+        // Content Flags Management
+        Route::prefix('content-flags')->name('content-flags.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\ContentFlagController::class, 'index'])->name('index');
+            Route::get('/{flag}', [\App\Http\Controllers\Admin\ContentFlagController::class, 'show'])->name('show');
+            Route::put('/{flag}', [\App\Http\Controllers\Admin\ContentFlagController::class, 'update'])->name('update');
+            Route::post('/bulk-update', [\App\Http\Controllers\Admin\ContentFlagController::class, 'bulkUpdate'])->name('bulk-update');
         });
     });
 });

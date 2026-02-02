@@ -144,6 +144,10 @@
                             <span class="material-symbols-outlined {{ request()->routeIs('admin.campaigns.*') ? 'text-primary' : 'text-gray-700 dark:text-gray-300' }}">campaign</span>
                             <p class="{{ request()->routeIs('admin.campaigns.*') ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300' }} text-sm font-medium leading-normal">Campaigns</p>
                         </a>
+                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('admin.content-flags.*') ? 'bg-primary/20 dark:bg-primary/30' : 'hover:bg-gray-100 dark:hover:bg-white/10' }}" href="{{ route('admin.content-flags.index') }}">
+                            <span class="material-symbols-outlined {{ request()->routeIs('admin.content-flags.*') ? 'text-primary' : 'text-gray-700 dark:text-gray-300' }}">flag</span>
+                            <p class="{{ request()->routeIs('admin.content-flags.*') ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300' }} text-sm font-medium leading-normal">Content Flags</p>
+                        </a>
                         <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('admin.reports.*') ? 'bg-primary/20 dark:bg-primary/30' : 'hover:bg-gray-100 dark:hover:bg-white/10' }}" href="{{ route('admin.reports.index') }}">
                             <span class="material-symbols-outlined {{ request()->routeIs('admin.reports.*') ? 'text-primary' : 'text-gray-700 dark:text-gray-300' }}">summarize</span>
                             <p class="{{ request()->routeIs('admin.reports.*') ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300' }} text-sm font-medium leading-normal">Reports</p>

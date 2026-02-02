@@ -289,6 +289,17 @@
                                 </div>
                             </div>
 
+                            <!-- Flag Button -->
+                            @auth
+                                <button onclick="openFlagModal('App\\Models\\ForumPost', {{ $post->id }})" 
+                                    class="flex items-center gap-1 px-2 py-1 rounded-lg transition-colors {{ $post->isFlaggedBy(auth()->id()) ? 'text-red-600 dark:text-red-400' : 'text-gray-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700' }}"
+                                    data-flag-type="App\Models\ForumPost" 
+                                    data-flag-id="{{ $post->id }}"
+                                    title="{{ $post->isFlaggedBy(auth()->id()) ? 'Content flagged' : 'Flag content' }}">
+                                    <span class="material-symbols-outlined !text-sm">flag</span>
+                                </button>
+                            @endauth
+
                             <!-- Read More -->
                             <a href="{{ route('public.forum.show', $post->id) }}" class="text-primary hover:text-primary/80 text-sm font-semibold px-3 py-1 rounded-lg hover:bg-primary/10 transition-colors">
                                 Read More →
@@ -417,6 +428,7 @@
 
 @auth
 @include('components.create-discussion-modal')
+@include('components.flag-content-modal')
 
 <!-- Floating Action Button (Mobile) -->
 <button onclick="openCreateDiscussionModal()" 

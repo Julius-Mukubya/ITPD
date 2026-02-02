@@ -52,7 +52,27 @@ class ForumComment extends Model
         return $this->morphMany(ForumUpvote::class, 'votable');
     }
 
+    public function flags()
+    {
+        return $this->morphMany(ContentFlag::class, 'flaggable');
+    }
+
     // Methods
+    public function isFlaggedBy($userId)
+    {
+        return $this->flags()->where('user_id', $userId)->exists();
+    }
+
+    public function getFlagsCountAttribute()
+    {
+        return $this->flags()->count();
+    }
+
+    public function getPendingFlagsCountAttribute()
+    {
+        return $this->flags()->pending()->count();
+    }
+
     public function isUpvotedBy($userId)
     {
         return $this->upvoteRecords()->where('user_id', $userId)->exists();
