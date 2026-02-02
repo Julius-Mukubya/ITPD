@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="relative overflow-hidden h-screen">
+<section class="relative overflow-hidden min-h-screen flex items-center">
     <!-- Background Image -->
     <div class="absolute inset-0">
         <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80" 
@@ -14,23 +14,23 @@
     </div>
     
     <!-- Content -->
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-center">
+    <div class="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
         <div class="text-center">
-            <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-semibold mb-6">
-                <span class="material-symbols-outlined !text-lg">psychology</span>
+            <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-3 sm:px-4 py-2 rounded-full text-sm font-semibold mb-4 sm:mb-6">
+                <span class="material-symbols-outlined !text-base sm:!text-lg">psychology</span>
                 Counseling Services
             </div>
-            <h1 class="text-4xl lg:text-6xl font-black text-white tracking-tight mb-6">Your Mental Health Matters</h1>
-            <p class="text-xl lg:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-8">Connect with licensed professional counselors who provide confidential, compassionate support for your mental health and wellbeing journey.</p>
-            <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+            <h1 class="text-3xl sm:text-4xl lg:text-6xl font-black text-white tracking-tight mb-4 sm:mb-6 leading-tight">Your Mental Health Matters</h1>
+            <p class="text-lg sm:text-xl lg:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-6 sm:mb-8 px-4">Connect with professional counselors who provide confidential, compassionate support for your mental health and wellbeing journey.</p>
+            <div class="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
                 @auth
-                    <a href="{{ route('public.counseling.sessions') }}" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-primary rounded-xl font-bold text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                        <span class="material-symbols-outlined !text-xl">add_circle</span>
+                    <a href="{{ route('public.counseling.sessions') }}" class="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white text-primary rounded-xl font-bold text-base sm:text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                        <span class="material-symbols-outlined !text-lg sm:!text-xl">add_circle</span>
                         Request Counseling Session
                     </a>
                 @else
-                    <button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-primary rounded-xl font-bold text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                        <span class="material-symbols-outlined !text-xl">login</span>
+                    <button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-white text-primary rounded-xl font-bold text-base sm:text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                        <span class="material-symbols-outlined !text-lg sm:!text-xl">login</span>
                         Login to Get Help
                     </button>
                 @endauth
@@ -40,36 +40,36 @@
 </section>
 
 <!-- Stats Section -->
-<div class="bg-white dark:bg-gray-800/50 border-b border-[#f0f4f3] dark:border-gray-800 py-8">
+<div class="bg-white dark:bg-gray-800/50 border-b border-[#f0f4f3] dark:border-gray-800 py-6 sm:py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col sm:flex-row gap-8 justify-center items-center">
-            <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
-                <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
-                    <span class="material-symbols-outlined text-primary !text-xl">group</span>
+        <div class="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center items-center">
+            <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400 min-h-[60px]">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-primary !text-lg sm:!text-xl">group</span>
                 </div>
-                <div class="text-left">
-                    <div class="text-2xl font-bold text-[#111816] dark:text-white">{{ $counselors->count() }}</div>
-                    <div class="text-sm font-medium">Licensed Counselors</div>
-                </div>
-            </div>
-            <div class="hidden sm:block w-1 h-12 bg-[#61897c]/20 dark:bg-gray-600"></div>
-            <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
-                <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
-                    <span class="material-symbols-outlined text-primary !text-xl">security</span>
-                </div>
-                <div class="text-left">
-                    <div class="text-2xl font-bold text-[#111816] dark:text-white">100%</div>
-                    <div class="text-sm font-medium">Confidential</div>
+                <div class="text-center sm:text-left flex flex-col justify-center">
+                    <div class="text-xl sm:text-2xl font-bold text-[#111816] dark:text-white leading-tight">{{ $counselors->count() }}</div>
+                    <div class="text-sm font-medium leading-tight">Counselors</div>
                 </div>
             </div>
             <div class="hidden sm:block w-1 h-12 bg-[#61897c]/20 dark:bg-gray-600"></div>
-            <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400">
-                <div class="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
-                    <span class="material-symbols-outlined text-primary !text-xl">schedule</span>
+            <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400 min-h-[60px]">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-primary !text-lg sm:!text-xl">security</span>
                 </div>
-                <div class="text-left">
-                    <div class="text-2xl font-bold text-[#111816] dark:text-white">24/7</div>
-                    <div class="text-sm font-medium">Crisis Support</div>
+                <div class="text-center sm:text-left flex flex-col justify-center">
+                    <div class="text-xl sm:text-2xl font-bold text-[#111816] dark:text-white leading-tight">100%</div>
+                    <div class="text-sm font-medium leading-tight">Confidential</div>
+                </div>
+            </div>
+            <div class="hidden sm:block w-1 h-12 bg-[#61897c]/20 dark:bg-gray-600"></div>
+            <div class="flex items-center gap-3 text-[#61897c] dark:text-gray-400 min-h-[60px]">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-primary !text-lg sm:!text-xl">schedule</span>
+                </div>
+                <div class="text-center sm:text-left flex flex-col justify-center">
+                    <div class="text-xl sm:text-2xl font-bold text-[#111816] dark:text-white leading-tight">24/7</div>
+                    <div class="text-sm font-medium leading-tight">Crisis Support</div>
                 </div>
             </div>
         </div>
@@ -77,127 +77,127 @@
 </div>
 
 <!-- Main Content Section -->
-<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="flex flex-col flex-1 gap-10">
+<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div class="flex flex-col flex-1 gap-8 sm:gap-10">
 
                 <!-- Services Overview -->
-                <div id="counseling-services" class="text-center mb-12">
-                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-center gap-2">
-                        <span class="material-symbols-outlined text-emerald-600 !text-4xl">psychology</span>
+                <div id="counseling-services" class="text-center mb-8 sm:mb-12">
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 flex flex-col sm:flex-row items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-emerald-600 !text-3xl sm:!text-4xl">psychology</span>
                         Our Counseling Services
                     </h2>
-                    <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    <p class="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto px-4">
                         Professional support tailored to your needs
                     </p>
                 </div>
 
                 <!-- Carousel Container -->
-                <div class="relative max-w-[1032px] mx-auto">
-                    <!-- Navigation Buttons -->
-                    <button id="services-prev" class="absolute -left-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-primary hover:border-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                <div class="relative max-w-full mx-auto px-4 sm:px-0">
+                    <!-- Navigation Buttons - Hidden on mobile -->
+                    <button id="services-prev" class="hidden sm:flex absolute -left-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 items-center justify-center text-gray-600 dark:text-gray-400 hover:text-primary hover:border-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                         <span class="material-symbols-outlined">chevron_left</span>
                     </button>
-                    <button id="services-next" class="absolute -right-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-primary hover:border-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                    <button id="services-next" class="hidden sm:flex absolute -right-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 items-center justify-center text-gray-600 dark:text-gray-400 hover:text-primary hover:border-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                         <span class="material-symbols-outlined">chevron_right</span>
                     </button>
 
                     <!-- Carousel Track -->
                     <div class="overflow-hidden">
-                        <div id="services-track" class="flex transition-transform duration-300 ease-in-out gap-6">
+                        <div id="services-track" class="flex transition-transform duration-300 ease-in-out gap-4 sm:gap-6">
                             <!-- Service Items -->
-                            <div class="flex-none w-80 group rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/10 dark:to-indigo-900/10 border border-blue-100 dark:border-blue-900/30 hover:shadow-lg hover:shadow-blue-500/10 transition-all cursor-pointer overflow-hidden">
-                                <div class="relative h-32 overflow-hidden">
+                            <div class="flex-none w-72 sm:w-80 group rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/10 dark:to-indigo-900/10 border border-blue-100 dark:border-blue-900/30 hover:shadow-lg hover:shadow-blue-500/10 transition-all cursor-pointer overflow-hidden">
+                                <div class="relative h-28 sm:h-32 overflow-hidden">
                                     <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&h=200&fit=crop" alt="Individual Counseling" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                                     <div class="absolute inset-0 bg-gradient-to-t from-blue-900/60 to-transparent"></div>
-                                    <div class="absolute bottom-3 left-3">
-                                        <div class="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-lg">
-                                            <span class="material-symbols-outlined text-blue-600 text-lg">person</span>
+                                    <div class="absolute bottom-2 sm:bottom-3 left-2 sm:left-3">
+                                        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-lg">
+                                            <span class="material-symbols-outlined text-blue-600 text-base sm:text-lg">person</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="p-4">
-                                    <h3 class="font-bold text-gray-900 dark:text-white mb-1">Individual Counseling</h3>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">One-on-one sessions for personal challenges.</p>
+                                <div class="p-3 sm:p-4">
+                                    <h3 class="font-bold text-gray-900 dark:text-white mb-1 text-sm sm:text-base">Individual Counseling</h3>
+                                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">One-on-one sessions for personal challenges.</p>
                                 </div>
                             </div>
 
-                            <div class="flex-none w-80 group rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/10 dark:to-teal-900/10 border border-emerald-100 dark:border-emerald-900/30 hover:shadow-lg hover:shadow-emerald-500/10 transition-all cursor-pointer overflow-hidden">
-                                <div class="relative h-32 overflow-hidden">
+                            <div class="flex-none w-72 sm:w-80 group rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/10 dark:to-teal-900/10 border border-emerald-100 dark:border-emerald-900/30 hover:shadow-lg hover:shadow-emerald-500/10 transition-all cursor-pointer overflow-hidden">
+                                <div class="relative h-28 sm:h-32 overflow-hidden">
                                     <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=400&h=200&fit=crop" alt="Group Therapy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                                     <div class="absolute inset-0 bg-gradient-to-t from-emerald-900/60 to-transparent"></div>
-                                    <div class="absolute bottom-3 left-3">
-                                        <div class="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-lg">
-                                            <span class="material-symbols-outlined text-emerald-600 text-lg">groups</span>
+                                    <div class="absolute bottom-2 sm:bottom-3 left-2 sm:left-3">
+                                        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-lg">
+                                            <span class="material-symbols-outlined text-emerald-600 text-base sm:text-lg">groups</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="p-4">
-                                    <h3 class="font-bold text-gray-900 dark:text-white mb-1">Group Therapy</h3>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">Supportive sessions with peers.</p>
+                                <div class="p-3 sm:p-4">
+                                    <h3 class="font-bold text-gray-900 dark:text-white mb-1 text-sm sm:text-base">Group Therapy</h3>
+                                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Supportive sessions with peers.</p>
                                 </div>
                             </div>
 
-                            <div class="flex-none w-80 group rounded-xl bg-gradient-to-br from-red-50 to-pink-50 dark:from-red-900/10 dark:to-pink-900/10 border border-red-100 dark:border-red-900/30 hover:shadow-lg hover:shadow-red-500/10 transition-all cursor-pointer overflow-hidden">
-                                <div class="relative h-32 overflow-hidden">
+                            <div class="flex-none w-72 sm:w-80 group rounded-xl bg-gradient-to-br from-red-50 to-pink-50 dark:from-red-900/10 dark:to-pink-900/10 border border-red-100 dark:border-red-900/30 hover:shadow-lg hover:shadow-red-500/10 transition-all cursor-pointer overflow-hidden">
+                                <div class="relative h-28 sm:h-32 overflow-hidden">
                                     <img src="https://images.unsplash.com/photo-1584515933487-779824d29309?w=400&h=200&fit=crop" alt="Crisis Intervention" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                                     <div class="absolute inset-0 bg-gradient-to-t from-red-900/60 to-transparent"></div>
-                                    <div class="absolute bottom-3 left-3">
-                                        <div class="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-lg">
-                                            <span class="material-symbols-outlined text-red-600 text-lg">emergency</span>
+                                    <div class="absolute bottom-2 sm:bottom-3 left-2 sm:left-3">
+                                        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-lg">
+                                            <span class="material-symbols-outlined text-red-600 text-base sm:text-lg">emergency</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="p-4">
-                                    <h3 class="font-bold text-gray-900 dark:text-white mb-1">Crisis Intervention</h3>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">24/7 immediate emergency support.</p>
+                                <div class="p-3 sm:p-4">
+                                    <h3 class="font-bold text-gray-900 dark:text-white mb-1 text-sm sm:text-base">Crisis Intervention</h3>
+                                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">24/7 immediate emergency support.</p>
                                 </div>
                             </div>
 
-                            <div class="flex-none w-80 group rounded-xl bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/10 dark:to-indigo-900/10 border border-purple-100 dark:border-purple-900/30 hover:shadow-lg hover:shadow-purple-500/10 transition-all cursor-pointer overflow-hidden">
-                                <div class="relative h-32 overflow-hidden">
+                            <div class="flex-none w-72 sm:w-80 group rounded-xl bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/10 dark:to-indigo-900/10 border border-purple-100 dark:border-purple-900/30 hover:shadow-lg hover:shadow-purple-500/10 transition-all cursor-pointer overflow-hidden">
+                                <div class="relative h-28 sm:h-32 overflow-hidden">
                                     <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=400&h=200&fit=crop" alt="Academic Counseling" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                                     <div class="absolute inset-0 bg-gradient-to-t from-purple-900/60 to-transparent"></div>
-                                    <div class="absolute bottom-3 left-3">
-                                        <div class="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-lg">
-                                            <span class="material-symbols-outlined text-purple-600 text-lg">school</span>
+                                    <div class="absolute bottom-2 sm:bottom-3 left-2 sm:left-3">
+                                        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-lg">
+                                            <span class="material-symbols-outlined text-purple-600 text-base sm:text-lg">school</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="p-4">
-                                    <h3 class="font-bold text-gray-900 dark:text-white mb-1">Academic Counseling</h3>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">Support for academic stress.</p>
+                                <div class="p-3 sm:p-4">
+                                    <h3 class="font-bold text-gray-900 dark:text-white mb-1 text-sm sm:text-base">Academic Counseling</h3>
+                                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Support for academic stress.</p>
                                 </div>
                             </div>
 
-                            <div class="flex-none w-80 group rounded-xl bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/10 dark:to-red-900/10 border border-orange-100 dark:border-orange-900/30 hover:shadow-lg hover:shadow-orange-500/10 transition-all cursor-pointer overflow-hidden">
-                                <div class="relative h-32 overflow-hidden">
+                            <div class="flex-none w-72 sm:w-80 group rounded-xl bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/10 dark:to-red-900/10 border border-orange-100 dark:border-orange-900/30 hover:shadow-lg hover:shadow-orange-500/10 transition-all cursor-pointer overflow-hidden">
+                                <div class="relative h-28 sm:h-32 overflow-hidden">
                                     <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400&h=200&fit=crop" alt="Wellness Workshops" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                                     <div class="absolute inset-0 bg-gradient-to-t from-orange-900/60 to-transparent"></div>
-                                    <div class="absolute bottom-3 left-3">
-                                        <div class="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-lg">
-                                            <span class="material-symbols-outlined text-orange-600 text-lg">self_improvement</span>
+                                    <div class="absolute bottom-2 sm:bottom-3 left-2 sm:left-3">
+                                        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-lg">
+                                            <span class="material-symbols-outlined text-orange-600 text-base sm:text-lg">self_improvement</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="p-4">
-                                    <h3 class="font-bold text-gray-900 dark:text-white mb-1">Wellness Workshops</h3>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">Educational mental health seminars.</p>
+                                <div class="p-3 sm:p-4">
+                                    <h3 class="font-bold text-gray-900 dark:text-white mb-1 text-sm sm:text-base">Wellness Workshops</h3>
+                                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Educational mental health seminars.</p>
                                 </div>
                             </div>
 
-                            <div class="flex-none w-80 group rounded-xl bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-teal-900/10 dark:to-cyan-900/10 border border-teal-100 dark:border-teal-900/30 hover:shadow-lg hover:shadow-teal-500/10 transition-all cursor-pointer overflow-hidden">
-                                <div class="relative h-32 overflow-hidden">
+                            <div class="flex-none w-72 sm:w-80 group rounded-xl bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-teal-900/10 dark:to-cyan-900/10 border border-teal-100 dark:border-teal-900/30 hover:shadow-lg hover:shadow-teal-500/10 transition-all cursor-pointer overflow-hidden">
+                                <div class="relative h-28 sm:h-32 overflow-hidden">
                                     <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=200&fit=crop" alt="Peer Support" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                                     <div class="absolute inset-0 bg-gradient-to-t from-teal-900/60 to-transparent"></div>
-                                    <div class="absolute bottom-3 left-3">
-                                        <div class="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-lg">
-                                            <span class="material-symbols-outlined text-teal-600 text-lg">diversity_3</span>
+                                    <div class="absolute bottom-2 sm:bottom-3 left-2 sm:left-3">
+                                        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-lg">
+                                            <span class="material-symbols-outlined text-teal-600 text-base sm:text-lg">diversity_3</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="p-4">
-                                    <h3 class="font-bold text-gray-900 dark:text-white mb-1">Peer Support</h3>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">Student-led support groups.</p>
+                                <div class="p-3 sm:p-4">
+                                    <h3 class="font-bold text-gray-900 dark:text-white mb-1 text-sm sm:text-base">Peer Support</h3>
+                                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Student-led support groups.</p>
                                 </div>
                             </div>
                         </div>
@@ -210,29 +210,29 @@
                 </div>
 
         <!-- Meet Our Counselors Section -->
-        <div class="text-center mb-12">
-            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-center gap-2">
-                <span class="material-symbols-outlined text-purple-600 !text-4xl">group</span>
+        <div class="text-center mb-8 sm:mb-12">
+            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 flex flex-col sm:flex-row items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-purple-600 !text-3xl sm:!text-4xl">group</span>
                 Meet Our Counselors
             </h2>
-            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                {{ $counselors->count() }} Licensed professionals ready to support you
+            <p class="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto px-4">
+                {{ $counselors->count() }} Professional counselors ready to support you
             </p>
         </div>
 
         <!-- Carousel Container -->
-        <div class="relative max-w-[1032px] mx-auto">
-            <!-- Navigation Buttons -->
-            <button id="counselors-prev" class="absolute -left-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-purple-600 hover:border-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+        <div class="relative max-w-full mx-auto px-4 sm:px-0">
+            <!-- Navigation Buttons - Hidden on mobile -->
+            <button id="counselors-prev" class="hidden sm:flex absolute -left-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 items-center justify-center text-gray-600 dark:text-gray-400 hover:text-purple-600 hover:border-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                 <span class="material-symbols-outlined">chevron_left</span>
             </button>
-            <button id="counselors-next" class="absolute -right-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-purple-600 hover:border-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+            <button id="counselors-next" class="hidden sm:flex absolute -right-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 items-center justify-center text-gray-600 dark:text-gray-400 hover:text-purple-600 hover:border-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                 <span class="material-symbols-outlined">chevron_right</span>
             </button>
 
             <!-- Carousel Track -->
             <div class="overflow-hidden">
-                <div id="counselors-track" class="flex transition-transform duration-300 ease-in-out gap-6">
+                <div id="counselors-track" class="flex transition-transform duration-300 ease-in-out gap-4 sm:gap-6">
                     @php
                         $gradients = [
                             ['bg' => 'from-blue-500 to-indigo-600', 'light' => 'from-blue-50 to-indigo-50', 'dark' => 'dark:from-blue-900/20 dark:to-indigo-900/20'],
@@ -246,91 +246,91 @@
                         $gradient = $gradients[$index % count($gradients)];
                         $initials = strtoupper(substr($counselor->name, 0, 2));
                     @endphp
-                    <div class="flex-none w-80 group rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-lg hover:shadow-purple-500/10 transition-all overflow-hidden">
+                    <div class="flex-none w-72 sm:w-80 group rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:shadow-lg hover:shadow-purple-500/10 transition-all overflow-hidden">
                         <!-- Image Section -->
-                        <div class="relative h-48 overflow-hidden">
+                        <div class="relative h-40 sm:h-48 overflow-hidden">
                             @if($counselor->avatar)
                                 <img src="{{ asset('storage/' . $counselor->avatar) }}" alt="{{ $counselor->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                             @else
                                 <div class="w-full h-full bg-gradient-to-br {{ $gradient['bg'] }} flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                                    <span class="text-6xl font-bold text-white">{{ $initials }}</span>
+                                    <span class="text-4xl sm:text-6xl font-bold text-white">{{ $initials }}</span>
                                 </div>
                             @endif
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                             
                             <!-- Available Badge -->
-                            <div class="absolute top-4 right-4">
-                                <div class="flex items-center gap-1.5 bg-green-500/90 backdrop-blur-sm px-3 py-1.5 rounded-full">
-                                    <span class="h-2 w-2 rounded-full bg-white animate-pulse"></span>
+                            <div class="absolute top-3 sm:top-4 right-3 sm:right-4">
+                                <div class="flex items-center gap-1 sm:gap-1.5 bg-green-500/90 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-full">
+                                    <span class="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-white animate-pulse"></span>
                                     <span class="text-xs font-semibold text-white">Available</span>
                                 </div>
                             </div>
                             
                             <!-- Name Overlay -->
-                            <div class="absolute bottom-4 left-4 right-4">
-                                <h3 class="text-xl font-bold text-white mb-1">{{ $counselor->name }}</h3>
-                                <p class="text-white/90 text-sm font-medium">Professional Counselor</p>
+                            <div class="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4">
+                                <h3 class="text-lg sm:text-xl font-bold text-white mb-1">{{ $counselor->name }}</h3>
+                                <p class="text-white/90 text-xs sm:text-sm font-medium">Professional Counselor</p>
                             </div>
                         </div>
                         
                         <!-- Content Section -->
-                        <div class="p-6">
-                            <div class="space-y-3 mb-4">
+                        <div class="p-4 sm:p-6">
+                            <div class="space-y-2 sm:space-y-3 mb-3 sm:mb-4">
                                 @if($counselor->email)
-                                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                                    <span class="material-symbols-outlined !text-base text-primary">email</span>
+                                <div class="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                                    <span class="material-symbols-outlined !text-sm sm:!text-base text-primary">email</span>
                                     <span class="truncate">{{ $counselor->email }}</span>
                                 </div>
                                 @endif
                                 
                                 @if($counselor->phone)
-                                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                                    <span class="material-symbols-outlined !text-base text-primary">phone</span>
+                                <div class="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                                    <span class="material-symbols-outlined !text-sm sm:!text-base text-primary">phone</span>
                                     <span>{{ $counselor->phone }}</span>
                                 </div>
                                 @endif
                                 
-                                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                                    <span class="material-symbols-outlined !text-base text-primary">calendar_today</span>
+                                <div class="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                                    <span class="material-symbols-outlined !text-sm sm:!text-base text-primary">calendar_today</span>
                                     <span>Member since {{ $counselor->created_at->format('M Y') }}</span>
                                 </div>
                             </div>
                             
                             <!-- Action Button -->
                             @auth
-                                <a href="{{ route('public.counseling.sessions') }}" class="flex items-center justify-center gap-2 text-primary font-semibold text-sm group-hover:gap-3 transition-all">
+                                <a href="{{ route('public.counseling.sessions') }}" class="flex items-center justify-center gap-2 text-primary font-semibold text-xs sm:text-sm group-hover:gap-3 transition-all">
                                     <span>Request Session</span>
-                                    <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                    <span class="material-symbols-outlined text-base sm:text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
                                 </a>
                             @else
-                            <button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="flex items-center justify-center gap-2 text-primary font-semibold text-sm group-hover:gap-3 transition-all w-full">
+                            <button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="flex items-center justify-center gap-2 text-primary font-semibold text-xs sm:text-sm group-hover:gap-3 transition-all w-full">
                                 <span>Login to Book</span>
-                                <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                <span class="material-symbols-outlined text-base sm:text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
                             </button>
                             @endauth
                         </div>
                     </div>
                 @empty
-                    <div class="flex-none w-80 text-center py-12">
-                        <div class="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <span class="material-symbols-outlined text-3xl text-gray-400">person_search</span>
+                    <div class="flex-none w-72 sm:w-80 text-center py-8 sm:py-12">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="material-symbols-outlined text-2xl sm:text-3xl text-gray-400">person_search</span>
                         </div>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">No counselors available</p>
+                        <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">No counselors available</p>
                     </div>
                 @endforelse
                 </div>
             </div>
 
             <!-- Dots Indicator -->
-            <div id="counselors-dots" class="flex justify-center mt-8 gap-2">
+            <div id="counselors-dots" class="flex justify-center mt-6 sm:mt-8 gap-2">
                 <!-- Dots will be generated by JavaScript -->
             </div>
         </div>
             
         @if($counselors->isNotEmpty())
-        <div class="mt-8 text-center">
-            <a href="{{ route('public.counseling.counselors') }}" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-white rounded-xl font-bold text-lg hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                <span class="material-symbols-outlined !text-xl">group</span>
+        <div class="mt-6 sm:mt-8 text-center px-4">
+            <a href="{{ route('public.counseling.counselors') }}" class="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-primary text-white rounded-xl font-bold text-base sm:text-lg hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                <span class="material-symbols-outlined !text-lg sm:!text-xl">group</span>
                 View All Counselors
             </a>
         </div>
@@ -340,37 +340,37 @@
 </div>
 
 <!-- CTA Section -->
-<section class="py-12">
+<section class="py-8 sm:py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="relative bg-gradient-to-r from-primary/10 to-green-50 dark:from-gray-800 dark:to-gray-800/50 rounded-2xl p-8 border border-primary/20 dark:border-gray-700 overflow-hidden">
+        <div class="relative bg-gradient-to-r from-primary/10 to-green-50 dark:from-gray-800 dark:to-gray-800/50 rounded-2xl p-6 sm:p-8 border border-primary/20 dark:border-gray-700 overflow-hidden">
             <!-- Decorative Icons -->
-            <div class="absolute top-4 left-4 opacity-10">
-                <span class="material-symbols-outlined text-6xl text-primary">psychology</span>
+            <div class="absolute top-3 sm:top-4 left-3 sm:left-4 opacity-10">
+                <span class="material-symbols-outlined text-4xl sm:text-6xl text-primary">psychology</span>
             </div>
-            <div class="absolute bottom-4 right-4 opacity-10">
-                <span class="material-symbols-outlined text-6xl text-primary">support_agent</span>
+            <div class="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 opacity-10">
+                <span class="material-symbols-outlined text-4xl sm:text-6xl text-primary">support_agent</span>
             </div>
             
             <div class="relative text-center">
-                <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/20 rounded-full mb-4">
-                    <span class="material-symbols-outlined text-3xl text-primary">favorite</span>
+                <div class="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-primary/20 rounded-full mb-3 sm:mb-4">
+                    <span class="material-symbols-outlined text-2xl sm:text-3xl text-primary">favorite</span>
                 </div>
-                <h3 class="text-xl font-bold text-[#111816] dark:text-white mb-2">Ready to Take the First Step?</h3>
-                <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">Your mental health journey starts with a single step. Our counselors are here to support you every step of the way.</p>
-                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <h3 class="text-lg sm:text-xl font-bold text-[#111816] dark:text-white mb-2">Ready to Take the First Step?</h3>
+                <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4 sm:mb-6 max-w-2xl mx-auto px-4">Your mental health journey starts with a single step. Our counselors are here to support you every step of the way.</p>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center px-4">
                     @auth
-                        <a href="{{ route('public.counseling.sessions') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
-                            <span class="material-symbols-outlined text-base">psychology</span>
+                        <a href="{{ route('public.counseling.sessions') }}" class="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
+                            <span class="material-symbols-outlined text-sm sm:text-base">psychology</span>
                             <span>Request Counseling Session</span>
                         </a>
                     @else
-                        <button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
-                            <span class="material-symbols-outlined text-base">login</span>
+                        <button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
+                            <span class="material-symbols-outlined text-sm sm:text-base">login</span>
                             <span>Login to Get Started</span>
                         </button>
                     @endauth
                 </div>
-                <p class="text-gray-500 dark:text-gray-400 text-xs mt-4">
+                <p class="text-gray-500 dark:text-gray-400 text-xs mt-3 sm:mt-4 px-4">
                     All counseling services are free and confidential for students
                 </p>
             </div>
@@ -452,7 +452,7 @@ const counselorCards = counselorsTrack ? counselorsTrack.children.length : 0;
 function updateCounselorsCarousel() {
     if (!counselorsTrack) return;
     
-    const cardWidth = 320 + 24; // 320px (w-80) + 24px gap
+    const cardWidth = window.innerWidth >= 640 ? 320 + 24 : 288 + 16; // sm:w-80 vs w-72 + gaps
     const translateX = -(currentCounselorIndex * cardWidth);
     counselorsTrack.style.transform = `translateX(${translateX}px)`;
     
@@ -530,7 +530,7 @@ function initServicesCarousel() {
     function getSlideWidth() {
         if (cards.length === 0) return 0;
         const cardWidth = cards[0].offsetWidth;
-        const gap = 24; // 1.5rem gap (gap-6)
+        const gap = window.innerWidth >= 640 ? 24 : 16; // sm:gap-6 vs gap-4
         return cardWidth + gap;
     }
     

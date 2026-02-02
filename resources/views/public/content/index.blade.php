@@ -58,10 +58,22 @@
 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="flex flex-col flex-1 gap-10">
 
-        <!-- Enhanced Filters Section -->
-        <div id="filters-section" class="bg-white dark:bg-gray-800/50 rounded-2xl p-4 sm:p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
+        <!-- Enhanced Filters Section - Sticky -->
+        <div id="filters-section" class="sticky top-16 z-40 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md rounded-2xl p-4 sm:p-6 shadow-lg border border-[#f0f4f3] dark:border-gray-800 transition-all duration-300">
+            <!-- Mobile Filter Header with Toggle -->
+            <div class="flex items-center justify-between mb-4 lg:hidden">
+                <h3 class="text-lg font-semibold text-[#111816] dark:text-white flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">tune</span>
+                    Filters
+                </h3>
+                <button id="mobile-filter-toggle" class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">
+                    <span>Show Filters</span>
+                    <span id="mobile-filter-icon" class="material-symbols-outlined text-sm transition-transform">expand_more</span>
+                </button>
+            </div>
+
             <!-- Mobile Layout -->
-            <div class="block lg:hidden space-y-4">
+            <div id="mobile-filters" class="hidden lg:hidden space-y-4">
                 <!-- Category Filter - Full Width on Mobile -->
                 <div class="w-full">
                     <label class="text-sm font-semibold text-[#111816] dark:text-gray-300 flex items-center gap-2 mb-2">
@@ -429,7 +441,22 @@
     
     /* Scroll margin to account for fixed header */
     #filters-section {
-        scroll-margin-top: 100px;
+        scroll-margin-top: 20px;
+    }
+    
+    /* Enhanced sticky filter styling */
+    #filters-section.sticky-active {
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(20px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(240, 244, 243, 0.8);
+        transition: all 0.3s ease;
+    }
+    
+    .dark #filters-section.sticky-active {
+        background: rgba(31, 41, 55, 0.98);
+        border: 1px solid rgba(75, 85, 99, 0.8);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
     }
     
     .line-clamp-1 {
@@ -542,6 +569,81 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Mobile filter toggle functionality
+    const mobileFilterToggle = document.getElementById('mobile-filter-toggle');
+    const mobileFilters = document.getElementById('mobile-filters');
+    const mobileFilterIcon = document.getElementById('mobile-filter-icon');
+    
+    if (mobileFilterToggle && mobileFilters) {
+        mobileFilterToggle.addEventListener('click', function() {
+            const isHidden = mobileFilters.classList.contains('hidden');
+            
+            if (isHidden) {
+                mobileFilters.classList.remove('hidden');
+                mobileFilterIcon.style.transform = 'rotate(180deg)';
+                mobileFilterIcon.textContent = 'expand_less';
+                mobileFilterToggle.querySelector('span:first-child').textContent = 'Hide Filters';
+            } else {
+                mobileFilters.classList.add('hidden');
+                mobileFilterIcon.style.transform = 'rotate(0deg)';
+                mobileFilterIcon.textContent = 'expand_more';
+                mobileFilterToggle.querySelector('span:first-child').textContent = 'Show Filters';
+            }
+        });
+    }
+    
+    // Simplified sticky filter behavior for mobile
+    const filtersSection = document.getElementById('filters-section');
+    
+    if (filtersSection) {
+        let lastScrollY = window.scrollY;
+        let isSticky = false;
+        
+        function handleScroll() {
+            const currentScrollY = window.scrollY;
+            const isMobile = window.innerWidth < 1024;
+            
+            if (isMobile) {
+                const rect = filtersSection.getBoundingClientRect();
+                const headerHeight = 64;
+                
+                // Check if filter should be sticky (when it reaches the header)
+                if (rect.top <= headerHeight && !isSticky) {
+                    filtersSection.classList.add('sticky-active');
+                    isSticky = true;
+                } else if (rect.top > headerHeight && isSticky) {
+                    filtersSection.classList.remove('sticky-active');
+                    isSticky = false;
+                }
+            } else {
+                // Desktop behavior
+                const rect = filtersSection.getBoundingClientRect();
+                if (rect.top <= 64 && !isSticky) {
+                    filtersSection.classList.add('sticky-active');
+                    isSticky = true;
+                } else if (rect.top > 64 && isSticky) {
+                    filtersSection.classList.remove('sticky-active');
+                    isSticky = false;
+                }
+            }
+            
+            lastScrollY = currentScrollY;
+        }
+        
+        // Use throttled scroll listener
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    handleScroll();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+    }
+    
+    // Filter functionality
     let currentFilters = {
         search: '',
         category: '',
@@ -752,17 +854,23 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to show suggestions dropdown
     function showSuggestions() {
-        suggestionsDropdown.classList.remove('hidden');
+        if (suggestionsDropdown) {
+            suggestionsDropdown.classList.remove('hidden');
+        }
     }
     
     // Function to hide suggestions dropdown
     function hideSuggestions() {
-        suggestionsDropdown.classList.add('hidden');
-        currentSuggestionIndex = -1;
+        if (suggestionsDropdown) {
+            suggestionsDropdown.classList.add('hidden');
+            currentSuggestionIndex = -1;
+        }
     }
     
     // Function to update suggestion highlight
     function updateSuggestionHighlight() {
+        if (!suggestionsList) return;
+        
         const items = suggestionsList.querySelectorAll('.suggestion-item');
         items.forEach((item, index) => {
             if (index === currentSuggestionIndex) {
@@ -834,7 +942,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Hide suggestions when clicking outside
     document.addEventListener('click', function(e) {
-        if (!searchInput.contains(e.target) && !suggestionsDropdown.contains(e.target)) {
+        if (searchInput && suggestionsDropdown && 
+            !searchInput.contains(e.target) && !suggestionsDropdown.contains(e.target)) {
             hideSuggestions();
         }
     });
@@ -890,6 +999,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const bookmarksButtonDesktop = document.getElementById('bookmarks-filter-desktop');
     
     function handleBookmarkToggle(button) {
+        if (!button) return; // Safety check
+        
         const isActive = button.getAttribute('data-bookmarked') === 'true';
         
         // Update both buttons
@@ -932,7 +1043,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Global function to clear all filters
     window.clearAllFilters = function() {
         currentFilters = { search: '', category: '', type: '', bookmarked: false };
-        searchInput.value = '';
+        if (searchInput) searchInput.value = '';
         
         // Reset category selects (both mobile and desktop)
         if (categorySelect) categorySelect.value = '';
@@ -954,10 +1065,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Reset bookmarks filters (both mobile and desktop)
         const bookmarkButtons = [bookmarksButton, bookmarksButtonDesktop].filter(btn => btn);
         bookmarkButtons.forEach(btn => {
-            btn.classList.remove('bg-primary', 'text-white');
-            btn.classList.add('bg-white', 'dark:bg-gray-800', 'border-2', 'border-gray-200', 'dark:border-gray-700', 'text-[#111816]', 'dark:text-gray-300');
-            btn.setAttribute('data-bookmarked', 'false');
-            btn.querySelector('.material-symbols-outlined').textContent = 'bookmark_border';
+            if (btn) {
+                btn.classList.remove('bg-primary', 'text-white');
+                btn.classList.add('bg-white', 'dark:bg-gray-800', 'border-2', 'border-gray-200', 'dark:border-gray-700', 'text-[#111816]', 'dark:text-gray-300');
+                btn.setAttribute('data-bookmarked', 'false');
+                const icon = btn.querySelector('.material-symbols-outlined');
+                if (icon) icon.textContent = 'bookmark_border';
+            }
         });
         
         applyFilters();

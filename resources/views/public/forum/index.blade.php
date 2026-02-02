@@ -24,7 +24,7 @@
 @endif
 
 <!-- Hero Section -->
-<section class="relative overflow-hidden h-screen">
+<section class="relative overflow-hidden min-h-screen flex items-center">
     <!-- Background Image -->
     <div class="absolute inset-0">
         <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80" 
@@ -34,28 +34,28 @@
     </div>
     
     <!-- Content -->
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-center">
+    <div class="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
         <div class="text-center">
-            <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-semibold mb-6">
-                <span class="material-symbols-outlined !text-lg">forum</span>
+            <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-3 sm:px-4 py-2 rounded-full text-sm font-semibold mb-4 sm:mb-6">
+                <span class="material-symbols-outlined !text-base sm:!text-lg">forum</span>
                 Community Forum
             </div>
-            <h1 class="text-4xl lg:text-6xl font-black text-white tracking-tight mb-6">Community Forum</h1>
-            <p class="text-xl lg:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-8">Connect with peers, share experiences, and find support in a safe, moderated environment. Join the conversation today.</p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <h1 class="text-3xl sm:text-4xl lg:text-6xl font-black text-white tracking-tight mb-4 sm:mb-6 leading-tight">Community Forum</h1>
+            <p class="text-lg sm:text-xl lg:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-6 sm:mb-8 px-4">Connect with peers, share experiences, and find support in a safe, moderated environment. Join the conversation today.</p>
+            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
                 @auth
-                    <button onclick="openCreateDiscussionModal()" class="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                        <span class="material-symbols-outlined !text-xl">add_circle</span>
+                    <button onclick="openCreateDiscussionModal()" class="inline-flex items-center justify-center gap-2 bg-white text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                        <span class="material-symbols-outlined !text-lg sm:!text-xl">add_circle</span>
                         Start Discussion
                     </button>
                 @else
-                    <button onclick="openLoginModal()" class="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                        <span class="material-symbols-outlined !text-xl">login</span>
+                    <button onclick="openLoginModal()" class="inline-flex items-center justify-center gap-2 bg-white text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                        <span class="material-symbols-outlined !text-lg sm:!text-xl">login</span>
                         Login to Participate
                     </button>
                 @endauth
-                <a href="#forum-filters" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 transition-all duration-200 transform hover:scale-105">
-                    <span class="material-symbols-outlined !text-xl">visibility</span>
+                <a href="#forum-filters" class="inline-flex items-center justify-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/30 transition-all duration-200 transform hover:scale-105">
+                    <span class="material-symbols-outlined !text-lg sm:!text-xl">visibility</span>
                     Browse Discussions
                 </a>
             </div>
@@ -63,59 +63,72 @@
     </div>
 </section>
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
     <!-- Filter Section -->
-    <div id="forum-filters" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div id="forum-filters" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-4 sm:p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
-            <div class="flex flex-col lg:flex-row gap-4 items-center justify-between">
-                <!-- Search Bar -->
-                <div class="relative flex-1 max-w-md w-full lg:w-auto">
-                    <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-[#61897c] dark:text-gray-400 !text-xl">search</span>
-                    <input type="text" id="search-input" placeholder="Search discussions..." 
-                           class="w-full pl-12 pr-4 py-3 rounded-xl border border-[#f0f4f3] dark:border-gray-700 bg-white dark:bg-gray-900 text-[#111816] dark:text-white placeholder-[#61897c] dark:placeholder-gray-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200">
-                </div>
-                
-                <!-- Filters Container -->
-                <div class="flex flex-col sm:flex-row gap-4 items-center w-full lg:w-auto">
-                    <!-- Post Type Filter -->
-                    @auth
-                    <div class="flex items-center gap-3 w-full sm:w-auto">
-                        <span class="text-sm font-semibold text-[#111816] dark:text-gray-300 flex items-center gap-2 whitespace-nowrap">
-                            <span class="material-symbols-outlined text-primary">person</span>
-                            <span>Posts:</span>
-                        </span>
-                        <div class="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl">
-                            <button id="all-posts-btn" onclick="filterByPostType('all')" class="post-filter-btn px-3 py-2 rounded-lg bg-primary text-white font-semibold text-xs transition-all duration-200 transform hover:scale-105 shadow-sm">
-                                All Posts
-                            </button>
-                            <button id="my-posts-btn" onclick="filterByPostType('my')" class="post-filter-btn px-3 py-2 rounded-lg text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white font-medium text-xs transition-colors">
-                                My Posts
-                            </button>
-                            <button id="others-posts-btn" onclick="filterByPostType('others')" class="post-filter-btn px-3 py-2 rounded-lg text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white font-medium text-xs transition-colors">
-                                Others' Posts
-                            </button>
-                        </div>
-                    </div>
-                    @endauth
-                    
-                    <!-- Category Filter -->
-                    <div class="flex items-center gap-3 w-full sm:w-auto">
-                        <span class="text-sm font-semibold text-[#111816] dark:text-gray-300 flex items-center gap-2 whitespace-nowrap">
-                            <span class="material-symbols-outlined text-primary">filter_list</span>
-                            <span>Category:</span>
-                        </span>
-                        <div class="relative flex-1 sm:flex-initial">
-                            <select id="category-filter" class="appearance-none rounded-xl h-10 pl-4 pr-10 border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111816] dark:text-white text-sm font-medium focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 w-full sm:min-w-[200px] cursor-pointer hover:border-primary/50">
-                                <option value="all" {{ $selectedCategory === 'all' ? 'selected' : '' }}>All Categories</option>
-                                @foreach($categories as $category)
-                                <option value="{{ $category->slug }}" {{ $selectedCategory === $category->slug ? 'selected' : '' }}>{{ $category->name }}</option>
-                                @endforeach
-                            </select>
-                            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 pointer-events-none">expand_more</span>
-                        </div>
-                    </div>
-                    
+            <!-- Mobile Filter Header with Toggle -->
+            <div class="flex items-center justify-between mb-3 sm:mb-4 lg:hidden">
+                <h3 class="text-base sm:text-lg font-semibold text-[#111816] dark:text-white flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">tune</span>
+                    Filters & Search
+                </h3>
+                <button id="forum-mobile-filter-toggle" class="flex items-center gap-2 px-3 py-2 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">
+                    <span>Show Filters</span>
+                    <span id="forum-mobile-filter-icon" class="material-symbols-outlined !text-sm transition-transform">expand_more</span>
+                </button>
+            </div>
 
+            <!-- Mobile Filters -->
+            <div id="forum-mobile-filters" class="hidden lg:block">
+                <div class="flex flex-col lg:flex-row gap-3 sm:gap-4 items-start lg:items-center justify-between">
+                    <!-- Search Bar -->
+                    <div class="relative flex-1 max-w-md w-full lg:w-auto">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-[#61897c] dark:text-gray-400 !text-lg sm:!text-xl">search</span>
+                        <input type="text" id="search-input" placeholder="Search discussions..." 
+                               class="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 rounded-xl border border-[#f0f4f3] dark:border-gray-700 bg-white dark:bg-gray-900 text-[#111816] dark:text-white placeholder-[#61897c] dark:placeholder-gray-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 text-sm sm:text-base">
+                    </div>
+                    
+                    <!-- Filters Container -->
+                    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center w-full lg:w-auto">
+                        <!-- Post Type Filter -->
+                        @auth
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
+                            <span class="text-xs sm:text-sm font-semibold text-[#111816] dark:text-gray-300 flex items-center gap-2 whitespace-nowrap">
+                                <span class="material-symbols-outlined text-primary !text-sm sm:!text-base">person</span>
+                                <span>Posts:</span>
+                            </span>
+                            <div class="flex items-center gap-1 sm:gap-2 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl w-full sm:w-auto overflow-x-auto">
+                                <button id="all-posts-btn" onclick="filterByPostType('all')" class="post-filter-btn px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg bg-primary text-white font-semibold text-xs transition-all duration-200 transform hover:scale-105 shadow-sm whitespace-nowrap">
+                                    All Posts
+                                </button>
+                                <button id="my-posts-btn" onclick="filterByPostType('my')" class="post-filter-btn px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white font-medium text-xs transition-colors whitespace-nowrap">
+                                    My Posts
+                                </button>
+                                <button id="others-posts-btn" onclick="filterByPostType('others')" class="post-filter-btn px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white font-medium text-xs transition-colors whitespace-nowrap">
+                                    Others' Posts
+                                </button>
+                            </div>
+                        </div>
+                        @endauth
+                        
+                        <!-- Category Filter -->
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
+                            <span class="text-xs sm:text-sm font-semibold text-[#111816] dark:text-gray-300 flex items-center gap-2 whitespace-nowrap">
+                                <span class="material-symbols-outlined text-primary !text-sm sm:!text-base">filter_list</span>
+                                <span>Category:</span>
+                            </span>
+                            <div class="relative flex-1 sm:flex-initial">
+                                <select id="category-filter" class="appearance-none rounded-xl h-9 sm:h-10 pl-3 sm:pl-4 pr-8 sm:pr-10 border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111816] dark:text-white text-xs sm:text-sm font-medium focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 w-full sm:min-w-[200px] cursor-pointer hover:border-primary/50">
+                                    <option value="all" {{ $selectedCategory === 'all' ? 'selected' : '' }}>All Categories</option>
+                                    @foreach($categories as $category)
+                                    <option value="{{ $category->slug }}" {{ $selectedCategory === $category->slug ? 'selected' : '' }}>{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                                <span class="material-symbols-outlined absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 pointer-events-none !text-sm sm:!text-base">expand_more</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -123,7 +136,7 @@
 
     <!-- Discussions List with Fixed Sidebar -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex gap-6">
+        <div class="flex flex-col lg:flex-row gap-4 sm:gap-6">
             <!-- Fixed Sidebar -->
             <div class="hidden lg:block w-64 flex-shrink-0">
                 <div class="sticky top-24 space-y-4">
@@ -178,18 +191,18 @@
             
             <!-- Main Discussions Content -->
             <div class="flex-1 min-w-0">
-                <div class="space-y-6" id="discussions-container">
+                <div class="space-y-4 sm:space-y-6" id="discussions-container">
         @forelse($posts as $post)
-        <article class="discussion-post bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-all duration-200 hover:border-primary/30" 
+        <article class="discussion-post bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6 hover:shadow-lg transition-all duration-200 hover:border-primary/30" 
                  data-category="{{ $post->category->slug ?? 'general' }}" 
                  data-title="{{ strtolower($post->title) }}" 
                  data-content="{{ strtolower(strip_tags($post->content)) }}"
                  data-author="{{ $post->is_anonymous ? 'anonymous' : strtolower($post->user->name ?? 'user') }}"
                  data-author-id="{{ $post->user_id ?? 0 }}">
-            <div class="flex items-start gap-4">
+            <div class="flex items-start gap-3 sm:gap-4">
                 <!-- Author Avatar -->
                 <div class="flex-shrink-0">
-                    <div class="w-12 h-12 bg-gradient-to-br from-primary to-green-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-primary to-green-600 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-lg">
                         {{ $post->is_anonymous ? '?' : strtoupper(substr($post->user->name ?? 'U', 0, 1)) }}
                     </div>
                 </div>
@@ -197,9 +210,9 @@
                 <!-- Post Content -->
                 <div class="flex-1 min-w-0">
                     <!-- Post Header -->
-                    <div class="flex items-start justify-between gap-4 mb-3">
-                        <div class="flex-1">
-                            <div class="flex items-center gap-2 mb-2">
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4 mb-3">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex flex-wrap items-center gap-2 mb-2">
                                 <span class="bg-primary/10 text-primary px-2 py-1 rounded-full text-xs font-semibold">
                                     {{ $post->category->name ?? 'General' }}
                                 </span>
@@ -210,38 +223,38 @@
                                     </span>
                                 @endif
                             </div>
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">
+                            <h3 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 break-words">
                                 <a href="{{ route('public.forum.show', $post->id) }}" class="hover:text-primary transition-colors">
                                     {{ $post->title }}
                                 </a>
                             </h3>
-                            <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 leading-relaxed mb-3">
+                            <p class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm line-clamp-3 leading-relaxed mb-3 break-words">
                                 {{ Str::limit(strip_tags($post->content), 200) }}
                             </p>
                         </div>
                     </div>
 
                     <!-- Post Meta -->
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                        <div class="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                             <div class="flex items-center gap-1">
                                 <span class="material-symbols-outlined !text-sm">person</span>
-                                <span>{{ $post->is_anonymous ? 'Anonymous' : ($post->user->name ?? 'Unknown') }}</span>
+                                <span class="truncate max-w-[120px] sm:max-w-none">{{ $post->is_anonymous ? 'Anonymous' : ($post->user->name ?? 'Unknown') }}</span>
                             </div>
                             <div class="flex items-center gap-1">
                                 <span class="material-symbols-outlined !text-sm">schedule</span>
-                                <span>{{ $post->created_at->diffForHumans() }}</span>
+                                <span class="whitespace-nowrap">{{ $post->created_at->diffForHumans() }}</span>
                             </div>
                             @if($post->views > 0)
                             <div class="flex items-center gap-1">
                                 <span class="material-symbols-outlined !text-sm">visibility</span>
-                                <span>{{ $post->views }} views</span>
+                                <span class="whitespace-nowrap">{{ $post->views }} views</span>
                             </div>
                             @endif
                         </div>
 
                         <!-- Post Actions -->
-                        <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
                             <!-- Upvotes -->
                             <div class="flex items-center gap-1">
                                 @auth
@@ -249,13 +262,13 @@
                                         @csrf
                                         <button type="submit" class="flex items-center gap-1 px-2 py-1 rounded-lg transition-colors {{ $post->isUpvotedBy(auth()->id()) ? 'bg-primary/10 text-primary' : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
                                             <span class="material-symbols-outlined !text-sm">thumb_up</span>
-                                            <span class="text-sm font-medium">{{ $post->upvotes ?? 0 }}</span>
+                                            <span class="text-xs sm:text-sm font-medium">{{ $post->upvotes ?? 0 }}</span>
                                         </button>
                                     </form>
                                 @else
                                     <div class="flex items-center gap-1 text-gray-500">
                                         <span class="material-symbols-outlined !text-sm">thumb_up</span>
-                                        <span class="text-sm font-medium">{{ $post->upvotes ?? 0 }}</span>
+                                        <span class="text-xs sm:text-sm font-medium">{{ $post->upvotes ?? 0 }}</span>
                                     </div>
                                 @endauth
                             </div>
@@ -267,11 +280,11 @@
                                    onmouseenter="showCommentsPreview(this, {{ $post->id }})"
                                    onmouseleave="hideCommentsPreview()">
                                     <span class="material-symbols-outlined !text-sm">chat_bubble</span>
-                                    <span class="text-sm font-medium">{{ $post->comments_count ?? 0 }}</span>
+                                    <span class="text-xs sm:text-sm font-medium">{{ $post->comments_count ?? 0 }}</span>
                                 </a>
                                 
                                 <!-- Comments Preview Tooltip -->
-                                <div id="comments-preview-{{ $post->id }}" class="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-80 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-4 z-50 hidden">
+                                <div id="comments-preview-{{ $post->id }}" class="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-72 sm:w-80 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-4 z-50 hidden">
                                     <div class="comments-preview-content">
                                         <div class="loading-state text-center text-gray-500 dark:text-gray-400 text-sm py-4">
                                             <div class="animate-spin w-5 h-5 border-2 border-primary border-t-transparent rounded-full mx-auto mb-2"></div>
@@ -301,7 +314,7 @@
                             @endauth
 
                             <!-- Read More -->
-                            <a href="{{ route('public.forum.show', $post->id) }}" class="text-primary hover:text-primary/80 text-sm font-semibold px-3 py-1 rounded-lg hover:bg-primary/10 transition-colors">
+                            <a href="{{ route('public.forum.show', $post->id) }}" class="text-primary hover:text-primary/80 text-xs sm:text-sm font-semibold px-2 sm:px-3 py-1 rounded-lg hover:bg-primary/10 transition-colors whitespace-nowrap">
                                 Read More →
                             </a>
                         </div>
@@ -310,19 +323,19 @@
             </div>
         </article>
         @empty
-        <div class="text-center py-12">
-            <div class="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span class="material-symbols-outlined text-4xl text-gray-400">forum</span>
+        <div class="text-center py-8 sm:py-12">
+            <div class="w-16 h-16 sm:w-24 sm:h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="material-symbols-outlined text-2xl sm:text-4xl text-gray-400">forum</span>
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">No discussions yet</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-6">Be the first to start a conversation in this category!</p>
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-2">No discussions yet</h3>
+            <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4 sm:mb-6 px-4">Be the first to start a conversation in this category!</p>
             @auth
-                <button onclick="openCreateDiscussionModal()" class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors">
+                <button onclick="openCreateDiscussionModal()" class="inline-flex items-center gap-2 bg-primary text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm sm:text-base">
                     <span class="material-symbols-outlined">add</span>
                     Start Discussion
                 </button>
             @else
-                <button onclick="openLoginModal()" class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors">
+                <button onclick="openLoginModal()" class="inline-flex items-center gap-2 bg-primary text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm sm:text-base">
                     <span class="material-symbols-outlined">login</span>
                     Login to Start Discussion
                 </button>
@@ -331,12 +344,12 @@
         @endforelse
         
         <!-- No Results Message (hidden by default) -->
-        <div id="no-results-message" class="hidden text-center py-12">
-            <div class="w-24 h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span class="material-symbols-outlined text-4xl text-gray-400">search_off</span>
+        <div id="no-results-message" class="hidden text-center py-8 sm:py-12">
+            <div class="w-16 h-16 sm:w-24 sm:h-24 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="material-symbols-outlined text-2xl sm:text-4xl text-gray-400">search_off</span>
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">No discussions found</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-6">Try adjusting your search terms or category filter.</p>
+            <h3 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-2">No discussions found</h3>
+            <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4 sm:mb-6 px-4">Try adjusting your search terms or category filter.</p>
         </div>
                 </div>
             </div>
@@ -350,12 +363,12 @@
         @endif
 
         <!-- Safe & Supportive Space Info -->
-        <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-6 mt-12">
-            <div class="flex gap-4">
-                <span class="material-symbols-outlined text-primary text-3xl flex-shrink-0">info</span>
+        <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-4 sm:p-6 mt-8 sm:mt-12">
+            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <span class="material-symbols-outlined text-primary text-2xl sm:text-3xl flex-shrink-0">info</span>
                 <div class="flex-1">
-                    <h3 class="font-bold text-emerald-900 dark:text-emerald-100 mb-2">Safe & Supportive Space</h3>
-                    <p class="text-sm text-emerald-800 dark:text-emerald-200">
+                    <h3 class="font-bold text-emerald-900 dark:text-emerald-100 mb-2 text-sm sm:text-base">Safe & Supportive Space</h3>
+                    <p class="text-xs sm:text-sm text-emerald-800 dark:text-emerald-200">
                         Our community forum is moderated by professional counselors to ensure a respectful and supportive environment for all members.
                     </p>
                 </div>
@@ -363,26 +376,26 @@
         </div>
 
         <!-- Community Guidelines -->
-        <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-2xl p-8 border border-emerald-200 dark:border-emerald-800 mt-12">
-            <div class="flex items-start gap-4">
-                <span class="material-symbols-outlined text-primary text-3xl flex-shrink-0">verified_user</span>
-                <div>
-                    <h3 class="text-xl font-bold text-emerald-900 dark:text-emerald-100 mb-4">Community Guidelines</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-emerald-800 dark:text-emerald-200">
+        <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 rounded-2xl p-4 sm:p-6 lg:p-8 border border-emerald-200 dark:border-emerald-800 mt-8 sm:mt-12">
+            <div class="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
+                <span class="material-symbols-outlined text-primary text-2xl sm:text-3xl flex-shrink-0">verified_user</span>
+                <div class="flex-1">
+                    <h3 class="text-lg sm:text-xl font-bold text-emerald-900 dark:text-emerald-100 mb-3 sm:mb-4">Community Guidelines</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 text-xs sm:text-sm text-emerald-800 dark:text-emerald-200">
                         <div class="flex items-start gap-2">
-                            <span class="material-symbols-outlined text-lg">check_circle</span>
+                            <span class="material-symbols-outlined text-base sm:text-lg flex-shrink-0">check_circle</span>
                             <span>Be respectful and supportive of others</span>
                         </div>
                         <div class="flex items-start gap-2">
-                            <span class="material-symbols-outlined text-lg">check_circle</span>
+                            <span class="material-symbols-outlined text-base sm:text-lg flex-shrink-0">check_circle</span>
                             <span>Keep discussions relevant and constructive</span>
                         </div>
                         <div class="flex items-start gap-2">
-                            <span class="material-symbols-outlined text-lg">check_circle</span>
+                            <span class="material-symbols-outlined text-base sm:text-lg flex-shrink-0">check_circle</span>
                             <span>Protect your privacy and that of others</span>
                         </div>
                         <div class="flex items-start gap-2">
-                            <span class="material-symbols-outlined text-lg">check_circle</span>
+                            <span class="material-symbols-outlined text-base sm:text-lg flex-shrink-0">check_circle</span>
                             <span>Report inappropriate content to moderators</span>
                         </div>
                     </div>
@@ -393,30 +406,30 @@
 
 <!-- CTA Section -->
 @guest
-<section class="py-12">
+<section class="py-8 sm:py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="relative bg-gradient-to-r from-primary/10 to-green-50 dark:from-gray-800 dark:to-gray-800/50 rounded-2xl p-8 border border-primary/20 dark:border-gray-700 overflow-hidden">
+        <div class="relative bg-gradient-to-r from-primary/10 to-green-50 dark:from-gray-800 dark:to-gray-800/50 rounded-2xl p-6 sm:p-8 border border-primary/20 dark:border-gray-700 overflow-hidden">
             <!-- Decorative Icons -->
-            <div class="absolute top-4 left-4 opacity-10">
-                <span class="material-symbols-outlined text-6xl text-primary">forum</span>
+            <div class="absolute top-3 sm:top-4 left-3 sm:left-4 opacity-10">
+                <span class="material-symbols-outlined text-4xl sm:text-6xl text-primary">forum</span>
             </div>
-            <div class="absolute bottom-4 right-4 opacity-10">
-                <span class="material-symbols-outlined text-6xl text-primary">groups</span>
+            <div class="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 opacity-10">
+                <span class="material-symbols-outlined text-4xl sm:text-6xl text-primary">groups</span>
             </div>
             
             <div class="relative text-center">
-                <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/20 rounded-full mb-4">
-                    <span class="material-symbols-outlined text-3xl text-primary">favorite</span>
+                <div class="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-primary/20 rounded-full mb-3 sm:mb-4">
+                    <span class="material-symbols-outlined text-2xl sm:text-3xl text-primary">favorite</span>
                 </div>
-                <h3 class="text-xl font-bold text-[#111816] dark:text-white mb-2">Join Our Community Today</h3>
-                <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">Connect with peers, share your experiences, and find support in a safe, moderated environment. Your voice matters.</p>
-                <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                    <button onclick="openSignupModal()" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
-                        <span class="material-symbols-outlined text-base">person_add</span>
+                <h3 class="text-lg sm:text-xl font-bold text-[#111816] dark:text-white mb-2">Join Our Community Today</h3>
+                <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4 sm:mb-6 max-w-2xl mx-auto px-4">Connect with peers, share your experiences, and find support in a safe, moderated environment. Your voice matters.</p>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center px-4">
+                    <button onclick="openSignupModal()" class="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
+                        <span class="material-symbols-outlined text-sm sm:text-base">person_add</span>
                         <span>Create Free Account</span>
                     </button>
-                    <button onclick="openLoginModal()" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-700 text-[#111816] dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg font-semibold hover:border-primary hover:text-primary transition-colors text-sm">
-                        <span class="material-symbols-outlined text-base">login</span>
+                    <button onclick="openLoginModal()" class="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-white dark:bg-gray-700 text-[#111816] dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg font-semibold hover:border-primary hover:text-primary transition-colors text-sm">
+                        <span class="material-symbols-outlined text-sm sm:text-base">login</span>
                         <span>Sign In</span>
                     </button>
                 </div>
@@ -728,6 +741,29 @@ function openCreateDiscussionModal(categoryId = null) {
 
 // Initialize filtering functionality
 document.addEventListener('DOMContentLoaded', function() {
+    // Mobile filter toggle functionality
+    const forumMobileFilterToggle = document.getElementById('forum-mobile-filter-toggle');
+    const forumMobileFilters = document.getElementById('forum-mobile-filters');
+    const forumMobileFilterIcon = document.getElementById('forum-mobile-filter-icon');
+    
+    if (forumMobileFilterToggle && forumMobileFilters) {
+        forumMobileFilterToggle.addEventListener('click', function() {
+            const isHidden = forumMobileFilters.classList.contains('hidden');
+            
+            if (isHidden) {
+                forumMobileFilters.classList.remove('hidden');
+                forumMobileFilterIcon.style.transform = 'rotate(180deg)';
+                forumMobileFilterIcon.textContent = 'expand_less';
+                forumMobileFilterToggle.querySelector('span:first-child').textContent = 'Hide Filters';
+            } else {
+                forumMobileFilters.classList.add('hidden');
+                forumMobileFilterIcon.style.transform = 'rotate(0deg)';
+                forumMobileFilterIcon.textContent = 'expand_more';
+                forumMobileFilterToggle.querySelector('span:first-child').textContent = 'Show Filters';
+            }
+        });
+    }
+    
     // Handle category filter dropdown
     const categoryDropdown = document.getElementById('category-filter');
     

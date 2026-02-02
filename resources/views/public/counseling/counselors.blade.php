@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="relative overflow-hidden h-screen">
+<section class="relative overflow-hidden min-h-screen flex items-center">
     <!-- Background Image -->
     <div class="absolute inset-0">
         <img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2087&q=80" 
@@ -14,28 +14,28 @@
     </div>
     
     <!-- Content -->
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-center">
+    <div class="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
         <div class="text-center">
-            <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-semibold mb-6">
-                <span class="material-symbols-outlined !text-lg">group</span>
+            <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-3 sm:px-4 py-2 rounded-full text-sm font-semibold mb-4 sm:mb-6">
+                <span class="material-symbols-outlined !text-base sm:!text-lg">group</span>
                 Our Counselors
             </div>
-            <h1 class="text-4xl lg:text-6xl font-black text-white tracking-tight mb-6">Meet Our Professional Counselors</h1>
-            <p class="text-xl lg:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-8">Our team of licensed mental health professionals brings years of experience and specialized training to support your wellbeing journey with compassion and confidentiality.</p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <h1 class="text-3xl sm:text-4xl lg:text-6xl font-black text-white tracking-tight mb-4 sm:mb-6 leading-tight">Meet Our Professional Counselors</h1>
+            <p class="text-lg sm:text-xl lg:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-6 sm:mb-8 px-4">Our team of mental health professionals brings years of experience and specialized training to support your wellbeing journey with compassion and confidentiality.</p>
+            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
                 @auth
-                    <a href="{{ route('public.counseling.sessions') }}" class="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                        <span class="material-symbols-outlined !text-xl">add_circle</span>
+                    <a href="{{ route('public.counseling.sessions') }}" class="inline-flex items-center justify-center gap-2 bg-white text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                        <span class="material-symbols-outlined !text-lg sm:!text-xl">add_circle</span>
                         Book Session
                     </a>
                 @else
-                    <button onclick="openLoginModal()" class="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                        <span class="material-symbols-outlined !text-xl">login</span>
+                    <button onclick="openLoginModal()" class="inline-flex items-center justify-center gap-2 bg-white text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                        <span class="material-symbols-outlined !text-lg sm:!text-xl">login</span>
                         Login to Book Session
                     </button>
                 @endauth
-                <a href="#counselors-filters" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 transition-all duration-200 transform hover:scale-105 scroll-to-filters">
-                    <span class="material-symbols-outlined !text-xl">visibility</span>
+                <a href="#counselors-filters" class="inline-flex items-center justify-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/30 transition-all duration-200 transform hover:scale-105 scroll-to-filters">
+                    <span class="material-symbols-outlined !text-lg sm:!text-xl">visibility</span>
                     Browse Counselors
                 </a>
             </div>
@@ -44,22 +44,22 @@
 </section>
 
 <!-- Filter Section -->
-<div id="counselors-filters" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
+<div id="counselors-filters" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-4 sm:p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
         <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
             <!-- Search Bar -->
-            <div class="relative flex-1 max-w-md">
-                <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-[#61897c] dark:text-gray-400 !text-xl">search</span>
-                <input id="search-input" type="text" placeholder="Search by name or specialization..." 
-                       class="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111816] dark:text-white placeholder-[#61897c] dark:placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200">
+            <div class="relative flex-1 w-full sm:max-w-md">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-[#61897c] dark:text-gray-400 !text-lg sm:!text-xl">search</span>
+                <input id="search-input" type="text" placeholder="Search by name..." 
+                       class="w-full pl-10 sm:pl-12 pr-4 py-2.5 sm:py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111816] dark:text-white placeholder-[#61897c] dark:placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-sm sm:text-base">
             </div>
             
             <!-- Filter Buttons -->
-            <div class="flex items-center gap-2">
-                <button data-filter="all" class="filter-btn px-4 py-2 rounded-lg bg-primary text-white font-semibold text-sm transition-all duration-200 transform hover:scale-105 shadow-sm">
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+                <button data-filter="all" class="filter-btn flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-lg bg-primary text-white font-semibold text-xs sm:text-sm transition-all duration-200 transform hover:scale-105 shadow-sm">
                     All Counselors
                 </button>
-                <button data-filter="available" class="filter-btn px-4 py-2 rounded-lg bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white font-medium text-sm transition-colors">
+                <button data-filter="available" class="filter-btn flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-lg bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white font-medium text-xs sm:text-sm transition-colors">
                     Available
                 </button>
             </div>
@@ -68,24 +68,24 @@
 </div>
 
 <!-- Counselors Grid -->
-<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-    <div class="flex flex-col flex-1 gap-10">
+<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 sm:pb-12">
+    <div class="flex flex-col flex-1 gap-8 sm:gap-10">
         @if($counselors->isEmpty())
-        <div class="col-span-full flex flex-col items-center justify-center gap-8 py-20 text-center">
+        <div class="col-span-full flex flex-col items-center justify-center gap-6 sm:gap-8 py-16 sm:py-20 text-center px-4">
             <div class="relative">
-                <div class="w-32 h-32 bg-gradient-to-br from-primary/20 to-primary/10 rounded-full flex items-center justify-center">
-                    <span class="material-symbols-outlined text-primary !text-6xl">person_search</span>
+                <div class="w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-primary/20 to-primary/10 rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary !text-4xl sm:!text-6xl">person_search</span>
                 </div>
             </div>
-            <div class="flex max-w-lg flex-col items-center gap-4">
-                <h3 class="text-[#111816] dark:text-white text-2xl font-bold leading-tight">No Counselors Available</h3>
-                <p class="text-[#61897c] dark:text-gray-400 text-base leading-relaxed">
+            <div class="flex max-w-lg flex-col items-center gap-3 sm:gap-4">
+                <h3 class="text-[#111816] dark:text-white text-xl sm:text-2xl font-bold leading-tight">No Counselors Available</h3>
+                <p class="text-[#61897c] dark:text-gray-400 text-sm sm:text-base leading-relaxed">
                     Our counseling team is currently being set up. Please check back soon or contact us for more information.
                 </p>
             </div>
         </div>
         @else
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             @php
                 $gradients = [
                     'from-blue-500 to-indigo-600',
@@ -121,62 +121,62 @@
 
             <article class="group block bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700 hover:border-primary/30 hover:-translate-y-1 h-full" data-counselor-name="{{ strtolower($counselor->name) }}" data-counselor-email="{{ strtolower($counselor->email) }}">
                 <!-- Image Section -->
-                <div class="relative h-48 overflow-hidden">
+                <div class="relative h-40 sm:h-48 overflow-hidden">
                     @if($counselor->avatar)
                         <img src="{{ asset('storage/' . $counselor->avatar) }}" alt="{{ $counselor->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                     @else
                         <div class="w-full h-full bg-gradient-to-br {{ $gradient }} flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                            <span class="text-6xl font-bold text-white">{{ $initials }}</span>
+                            <span class="text-4xl sm:text-6xl font-bold text-white">{{ $initials }}</span>
                         </div>
                     @endif
                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                     
                     <!-- Available Badge -->
-                    <div class="absolute top-4 right-4">
-                        <div class="flex items-center gap-1.5 bg-green-500/90 backdrop-blur-sm px-3 py-1.5 rounded-full">
-                            <span class="h-2 w-2 rounded-full bg-white animate-pulse"></span>
+                    <div class="absolute top-3 sm:top-4 right-3 sm:right-4">
+                        <div class="flex items-center gap-1 sm:gap-1.5 bg-green-500/90 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-full">
+                            <span class="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-white animate-pulse"></span>
                             <span class="text-xs font-semibold text-white">Available</span>
                         </div>
                     </div>
                     
                     <!-- Name Overlay -->
-                    <div class="absolute bottom-4 left-4 right-4">
-                        <h3 class="text-xl font-bold text-white mb-1">{{ $counselor->name }}</h3>
-                        <p class="text-white/90 text-sm font-medium">Professional Counselor</p>
+                    <div class="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4">
+                        <h3 class="text-lg sm:text-xl font-bold text-white mb-1">{{ $counselor->name }}</h3>
+                        <p class="text-white/90 text-xs sm:text-sm font-medium">Professional Counselor</p>
                     </div>
                 </div>
                 
                 <!-- Content Section -->
-                <div class="p-6">
-                    <div class="space-y-3 mb-4">
-                        <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                            <span class="material-symbols-outlined !text-base text-primary">email</span>
+                <div class="p-4 sm:p-6">
+                    <div class="space-y-2 sm:space-y-3 mb-3 sm:mb-4">
+                        <div class="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                            <span class="material-symbols-outlined !text-sm sm:!text-base text-primary">email</span>
                             <span class="truncate">{{ $counselor->email }}</span>
                         </div>
                         
                         @if($counselor->phone)
-                        <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                            <span class="material-symbols-outlined !text-base text-primary">phone</span>
+                        <div class="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                            <span class="material-symbols-outlined !text-sm sm:!text-base text-primary">phone</span>
                             <span>{{ $counselor->phone }}</span>
                         </div>
                         @endif
                         
-                        <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                            <span class="material-symbols-outlined !text-base text-primary">calendar_today</span>
+                        <div class="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                            <span class="material-symbols-outlined !text-sm sm:!text-base text-primary">calendar_today</span>
                             <span>Member since {{ $counselor->created_at->format('M Y') }}</span>
                         </div>
                     </div>
                     
                     <!-- Action Link -->
                     @auth
-                        <a href="{{ route('public.counseling.sessions') }}" class="flex items-center justify-center gap-2 text-primary font-semibold text-sm group-hover:gap-3 transition-all">
+                        <a href="{{ route('public.counseling.sessions') }}" class="flex items-center justify-center gap-2 text-primary font-semibold text-xs sm:text-sm group-hover:gap-3 transition-all">
                             <span>Request Session</span>
-                            <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                            <span class="material-symbols-outlined text-base sm:text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
                         </a>
                     @else
-                    <button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="flex items-center justify-center gap-2 text-primary font-semibold text-sm group-hover:gap-3 transition-all w-full">
+                    <button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="flex items-center justify-center gap-2 text-primary font-semibold text-xs sm:text-sm group-hover:gap-3 transition-all w-full">
                         <span>Login to Book</span>
-                        <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        <span class="material-symbols-outlined text-base sm:text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
                     </button>
                     @endauth
                 </div>
@@ -188,37 +188,37 @@
 </div>
 
 <!-- CTA Section -->
-<section class="py-12">
+<section class="py-8 sm:py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="relative bg-gradient-to-r from-primary/10 to-green-50 dark:from-gray-800 dark:to-gray-800/50 rounded-2xl p-8 border border-primary/20 dark:border-gray-700 overflow-hidden">
+        <div class="relative bg-gradient-to-r from-primary/10 to-green-50 dark:from-gray-800 dark:to-gray-800/50 rounded-2xl p-6 sm:p-8 border border-primary/20 dark:border-gray-700 overflow-hidden">
             <!-- Decorative Icons -->
-            <div class="absolute top-4 left-4 opacity-10">
-                <span class="material-symbols-outlined text-6xl text-primary">support_agent</span>
+            <div class="absolute top-3 sm:top-4 left-3 sm:left-4 opacity-10">
+                <span class="material-symbols-outlined text-4xl sm:text-6xl text-primary">support_agent</span>
             </div>
-            <div class="absolute bottom-4 right-4 opacity-10">
-                <span class="material-symbols-outlined text-6xl text-primary">groups</span>
+            <div class="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 opacity-10">
+                <span class="material-symbols-outlined text-4xl sm:text-6xl text-primary">groups</span>
             </div>
             
             <div class="relative text-center">
-                <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/20 rounded-full mb-4">
-                    <span class="material-symbols-outlined text-3xl text-primary">favorite</span>
+                <div class="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-primary/20 rounded-full mb-3 sm:mb-4">
+                    <span class="material-symbols-outlined text-2xl sm:text-3xl text-primary">favorite</span>
                 </div>
-                <h3 class="text-xl font-bold text-[#111816] dark:text-white mb-2">Ready to Connect with a Counselor?</h3>
-                <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">Take the first step towards better mental health. Request a session with one of our professional counselors today.</p>
-                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <h3 class="text-lg sm:text-xl font-bold text-[#111816] dark:text-white mb-2">Ready to Connect with a Counselor?</h3>
+                <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4 sm:mb-6 max-w-2xl mx-auto px-4">Take the first step towards better mental health. Request a session with one of our professional counselors today.</p>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center px-4">
                     @auth
-                        <a href="{{ route('public.counseling.sessions') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
-                            <span class="material-symbols-outlined text-base">add_circle</span>
+                        <a href="{{ route('public.counseling.sessions') }}" class="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
+                            <span class="material-symbols-outlined text-sm sm:text-base">add_circle</span>
                             <span>Request Session</span>
                         </a>
                     @else
-                        <button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
-                            <span class="material-symbols-outlined text-base">login</span>
+                        <button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
+                            <span class="material-symbols-outlined text-sm sm:text-base">login</span>
                             <span>Login to Get Started</span>
                         </button>
                     @endauth
-                    <a href="{{ route('public.counseling.index') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-700 text-[#111816] dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg font-semibold hover:border-primary hover:text-primary transition-colors text-sm">
-                        <span class="material-symbols-outlined text-base">arrow_back</span>
+                    <a href="{{ route('public.counseling.index') }}" class="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-white dark:bg-gray-700 text-[#111816] dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg font-semibold hover:border-primary hover:text-primary transition-colors text-sm">
+                        <span class="material-symbols-outlined text-sm sm:text-base">arrow_back</span>
                         <span>Back to Services</span>
                     </a>
                 </div>

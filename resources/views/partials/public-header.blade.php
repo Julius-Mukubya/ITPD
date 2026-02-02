@@ -279,18 +279,36 @@
                 
                 <!-- Counseling Section -->
                 <div class="py-2">
-                    <div class="flex items-center gap-3 text-gray-900 dark:text-primary px-4 py-2 font-semibold">
-                        <span class="material-symbols-outlined">psychology</span>
-                        <span>Counseling</span>
-                    </div>
-                    <div class="ml-8 space-y-1 mt-1">
-                        <a class="block text-gray-900 dark:text-primary hover:text-gray-700 dark:hover:text-primary/80 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" href="{{ route('public.counseling.index') }}">Our Services</a>
-                        <a class="block text-gray-900 dark:text-primary hover:text-gray-700 dark:hover:text-primary/80 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" href="{{ route('public.counseling.counselors') }}">Our Counselors</a>
+                    <button onclick="toggleCounselingDropdown()" class="flex items-center justify-between w-full text-gray-900 dark:text-primary px-4 py-2 font-semibold hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined">psychology</span>
+                            <span>Counseling</span>
+                        </div>
+                        <span id="counselingDropdownIcon" class="material-symbols-outlined text-sm transition-transform duration-200">expand_more</span>
+                    </button>
+                    <div id="counselingDropdownContent" class="ml-8 space-y-1 mt-1 hidden">
+                        <a class="flex items-center gap-3 text-gray-900 dark:text-primary hover:text-gray-700 dark:hover:text-primary/80 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" href="{{ route('public.counseling.index') }}">
+                            <span class="material-symbols-outlined !text-base">support_agent</span>
+                            <span>Our Services</span>
+                        </a>
+                        <a class="flex items-center gap-3 text-gray-900 dark:text-primary hover:text-gray-700 dark:hover:text-primary/80 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" href="{{ route('public.counseling.counselors') }}">
+                            <span class="material-symbols-outlined !text-base">group</span>
+                            <span>Our Counselors</span>
+                        </a>
                         @auth
-                            <a class="block text-gray-900 dark:text-primary hover:text-gray-700 dark:hover:text-primary/80 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" href="{{ route('public.counseling.sessions') }}">My Sessions</a>
-                            <a class="block text-gray-900 dark:text-primary font-medium px-4 py-2 rounded-lg hover:bg-primary/10 transition-colors" href="{{ route('public.counseling.sessions') }}">Request Session</a>
+                            <a class="flex items-center gap-3 text-gray-900 dark:text-primary hover:text-gray-700 dark:hover:text-primary/80 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" href="{{ route('public.counseling.sessions') }}">
+                                <span class="material-symbols-outlined !text-base">calendar_today</span>
+                                <span>My Sessions</span>
+                            </a>
+                            <a class="flex items-center gap-3 text-gray-900 dark:text-primary font-medium px-4 py-2 rounded-lg hover:bg-primary/10 transition-colors" href="{{ route('public.counseling.sessions') }}">
+                                <span class="material-symbols-outlined !text-base">add_circle</span>
+                                <span>Request Session</span>
+                            </a>
                         @else
-                            <button onclick="openLoginModal(); toggleMobileSidebar();" class="block w-full text-left text-gray-900 dark:text-primary font-medium px-4 py-2 rounded-lg hover:bg-primary/10 transition-colors">Login to Request Session</button>
+                            <button onclick="openLoginModal(); toggleMobileSidebar();" class="flex items-center gap-3 w-full text-left text-gray-900 dark:text-primary font-medium px-4 py-2 rounded-lg hover:bg-primary/10 transition-colors">
+                                <span class="material-symbols-outlined !text-base">add_circle</span>
+                                <span>Request Session</span>
+                            </button>
                         @endauth
                     </div>
                 </div>
@@ -383,5 +401,24 @@ function toggleMobileSidebar() {
     
     // Prevent body scroll when sidebar is open
     document.body.classList.toggle('overflow-hidden');
+}
+
+function toggleCounselingDropdown() {
+    const content = document.getElementById('counselingDropdownContent');
+    const icon = document.getElementById('counselingDropdownIcon');
+    
+    if (content && icon) {
+        const isHidden = content.classList.contains('hidden');
+        
+        if (isHidden) {
+            content.classList.remove('hidden');
+            icon.textContent = 'expand_less';
+            icon.style.transform = 'rotate(180deg)';
+        } else {
+            content.classList.add('hidden');
+            icon.textContent = 'expand_more';
+            icon.style.transform = 'rotate(0deg)';
+        }
+    }
 }
 </script>

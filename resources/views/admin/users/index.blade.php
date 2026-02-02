@@ -19,23 +19,34 @@
 <!-- Users Table -->
 <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
     <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">System Users</h2>
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">System Users</h2>
+            
+            <!-- Mobile Filter Toggle Button -->
+            <button id="userMobileFilterToggle" class="md:hidden flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">
+                <span class="material-symbols-outlined text-base">tune</span>
+                <span>Filters</span>
+                <span id="userFilterToggleIcon" class="material-symbols-outlined text-sm transition-transform">expand_more</span>
+            </button>
+        </div>
         
-        <!-- Filter -->
-        <div class="flex gap-3">
-            <input type="text" id="userSearch" placeholder="Search by name, email, or registration number..." 
-                class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent">
-            <select id="userRole" class="min-w-[120px] px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent appearance-none">
-                <option value="">All Roles</option>
-                <option value="user">User</option>
-                <option value="counselor">Counselor</option>
-                <option value="admin">Admin</option>
-            </select>
-            <select id="userStatus" class="min-w-[120px] px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent appearance-none">
-                <option value="">All Status</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-            </select>
+        <!-- Filter Section -->
+        <div id="userFilterSection" class="hidden md:block">
+            <div class="flex flex-col md:flex-row gap-3">
+                <input type="text" id="userSearch" placeholder="Search by name, email, or registration number..." 
+                    class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent">
+                <select id="userRole" class="flex-1 md:min-w-[120px] px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent appearance-none">
+                    <option value="">All Roles</option>
+                    <option value="user">User</option>
+                    <option value="counselor">Counselor</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <select id="userStatus" class="flex-1 md:min-w-[120px] px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent appearance-none">
+                    <option value="">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
         </div>
     </div>
     <table class="w-full text-sm">
@@ -137,6 +148,28 @@
 <script>
 // User table filtering
 document.addEventListener('DOMContentLoaded', function() {
+    // Mobile filter toggle functionality
+    const userMobileFilterToggle = document.getElementById('userMobileFilterToggle');
+    const userFilterSection = document.getElementById('userFilterSection');
+    const userFilterToggleIcon = document.getElementById('userFilterToggleIcon');
+    
+    if (userMobileFilterToggle && userFilterSection) {
+        userMobileFilterToggle.addEventListener('click', function() {
+            const isHidden = userFilterSection.classList.contains('hidden');
+            
+            if (isHidden) {
+                userFilterSection.classList.remove('hidden');
+                userFilterToggleIcon.style.transform = 'rotate(180deg)';
+                userFilterToggleIcon.textContent = 'expand_less';
+            } else {
+                userFilterSection.classList.add('hidden');
+                userFilterToggleIcon.style.transform = 'rotate(0deg)';
+                userFilterToggleIcon.textContent = 'expand_more';
+            }
+        });
+    }
+    
+    // Filter elements
     const searchInput = document.getElementById('userSearch');
     const roleSelect = document.getElementById('userRole');
     const statusSelect = document.getElementById('userStatus');

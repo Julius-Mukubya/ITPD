@@ -1,24 +1,24 @@
 @props(['content'])
 
 <div class="mb-16">
-    <div class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-3xl p-8 border border-purple-200/50 dark:border-purple-800/50 shadow-lg">
-        <div class="text-center mb-8">
-            <h3 class="text-2xl md:text-3xl font-bold text-[#111816] dark:text-white mb-2">
+    <div class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-3xl p-4 sm:p-6 lg:p-8 border border-purple-200/50 dark:border-purple-800/50 shadow-lg">
+        <div class="text-center mb-6 sm:mb-8">
+            <h3 class="text-xl sm:text-2xl md:text-3xl font-bold text-[#111816] dark:text-white mb-2">
                 Your Feedback Matters
             </h3>
-            <p class="text-[#61897c] dark:text-gray-400 max-w-2xl mx-auto">
+            <p class="text-[#61897c] dark:text-gray-400 max-w-2xl mx-auto text-sm sm:text-base">
                 Help us improve our content and support the community by sharing your thoughts.
             </p>
         </div>
         
         <div class="max-w-4xl mx-auto">
             <!-- Rating Overview -->
-            <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800 mb-6">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-4 sm:p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
                     <!-- Overall Rating -->
                     <div class="text-center">
                         <div class="mb-4">
-                            <div class="text-4xl font-bold text-[#111816] dark:text-white mb-2" id="average-rating">
+                            <div class="text-3xl sm:text-4xl font-bold text-[#111816] dark:text-white mb-2" id="average-rating">
                                 {{ $content->formatted_average_rating }}
                             </div>
                             <div class="flex items-center justify-center gap-1 mb-2" id="rating-stars">
@@ -29,11 +29,11 @@
                                 @endphp
                                 @for($i = 1; $i <= 5; $i++)
                                     @if($i <= $fullStars)
-                                        <span class="material-symbols-outlined !text-2xl text-yellow-400">star</span>
+                                        <span class="material-symbols-outlined !text-xl sm:!text-2xl text-yellow-400">star</span>
                                     @elseif($i == $fullStars + 1 && $hasHalfStar)
-                                        <span class="material-symbols-outlined !text-2xl text-yellow-400">star_half</span>
+                                        <span class="material-symbols-outlined !text-xl sm:!text-2xl text-yellow-400">star_half</span>
                                     @else
-                                        <span class="material-symbols-outlined !text-2xl text-gray-300 dark:text-gray-600">star</span>
+                                        <span class="material-symbols-outlined !text-xl sm:!text-2xl text-gray-300 dark:text-gray-600">star</span>
                                     @endif
                                 @endfor
                             </div>
@@ -44,7 +44,7 @@
                         
                         <!-- Helpful Percentage -->
                         <div class="bg-green-50 dark:bg-green-900/30 rounded-xl p-4">
-                            <div class="text-2xl font-bold text-green-600 dark:text-green-400" id="helpful-percentage">
+                            <div class="text-xl sm:text-2xl font-bold text-green-600 dark:text-green-400" id="helpful-percentage">
                                 {{ $content->helpful_percentage }}%
                             </div>
                             <p class="text-sm text-green-700 dark:text-green-300">found this helpful</p>
@@ -55,13 +55,13 @@
                     <div class="space-y-2">
                         <h4 class="font-semibold text-[#111816] dark:text-white mb-3">Rating Breakdown</h4>
                         @foreach(array_reverse($content->rating_distribution, true) as $rating => $data)
-                        <div class="flex items-center gap-3" data-rating="{{ $rating }}">
-                            <span class="text-sm font-medium text-[#111816] dark:text-white w-8">{{ $rating }}★</span>
+                        <div class="flex items-center gap-2 sm:gap-3" data-rating="{{ $rating }}">
+                            <span class="text-sm font-medium text-[#111816] dark:text-white w-6 sm:w-8">{{ $rating }}★</span>
                             <div class="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                                 <div class="bg-yellow-400 h-2 rounded-full transition-all duration-500" 
                                      style="width: {{ $data['percentage'] }}%"></div>
                             </div>
-                            <span class="text-sm text-[#61897c] dark:text-gray-400 w-12">{{ $data['count'] }}</span>
+                            <span class="text-sm text-[#61897c] dark:text-gray-400 w-8 sm:w-12 text-right">{{ $data['count'] }}</span>
                         </div>
                         @endforeach
                     </div>
@@ -70,7 +70,7 @@
 
             @auth
                 <!-- User Review Section -->
-                <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800 mb-6">
+                <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-4 sm:p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800 mb-6">
                     @php
                         $userReview = $content->getReviewBy(auth()->id());
                     @endphp
@@ -133,13 +133,13 @@
                                 <label class="block text-sm font-semibold text-[#111816] dark:text-white mb-2">
                                     Rating *
                                 </label>
-                                <div class="flex items-center gap-1" id="star-rating">
+                                <div class="flex items-center justify-center sm:justify-start gap-1" id="star-rating">
                                     @for($i = 1; $i <= 5; $i++)
                                         <button type="button" 
-                                                class="star-btn text-3xl text-gray-300 dark:text-gray-600 hover:text-yellow-400 transition-colors" 
+                                                class="star-btn text-2xl sm:text-3xl text-gray-300 dark:text-gray-600 hover:text-yellow-400 transition-colors" 
                                                 data-rating="{{ $i }}"
                                                 onclick="setRating({{ $i }})">
-                                            <span class="material-symbols-outlined !text-3xl">star</span>
+                                            <span class="material-symbols-outlined !text-2xl sm:!text-3xl">star</span>
                                         </button>
                                     @endfor
                                 </div>
@@ -164,16 +164,16 @@
                                 <label class="block text-sm font-semibold text-[#111816] dark:text-white mb-2">
                                     Was this content helpful?
                                 </label>
-                                <div class="flex gap-3">
+                                <div class="flex flex-col sm:flex-row gap-3">
                                     <button type="button" 
-                                            class="helpful-btn flex items-center gap-2 px-4 py-2 rounded-lg border-2 transition-all {{ ($userReview && $userReview->is_helpful === true) ? 'bg-green-50 dark:bg-green-900/30 border-green-500 text-green-600 dark:text-green-400' : 'border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-green-500 hover:text-green-600' }}"
+                                            class="helpful-btn flex items-center justify-center gap-2 px-4 py-2 rounded-lg border-2 transition-all {{ ($userReview && $userReview->is_helpful === true) ? 'bg-green-50 dark:bg-green-900/30 border-green-500 text-green-600 dark:text-green-400' : 'border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-green-500 hover:text-green-600' }} w-full sm:w-auto"
                                             data-helpful="true"
                                             onclick="setHelpful(true)">
                                         <span class="material-symbols-outlined !text-base">thumb_up</span>
                                         Yes, helpful
                                     </button>
                                     <button type="button" 
-                                            class="helpful-btn flex items-center gap-2 px-4 py-2 rounded-lg border-2 transition-all {{ ($userReview && $userReview->is_helpful === false) ? 'bg-red-50 dark:bg-red-900/30 border-red-500 text-red-600 dark:text-red-400' : 'border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-red-500 hover:text-red-600' }}"
+                                            class="helpful-btn flex items-center justify-center gap-2 px-4 py-2 rounded-lg border-2 transition-all {{ ($userReview && $userReview->is_helpful === false) ? 'bg-red-50 dark:bg-red-900/30 border-red-500 text-red-600 dark:text-red-400' : 'border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-red-500 hover:text-red-600' }} w-full sm:w-auto"
                                             data-helpful="false"
                                             onclick="setHelpful(false)">
                                         <span class="material-symbols-outlined !text-base">thumb_down</span>
@@ -184,9 +184,9 @@
                             </div>
                             
                             <!-- Submit Button -->
-                            <div class="flex gap-3 pt-4">
+                            <div class="flex flex-col sm:flex-row gap-3 pt-4">
                                 <button type="submit" 
-                                        class="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-sm">
+                                        class="flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-sm w-full sm:w-auto">
                                     <span class="material-symbols-outlined !text-base">send</span>
                                     {{ $userReview ? 'Update Review' : 'Submit Review' }}
                                 </button>
@@ -194,7 +194,7 @@
                                 @if($userReview)
                                     <button type="button" 
                                             onclick="cancelEdit()"
-                                            class="flex items-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-xl font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                                            class="flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-xl font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors w-full sm:w-auto">
                                         <span class="material-symbols-outlined !text-base">cancel</span>
                                         Cancel
                                     </button>
@@ -205,7 +205,7 @@
                 </div>
             @else
                 <!-- Login Prompt -->
-                <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800 mb-6 text-center">
+                <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-4 sm:p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800 mb-6 text-center">
                     <div class="mb-4">
                         <span class="material-symbols-outlined text-primary !text-4xl mb-2 block">login</span>
                         <h4 class="text-lg font-bold text-[#111816] dark:text-white mb-2">Share Your Experience</h4>
@@ -222,14 +222,14 @@
             @endauth
 
             <!-- Reviews List -->
-            <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
-                <div class="flex items-center justify-between mb-6">
+            <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-4 sm:p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                     <h4 class="text-lg font-bold text-[#111816] dark:text-white flex items-center gap-2">
                         <span class="material-symbols-outlined text-primary">reviews</span>
                         Community Reviews
                     </h4>
                     <div class="flex items-center gap-2">
-                        <select id="review-sort" class="text-sm border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1 bg-white dark:bg-gray-800 text-[#111816] dark:text-white">
+                        <select id="review-sort" class="text-sm border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1 bg-white dark:bg-gray-800 text-[#111816] dark:text-white w-full sm:w-auto">
                             <option value="newest">Newest First</option>
                             <option value="oldest">Oldest First</option>
                             <option value="highest">Highest Rated</option>
@@ -580,17 +580,17 @@ document.addEventListener('DOMContentLoaded', function() {
         ).join('');
         
         div.innerHTML = `
-            <div class="flex items-start gap-4">
+            <div class="flex items-start gap-3 sm:gap-4">
                 <img src="${review.user.profile_photo_url || '/images/default-avatar.png'}" 
                      alt="${review.user.name}" 
-                     class="w-10 h-10 rounded-full border-2 border-primary/20 flex-shrink-0">
-                <div class="flex-1">
-                    <div class="flex items-center gap-3 mb-2">
-                        <h5 class="font-semibold text-[#111816] dark:text-white">${review.user.name}</h5>
+                     class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-primary/20 flex-shrink-0">
+                <div class="flex-1 min-w-0">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
+                        <h5 class="font-semibold text-[#111816] dark:text-white truncate">${review.user.name}</h5>
                         <div class="flex items-center gap-1">${stars}</div>
                         <span class="text-xs text-[#61897c] dark:text-gray-400">${review.time_ago}</span>
                     </div>
-                    ${review.review ? `<p class="text-[#111816] dark:text-white mb-3 leading-relaxed">${review.review}</p>` : ''}
+                    ${review.review ? `<p class="text-[#111816] dark:text-white mb-3 leading-relaxed break-words">${review.review}</p>` : ''}
                     ${review.is_helpful !== null ? `
                         <div class="flex items-center gap-2">
                             <span class="material-symbols-outlined !text-base ${review.is_helpful ? 'text-green-600' : 'text-red-600'}">

@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="relative overflow-hidden h-screen">
+<section class="relative overflow-hidden min-h-screen flex items-center">
     <!-- Background Image -->
     <div class="absolute inset-0 bg-gray-600">
         <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
@@ -15,17 +15,17 @@
     </div>
     
     <!-- Content -->
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-center">
+    <div class="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
         <div class="text-center">
-            <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-semibold mb-6">
-                <span class="material-symbols-outlined !text-lg">quiz</span>
+            <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white px-3 sm:px-4 py-2 rounded-full text-sm font-semibold mb-4 sm:mb-6">
+                <span class="material-symbols-outlined !text-base sm:!text-lg">quiz</span>
                 Self-Assessment Tools
             </div>
-            <h1 class="text-4xl lg:text-6xl font-black text-white tracking-tight mb-6">Self-Assessment Tools</h1>
-            <p class="text-xl lg:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-8">Take confidential, evidence-based assessments to better understand your mental health and wellbeing. These tools are free and anonymous.</p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#assessments-filters" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-lg backdrop-saturate-150">
-                    <span class="material-symbols-outlined !text-xl">quiz</span>
+            <h1 class="text-3xl sm:text-4xl lg:text-6xl font-black text-white tracking-tight mb-4 sm:mb-6 leading-tight">Self-Assessment Tools</h1>
+            <p class="text-lg sm:text-xl lg:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-6 sm:mb-8 px-4">Take confidential, evidence-based assessments to better understand your mental health and wellbeing. These tools are free and anonymous.</p>
+            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
+                <a href="#assessments-filters" class="inline-flex items-center justify-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/30 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-lg backdrop-saturate-150">
+                    <span class="material-symbols-outlined !text-lg sm:!text-xl">quiz</span>
                     Browse Assessments
                 </a>
             </div>
@@ -34,16 +34,16 @@
 </section>
 
 <!-- Main Content -->
-<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="flex flex-col flex-1 gap-10">
+<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div class="flex flex-col flex-1 gap-8 sm:gap-10">
         
         <!-- Info Banner -->
-        <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-6">
-            <div class="flex gap-4">
-                <span class="material-symbols-outlined text-primary text-3xl flex-shrink-0">info</span>
+        <div class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-emerald-200 dark:border-emerald-800 rounded-2xl p-4 sm:p-6">
+            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <span class="material-symbols-outlined text-primary text-2xl sm:text-3xl flex-shrink-0">info</span>
                 <div class="flex-1">
-                    <h3 class="font-bold text-emerald-900 dark:text-emerald-100 mb-2">Important Information</h3>
-                    <ul class="text-sm text-emerald-800 dark:text-emerald-200 space-y-1">
+                    <h3 class="font-bold text-emerald-900 dark:text-emerald-100 mb-2 text-sm sm:text-base">Important Information</h3>
+                    <ul class="text-xs sm:text-sm text-emerald-800 dark:text-emerald-200 space-y-1">
                         <li>• These are screening tools, not diagnostic tests</li>
                         <li>• Your responses are completely confidential and anonymous</li>
                         <li>• Results are for educational purposes only</li>
@@ -54,39 +54,50 @@
         </div>
 
         <!-- Filter Section -->
-        <div id="assessments-filters" class="bg-white dark:bg-gray-800/50 rounded-2xl p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
-            <div class="flex flex-wrap items-center gap-4">
+        <div id="assessments-filters" class="bg-white dark:bg-gray-800/50 rounded-2xl p-4 sm:p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
+            <!-- Filter Header with Toggle -->
+            <div class="flex items-center justify-between mb-3 sm:mb-4">
                 <span class="text-sm font-semibold text-[#111816] dark:text-gray-300 flex items-center gap-2">
                     <span class="material-symbols-outlined text-primary">filter_list</span>
-                    <span>Filter:</span>
+                    <span>Filter Assessments</span>
                 </span>
-                <button data-filter="all" class="filter-btn flex h-10 items-center justify-center gap-1.5 rounded-xl bg-primary text-white px-4 text-sm font-semibold shadow-md hover:shadow-lg transition-all duration-200">
-                    <span class="material-symbols-outlined !text-base">select_all</span>
-                    <span>All Assessments</span>
+                <button id="filter-toggle" class="sm:hidden flex items-center gap-1 text-xs font-medium text-gray-600 dark:text-gray-400 hover:text-primary transition-colors">
+                    <span id="filter-toggle-text">Show Filters</span>
+                    <span id="filter-toggle-icon" class="material-symbols-outlined !text-sm transition-transform duration-200">expand_more</span>
                 </button>
-                <button data-filter="substance" class="filter-btn flex h-10 items-center justify-center gap-1.5 rounded-xl bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-[#111816] dark:text-gray-300 px-4 text-sm font-medium hover:border-primary transition-all duration-200">
-                    <span class="material-symbols-outlined !text-base">local_pharmacy</span>
-                    <span>Substance Use</span>
-                </button>
-                <button data-filter="mental-health" class="filter-btn flex h-10 items-center justify-center gap-1.5 rounded-xl bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-[#111816] dark:text-gray-300 px-4 text-sm font-medium hover:border-primary transition-all duration-200">
-                    <span class="material-symbols-outlined !text-base">psychology</span>
-                    <span>Mental Health</span>
-                </button>
-                <button data-filter="stress" class="filter-btn flex h-10 items-center justify-center gap-1.5 rounded-xl bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-[#111816] dark:text-gray-300 px-4 text-sm font-medium hover:border-primary transition-all duration-200">
-                    <span class="material-symbols-outlined !text-base">sentiment_worried</span>
-                    <span>Stress & Anxiety</span>
-                </button>
-                @auth
-                <button data-filter="completed" class="filter-btn flex h-10 items-center justify-center gap-1.5 rounded-xl bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-[#111816] dark:text-gray-300 px-4 text-sm font-medium hover:border-primary transition-all duration-200">
-                    <span class="material-symbols-outlined !text-base">check_circle</span>
-                    <span>Completed</span>
-                </button>
-                @endauth
+            </div>
+            
+            <!-- Filter Buttons Container -->
+            <div id="filter-buttons" class="hidden sm:block">
+                <div class="flex flex-wrap gap-2 sm:gap-3">
+                    <button data-filter="all" class="filter-btn flex h-9 sm:h-10 items-center justify-center gap-1.5 rounded-xl bg-primary text-white px-3 sm:px-4 text-xs sm:text-sm font-semibold shadow-md hover:shadow-lg transition-all duration-200">
+                        <span class="material-symbols-outlined !text-sm sm:!text-base">select_all</span>
+                        <span>All Assessments</span>
+                    </button>
+                    <button data-filter="substance" class="filter-btn flex h-9 sm:h-10 items-center justify-center gap-1.5 rounded-xl bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-[#111816] dark:text-gray-300 px-3 sm:px-4 text-xs sm:text-sm font-medium hover:border-primary transition-all duration-200">
+                        <span class="material-symbols-outlined !text-sm sm:!text-base">local_pharmacy</span>
+                        <span>Substance Use</span>
+                    </button>
+                    <button data-filter="mental-health" class="filter-btn flex h-9 sm:h-10 items-center justify-center gap-1.5 rounded-xl bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-[#111816] dark:text-gray-300 px-3 sm:px-4 text-xs sm:text-sm font-medium hover:border-primary transition-all duration-200">
+                        <span class="material-symbols-outlined !text-sm sm:!text-base">psychology</span>
+                        <span>Mental Health</span>
+                    </button>
+                    <button data-filter="stress" class="filter-btn flex h-9 sm:h-10 items-center justify-center gap-1.5 rounded-xl bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-[#111816] dark:text-gray-300 px-3 sm:px-4 text-xs sm:text-sm font-medium hover:border-primary transition-all duration-200">
+                        <span class="material-symbols-outlined !text-sm sm:!text-base">sentiment_worried</span>
+                        <span>Stress & Anxiety</span>
+                    </button>
+                    @auth
+                    <button data-filter="completed" class="filter-btn flex h-9 sm:h-10 items-center justify-center gap-1.5 rounded-xl bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-[#111816] dark:text-gray-300 px-3 sm:px-4 text-xs sm:text-sm font-medium hover:border-primary transition-all duration-200">
+                        <span class="material-symbols-outlined !text-sm sm:!text-base">check_circle</span>
+                        <span>Completed</span>
+                    </button>
+                    @endauth
+                </div>
             </div>
         </div>
 
         <!-- Assessment Cards Grid -->
-        <div id="assessments" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="assessments-grid">
+        <div id="assessments" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="assessments-grid">
             
             @if($assessments && $assessments->count() > 0)
                 @foreach($assessments as $assessment)
@@ -122,21 +133,21 @@
                     }}"
                     @auth data-completed="{{ $completedAssessments->has($assessment->id) ? 'true' : 'false' }}" @endauth>
                     <!-- Image Section -->
-                    <div class="relative h-48 overflow-hidden">
+                    <div class="relative h-40 sm:h-48 overflow-hidden">
                         <img src="{{ $assessmentImage }}" alt="{{ $assessment->full_name ?? $assessment->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                         
                         <!-- Icon Badge -->
-                        <div class="absolute top-4 left-4">
-                            <div class="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-lg">
-                                <span class="material-symbols-outlined text-primary text-2xl">{{ $color['icon'] }}</span>
+                        <div class="absolute top-3 sm:top-4 left-3 sm:left-4">
+                            <div class="w-10 h-10 sm:w-12 sm:h-12 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-lg">
+                                <span class="material-symbols-outlined text-primary text-lg sm:text-2xl">{{ $color['icon'] }}</span>
                             </div>
                         </div>
                         
                         <!-- Time Badge -->
-                        <div class="absolute top-4 right-4">
-                            <div class="flex items-center gap-1 bg-primary/90 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-semibold text-white">
-                                <span class="material-symbols-outlined !text-sm">schedule</span>
+                        <div class="absolute top-3 sm:top-4 right-3 sm:right-4">
+                            <div class="flex items-center gap-1 bg-primary/90 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-semibold text-white">
+                                <span class="material-symbols-outlined !text-xs sm:!text-sm">schedule</span>
                                 5-15 min
                             </div>
                         </div>
@@ -147,15 +158,15 @@
                             @endphp
                             @if($userAttempt)
                                 <!-- Completion Badge -->
-                                <div class="absolute bottom-4 left-4">
-                                    <div class="flex items-center gap-1 bg-green-500/90 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-semibold text-white">
-                                        <span class="material-symbols-outlined !text-sm">check_circle</span>
+                                <div class="absolute bottom-3 sm:bottom-4 left-3 sm:left-4">
+                                    <div class="flex items-center gap-1 bg-green-500/90 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-semibold text-white">
+                                        <span class="material-symbols-outlined !text-xs sm:!text-sm">check_circle</span>
                                         Completed
                                     </div>
                                 </div>
                                 
                                 <!-- Last Taken Date -->
-                                <div class="absolute bottom-4 right-4">
+                                <div class="absolute bottom-3 sm:bottom-4 right-3 sm:right-4">
                                     <div class="bg-black/60 backdrop-blur-sm px-2 py-1 rounded text-xs text-white">
                                         {{ $userAttempt->taken_at->format('M j, Y') }}
                                     </div>
@@ -165,21 +176,23 @@
                     </div>
                     
                     <!-- Content Section -->
-                    <div class="p-6">
-                        <h3 class="font-bold text-gray-900 dark:text-white text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                    <div class="p-4 sm:p-6">
+                        <h3 class="font-bold text-gray-900 dark:text-white text-base sm:text-lg mb-2 group-hover:text-primary transition-colors line-clamp-2">
                             {{ $assessment->full_name ?? $assessment->name }}
                         </h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-3 leading-relaxed mb-4">
+                        <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 line-clamp-3 leading-relaxed mb-3 sm:mb-4">
                             {{ Str::limit($assessment->description, 100) }}
                         </p>
                         
                         <!-- Questions Count -->
-                        <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
-                            <span class="material-symbols-outlined !text-base">quiz</span>
-                            <span>{{ $assessment->questions->count() }} questions</span>
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-3 sm:mb-4">
+                            <div class="flex items-center gap-1 sm:gap-2">
+                                <span class="material-symbols-outlined !text-sm sm:!text-base">quiz</span>
+                                <span>{{ $assessment->questions->count() }} questions</span>
+                            </div>
                             @auth
                                 @if($userAttempt)
-                                    <span class="text-green-600 dark:text-green-400 font-semibold ml-2">
+                                    <span class="text-green-600 dark:text-green-400 font-semibold">
                                         • Last score: {{ $userAttempt->total_score ?? 'N/A' }}
                                     </span>
                                 @endif
@@ -189,26 +202,26 @@
                         <!-- Start Link -->
                         @auth
                             @if($userAttempt)
-                                <div class="flex gap-2">
-                                    <button onclick="viewLastScore('{{ $assessment->type }}')" class="flex-1 flex items-center justify-center gap-1 text-blue-600 dark:text-blue-400 font-semibold text-sm hover:text-blue-700 dark:hover:text-blue-300 transition-colors border border-blue-200 dark:border-blue-700 rounded-lg py-2">
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <button onclick="viewLastScore('{{ $assessment->type }}')" class="flex-1 flex items-center justify-center gap-1 text-blue-600 dark:text-blue-400 font-semibold text-xs sm:text-sm hover:text-blue-700 dark:hover:text-blue-300 transition-colors border border-blue-200 dark:border-blue-700 rounded-lg py-2">
                                         <span class="material-symbols-outlined text-sm">visibility</span>
                                         <span>View Last Score</span>
                                     </button>
-                                    <a href="{{ route('public.assessments.show', $assessment->type) }}" class="flex-1 flex items-center justify-center gap-1 text-primary font-semibold text-sm group-hover:gap-2 transition-all bg-primary/10 hover:bg-primary/20 rounded-lg py-2">
+                                    <a href="{{ route('public.assessments.show', $assessment->type) }}" class="flex-1 flex items-center justify-center gap-1 text-primary font-semibold text-xs sm:text-sm group-hover:gap-2 transition-all bg-primary/10 hover:bg-primary/20 rounded-lg py-2">
                                         <span>Retake</span>
                                         <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">refresh</span>
                                     </a>
                                 </div>
                             @else
-                                <a href="{{ route('public.assessments.show', $assessment->type) }}" class="flex items-center justify-center gap-2 text-primary font-semibold text-sm group-hover:gap-3 transition-all">
+                                <a href="{{ route('public.assessments.show', $assessment->type) }}" class="flex items-center justify-center gap-2 text-primary font-semibold text-xs sm:text-sm group-hover:gap-3 transition-all">
                                     <span>Start Assessment</span>
-                                    <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                    <span class="material-symbols-outlined text-base sm:text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
                                 </a>
                             @endif
                         @else
-                            <a href="{{ route('public.assessments.show', $assessment->type) }}" class="flex items-center justify-center gap-2 text-primary font-semibold text-sm group-hover:gap-3 transition-all">
+                            <a href="{{ route('public.assessments.show', $assessment->type) }}" class="flex items-center justify-center gap-2 text-primary font-semibold text-xs sm:text-sm group-hover:gap-3 transition-all">
                                 <span>Start Assessment</span>
-                                <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                <span class="material-symbols-outlined text-base sm:text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
                             </a>
                         @endauth
                     </div>
@@ -409,30 +422,30 @@
 </div>
 
 <!-- CTA Section -->
-<section class="py-12">
+<section class="py-8 sm:py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="relative bg-gradient-to-r from-primary/10 to-green-50 dark:from-gray-800 dark:to-gray-800/50 rounded-2xl p-8 border border-primary/20 dark:border-gray-700 overflow-hidden">
+        <div class="relative bg-gradient-to-r from-primary/10 to-green-50 dark:from-gray-800 dark:to-gray-800/50 rounded-2xl p-6 sm:p-8 border border-primary/20 dark:border-gray-700 overflow-hidden">
             <!-- Decorative Icons -->
-            <div class="absolute top-4 left-4 opacity-10">
-                <span class="material-symbols-outlined text-6xl text-primary">support_agent</span>
+            <div class="absolute top-3 sm:top-4 left-3 sm:left-4 opacity-10">
+                <span class="material-symbols-outlined text-4xl sm:text-6xl text-primary">support_agent</span>
             </div>
-            <div class="absolute bottom-4 right-4 opacity-10">
-                <span class="material-symbols-outlined text-6xl text-primary">psychology</span>
+            <div class="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 opacity-10">
+                <span class="material-symbols-outlined text-4xl sm:text-6xl text-primary">psychology</span>
             </div>
             
             <div class="relative text-center">
-                <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/20 rounded-full mb-4">
-                    <span class="material-symbols-outlined text-3xl text-primary">favorite</span>
+                <div class="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-primary/20 rounded-full mb-3 sm:mb-4">
+                    <span class="material-symbols-outlined text-2xl sm:text-3xl text-primary">favorite</span>
                 </div>
-                <h3 class="text-xl font-bold text-[#111816] dark:text-white mb-2">Need Professional Support?</h3>
-                <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">If your assessment results indicate concerns, consider speaking with one of our licensed counselors for personalized support.</p>
-                <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                    <a href="{{ route('public.counseling.index') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
-                        <span class="material-symbols-outlined text-base">support_agent</span>
+                <h3 class="text-lg sm:text-xl font-bold text-[#111816] dark:text-white mb-2">Need Professional Support?</h3>
+                <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4 sm:mb-6 max-w-2xl mx-auto px-4">If your assessment results indicate concerns, consider speaking with one of our counselors for personalized support.</p>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center px-4">
+                    <a href="{{ route('public.counseling.index') }}" class="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
+                        <span class="material-symbols-outlined text-sm sm:text-base">support_agent</span>
                         <span>View Counseling Services</span>
                     </a>
-                    <a href="{{ route('content.index') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-700 text-[#111816] dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg font-semibold hover:border-primary hover:text-primary transition-colors text-sm">
-                        <span class="material-symbols-outlined text-base">library_books</span>
+                    <a href="{{ route('content.index') }}" class="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-white dark:bg-gray-700 text-[#111816] dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg font-semibold hover:border-primary hover:text-primary transition-colors text-sm">
+                        <span class="material-symbols-outlined text-sm sm:text-base">library_books</span>
                         <span>Browse Resources</span>
                     </a>
                 </div>
@@ -525,6 +538,47 @@ function filterAssessments(category, clickedButton) {
 
 // Add click event listeners to filter buttons
 document.addEventListener('DOMContentLoaded', function() {
+    // Filter toggle functionality
+    const filterToggle = document.getElementById('filter-toggle');
+    const filterButtons = document.getElementById('filter-buttons');
+    const filterToggleText = document.getElementById('filter-toggle-text');
+    const filterToggleIcon = document.getElementById('filter-toggle-icon');
+    
+    if (filterToggle && filterButtons) {
+        filterToggle.addEventListener('click', function() {
+            const isHidden = filterButtons.classList.contains('hidden');
+            
+            if (isHidden) {
+                // Show filters
+                filterButtons.classList.remove('hidden');
+                filterButtons.classList.add('block');
+                filterToggleText.textContent = 'Hide Filters';
+                filterToggleIcon.style.transform = 'rotate(180deg)';
+                
+                // Add smooth slide down animation
+                filterButtons.style.opacity = '0';
+                filterButtons.style.transform = 'translateY(-10px)';
+                setTimeout(() => {
+                    filterButtons.style.transition = 'all 0.3s ease';
+                    filterButtons.style.opacity = '1';
+                    filterButtons.style.transform = 'translateY(0)';
+                }, 10);
+            } else {
+                // Hide filters
+                filterButtons.style.transition = 'all 0.3s ease';
+                filterButtons.style.opacity = '0';
+                filterButtons.style.transform = 'translateY(-10px)';
+                
+                setTimeout(() => {
+                    filterButtons.classList.add('hidden');
+                    filterButtons.classList.remove('block');
+                    filterToggleText.textContent = 'Show Filters';
+                    filterToggleIcon.style.transform = 'rotate(0deg)';
+                }, 300);
+            }
+        });
+    }
+    
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {
             e.preventDefault();

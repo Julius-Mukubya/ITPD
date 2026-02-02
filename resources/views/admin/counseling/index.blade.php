@@ -61,17 +61,28 @@
 <!-- Counselors Table -->
 <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 mb-6">
     <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Active Counselors</h2>
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Active Counselors</h2>
+            
+            <!-- Mobile Filter Toggle Button -->
+            <button id="counselorMobileFilterToggle" class="md:hidden flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">
+                <span class="material-symbols-outlined text-base">tune</span>
+                <span>Filters</span>
+                <span id="counselorFilterToggleIcon" class="material-symbols-outlined text-sm transition-transform">expand_more</span>
+            </button>
+        </div>
         
-        <!-- Filter -->
-        <div class="flex gap-3">
-            <input type="text" id="counselorSearch" placeholder="Search by name or email..." 
-                class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent">
-            <select id="counselorStatus" class="min-w-[140px] px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent appearance-none">
-                <option value="">All Status</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-            </select>
+        <!-- Filter Section -->
+        <div id="counselorFilterSection" class="hidden md:block">
+            <div class="flex flex-col md:flex-row gap-3">
+                <input type="text" id="counselorSearch" placeholder="Search by name or email..." 
+                    class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent">
+                <select id="counselorStatus" class="flex-1 md:min-w-[140px] px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent appearance-none">
+                    <option value="">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
         </div>
     </div>
     
@@ -222,6 +233,28 @@
 <script>
 // Counselor table filtering
 document.addEventListener('DOMContentLoaded', function() {
+    // Mobile filter toggle functionality
+    const counselorMobileFilterToggle = document.getElementById('counselorMobileFilterToggle');
+    const counselorFilterSection = document.getElementById('counselorFilterSection');
+    const counselorFilterToggleIcon = document.getElementById('counselorFilterToggleIcon');
+    
+    if (counselorMobileFilterToggle && counselorFilterSection) {
+        counselorMobileFilterToggle.addEventListener('click', function() {
+            const isHidden = counselorFilterSection.classList.contains('hidden');
+            
+            if (isHidden) {
+                counselorFilterSection.classList.remove('hidden');
+                counselorFilterToggleIcon.style.transform = 'rotate(180deg)';
+                counselorFilterToggleIcon.textContent = 'expand_less';
+            } else {
+                counselorFilterSection.classList.add('hidden');
+                counselorFilterToggleIcon.style.transform = 'rotate(0deg)';
+                counselorFilterToggleIcon.textContent = 'expand_more';
+            }
+        });
+    }
+    
+    // Filter elements
     const searchInput = document.getElementById('counselorSearch');
     const statusSelect = document.getElementById('counselorStatus');
     const tableBody = document.getElementById('counselorTableBody');

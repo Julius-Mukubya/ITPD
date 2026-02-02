@@ -66,33 +66,44 @@
 <!-- Flags Table -->
 <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
     <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Content Flags</h2>
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Content Flags</h2>
+            
+            <!-- Mobile Filter Toggle Button -->
+            <button id="mobileFilterToggle" class="md:hidden flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">
+                <span class="material-symbols-outlined text-base">tune</span>
+                <span>Filters</span>
+                <span id="filterToggleIcon" class="material-symbols-outlined text-sm transition-transform">expand_more</span>
+            </button>
+        </div>
         
-        <!-- Filter -->
-        <div class="flex gap-3">
-            <select id="statusFilter" class="min-w-[140px] px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent appearance-none">
-                <option value="">All Status</option>
-                <option value="pending">Pending</option>
-                <option value="reviewed">Reviewed</option>
-                <option value="action_taken">Action Taken</option>
-                <option value="dismissed">Dismissed</option>
-            </select>
-            <select id="reasonFilter" class="min-w-[160px] px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent appearance-none">
-                <option value="">All Reasons</option>
-                <option value="inappropriate_content">Inappropriate Content</option>
-                <option value="harassment">Harassment</option>
-                <option value="spam">Spam</option>
-                <option value="misinformation">Misinformation</option>
-                <option value="hate_speech">Hate Speech</option>
-                <option value="violence">Violence</option>
-                <option value="self_harm">Self Harm</option>
-                <option value="other">Other</option>
-            </select>
-            <select id="typeFilter" class="min-w-[140px] px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent appearance-none">
-                <option value="">All Types</option>
-                <option value="App\Models\ForumPost">Forum Posts</option>
-                <option value="App\Models\ForumComment">Comments</option>
-            </select>
+        <!-- Filter Section -->
+        <div id="filterSection" class="hidden md:block">
+            <div class="flex flex-col md:flex-row gap-3">
+                <select id="statusFilter" class="flex-1 md:min-w-[140px] px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent appearance-none">
+                    <option value="">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="reviewed">Reviewed</option>
+                    <option value="action_taken">Action Taken</option>
+                    <option value="dismissed">Dismissed</option>
+                </select>
+                <select id="reasonFilter" class="flex-1 md:min-w-[160px] px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent appearance-none">
+                    <option value="">All Reasons</option>
+                    <option value="inappropriate_content">Inappropriate Content</option>
+                    <option value="harassment">Harassment</option>
+                    <option value="spam">Spam</option>
+                    <option value="misinformation">Misinformation</option>
+                    <option value="hate_speech">Hate Speech</option>
+                    <option value="violence">Violence</option>
+                    <option value="self_harm">Self Harm</option>
+                    <option value="other">Other</option>
+                </select>
+                <select id="typeFilter" class="flex-1 md:min-w-[140px] px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent appearance-none">
+                    <option value="">All Types</option>
+                    <option value="App\Models\ForumPost">Forum Posts</option>
+                    <option value="App\Models\ForumComment">Comments</option>
+                </select>
+            </div>
         </div>
     </div>
     
@@ -254,6 +265,28 @@
 <script>
 // Flag table filtering
 document.addEventListener('DOMContentLoaded', function() {
+    // Mobile filter toggle functionality
+    const mobileFilterToggle = document.getElementById('mobileFilterToggle');
+    const filterSection = document.getElementById('filterSection');
+    const filterToggleIcon = document.getElementById('filterToggleIcon');
+    
+    if (mobileFilterToggle && filterSection) {
+        mobileFilterToggle.addEventListener('click', function() {
+            const isHidden = filterSection.classList.contains('hidden');
+            
+            if (isHidden) {
+                filterSection.classList.remove('hidden');
+                filterToggleIcon.style.transform = 'rotate(180deg)';
+                filterToggleIcon.textContent = 'expand_less';
+            } else {
+                filterSection.classList.add('hidden');
+                filterToggleIcon.style.transform = 'rotate(0deg)';
+                filterToggleIcon.textContent = 'expand_more';
+            }
+        });
+    }
+    
+    // Filter elements
     const statusFilter = document.getElementById('statusFilter');
     const reasonFilter = document.getElementById('reasonFilter');
     const typeFilter = document.getElementById('typeFilter');
