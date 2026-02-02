@@ -21,25 +21,25 @@
                 <span class="material-symbols-outlined !text-lg">favorite</span>
                 WellPath
             </div>
-            <h1 class="text-4xl lg:text-6xl font-black text-white tracking-tight mb-6">Your Wellbeing, Our Priority</h1>
-            <p class="text-xl lg:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-8">A confidential, supportive space for students to access resources and find community for drug and alcohol awareness.</p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <h1 class="text-3xl sm:text-4xl lg:text-6xl font-black text-white tracking-tight mb-6">Your Wellbeing, Our Priority</h1>
+            <p class="text-lg sm:text-xl lg:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-8">A confidential, supportive space for students to access resources and find community for drug and alcohol awareness.</p>
+            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
                 @guest
-                    <button onclick="openSignupModal()" class="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                        <span class="material-symbols-outlined !text-xl">person_add</span>
+                    <button onclick="openSignupModal()" class="inline-flex items-center gap-2 bg-white text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg w-full sm:w-auto justify-center">
+                        <span class="material-symbols-outlined !text-lg sm:!text-xl">person_add</span>
                         Get Started
                     </button>
-                    <a href="{{ route('content.index') }}" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 transition-all duration-200 transform hover:scale-105">
-                        <span class="material-symbols-outlined !text-xl">library_books</span>
+                    <a href="{{ route('content.index') }}" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/30 transition-all duration-200 transform hover:scale-105 w-full sm:w-auto justify-center">
+                        <span class="material-symbols-outlined !text-lg sm:!text-xl">library_books</span>
                         Explore Resources
                     </a>
                 @else
-                    <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                        <span class="material-symbols-outlined !text-xl">dashboard</span>
+                    <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 bg-white text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg w-full sm:w-auto justify-center">
+                        <span class="material-symbols-outlined !text-lg sm:!text-xl">dashboard</span>
                         Go to Dashboard
                     </a>
-                    <a href="{{ route('content.index') }}" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 transition-all duration-200 transform hover:scale-105">
-                        <span class="material-symbols-outlined !text-xl">library_books</span>
+                    <a href="{{ route('content.index') }}" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/30 transition-all duration-200 transform hover:scale-105 w-full sm:w-auto justify-center">
+                        <span class="material-symbols-outlined !text-lg sm:!text-xl">library_books</span>
                         Explore Resources
                     </a>
                 @endguest

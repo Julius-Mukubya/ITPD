@@ -267,46 +267,46 @@
         <!-- Sidebar Content -->
         <div class="flex-1 overflow-y-auto p-4">
             <nav class="space-y-1">
-                <a class="flex items-center gap-3 text-primary hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary/80 px-4 py-3 rounded-lg transition-colors" href="{{ route('home') }}">
+                <a class="flex items-center gap-3 text-gray-900 dark:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-700 dark:hover:text-primary/80 px-4 py-3 rounded-lg transition-colors" href="{{ route('home') }}">
                     <span class="material-symbols-outlined">home</span>
                     <span class="font-medium">Home</span>
                 </a>
                 
-                <a class="flex items-center gap-3 text-primary hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary/80 px-4 py-3 rounded-lg transition-colors" href="{{ route('content.index') }}">
+                <a class="flex items-center gap-3 text-gray-900 dark:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-700 dark:hover:text-primary/80 px-4 py-3 rounded-lg transition-colors" href="{{ route('content.index') }}">
                     <span class="material-symbols-outlined">library_books</span>
                     <span class="font-medium">Educational Resources</span>
                 </a>
                 
                 <!-- Counseling Section -->
                 <div class="py-2">
-                    <div class="flex items-center gap-3 text-primary px-4 py-2 font-semibold">
+                    <div class="flex items-center gap-3 text-gray-900 dark:text-primary px-4 py-2 font-semibold">
                         <span class="material-symbols-outlined">psychology</span>
                         <span>Counseling</span>
                     </div>
                     <div class="ml-8 space-y-1 mt-1">
-                        <a class="block text-primary hover:text-primary/80 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" href="{{ route('public.counseling.index') }}">Our Services</a>
-                        <a class="block text-primary hover:text-primary/80 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" href="{{ route('public.counseling.counselors') }}">Our Counselors</a>
+                        <a class="block text-gray-900 dark:text-primary hover:text-gray-700 dark:hover:text-primary/80 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" href="{{ route('public.counseling.index') }}">Our Services</a>
+                        <a class="block text-gray-900 dark:text-primary hover:text-gray-700 dark:hover:text-primary/80 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" href="{{ route('public.counseling.counselors') }}">Our Counselors</a>
                         @auth
-                            <a class="block text-primary hover:text-primary/80 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" href="{{ route('public.counseling.sessions') }}">My Sessions</a>
-                            <a class="block text-primary font-medium px-4 py-2 rounded-lg hover:bg-primary/10 transition-colors" href="{{ route('public.counseling.sessions') }}">Request Session</a>
+                            <a class="block text-gray-900 dark:text-primary hover:text-gray-700 dark:hover:text-primary/80 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" href="{{ route('public.counseling.sessions') }}">My Sessions</a>
+                            <a class="block text-gray-900 dark:text-primary font-medium px-4 py-2 rounded-lg hover:bg-primary/10 transition-colors" href="{{ route('public.counseling.sessions') }}">Request Session</a>
                         @else
-                            <button onclick="openLoginModal(); toggleMobileSidebar();" class="block w-full text-left text-primary font-medium px-4 py-2 rounded-lg hover:bg-primary/10 transition-colors">Login to Request Session</button>
+                            <button onclick="openLoginModal(); toggleMobileSidebar();" class="block w-full text-left text-gray-900 dark:text-primary font-medium px-4 py-2 rounded-lg hover:bg-primary/10 transition-colors">Login to Request Session</button>
                         @endauth
                     </div>
                 </div>
                 
-                <a class="flex items-center gap-3 text-primary hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary/80 px-4 py-3 rounded-lg transition-colors" href="{{ route('public.assessments.index') }}">
+                <a class="flex items-center gap-3 text-gray-900 dark:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-700 dark:hover:text-primary/80 px-4 py-3 rounded-lg transition-colors" href="{{ route('public.assessments.index') }}">
                     <span class="material-symbols-outlined">quiz</span>
                     <span class="font-medium">Assessments</span>
                 </a>
                 
-                <a class="flex items-center gap-3 text-primary hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary/80 px-4 py-3 rounded-lg transition-colors" href="{{ route('public.forum.index') }}">
+                <a class="flex items-center gap-3 text-gray-900 dark:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-700 dark:hover:text-primary/80 px-4 py-3 rounded-lg transition-colors" href="{{ route('public.forum.index') }}">
                     <span class="material-symbols-outlined">forum</span>
                     <span class="font-medium">Community Forum</span>
                 </a>
                 
                 @auth
-                    <a class="flex items-center justify-between text-primary hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary/80 px-4 py-3 rounded-lg transition-colors" href="{{ route('content.index', ['bookmarked' => 1]) }}#resources">
+                    <a class="flex items-center justify-between text-gray-900 dark:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-700 dark:hover:text-primary/80 px-4 py-3 rounded-lg transition-colors" href="{{ route('content.index', ['bookmarked' => 1]) }}#resources">
                         <div class="flex items-center gap-3">
                             <span class="material-symbols-outlined">bookmark</span>
                             <span class="font-medium">My Bookmarks</span>
@@ -322,17 +322,17 @@
                     </a>
                 @endauth
                 
-                <a class="flex items-center gap-3 text-primary hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary/80 px-4 py-3 rounded-lg transition-colors" href="{{ route('campaigns.index') }}">
+                <a class="flex items-center gap-3 text-gray-900 dark:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-700 dark:hover:text-primary/80 px-4 py-3 rounded-lg transition-colors" href="{{ route('campaigns.index') }}">
                     <span class="material-symbols-outlined">campaign</span>
                     <span class="font-medium">Events</span>
                 </a>
                 
-                <a class="flex items-center gap-3 text-primary hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary/80 px-4 py-3 rounded-lg transition-colors" href="{{ route('public.about') }}">
+                <a class="flex items-center gap-3 text-gray-900 dark:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-700 dark:hover:text-primary/80 px-4 py-3 rounded-lg transition-colors" href="{{ route('public.about') }}">
                     <span class="material-symbols-outlined">info</span>
                     <span class="font-medium">About Us</span>
                 </a>
                 
-                <a class="flex items-center gap-3 text-primary hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary/80 px-4 py-3 rounded-lg transition-colors" href="{{ route('public.contact') }}">
+                <a class="flex items-center gap-3 text-gray-900 dark:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-700 dark:hover:text-primary/80 px-4 py-3 rounded-lg transition-colors" href="{{ route('public.contact') }}">
                     <span class="material-symbols-outlined">mail</span>
                     <span class="font-medium">Contact</span>
                 </a>
