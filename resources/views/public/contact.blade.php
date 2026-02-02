@@ -143,7 +143,7 @@
                     <input type="checkbox" id="privacy" name="privacy" required
                         class="mt-1 w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
                     <label for="privacy" class="text-sm text-[#61897c] dark:text-gray-400">
-                        I agree to the privacy policy and understand that my information will be handled confidentially. <span class="text-red-500">*</span>
+                        I agree to the <a class="text-primary hover:underline cursor-pointer" onclick="openPrivacyModal()">privacy policy</a> and understand that my information will be handled confidentially. <span class="text-red-500">*</span>
                     </label>
                 </div>
 

@@ -147,7 +147,7 @@
                                        required
                                        class="h-4 w-4 text-primary focus:ring-primary border-gray-300 dark:border-gray-600 rounded dark:bg-gray-700 mt-1">
                                 <label for="terms" class="ml-2 text-sm text-gray-600 dark:text-gray-400">
-                                    I agree to the <a href="#" class="text-primary hover:text-primary/80 font-medium">Terms of Service</a> and <a href="#" class="text-primary hover:text-primary/80 font-medium">Privacy Policy</a>
+                                    I agree to the <a class="text-primary hover:text-primary/80 font-medium cursor-pointer" onclick="openTermsModal()">Terms of Service</a> and <a class="text-primary hover:text-primary/80 font-medium cursor-pointer" onclick="openPrivacyModal()">Privacy Policy</a>
                                 </label>
                             </div>
 

@@ -41,8 +41,8 @@
                         @endif
                     @endauth
                     <li><a class="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors text-sm" href="{{ route('public.contact') }}">Contact</a></li>
-                    <li><a class="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors text-sm" href="#privacy">Privacy Policy</a></li>
-                    <li><a class="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors text-sm" href="#terms">Terms of Service</a></li>
+                    <li><a class="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors text-sm cursor-pointer" onclick="openPrivacyModal()">Privacy Policy</a></li>
+                    <li><a class="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors text-sm cursor-pointer" onclick="openTermsModal()">Terms of Service</a></li>
                 </ul>
             </div>
             

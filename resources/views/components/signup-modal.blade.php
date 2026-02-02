@@ -118,7 +118,7 @@
                            onchange="debouncedUpdateSubmitButton()"
                            class="h-3 w-3 text-primary focus:ring-primary border-gray-300 dark:border-gray-600 rounded dark:bg-gray-700 mt-0.5">
                     <label for="modal_terms" class="ml-2 text-xs text-gray-600 dark:text-gray-400">
-                        I agree to the <a href="#" class="text-primary hover:text-primary/80 font-medium">Terms</a> and <a href="#" class="text-primary hover:text-primary/80 font-medium">Privacy Policy</a>
+                        I agree to the <a class="text-primary hover:text-primary/80 font-medium cursor-pointer" onclick="openTermsModal()">Terms</a> and <a class="text-primary hover:text-primary/80 font-medium cursor-pointer" onclick="openPrivacyModal()">Privacy Policy</a>
                     </label>
                 </div>
 

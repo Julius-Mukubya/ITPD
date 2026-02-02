@@ -169,6 +169,10 @@
         @include('components.profile-modal')
     @endauth
     
+    <!-- Legal Modals -->
+    @include('components.privacy-modal')
+    @include('components.terms-modal')
+    
     @stack('scripts')
     
     <!-- Notification Script -->
