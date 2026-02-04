@@ -162,6 +162,7 @@
     @guest
         <x-login-modal />
         <x-signup-modal />
+        @include('components.forgot-password-modal')
     @endguest
     
     <!-- Profile Modal (for authenticated users) -->

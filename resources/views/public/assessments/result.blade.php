@@ -149,4 +149,5 @@
 
 @include('components.login-modal')
 @include('components.signup-modal')
+@include('components.forgot-password-modal')
 @endsection

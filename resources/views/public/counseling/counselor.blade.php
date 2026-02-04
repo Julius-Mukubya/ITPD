@@ -379,4 +379,5 @@
 </section>
 
 @include('components.login-modal')
+@include('components.forgot-password-modal')
 @endsection

@@ -169,4 +169,15 @@
         </div>
     </div>
 </div>
+
+@include('components.forgot-password-modal')
+
+<script>
+// Global function to open forgot password modal from anywhere
+function openForgotPasswordFromPage() {
+    if (typeof openForgotPasswordModal === 'function') {
+        openForgotPasswordModal();
+    }
+}
+</script>
 @endsection

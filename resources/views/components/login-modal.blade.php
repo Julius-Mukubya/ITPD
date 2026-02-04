@@ -58,9 +58,9 @@
                         <span class="ml-2 text-xs text-gray-600 dark:text-gray-400">Remember me</span>
                     </label>
 
-                    <a class="text-xs text-primary hover:text-primary/80 font-medium" href="{{ route('password.request') }}">
+                    <button type="button" onclick="switchToForgotPassword()" class="text-xs text-primary hover:text-primary/80 font-medium">
                         Forgot password?
-                    </a>
+                    </button>
                 </div>
 
                 <!-- Submit Button -->
@@ -118,6 +118,13 @@ function switchToSignup() {
     closeLoginModal();
     setTimeout(() => {
         openSignupModal();
+    }, 100);
+}
+
+function switchToForgotPassword() {
+    closeLoginModal();
+    setTimeout(() => {
+        openForgotPasswordModal();
     }, 100);
 }
 

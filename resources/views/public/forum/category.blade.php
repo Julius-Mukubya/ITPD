@@ -339,6 +339,7 @@
 
 @include('components.login-modal')
 @include('components.signup-modal')
+@include('components.forgot-password-modal')
 @auth
 @include('components.create-discussion-modal')
 
