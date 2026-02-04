@@ -1,0 +1,47 @@
+<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="leafGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#16a34a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#15803d;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main leaf shape -->
+  <path d="M24 6C16 6 8 12 8 24C8 32 12 38 18 42C20 43 22 44 24 44C26 44 28 43 30 42C36 38 40 32 40 24C40 12 32 6 24 6Z" 
+        fill="url(#leafGradient)" 
+        stroke="#15803d" 
+        stroke-width="0.5"/>
+  
+  <!-- Leaf vein -->
+  <path d="M24 8L24 42" 
+        stroke="#15803d" 
+        stroke-width="1.5" 
+        stroke-linecap="round"/>
+  
+  <!-- Side veins -->
+  <path d="M24 14L18 20" 
+        stroke="#15803d" 
+        stroke-width="0.8" 
+        stroke-linecap="round"/>
+  <path d="M24 14L30 20" 
+        stroke="#15803d" 
+        stroke-width="0.8" 
+        stroke-linecap="round"/>
+  <path d="M24 22L19 28" 
+        stroke="#15803d" 
+        stroke-width="0.8" 
+        stroke-linecap="round"/>
+  <path d="M24 22L29 28" 
+        stroke="#15803d" 
+        stroke-width="0.8" 
+        stroke-linecap="round"/>
+  <path d="M24 30L20 36" 
+        stroke="#15803d" 
+        stroke-width="0.8" 
+        stroke-linecap="round"/>
+  <path d="M24 30L28 36" 
+        stroke="#15803d" 
+        stroke-width="0.8" 
+        stroke-linecap="round"/>
+</svg>
