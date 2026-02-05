@@ -70,24 +70,30 @@
             
             <!-- Cards Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <x-service-card 
-                    icon="quiz"
-                    title="Self-Assessment Tools"
-                    description="Understand your habits with confidential, easy-to-use assessment tools."
-                    color="emerald-600"
-                />
-                <x-service-card 
-                    icon="health_and_safety"
-                    title="Professional Counseling"
-                    description="Connect with qualified counselors for private and supportive guidance."
-                    color="green-600"
-                />
-                <x-service-card 
-                    icon="auto_stories"
-                    title="Educational Resources"
-                    description="Access a rich library of articles, videos, and guides to stay informed."
-                    color="teal-600"
-                />
+                <a href="{{ route('public.assessments.index') }}" class="block">
+                    <x-service-card 
+                        icon="quiz"
+                        title="Self-Assessment Tools"
+                        description="Understand your habits with confidential, easy-to-use assessment tools."
+                        color="emerald-600"
+                    />
+                </a>
+                <a href="{{ route('public.counseling.index') }}" class="block">
+                    <x-service-card 
+                        icon="health_and_safety"
+                        title="Professional Counseling"
+                        description="Connect with qualified counselors for private and supportive guidance."
+                        color="green-600"
+                    />
+                </a>
+                <a href="{{ route('content.index') }}" class="block">
+                    <x-service-card 
+                        icon="auto_stories"
+                        title="Educational Resources"
+                        description="Access a rich library of articles, videos, and guides to stay informed."
+                        color="teal-600"
+                    />
+                </a>
             </div>
         </div>
     </div>
@@ -305,10 +311,10 @@
     <!-- Call to Action Section -->
     <div class="w-full py-16 sm:py-24 bg-background-light dark:bg-background-dark">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-gradient-to-r from-primary/80 to-primary rounded-xl p-8 md:p-12 text-center">
-                <h2 class="text-3xl font-bold text-background-dark tracking-tight">Ready to Take the Next Step?</h2>
-                <p class="mt-4 text-lg text-background-dark/80 max-w-2xl mx-auto">Create a free, confidential account to access personalized tools, save resources, and connect with counselors.</p>
-                <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-8 text-background-dark">
+            <div class="bg-gradient-to-r from-green-800 to-green-700 dark:from-green-900 dark:to-green-800 rounded-xl p-8 md:p-12 text-center">
+                <h2 class="text-3xl font-bold text-white tracking-tight">Ready to Take the Next Step?</h2>
+                <p class="mt-4 text-lg text-white/90 max-w-2xl mx-auto">Create a free, confidential account to access personalized tools, save resources, and connect with counselors.</p>
+                <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-8 text-white">
                     <div class="flex flex-col">
                         <span class="text-4xl font-black">100%</span>
                         <span class="text-sm font-medium">Confidential</span>
@@ -323,12 +329,12 @@
                     </div>
                 </div>
                 @guest
-                    <button onclick="openSignupModal()" class="inline-block mt-10 rounded-lg bg-primary px-8 py-3 text-base font-bold text-background-dark hover:bg-opacity-80 transition-colors">Create Your Account</button>
+                    <button onclick="openSignupModal()" class="inline-block mt-10 rounded-lg bg-white text-green-800 px-8 py-3 text-base font-bold hover:bg-gray-100 transition-colors">Create Your Account</button>
                 @else
                     @if(auth()->user()->role === 'user')
-                        <a class="inline-block mt-10 rounded-lg bg-primary px-8 py-3 text-base font-bold text-background-dark hover:bg-opacity-80 transition-colors" href="{{ route('public.counseling.sessions') }}">My Counseling Sessions</a>
+                        <a class="inline-block mt-10 rounded-lg bg-white text-green-800 px-8 py-3 text-base font-bold hover:bg-gray-100 transition-colors" href="{{ route('public.counseling.sessions') }}">My Counseling Sessions</a>
                     @else
-                        <a class="inline-block mt-10 rounded-lg bg-primary px-8 py-3 text-base font-bold text-background-dark hover:bg-opacity-80 transition-colors" href="{{ route('dashboard') }}">Go to Dashboard</a>
+                        <a class="inline-block mt-10 rounded-lg bg-white text-green-800 px-8 py-3 text-base font-bold hover:bg-gray-100 transition-colors" href="{{ route('dashboard') }}">Go to Dashboard</a>
                     @endif
                 @endguest
             </div>
