@@ -34,10 +34,17 @@
                         Explore Resources
                     </a>
                 @else
-                    <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 bg-white text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg w-full sm:w-auto justify-center">
-                        <span class="material-symbols-outlined !text-lg sm:!text-xl">dashboard</span>
-                        Go to Dashboard
-                    </a>
+                    @if(auth()->user()->role === 'user')
+                        <a href="{{ route('public.counseling.sessions') }}" class="inline-flex items-center gap-2 bg-white text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg w-full sm:w-auto justify-center">
+                            <span class="material-symbols-outlined !text-lg sm:!text-xl">psychology</span>
+                            Request Counseling
+                        </a>
+                    @else
+                        <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 bg-white text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg w-full sm:w-auto justify-center">
+                            <span class="material-symbols-outlined !text-lg sm:!text-xl">dashboard</span>
+                            Go to Dashboard
+                        </a>
+                    @endif
                     <a href="{{ route('content.index') }}" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/30 transition-all duration-200 transform hover:scale-105 w-full sm:w-auto justify-center">
                         <span class="material-symbols-outlined !text-lg sm:!text-xl">library_books</span>
                         Explore Resources
@@ -318,7 +325,11 @@
                 @guest
                     <button onclick="openSignupModal()" class="inline-block mt-10 rounded-lg bg-primary px-8 py-3 text-base font-bold text-background-dark hover:bg-opacity-80 transition-colors">Create Your Account</button>
                 @else
-                    <a class="inline-block mt-10 rounded-lg bg-primary px-8 py-3 text-base font-bold text-background-dark hover:bg-opacity-80 transition-colors" href="{{ route('dashboard') }}">Go to Dashboard</a>
+                    @if(auth()->user()->role === 'user')
+                        <a class="inline-block mt-10 rounded-lg bg-primary px-8 py-3 text-base font-bold text-background-dark hover:bg-opacity-80 transition-colors" href="{{ route('public.counseling.sessions') }}">My Counseling Sessions</a>
+                    @else
+                        <a class="inline-block mt-10 rounded-lg bg-primary px-8 py-3 text-base font-bold text-background-dark hover:bg-opacity-80 transition-colors" href="{{ route('dashboard') }}">Go to Dashboard</a>
+                    @endif
                 @endguest
             </div>
         </div>

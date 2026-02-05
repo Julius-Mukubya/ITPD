@@ -121,6 +121,110 @@
                     <span id="darkModeIcon" class="material-symbols-outlined">dark_mode</span>
                 </button>
                 
+                @auth
+                    <!-- Mobile Profile Dropdown (visible on mobile only) -->
+                    <div class="sm:hidden relative group">
+                        <button class="relative flex items-center justify-center w-10 h-10 header-text hover:bg-white/20 rounded-lg transition-colors" title="Profile">
+                            @if(auth()->user()->avatar)
+                                <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="w-8 h-8 rounded-full object-cover">
+                            @else
+                                <div class="w-8 h-8 bg-gradient-to-br from-primary to-green-600 rounded-full flex items-center justify-center text-xs font-bold text-white">
+                                    {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
+                                </div>
+                            @endif
+                            @php
+                                $unreadCount = auth()->user()->unreadNotificationsCount();
+                            @endphp
+                            @if($unreadCount > 0)
+                                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full min-w-[16px] h-[16px] flex items-center justify-center border border-white dark:border-gray-800">
+                                    {{ $unreadCount > 9 ? '9+' : $unreadCount }}
+                                </span>
+                            @endif
+                        </button>
+                        
+                        <!-- Mobile Dropdown Menu -->
+                        <div class="absolute right-0 top-full mt-2 w-56 glass-dropdown rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <div class="p-3 border-b border-gray-200 dark:border-gray-700">
+                                <p class="text-sm font-semibold text-[#111816] dark:text-white truncate">{{ auth()->user()->name }}</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ auth()->user()->email }}</p>
+                            </div>
+                            <div class="p-2">
+                                <!-- User Menu -->
+                                <a href="{{ route('public.counseling.sessions') }}" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined text-green-600">psychology</span>
+                                        <span>My Counseling</span>
+                                    </div>
+                                    @php
+                                        $sessionsCount = auth()->user()->allCounselingSessions()->count();
+                                    @endphp
+                                    @if($sessionsCount > 0)
+                                        <span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $sessionsCount }}</span>
+                                    @endif
+                                </a>
+                                <a href="{{ route('public.assessments.index') }}#completed" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined text-blue-600">quiz</span>
+                                        <span>My Assessments</span>
+                                    </div>
+                                    @php
+                                        $assessmentsCount = auth()->user()->assessmentAttempts()->count();
+                                    @endphp
+                                    @if($assessmentsCount > 0)
+                                        <span class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $assessmentsCount }}</span>
+                                    @endif
+                                </a>
+                                <a href="{{ route('public.forum.index') }}" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined text-purple-600">forum</span>
+                                        <span>My Posts</span>
+                                    </div>
+                                    @php
+                                        $postsCount = auth()->user()->forumPosts()->count();
+                                    @endphp
+                                    @if($postsCount > 0)
+                                        <span class="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $postsCount }}</span>
+                                    @endif
+                                </a>
+                                <a href="{{ route('content.index', ['bookmarked' => 1]) }}#resources" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined text-orange-600">bookmark</span>
+                                        <span>My Bookmarks</span>
+                                    </div>
+                                    @php
+                                        $bookmarksCount = auth()->user()->bookmarks()
+                                            ->where('bookmarkable_type', \App\Models\EducationalContent::class)
+                                            ->count();
+                                    @endphp
+                                    @if($bookmarksCount > 0)
+                                        <span class="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $bookmarksCount }}</span>
+                                    @endif
+                                </a>
+                                @if(auth()->user()->role !== 'user')
+                                    <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+                                    <!-- Admin/Counselor Menu -->
+                                    <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                        <span class="material-symbols-outlined text-primary">dashboard</span>
+                                        <span>Dashboard</span>
+                                    </a>
+                                @endif
+                                <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+                                <button onclick="openProfileModal()" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors w-full text-left">
+                                    <span class="material-symbols-outlined text-blue-600">person</span>
+                                    <span>Profile Settings</span>
+                                </button>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="w-full flex items-center gap-3 px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
+                                        <span class="material-symbols-outlined">logout</span>
+                                        <span>Logout</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                @endauth
+                
                 @guest
                     <button onclick="openLoginModal()" class="hidden sm:flex items-center justify-center rounded-lg h-9 sm:h-10 px-3 sm:px-5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-[#111816] dark:text-white text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                         Sign In
@@ -253,15 +357,9 @@
         <!-- Sidebar Header -->
         <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
             <h3 class="text-lg font-bold text-[#111816] dark:text-white">Menu</h3>
-            <div class="flex items-center gap-2">
-                <!-- Mobile Dark Mode Toggle -->
-                <button id="mobileDarkModeToggle" class="flex items-center justify-center w-10 h-10 text-[#111816] dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors" title="Toggle dark mode">
-                    <span id="mobileDarkModeIcon" class="material-symbols-outlined">dark_mode</span>
-                </button>
-                <button onclick="toggleMobileSidebar()" class="flex items-center justify-center w-10 h-10 text-[#111816] dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
+            <button onclick="toggleMobileSidebar()" class="flex items-center justify-center w-10 h-10 text-[#111816] dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
         </div>
         
         <!-- Sidebar Content -->
@@ -322,23 +420,6 @@
                     <span class="material-symbols-outlined">forum</span>
                     <span class="font-medium">Community Forum</span>
                 </a>
-                
-                @auth
-                    <a class="flex items-center justify-between text-gray-900 dark:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-700 dark:hover:text-primary/80 px-4 py-3 rounded-lg transition-colors" href="{{ route('content.index', ['bookmarked' => 1]) }}#resources">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-outlined">bookmark</span>
-                            <span class="font-medium">My Bookmarks</span>
-                        </div>
-                        @php
-                            $bookmarksCount = auth()->user()->bookmarks()
-                                ->where('bookmarkable_type', \App\Models\EducationalContent::class)
-                                ->count();
-                        @endphp
-                        @if($bookmarksCount > 0)
-                            <span class="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $bookmarksCount }}</span>
-                        @endif
-                    </a>
-                @endauth
                 
                 <a class="flex items-center gap-3 text-gray-900 dark:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-700 dark:hover:text-primary/80 px-4 py-3 rounded-lg transition-colors" href="{{ route('campaigns.index') }}">
                     <span class="material-symbols-outlined">campaign</span>

@@ -107,14 +107,24 @@
 </style>
 
 <script>
-    // Simplified loading screen management - 1 second only
+    // Scroll position reset and loading screen management
     document.addEventListener('DOMContentLoaded', function() {
         // Only run loading screen logic if it exists on the page
         const loadingScreen = document.getElementById('loadingScreen');
         if (!loadingScreen) return;
         
+        // Force scroll to top immediately when loading screen is active
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        
         // Add loading class to body initially
         document.body.classList.add('loading');
+        
+        // Prevent scroll restoration during loading
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
         
         // Fixed loading time - exactly 1 second
         const loadTime = 1000;
@@ -124,15 +134,36 @@
             document.body.classList.remove('loading');
             document.body.classList.add('loaded');
             
+            // Ensure we're still at the top after loading
+            window.scrollTo(0, 0);
+            
             // Remove loading screen from DOM immediately after animation
             setTimeout(() => {
                 if (loadingScreen) {
                     loadingScreen.remove();
                 }
-                // Allow scrolling again
+                // Allow scrolling again and restore scroll behavior
                 document.body.style.overflow = '';
+                if ('scrollRestoration' in history) {
+                    history.scrollRestoration = 'auto';
+                }
             }, 250);
         }, loadTime);
     });
+    
+    // Also ensure scroll to top on page load (before DOMContentLoaded)
+    window.addEventListener('load', function() {
+        const loadingScreen = document.getElementById('loadingScreen');
+        if (loadingScreen) {
+            window.scrollTo(0, 0);
+        }
+    });
+    
+    // Immediate scroll reset (runs as soon as script loads)
+    (function() {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+    })();
 </script>
 @endif

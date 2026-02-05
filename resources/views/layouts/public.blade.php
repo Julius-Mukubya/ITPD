@@ -7,11 +7,28 @@
     
     <title>@yield('title', 'WellPath')</title>
     
+    <!-- Dark Mode Detection Script - Must run before page renders -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+            
+            if (isDark) {
+                document.documentElement.classList.remove('light');
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light');
+            }
+        })();
+    </script>
+    
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" rel="stylesheet"/>
     
     <script>
         tailwind.config = {
@@ -44,6 +61,19 @@
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
             font-size: 20px;
+        }
+        
+        /* Fix for icon font loading - prevent FOIT/FOUT */
+        .material-symbols-outlined {
+            font-display: swap;
+            /* Hide text fallback until font loads */
+            text-rendering: optimizeLegibility;
+        }
+        
+        /* Optional: Add a subtle loading state */
+        .material-symbols-outlined:not(.font-loaded) {
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
         }
         
         /* Invisible header that blends with hero sections */
@@ -128,7 +158,10 @@
     @stack('styles')
 </head>
 <body class="font-display bg-background-light dark:bg-background-dark text-[#111816] dark:text-gray-200">
-    <div class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+    <!-- Loading Screen -->
+    @include('components.loading-screen')
+    
+    <div id="mainContent" class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
         <div class="layout-container flex h-full grow flex-col">
             <div class="flex flex-1 justify-center">
                 <div class="layout-content-container flex flex-col w-full">
@@ -150,7 +183,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> <!-- End mainContent -->
     
     <!-- Crisis Support Modal (Available on all pages) -->
     @include('components.crisis-support-modal')
@@ -241,8 +274,6 @@
             // Dark Mode Toggle
             const darkModeToggle = document.getElementById('darkModeToggle');
             const darkModeIcon = document.getElementById('darkModeIcon');
-            const mobileDarkModeToggle = document.getElementById('mobileDarkModeToggle');
-            const mobileDarkModeIcon = document.getElementById('mobileDarkModeIcon');
             const htmlElement = document.documentElement;
             
             if (darkModeToggle && darkModeIcon) {
@@ -254,9 +285,6 @@
                 function updateIcons(isDark) {
                     const iconText = isDark ? 'light_mode' : 'dark_mode';
                     darkModeIcon.textContent = iconText;
-                    if (mobileDarkModeIcon) {
-                        mobileDarkModeIcon.textContent = iconText;
-                    }
                 }
                 
                 // Set initial theme
@@ -283,11 +311,8 @@
                     }
                 }
                 
-                // Add click event listeners
+                // Add click event listener
                 darkModeToggle.addEventListener('click', toggleDarkMode);
-                if (mobileDarkModeToggle) {
-                    mobileDarkModeToggle.addEventListener('click', toggleDarkMode);
-                }
                 
                 // Listen for system theme changes
                 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
@@ -300,6 +325,15 @@
                             updateIcons(false);
                         }
                     }
+                });
+            }
+            
+            // Font loading detection for Material Symbols
+            if ('fonts' in document) {
+                document.fonts.ready.then(() => {
+                    document.querySelectorAll('.material-symbols-outlined').forEach(icon => {
+                        icon.classList.add('font-loaded');
+                    });
                 });
             }
         });
