@@ -46,10 +46,10 @@
                 </div>
             </div>
             <div class="flex justify-center mt-6">
-                <a href="#resources" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                <button onclick="scrollToResources()" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
                     <span class="material-symbols-outlined !text-xl">explore</span>
                     Browse All Resources
-                </a>
+                </button>
             </div>
         </div>
     </div>
@@ -568,6 +568,25 @@
 
 @push('scripts')
 <script>
+// Smooth scroll to resources section
+function scrollToResources() {
+    const filtersSection = document.getElementById('filters-section');
+    if (filtersSection) {
+        // Get the header height to offset the scroll position
+        const header = document.querySelector('header');
+        const headerHeight = header ? header.offsetHeight : 80;
+        
+        // Calculate the position to scroll to
+        const elementPosition = filtersSection.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 10;
+        
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Mobile filter toggle functionality
     const mobileFilterToggle = document.getElementById('mobile-filter-toggle');

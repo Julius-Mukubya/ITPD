@@ -54,10 +54,10 @@
                         Login to Participate
                     </button>
                 @endauth
-                <a href="#forum-filters" class="inline-flex items-center justify-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/30 transition-all duration-200 transform hover:scale-105">
+                <button onclick="scrollToDiscussions()" class="inline-flex items-center justify-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/30 transition-all duration-200 transform hover:scale-105">
                     <span class="material-symbols-outlined !text-lg sm:!text-xl">visibility</span>
                     Browse Discussions
-                </a>
+                </button>
             </div>
         </div>
     </div>
@@ -504,6 +504,25 @@
 
 @push('scripts')
 <script>
+// Smooth scroll to discussions section
+function scrollToDiscussions() {
+    const filtersSection = document.getElementById('forum-filters');
+    if (filtersSection) {
+        // Get the header height to offset the scroll position
+        const header = document.querySelector('header');
+        const headerHeight = header ? header.offsetHeight : 80;
+        
+        // Calculate the position to scroll to
+        const elementPosition = filtersSection.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerHeight - 10;
+        
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+    }
+}
+
 // Global variables for filtering
 let currentCategory = 'all';
 let currentPostType = 'all';
