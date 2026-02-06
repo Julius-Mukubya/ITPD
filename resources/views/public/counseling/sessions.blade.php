@@ -39,35 +39,61 @@
 <!-- Sessions List -->
 <div id="sessions" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="space-y-6">
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <!-- Page Header -->
+        <div class="flex items-center justify-between">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                 <span class="material-symbols-outlined text-emerald-600">history</span>
                 Your Sessions
             </h2>
-            
-            <div class="flex items-center gap-4">
-                <!-- Request Session Button (Mobile) -->
-                <button onclick="openRequestModal()" class="lg:hidden bg-gradient-to-r from-primary to-green-500 text-white px-6 py-2.5 rounded-xl font-semibold text-sm hover:shadow-lg hover:shadow-primary/30 transition-all duration-200 transform hover:scale-105 flex items-center gap-2">
-                    <span class="material-symbols-outlined !text-lg">add_circle</span>
-                    Request Session
+        </div>
+        
+        <!-- Filters Section -->
+        <div class="bg-white/95 dark:bg-gray-800/95 backdrop-blur-md rounded-2xl p-4 sm:p-6 shadow-lg border border-[#f0f4f3] dark:border-gray-800">
+            <!-- Mobile Filter Header with Toggle -->
+            <div class="flex items-center justify-between mb-4 lg:hidden">
+                <h3 class="text-lg font-semibold text-[#111816] dark:text-white flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">tune</span>
+                    Filters
+                </h3>
+                <button id="mobile-filter-toggle" class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">
+                    <span>Show Filters</span>
+                    <span id="mobile-filter-icon" class="material-symbols-outlined text-sm transition-transform">expand_more</span>
                 </button>
-                
-                <!-- Filter Buttons -->
-                <div class="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl">
-                    <button onclick="filterSessions('all')" class="filter-btn px-4 py-2 rounded-lg bg-primary text-white font-semibold text-sm transition-all duration-200 transform hover:scale-105 shadow-sm" data-filter="all">
-                        All Sessions
+            </div>
+            
+            <!-- Filter Buttons (Hidden on mobile by default) -->
+            <div id="mobile-filters" class="hidden lg:flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                <label class="text-sm font-semibold text-[#111816] dark:text-gray-300 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">filter_list</span>
+                    <span>Status:</span>
+                </label>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="filterSessions('all')" class="filter-btn flex h-10 items-center justify-center gap-1.5 rounded-xl bg-primary text-white px-4 text-sm font-semibold shadow-sm hover:shadow-md transition-all duration-200" data-filter="all">
+                        <span class="material-symbols-outlined !text-base">select_all</span>
+                        <span>All Sessions</span>
                     </button>
-                    <button onclick="filterSessions('pending')" class="filter-btn px-4 py-2 rounded-lg text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white font-medium text-sm transition-colors" data-filter="pending">
-                        Pending
+                    <button onclick="filterSessions('pending')" class="filter-btn flex h-10 items-center justify-center gap-1.5 rounded-xl bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-[#111816] dark:text-gray-300 px-4 text-sm font-medium hover:border-primary transition-all duration-200" data-filter="pending">
+                        <span class="material-symbols-outlined !text-base">schedule</span>
+                        <span>Pending</span>
                     </button>
-                    <button onclick="filterSessions('active')" class="filter-btn px-4 py-2 rounded-lg text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white font-medium text-sm transition-colors" data-filter="active">
-                        Active
+                    <button onclick="filterSessions('active')" class="filter-btn flex h-10 items-center justify-center gap-1.5 rounded-xl bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-[#111816] dark:text-gray-300 px-4 text-sm font-medium hover:border-primary transition-all duration-200" data-filter="active">
+                        <span class="material-symbols-outlined !text-base">check_circle</span>
+                        <span>Active</span>
                     </button>
-                    <button onclick="filterSessions('completed')" class="filter-btn px-4 py-2 rounded-lg text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white font-medium text-sm transition-colors" data-filter="completed">
-                        Completed
+                    <button onclick="filterSessions('completed')" class="filter-btn flex h-10 items-center justify-center gap-1.5 rounded-xl bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-[#111816] dark:text-gray-300 px-4 text-sm font-medium hover:border-primary transition-all duration-200" data-filter="completed">
+                        <span class="material-symbols-outlined !text-base">task_alt</span>
+                        <span>Completed</span>
                     </button>
                 </div>
             </div>
+        </div>
+        
+        <!-- Mobile: Request Session Button (Below filters) -->
+        <div class="lg:hidden">
+            <button onclick="openRequestModal()" class="w-full bg-gradient-to-r from-primary to-green-500 text-white px-6 py-3 rounded-xl font-semibold text-sm hover:shadow-lg hover:shadow-primary/30 transition-all duration-200 transform hover:scale-105 flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined !text-lg">add_circle</span>
+                Request Session
+            </button>
         </div>
         
         <!-- Sessions Content with Fixed Sidebar -->
@@ -523,6 +549,29 @@
 
 @push('scripts')
 <script>
+// Mobile filter toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileFilterToggle = document.getElementById('mobile-filter-toggle');
+    const mobileFilters = document.getElementById('mobile-filters');
+    const mobileFilterIcon = document.getElementById('mobile-filter-icon');
+    
+    if (mobileFilterToggle && mobileFilters) {
+        mobileFilterToggle.addEventListener('click', function() {
+            const isHidden = mobileFilters.classList.contains('hidden');
+            
+            if (isHidden) {
+                mobileFilters.classList.remove('hidden');
+                mobileFilterIcon.style.transform = 'rotate(180deg)';
+                mobileFilterToggle.querySelector('span:first-child').textContent = 'Hide Filters';
+            } else {
+                mobileFilters.classList.add('hidden');
+                mobileFilterIcon.style.transform = 'rotate(0deg)';
+                mobileFilterToggle.querySelector('span:first-child').textContent = 'Show Filters';
+            }
+        });
+    }
+});
+
 // Session filtering functionality
 function filterSessions(status) {
     const sessionItems = document.querySelectorAll('.session-item');
@@ -532,11 +581,11 @@ function filterSessions(status) {
     // Update button styles
     filterBtns.forEach(btn => {
         if (btn.dataset.filter === status) {
-            btn.classList.remove('text-[#61897c]', 'dark:text-gray-400', 'hover:text-[#111816]', 'dark:hover:text-white');
-            btn.classList.add('bg-primary', 'text-white', 'font-semibold', 'shadow-sm');
+            btn.classList.remove('bg-white', 'dark:bg-gray-800', 'border-2', 'border-gray-200', 'dark:border-gray-700', 'text-[#111816]', 'dark:text-gray-300', 'font-medium', 'hover:border-primary');
+            btn.classList.add('bg-primary', 'text-white', 'font-semibold', 'shadow-sm', 'hover:shadow-md');
         } else {
-            btn.classList.remove('bg-primary', 'text-white', 'font-semibold', 'shadow-sm');
-            btn.classList.add('text-[#61897c]', 'dark:text-gray-400', 'hover:text-[#111816]', 'dark:hover:text-white');
+            btn.classList.remove('bg-primary', 'text-white', 'font-semibold', 'shadow-sm', 'hover:shadow-md');
+            btn.classList.add('bg-white', 'dark:bg-gray-800', 'border-2', 'border-gray-200', 'dark:border-gray-700', 'text-[#111816]', 'dark:text-gray-300', 'font-medium', 'hover:border-primary');
         }
     });
     
