@@ -22,21 +22,17 @@
             </div>
             <h1 class="text-4xl lg:text-6xl font-black text-white tracking-tight mb-6">Get in Touch</h1>
             <p class="text-xl lg:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-8">We're here to help. Reach out to us for support, questions, or feedback.</p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="tel:999" class="inline-flex items-center gap-2 bg-red-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-red-700 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                    <span class="material-symbols-outlined !text-xl">emergency</span>
-                    Emergency: 999
-                </a>
-                <a href="mailto:support@wellpath.edu" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 transition-all duration-200 transform hover:scale-105">
-                    <span class="material-symbols-outlined !text-xl">email</span>
-                    Email Us
+            <div class="flex justify-center">
+                <a href="#contact-info" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                    <span class="material-symbols-outlined !text-xl">expand_more</span>
+                    View Contact Info
                 </a>
             </div>
         </div>
     </div>
 </section>
 
-<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div id="contact-info" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 scroll-mt-20">
     <div class="flex flex-col flex-1 gap-10">
         <!-- Contact Information -->
         <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-8 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
