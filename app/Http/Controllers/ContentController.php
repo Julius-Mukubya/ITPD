@@ -36,7 +36,7 @@ class ContentController extends Controller
             });
         }
 
-        $contents = $query->latest('published_at')->paginate(12);
+        $contents = $query->latest('published_at')->paginate(3);
         $categories = Category::active()->get();
 
         return view('public.content.index', compact('contents', 'categories'));

@@ -374,11 +374,37 @@
                         </a>
                     @endif
 
-                    @foreach ($contents->getUrlRange(1, $contents->lastPage()) as $page => $url)
-                        @if ($page == $contents->currentPage())
+                    @php
+                        $currentPage = $contents->currentPage();
+                        $lastPage = $contents->lastPage();
+                        $showPages = [];
+                        
+                        // Always show first page
+                        $showPages[] = 1;
+                        
+                        // Show pages around current page
+                        for ($i = max(2, $currentPage - 1); $i <= min($lastPage - 1, $currentPage + 1); $i++) {
+                            $showPages[] = $i;
+                        }
+                        
+                        // Always show last page
+                        if ($lastPage > 1) {
+                            $showPages[] = $lastPage;
+                        }
+                        
+                        $showPages = array_unique($showPages);
+                        sort($showPages);
+                    @endphp
+                    
+                    @foreach ($showPages as $index => $page)
+                        @if ($index > 0 && $showPages[$index - 1] < $page - 1)
+                            <span class="flex items-center justify-center w-10 h-10 text-[#61897c] dark:text-gray-400">...</span>
+                        @endif
+                        
+                        @if ($page == $currentPage)
                             <button class="flex items-center justify-center w-10 h-10 rounded-xl bg-primary text-white font-bold text-sm shadow-sm transform scale-105">{{ $page }}</button>
                         @else
-                            <a href="{{ $url }}" class="flex items-center justify-center w-10 h-10 rounded-xl border border-[#f0f4f3] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111816] dark:text-gray-300 hover:bg-primary hover:text-white hover:border-primary transition-all duration-200 transform hover:scale-105 text-sm font-medium">{{ $page }}</a>
+                            <a href="{{ $contents->url($page) }}" class="flex items-center justify-center w-10 h-10 rounded-xl border border-[#f0f4f3] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111816] dark:text-gray-300 hover:bg-primary hover:text-white hover:border-primary transition-all duration-200 transform hover:scale-105 text-sm font-medium">{{ $page }}</a>
                         @endif
                     @endforeach
 
