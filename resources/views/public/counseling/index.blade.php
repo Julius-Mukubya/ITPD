@@ -93,12 +93,12 @@
 
                 <!-- Carousel Container -->
                 <div class="relative max-w-full mx-auto px-4 sm:px-0">
-                    <!-- Navigation Buttons - Hidden on mobile -->
-                    <button id="services-prev" class="hidden sm:flex absolute -left-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 items-center justify-center text-gray-600 dark:text-gray-400 hover:text-primary hover:border-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-                        <span class="material-symbols-outlined">chevron_left</span>
+                    <!-- Navigation Buttons -->
+                    <button id="services-prev" class="flex absolute -left-2 sm:-left-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 items-center justify-center text-gray-600 dark:text-gray-400 hover:text-primary hover:border-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span class="material-symbols-outlined text-lg sm:text-xl">chevron_left</span>
                     </button>
-                    <button id="services-next" class="hidden sm:flex absolute -right-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 items-center justify-center text-gray-600 dark:text-gray-400 hover:text-primary hover:border-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-                        <span class="material-symbols-outlined">chevron_right</span>
+                    <button id="services-next" class="flex absolute -right-2 sm:-right-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 items-center justify-center text-gray-600 dark:text-gray-400 hover:text-primary hover:border-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span class="material-symbols-outlined text-lg sm:text-xl">chevron_right</span>
                     </button>
 
                     <!-- Carousel Track -->
@@ -222,12 +222,12 @@
 
         <!-- Carousel Container -->
         <div class="relative max-w-full mx-auto px-4 sm:px-0">
-            <!-- Navigation Buttons - Hidden on mobile -->
-            <button id="counselors-prev" class="hidden sm:flex absolute -left-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 items-center justify-center text-gray-600 dark:text-gray-400 hover:text-purple-600 hover:border-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-                <span class="material-symbols-outlined">chevron_left</span>
+            <!-- Navigation Buttons -->
+            <button id="counselors-prev" class="flex absolute -left-2 sm:-left-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 items-center justify-center text-gray-600 dark:text-gray-400 hover:text-purple-600 hover:border-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                <span class="material-symbols-outlined text-lg sm:text-xl">chevron_left</span>
             </button>
-            <button id="counselors-next" class="hidden sm:flex absolute -right-6 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 items-center justify-center text-gray-600 dark:text-gray-400 hover:text-purple-600 hover:border-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-                <span class="material-symbols-outlined">chevron_right</span>
+            <button id="counselors-next" class="flex absolute -right-2 sm:-right-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg border border-gray-200 dark:border-gray-700 items-center justify-center text-gray-600 dark:text-gray-400 hover:text-purple-600 hover:border-purple-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                <span class="material-symbols-outlined text-lg sm:text-xl">chevron_right</span>
             </button>
 
             <!-- Carousel Track -->
@@ -448,28 +448,51 @@ const counselorsPrev = document.getElementById('counselors-prev');
 const counselorsNext = document.getElementById('counselors-next');
 const counselorsDotsContainer = document.getElementById('counselors-dots');
 let currentCounselorIndex = 0;
-const counselorCards = counselorsTrack ? counselorsTrack.children.length : 0;
+
+function getCounselorCardsPerView() {
+    // Determine how many cards are visible at once based on screen size
+    const width = window.innerWidth;
+    if (width >= 1024) return 3; // lg screens
+    if (width >= 640) return 2;  // sm screens
+    return 1; // mobile
+}
+
+function getCounselorCardWidth() {
+    if (!counselorsTrack || counselorsTrack.children.length === 0) return 0;
+    const cardWidth = counselorsTrack.children[0].offsetWidth;
+    const gap = window.innerWidth >= 640 ? 24 : 16; // sm:gap-6 vs gap-4
+    return cardWidth + gap;
+}
 
 function updateCounselorsCarousel() {
-    if (!counselorsTrack) return;
+    if (!counselorsTrack || counselorsTrack.children.length === 0) return;
     
-    const cardWidth = window.innerWidth >= 640 ? 320 + 24 : 288 + 16; // sm:w-80 vs w-72 + gaps
-    const translateX = -(currentCounselorIndex * cardWidth);
+    const slideWidth = getCounselorCardWidth();
+    const translateX = -(currentCounselorIndex * slideWidth);
     counselorsTrack.style.transform = `translateX(${translateX}px)`;
     
-    // Update button states
-    if (counselorsPrev) counselorsPrev.disabled = currentCounselorIndex === 0;
-    if (counselorsNext) counselorsNext.disabled = currentCounselorIndex >= counselorCards - 3;
+    // Always show both arrows (infinite loop)
+    if (counselorsPrev) {
+        counselorsPrev.style.display = 'flex';
+    }
+    
+    if (counselorsNext) {
+        counselorsNext.style.display = 'flex';
+    }
     
     // Update dots
     updateCounselorsDots();
 }
 
 function updateCounselorsDots() {
-    if (!counselorsDotsContainer) return;
+    if (!counselorsDotsContainer || !counselorsTrack) return;
+    
+    const totalCards = counselorsTrack.children.length;
+    const cardsPerView = getCounselorCardsPerView();
+    const maxIndex = Math.max(0, totalCards - cardsPerView);
     
     counselorsDotsContainer.innerHTML = '';
-    for (let i = 0; i < counselorCards; i++) {
+    for (let i = 0; i <= maxIndex; i++) {
         const dot = document.createElement('button');
         dot.className = `w-2 h-2 rounded-full transition-all ${i === currentCounselorIndex ? 'bg-purple-600 w-8' : 'bg-gray-300 dark:bg-gray-600'}`;
         dot.onclick = () => {
@@ -482,19 +505,37 @@ function updateCounselorsDots() {
 
 if (counselorsPrev) {
     counselorsPrev.addEventListener('click', () => {
+        if (!counselorsTrack) return;
+        
+        const totalCards = counselorsTrack.children.length;
+        const cardsPerView = getCounselorCardsPerView();
+        const maxIndex = Math.max(0, totalCards - cardsPerView);
+        
         if (currentCounselorIndex > 0) {
             currentCounselorIndex--;
-            updateCounselorsCarousel();
+        } else {
+            // Loop to last position
+            currentCounselorIndex = maxIndex;
         }
+        updateCounselorsCarousel();
     });
 }
 
 if (counselorsNext) {
     counselorsNext.addEventListener('click', () => {
-        if (currentCounselorIndex < counselorCards - 3) {
+        if (!counselorsTrack) return;
+        
+        const totalCards = counselorsTrack.children.length;
+        const cardsPerView = getCounselorCardsPerView();
+        const maxIndex = Math.max(0, totalCards - cardsPerView);
+        
+        if (currentCounselorIndex < maxIndex) {
             currentCounselorIndex++;
-            updateCounselorsCarousel();
+        } else {
+            // Loop back to first position
+            currentCounselorIndex = 0;
         }
+        updateCounselorsCarousel();
     });
 }
 
@@ -559,26 +600,9 @@ function initServicesCarousel() {
         const offset = -(currentIndex * slideWidth);
         carousel.style.transform = `translateX(${offset}px)`;
         
-        // Hide/show buttons based on position
-        if (currentIndex === 0) {
-            prevBtn.style.opacity = '0.5';
-            prevBtn.style.cursor = 'not-allowed';
-            prevBtn.disabled = true;
-        } else {
-            prevBtn.style.opacity = '1';
-            prevBtn.style.cursor = 'pointer';
-            prevBtn.disabled = false;
-        }
-        
-        if (currentIndex >= maxIndex) {
-            nextBtn.style.opacity = '0.5';
-            nextBtn.style.cursor = 'not-allowed';
-            nextBtn.disabled = true;
-        } else {
-            nextBtn.style.opacity = '1';
-            nextBtn.style.cursor = 'pointer';
-            nextBtn.disabled = false;
-        }
+        // Always show both arrows (infinite loop)
+        prevBtn.style.display = 'flex';
+        nextBtn.style.display = 'flex';
         
         // Update dots
         if (dotsContainer) {
@@ -603,15 +627,21 @@ function initServicesCarousel() {
     function nextSlide() {
         if (currentIndex < maxIndex) {
             currentIndex++;
-            updateCarousel();
+        } else {
+            // Loop back to first slide
+            currentIndex = 0;
         }
+        updateCarousel();
     }
     
     function prevSlide() {
         if (currentIndex > 0) {
             currentIndex--;
-            updateCarousel();
+        } else {
+            // Loop to last slide
+            currentIndex = maxIndex;
         }
+        updateCarousel();
     }
     
     // Auto-slide functionality
@@ -701,6 +731,7 @@ function initServicesCarousel() {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
             updateCarousel();
+            updateCounselorsCarousel();
         }, 250);
     });
 }
