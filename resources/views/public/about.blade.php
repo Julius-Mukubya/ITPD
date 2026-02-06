@@ -22,21 +22,17 @@
             </div>
             <h1 class="text-4xl lg:text-6xl font-black text-white tracking-tight mb-6">About Our Platform</h1>
             <p class="text-xl lg:text-2xl text-white/90 max-w-4xl mx-auto leading-relaxed mb-8">Supporting students with comprehensive drug and alcohol awareness resources, counseling services, and peer support.</p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="{{ route('public.counseling.index') }}" class="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                    <span class="material-symbols-outlined !text-xl">psychology</span>
-                    Get Support
-                </a>
-                <a href="{{ route('content.index') }}" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 transition-all duration-200 transform hover:scale-105">
-                    <span class="material-symbols-outlined !text-xl">library_books</span>
-                    Explore Resources
+            <div class="flex justify-center">
+                <a href="#about-content" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/30 hover:border-white/50 transition-all duration-200 transform hover:scale-105 shadow-lg">
+                    <span class="material-symbols-outlined !text-xl">expand_more</span>
+                    Learn More About Us
                 </a>
             </div>
         </div>
     </div>
 </section>
 
-<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div id="about-content" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 scroll-mt-16">
     <div class="flex flex-col flex-1 gap-10">
         <!-- Mission Section -->
         <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-8 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
@@ -161,33 +157,26 @@
         <div class="relative bg-gradient-to-r from-primary/10 to-green-50 dark:from-gray-800 dark:to-gray-800/50 rounded-2xl p-8 border border-primary/20 dark:border-gray-700 overflow-hidden">
             <!-- Decorative Icons -->
             <div class="absolute top-4 left-4 opacity-10">
-                <span class="material-symbols-outlined text-6xl text-primary">support_agent</span>
+                <span class="material-symbols-outlined text-6xl text-primary">handshake</span>
             </div>
             <div class="absolute bottom-4 right-4 opacity-10">
-                <span class="material-symbols-outlined text-6xl text-primary">groups</span>
+                <span class="material-symbols-outlined text-6xl text-primary">diversity_3</span>
             </div>
             
             <div class="relative text-center">
                 <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/20 rounded-full mb-4">
-                    <span class="material-symbols-outlined text-3xl text-primary">rocket_launch</span>
+                    <span class="material-symbols-outlined text-3xl text-primary">connect_without_contact</span>
                 </div>
-                <h3 class="text-xl font-bold text-[#111816] dark:text-white mb-2">Ready to Get Started?</h3>
-                <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">Join our community and take the first step towards wellness and personal growth.</p>
+                <h3 class="text-xl font-bold text-[#111816] dark:text-white mb-2">Want to Learn More?</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">Have questions about our services or want to get involved? We'd love to hear from you and help you find the support you need.</p>
                 <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                    @guest
-                        <button onclick="openSignupModal()" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
-                            <span class="material-symbols-outlined text-base">person_add</span>
-                            <span>Sign Up Now</span>
-                        </button>
-                    @else
-                        <a href="{{ route('dashboard') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
-                            <span class="material-symbols-outlined text-base">dashboard</span>
-                            <span>Go to Dashboard</span>
-                        </a>
-                    @endguest
-                    <a href="{{ route('public.contact') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-700 text-[#111816] dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg font-semibold hover:border-primary hover:text-primary transition-colors text-sm">
+                    <a href="{{ route('public.contact') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
                         <span class="material-symbols-outlined text-base">mail</span>
                         <span>Contact Us</span>
+                    </a>
+                    <a href="{{ route('public.counseling.index') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-700 text-[#111816] dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg font-semibold hover:border-primary hover:text-primary transition-colors text-sm">
+                        <span class="material-symbols-outlined text-base">psychology</span>
+                        <span>Explore Services</span>
                     </a>
                 </div>
             </div>
