@@ -1192,11 +1192,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Login modal function (placeholder)
-    window.openLoginModal = function() {
-        showToast('Please log in to bookmark content', 'info');
-        // Add your login modal logic here
-    };
+    // Login modal function is defined in login-modal.blade.php component
+    // No need to redefine it here
     
     // Toast notification function
     function showToast(message, type = 'info') {
