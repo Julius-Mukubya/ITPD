@@ -41,38 +41,60 @@
 
 <!-- Filter Section -->
 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-    <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
-        <div class="flex flex-col sm:flex-row gap-4 items-center justify-between">
-            <!-- Search Bar -->
-            <div class="relative flex-1 max-w-md">
-                <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-[#61897c] dark:text-gray-400 !text-xl">search</span>
-                <input type="text" id="campaign-search" placeholder="Search campaigns..." 
-                       class="w-full pl-12 pr-12 py-3 rounded-xl border border-[#f0f4f3] dark:border-gray-700 bg-white dark:bg-gray-900 text-[#111816] dark:text-white placeholder-[#61897c] dark:placeholder-gray-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200">
-                <button type="button" id="clear-search" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white transition-colors duration-200 opacity-0 pointer-events-none">
-                    <span class="material-symbols-outlined !text-lg">close</span>
-                </button>
-            </div>
-            
-            <!-- Filter Buttons -->
-            <div class="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl">
-                <button class="px-4 py-2 rounded-lg bg-primary text-white font-semibold text-sm transition-all duration-200 transform hover:scale-105 shadow-sm">
-                    All Campaigns
-                </button>
-                <button class="px-4 py-2 rounded-lg text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white font-medium text-sm transition-colors">
-                    Active
-                </button>
-                <button class="px-4 py-2 rounded-lg text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white font-medium text-sm transition-colors">
-                    Upcoming
-                </button>
-                <button class="px-4 py-2 rounded-lg text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white font-medium text-sm transition-colors">
-                    Completed
-                </button>
+    <div class="bg-white/95 dark:bg-gray-800/95 backdrop-blur-md rounded-2xl p-4 sm:p-6 shadow-lg border border-[#f0f4f3] dark:border-gray-800">
+        <!-- Mobile Filter Header with Toggle -->
+        <div class="flex items-center justify-between mb-4 lg:hidden">
+            <h3 class="text-lg font-semibold text-[#111816] dark:text-white flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">tune</span>
+                Filters & Search
+            </h3>
+            <button id="mobile-filter-toggle" class="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">
+                <span>Show Filters</span>
+                <span id="mobile-filter-icon" class="material-symbols-outlined text-sm transition-transform">expand_more</span>
+            </button>
+        </div>
+
+        <!-- Filters Container -->
+        <div id="mobile-filters" class="hidden lg:block">
+            <div class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+                <!-- Search Bar -->
+                <div class="relative flex-1 max-w-md w-full">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-[#61897c] dark:text-gray-400">search</span>
+                    <input type="text" id="campaign-search" placeholder="Search campaigns..." 
+                           class="w-full pl-10 pr-10 py-2.5 rounded-xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-[#111816] dark:text-white placeholder-[#61897c] dark:placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 text-sm">
+                    <button type="button" id="clear-search" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white transition-colors duration-200 opacity-0 pointer-events-none">
+                        <span class="material-symbols-outlined text-lg">close</span>
+                    </button>
+                </div>
+                
+                <!-- Status Filter Buttons -->
+                <div class="flex flex-col lg:flex-row lg:items-center gap-3 w-full lg:w-auto">
+                    <span class="text-sm font-semibold text-[#111816] dark:text-gray-300 flex items-center gap-2 whitespace-nowrap">
+                        <span class="material-symbols-outlined text-primary text-base">filter_list</span>
+                        <span>Status:</span>
+                    </span>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 lg:flex lg:flex-row gap-2 bg-gray-100 dark:bg-gray-800 p-1 rounded-xl">
+                        <button data-filter="all" class="campaign-filter-btn px-3 sm:px-4 py-2 rounded-lg bg-primary text-white font-semibold text-xs sm:text-sm transition-all duration-200 transform hover:scale-105 shadow-sm whitespace-nowrap">
+                            All Campaigns
+                        </button>
+                        <button data-filter="active" class="campaign-filter-btn px-3 sm:px-4 py-2 rounded-lg text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white font-medium text-xs sm:text-sm transition-colors whitespace-nowrap">
+                            Active
+                        </button>
+                        <button data-filter="upcoming" class="campaign-filter-btn px-3 sm:px-4 py-2 rounded-lg text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white font-medium text-xs sm:text-sm transition-colors whitespace-nowrap">
+                            Upcoming
+                        </button>
+                        <button data-filter="completed" class="campaign-filter-btn px-3 sm:px-4 py-2 rounded-lg text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white font-medium text-xs sm:text-sm transition-colors whitespace-nowrap">
+                            Completed
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Dynamic Campaign Section -->
+@if(isset($activeCampaigns) || isset($upcomingCampaigns))
 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="flex flex-col flex-1 gap-10">
         <!-- Campaign Section -->
@@ -294,9 +316,8 @@
         </div>
     </div>
 </div>
-
+@else
 <!-- Enhanced Default State -->
-@if((!isset($activeCampaigns) || $activeCampaigns->count() === 0) && (!isset($upcomingCampaigns) || $upcomingCampaigns->count() === 0))
 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="flex flex-col flex-1 gap-10">
         <!-- Empty State -->
@@ -432,10 +453,33 @@ function scrollToCampaigns() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Mobile filter toggle functionality
+    const mobileFilterToggle = document.getElementById('mobile-filter-toggle');
+    const mobileFilters = document.getElementById('mobile-filters');
+    const mobileFilterIcon = document.getElementById('mobile-filter-icon');
+    
+    if (mobileFilterToggle && mobileFilters) {
+        mobileFilterToggle.addEventListener('click', function() {
+            const isHidden = mobileFilters.classList.contains('hidden');
+            
+            if (isHidden) {
+                mobileFilters.classList.remove('hidden');
+                mobileFilterIcon.style.transform = 'rotate(180deg)';
+                mobileFilterIcon.textContent = 'expand_less';
+                mobileFilterToggle.querySelector('span:first-child').textContent = 'Hide Filters';
+            } else {
+                mobileFilters.classList.add('hidden');
+                mobileFilterIcon.style.transform = 'rotate(0deg)';
+                mobileFilterIcon.textContent = 'expand_more';
+                mobileFilterToggle.querySelector('span:first-child').textContent = 'Show Filters';
+            }
+        });
+    }
+    
     // Search functionality
     const searchInput = document.getElementById('campaign-search');
     const clearSearchBtn = document.getElementById('clear-search');
-    const filterButtons = document.querySelectorAll('div.bg-gray-100.dark\\:bg-gray-800 button');
+    const filterButtons = document.querySelectorAll('.campaign-filter-btn');
     
     console.log('Found filter buttons:', filterButtons.length);
     
@@ -560,8 +604,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const emptyState = document.getElementById('campaigns-empty-state');
         
         // Get current filter type
-        const activeButton = document.querySelector('div.bg-gray-100.dark\\:bg-gray-800 button.bg-primary');
-        const filterType = activeButton ? activeButton.textContent.trim().toLowerCase() : 'all campaigns';
+        const activeButton = document.querySelector('.campaign-filter-btn.bg-primary');
+        const filterType = activeButton ? activeButton.getAttribute('data-filter') : 'all';
         
         // Re-run the filter logic
         updateCampaignSection(filterType);
@@ -573,17 +617,23 @@ document.addEventListener('DOMContentLoaded', function() {
             // Clear search input when filter is applied
             if (searchInput) {
                 searchInput.value = '';
+                if (clearSearchBtn) {
+                    clearSearchBtn.style.opacity = '0';
+                    clearSearchBtn.style.pointerEvents = 'none';
+                }
             }
             
             // Remove active state from all buttons
             filterButtons.forEach(btn => {
-                btn.className = btn.className.replace(/bg-primary text-white/, 'text-[#61897c] dark:text-gray-400 hover:text-[#111816] dark:hover:text-white');
+                btn.classList.remove('bg-primary', 'text-white', 'font-semibold', 'shadow-sm');
+                btn.classList.add('text-[#61897c]', 'dark:text-gray-400', 'hover:text-[#111816]', 'dark:hover:text-white', 'font-medium');
             });
             
             // Add active state to clicked button
-            this.className = this.className.replace(/text-\[#61897c\] dark:text-gray-400 hover:text-\[#111816\] dark:hover:text-white/, 'bg-primary text-white');
+            this.classList.remove('text-[#61897c]', 'dark:text-gray-400', 'hover:text-[#111816]', 'dark:hover:text-white', 'font-medium');
+            this.classList.add('bg-primary', 'text-white', 'font-semibold', 'shadow-sm');
             
-            const filterType = this.textContent.trim().toLowerCase();
+            const filterType = this.getAttribute('data-filter');
             
             // Reset all campaign cards to be visible before applying filter
             const allCampaignCards = document.querySelectorAll('article.group');
@@ -598,7 +648,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Initialize page with "All Campaigns" filter on load
-    updateCampaignSection('all campaigns');
+    updateCampaignSection('all');
 
     // Function to update campaign section based on filter
     function updateCampaignSection(filterType) {
@@ -636,7 +686,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (emptyState) emptyState.style.display = 'none';
 
         switch(filterType) {
-            case 'all campaigns':
+            case 'all':
                 if (badge) {
                     badge.className = 'inline-flex items-center gap-2 bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 px-4 py-2 rounded-full text-sm font-semibold mb-4';
                 }
