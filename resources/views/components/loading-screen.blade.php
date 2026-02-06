@@ -11,8 +11,11 @@
         'public.forum.index'
     ];
     
-    // Check if current route is a main public page
-    $showLoadingScreen = in_array(request()->route()->getName(), $mainPublicPages);
+    // Disable loading screen for all pages
+    $showLoadingScreen = false;
+    
+    // Check if current route is a main public page (currently disabled)
+    // $showLoadingScreen = in_array(request()->route()->getName(), $mainPublicPages);
 @endphp
 
 @if($showLoadingScreen)
