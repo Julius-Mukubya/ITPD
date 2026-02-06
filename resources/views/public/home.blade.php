@@ -172,7 +172,7 @@
                                     :title="$category->name"
                                     :description="$category->description ?? 'Explore resources and information'"
                                     :image="$category->image"
-                                    :url="route('content.index', ['category' => $category->slug])"
+                                    :url="route('content.index', ['category' => $category->slug]) . '#resources'"
                                 />
                             </div>
                             @endforeach

@@ -174,7 +174,7 @@
                                         <span class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $assessmentsCount }}</span>
                                     @endif
                                 </a>
-                                <a href="{{ route('public.forum.index') }}" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                <a href="{{ route('public.forum.index') }}?filter=my" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                     <div class="flex items-center gap-3">
                                         <span class="material-symbols-outlined text-purple-600">forum</span>
                                         <span>My Posts</span>
@@ -288,7 +288,7 @@
                                         <span class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $assessmentsCount }}</span>
                                     @endif
                                 </a>
-                                <a href="{{ route('public.forum.index') }}" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                <a href="{{ route('public.forum.index') }}?filter=my" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                     <div class="flex items-center gap-3">
                                         <span class="material-symbols-outlined text-purple-600">forum</span>
                                         <span>My Posts</span>

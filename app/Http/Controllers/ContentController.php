@@ -20,7 +20,16 @@ class ContentController extends Controller
 
         // Filter by category
         if ($request->filled('category')) {
-            $query->where('category_id', $request->category);
+            // Check if it's a slug or ID
+            if (is_numeric($request->category)) {
+                $query->where('category_id', $request->category);
+            } else {
+                // Look up category by slug
+                $category = Category::where('slug', $request->category)->first();
+                if ($category) {
+                    $query->where('category_id', $category->id);
+                }
+            }
         }
 
         // Filter by type

@@ -807,6 +807,25 @@ document.addEventListener('DOMContentLoaded', function() {
     currentCategory = initialCategory;
     updateCategoryButtons(initialCategory);
     
+    // Check for filter query parameter and activate My Posts filter
+    const urlParams = new URLSearchParams(window.location.search);
+    const filterParam = urlParams.get('filter');
+    if (filterParam === 'my') {
+        filterByPostType('my');
+        // Scroll to filters section
+        setTimeout(() => {
+            const filtersSection = document.getElementById('forum-filters');
+            if (filtersSection) {
+                const elementPosition = filtersSection.offsetTop;
+                const offsetPosition = elementPosition - 100;
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }, 100);
+    }
+    
     // Smooth scroll to discussions when coming from hero section
     const hash = window.location.hash;
     if (hash === '#forum-filters') {

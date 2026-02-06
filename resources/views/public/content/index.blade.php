@@ -59,7 +59,7 @@
     <div class="flex flex-col flex-1 gap-10">
 
         <!-- Enhanced Filters Section - Sticky -->
-        <div id="filters-section" class="sticky top-16 z-40 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md rounded-2xl p-4 sm:p-6 shadow-lg border border-[#f0f4f3] dark:border-gray-800 transition-all duration-300">
+        <div id="filters-section" class="sticky top-16 z-40 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md rounded-2xl p-4 sm:p-6 shadow-lg border border-[#f0f4f3] dark:border-gray-800 transition-all duration-300 scroll-mt-20">
             <!-- Mobile Filter Header with Toggle -->
             <div class="flex items-center justify-between mb-4 lg:hidden">
                 <h3 class="text-lg font-semibold text-[#111816] dark:text-white flex items-center gap-2">
@@ -84,7 +84,7 @@
                         <select class="appearance-none rounded-xl h-10 pl-4 pr-10 border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111816] dark:text-white text-sm font-medium focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 w-full cursor-pointer hover:border-primary/50" id="category-filter">
                             <option value="">All Categories</option>
                             @foreach($categories as $category)
-                            <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                            <option value="{{ $category->id }}" data-slug="{{ $category->slug }}" {{ request('category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                             @endforeach
                         </select>
                         <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 pointer-events-none">expand_more</span>
@@ -139,7 +139,7 @@
                         <select class="appearance-none rounded-xl h-10 pl-4 pr-10 border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111816] dark:text-white text-sm font-medium focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 min-w-[180px] cursor-pointer hover:border-primary/50" id="category-filter-desktop">
                             <option value="">All Categories</option>
                             @foreach($categories as $category)
-                            <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                            <option value="{{ $category->id }}" data-slug="{{ $category->slug }}" {{ request('category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                             @endforeach
                         </select>
                         <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 pointer-events-none">expand_more</span>
@@ -184,7 +184,7 @@
         </div>
 
         <!-- Enhanced Content Grid -->
-        <div id="resources" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+        <div id="resources" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 scroll-mt-24">
             @forelse($contents as $content)
             <article class="group bg-white dark:bg-gray-800/50 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-[#f0f4f3] dark:border-gray-800 transform hover:-translate-y-1 flex flex-col h-full" 
                      data-title="{{ strtolower($content->title) }}" 
@@ -695,6 +695,44 @@ document.addEventListener('DOMContentLoaded', function() {
         type: '',
         bookmarked: false
     };
+    
+    // Initialize filters from URL parameters
+    function initializeFiltersFromURL() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const categoryParam = urlParams.get('category');
+        
+        if (categoryParam) {
+            const categorySelect = document.getElementById('category-filter');
+            const categorySelectDesktop = document.getElementById('category-filter-desktop');
+            
+            if (categorySelect) {
+                // Find option by slug using data-slug attribute
+                const matchedOption = categorySelect.querySelector(`option[data-slug="${categoryParam}"]`);
+                
+                if (matchedOption && matchedOption.value) {
+                    currentFilters.category = matchedOption.value;
+                    categorySelect.value = matchedOption.value;
+                    if (categorySelectDesktop) categorySelectDesktop.value = matchedOption.value;
+                    applyFilters();
+                    
+                    // Scroll to filters section after a short delay
+                    setTimeout(() => {
+                        const filtersSection = document.getElementById('filters-section');
+                        if (filtersSection) {
+                            const headerHeight = 100;
+                            const elementPosition = filtersSection.getBoundingClientRect().top + window.pageYOffset;
+                            const offsetPosition = elementPosition - headerHeight;
+                            
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }, 300);
+                }
+            }
+        }
+    }
     
     // Get all content cards
     const contentCards = document.querySelectorAll('article.group');
@@ -1284,12 +1322,16 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(card);
     });
 
-    // Auto-scroll to filters section if bookmarked parameter is present
+    // Auto-scroll to filters section if bookmarked parameter or category parameter is present
     function scrollToFiltersIfBookmarked() {
         const urlParams = new URLSearchParams(window.location.search);
         const hash = window.location.hash;
         
-        if (urlParams.get('bookmarked') === '1' && hash === '#resources') {
+        // Check for bookmarked parameter or category parameter with #resources hash
+        const hasBookmark = urlParams.get('bookmarked') === '1' && hash === '#resources';
+        const hasCategory = urlParams.get('category') && hash === '#resources';
+        
+        if (hasBookmark || hasCategory) {
             setTimeout(() => {
                 // Find the filters section by ID
                 const filtersSection = document.getElementById('filters-section');
@@ -1318,11 +1360,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         });
                     }
                 }
-            }, 150); // Slightly longer delay to ensure page is fully loaded
+            }, 300); // Increased delay to ensure page is fully loaded and filters are applied
         }
     }
 
-    // Call the scroll function
+    // Initialize filters from URL and call scroll function
+    initializeFiltersFromURL();
     scrollToFiltersIfBookmarked();
 });
 </script>
