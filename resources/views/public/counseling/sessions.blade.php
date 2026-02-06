@@ -37,7 +37,7 @@
 </section>
 
 <!-- Sessions List -->
-<div id="sessions" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div id="sessions" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 scroll-mt-20">
     <div class="space-y-6">
         <!-- Page Header -->
         <div class="flex items-center justify-between">
@@ -773,8 +773,56 @@ style.textContent = `
         transform: translateX(0);
         transition: opacity 0.3s ease, transform 0.3s ease;
     }
+    
+    /* Smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
 `;
 document.head.appendChild(style);
+
+// Handle scroll to sessions section - ensure hero is completely hidden
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if we should scroll to sessions (from profile dropdown)
+    if (sessionStorage.getItem('scrollToSessions') === 'true') {
+        sessionStorage.removeItem('scrollToSessions');
+        setTimeout(() => {
+            scrollToSessions();
+        }, 100);
+    }
+    // Check if URL has #sessions hash
+    else if (window.location.hash === '#sessions') {
+        // Prevent default browser scroll by scrolling to top first
+        window.scrollTo(0, 0);
+        
+        // Then use our custom scroll after a short delay
+        setTimeout(() => {
+            scrollToSessions();
+        }, 100);
+    }
+    
+    // Handle clicks on links to #sessions
+    document.querySelectorAll('a[href="#sessions"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            scrollToSessions();
+        });
+    });
+});
+
+function scrollToSessions() {
+    const sessionsSection = document.getElementById('sessions');
+    if (sessionsSection) {
+        const headerHeight = 65; // Fixed header height + extra padding to ensure title is visible
+        const elementPosition = sessionsSection.getBoundingClientRect().top + window.pageYOffset;
+        const offsetPosition = elementPosition - headerHeight;
+        
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+    }
+}
 </script>
 @endpush
 @endsection

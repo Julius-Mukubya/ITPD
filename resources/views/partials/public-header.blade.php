@@ -150,7 +150,7 @@
                             </div>
                             <div class="p-2">
                                 <!-- User Menu -->
-                                <a href="{{ route('public.counseling.sessions') }}" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                <a href="{{ route('public.counseling.sessions') }}#sessions" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                     <div class="flex items-center gap-3">
                                         <span class="material-symbols-outlined text-green-600">psychology</span>
                                         <span>My Counseling</span>
@@ -264,7 +264,7 @@
                             </div>
                             <div class="p-2">
                                 <!-- User Menu -->
-                                <a href="{{ route('public.counseling.sessions') }}" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                <a href="{{ route('public.counseling.sessions') }}#sessions" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                     <div class="flex items-center gap-3">
                                         <span class="material-symbols-outlined text-green-600">psychology</span>
                                         <span>My Counseling</span>
