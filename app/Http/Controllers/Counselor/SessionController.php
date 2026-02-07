@@ -8,56 +8,125 @@ use Illuminate\Http\Request;
 
 class SessionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
         
-        // Admins can see all sessions, counselors only see their own
-        if ($user->role === 'admin') {
-            $pendingSessions = CounselingSession::pending()
-                ->with('student')
-                ->latest()
-                ->get();
+        // Get filter parameters
+        $filters = [
+            'status' => $request->get('status'),
+            'session_type' => $request->get('session_type'),
+            'priority' => $request->get('priority'),
+            'date_from' => $request->get('date_from'),
+            'date_to' => $request->get('date_to'),
+            'search' => $request->get('search'),
+        ];
+        
+        // Base query for counselor sessions
+        $baseQuery = function() use ($user) {
+            if ($user->role === 'admin') {
+                return CounselingSession::query();
+            } else {
+                return CounselingSession::where(function($query) use ($user) {
+                    $query->where('counselor_id', $user->id)
+                          ->orWhere('preferred_counselor_id', $user->id);
+                });
+            }
+        };
+        
+        // Apply filters to get all sessions
+        $allSessionsQuery = $baseQuery()->with(['student', 'counselor']);
+        $this->applyFilters($allSessionsQuery, $filters);
+        
+        // Get filtered sessions by status
+        $pendingSessions = (clone $allSessionsQuery)->pending()->latest()->get();
+        $activeSessions = (clone $allSessionsQuery)->active()->latest()->get();
+        $completedSessions = (clone $allSessionsQuery)->completed()->latest()->paginate(10);
+        
+        // If no filters are applied, use the original logic for better performance
+        if (!array_filter($filters)) {
+            if ($user->role === 'admin') {
+                $pendingSessions = CounselingSession::pending()
+                    ->with('student')
+                    ->latest()
+                    ->get();
 
-            $activeSessions = CounselingSession::active()
-                ->with(['student', 'counselor'])
-                ->latest()
-                ->get();
+                $activeSessions = CounselingSession::active()
+                    ->with(['student', 'counselor'])
+                    ->latest()
+                    ->get();
 
-            $completedSessions = CounselingSession::completed()
-                ->with(['student', 'counselor'])
-                ->latest()
-                ->paginate(10);
-        } else {
-            // Counselors can only see:
-            // 1. Pending sessions that were specifically requested to them (if they have a preferred_counselor_id)
-            // 2. Active sessions they are assigned to
-            // 3. Completed sessions they handled
-            $pendingSessions = CounselingSession::pending()
-                ->where(function($query) use ($user) {
-                    // Only show pending sessions that were specifically requested to this counselor
-                    $query->where('preferred_counselor_id', $user->id)
-                          // OR sessions that are already assigned to them but still pending
-                          ->orWhere('counselor_id', $user->id);
-                })
-                ->with('student')
-                ->latest()
-                ->get();
+                $completedSessions = CounselingSession::completed()
+                    ->with(['student', 'counselor'])
+                    ->latest()
+                    ->paginate(10);
+            } else {
+                $pendingSessions = CounselingSession::pending()
+                    ->where(function($query) use ($user) {
+                        $query->where('preferred_counselor_id', $user->id)
+                              ->orWhere('counselor_id', $user->id);
+                    })
+                    ->with('student')
+                    ->latest()
+                    ->get();
 
-            $activeSessions = $user->counselingAsProvider()
-                ->active()
-                ->with('student')
-                ->latest()
-                ->get();
+                $activeSessions = $user->counselingAsProvider()
+                    ->active()
+                    ->with('student')
+                    ->latest()
+                    ->get();
 
-            $completedSessions = $user->counselingAsProvider()
-                ->completed()
-                ->with('student')
-                ->latest()
-                ->paginate(10);
+                $completedSessions = $user->counselingAsProvider()
+                    ->completed()
+                    ->with('student')
+                    ->latest()
+                    ->paginate(10);
+            }
         }
 
-        return view('counselor.sessions.index', compact('pendingSessions', 'activeSessions', 'completedSessions'));
+        return view('counselor.sessions.index', compact('pendingSessions', 'activeSessions', 'completedSessions', 'filters'));
+    }
+    
+    private function applyFilters($query, $filters)
+    {
+        // Status filter
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+        
+        // Session type filter
+        if (!empty($filters['session_type'])) {
+            $query->where('session_type', $filters['session_type']);
+        }
+        
+        // Priority filter
+        if (!empty($filters['priority'])) {
+            $query->where('priority', $filters['priority']);
+        }
+        
+        // Date range filter
+        if (!empty($filters['date_from'])) {
+            $query->whereDate('created_at', '>=', $filters['date_from']);
+        }
+        
+        if (!empty($filters['date_to'])) {
+            $query->whereDate('created_at', '<=', $filters['date_to']);
+        }
+        
+        // Search filter (search in subject, description, and student name)
+        if (!empty($filters['search'])) {
+            $searchTerm = $filters['search'];
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('subject', 'like', "%{$searchTerm}%")
+                  ->orWhere('description', 'like', "%{$searchTerm}%")
+                  ->orWhereHas('student', function($studentQuery) use ($searchTerm) {
+                      $studentQuery->where('name', 'like', "%{$searchTerm}%")
+                                   ->orWhere('email', 'like', "%{$searchTerm}%");
+                  });
+            });
+        }
+        
+        return $query;
     }
 
     public function show(CounselingSession $session)
