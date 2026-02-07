@@ -7,10 +7,10 @@
     <!-- Hero Section -->
 <section class="relative overflow-hidden h-screen">
     <!-- Background Image -->
-    <div class="absolute inset-0">
+    <div class="absolute inset-0 overflow-hidden">
         <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80" 
              alt="Student wellness and support" 
-             class="w-full h-full object-cover">
+             class="w-full h-full object-cover animate-hero-zoom">
         <div class="absolute inset-0 bg-black/50"></div>
     </div>
     
@@ -342,6 +342,23 @@
     </div>
 </div>
 @endsection
+
+@push('styles')
+<style>
+    @keyframes hero-zoom {
+        0% {
+            transform: scale(1);
+        }
+        100% {
+            transform: scale(1.1);
+        }
+    }
+    
+    .animate-hero-zoom {
+        animation: hero-zoom 20s ease-out infinite alternate;
+    }
+</style>
+@endpush
 
 @push('scripts')
 <script>
