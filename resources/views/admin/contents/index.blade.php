@@ -18,7 +18,8 @@
 
 
 <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-    <div class="overflow-x-auto">
+    <!-- Desktop Table View -->
+    <div class="hidden md:block overflow-x-auto">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 dark:text-gray-300 uppercase bg-gray-50 dark:bg-gray-700">
                 <tr>
@@ -115,6 +116,83 @@
                 @endforelse
             </tbody>
         </table>
+    </div>
+
+    <!-- Mobile Card View -->
+    <div class="md:hidden divide-y divide-gray-200 dark:divide-gray-700">
+        @forelse($contents as $content)
+        <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+            <div class="flex gap-3 mb-3">
+                @if($content->featured_image)
+                <img src="{{ asset('storage/' . $content->featured_image) }}" alt="{{ $content->title }}" class="w-16 h-16 rounded object-cover flex-shrink-0">
+                @else
+                <div class="w-16 h-16 rounded bg-gray-200 dark:bg-gray-600 flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-gray-400">article</span>
+                </div>
+                @endif
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-medium text-gray-900 dark:text-white mb-1 line-clamp-2">{{ $content->title }}</h3>
+                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                        <span class="px-2 py-0.5 text-xs font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">
+                            {{ $content->category->name ?? 'N/A' }}
+                        </span>
+                        <span class="px-2 py-0.5 text-xs font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
+                            {{ ucfirst($content->type) }}
+                        </span>
+                        @if($content->is_published)
+                        <span class="px-2 py-0.5 text-xs font-medium text-green-800 bg-green-100 rounded-full dark:bg-green-900 dark:text-green-300">
+                            Published
+                        </span>
+                        @else
+                        <span class="px-2 py-0.5 text-xs font-medium text-yellow-800 bg-yellow-100 rounded-full dark:bg-yellow-900 dark:text-yellow-300">
+                            Draft
+                        </span>
+                        @endif
+                        @if($content->is_featured)
+                        <span class="text-xs text-yellow-600 dark:text-yellow-400">⭐ Featured</span>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400 mb-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-1">
+                        <span class="material-symbols-outlined !text-sm">visibility</span>
+                        <span>{{ number_format($content->views) }}</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <span class="material-symbols-outlined !text-sm">bookmark</span>
+                        <span>{{ number_format($content->bookmarks_count ?? 0) }}</span>
+                    </div>
+                </div>
+                <span class="text-gray-500 dark:text-gray-400">{{ $content->created_at->format('M d, Y') }}</span>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <a href="{{ route('admin.contents.edit', $content) }}" class="flex-1 bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-blue-700">
+                    <span class="material-symbols-outlined !text-base">edit</span>
+                    Edit
+                </a>
+                <form action="{{ route('admin.contents.destroy', $content) }}" method="POST" class="delete-form flex-1">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" onclick="showDeleteModal(this.closest('form'), 'Are you sure you want to delete this content? This action cannot be undone.')" class="w-full bg-red-600 text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-red-700">
+                        <span class="material-symbols-outlined !text-base">delete</span>
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+        @empty
+        <div class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
+            <div class="flex flex-col items-center gap-2">
+                <span class="material-symbols-outlined text-4xl">article</span>
+                <p>No content found</p>
+                <a href="{{ route('admin.contents.create') }}" class="text-primary hover:underline">Create your first content</a>
+            </div>
+        </div>
+        @endforelse
     </div>
     
     @if($contents->hasPages())
