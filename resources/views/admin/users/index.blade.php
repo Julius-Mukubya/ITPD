@@ -49,91 +49,164 @@
             </div>
         </div>
     </div>
-    <table class="w-full text-sm">
-        <thead class="bg-gray-50 dark:bg-gray-700">
-            <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Name</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Email</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Role</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Status</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Joined</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Actions</th>
-            </tr>
-        </thead>
-        <tbody id="userTableBody">
-            @forelse($users as $user)
-            <tr class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 user-row" 
-                data-name="{{ strtolower($user->name ?? '') }}" 
-                data-email="{{ strtolower($user->email ?? '') }}"
-                data-role="{{ $user->role }}"
-                data-status="{{ $user->is_active ? 'active' : 'inactive' }}">
-                <td class="px-6 py-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                            @if($user->avatar)
-                            <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}" class="w-full h-full rounded-full object-cover">
-                            @else
-                            <span class="material-symbols-outlined text-primary">person</span>
-                            @endif
+    
+    <!-- Desktop Table View -->
+    <div class="hidden md:block overflow-x-auto">
+        <table class="w-full text-sm">
+            <thead class="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Name</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Email</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Role</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Status</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Joined</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                @forelse($users as $user)
+                <tr class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 user-row" 
+                    data-name="{{ strtolower($user->name ?? '') }}" 
+                    data-email="{{ strtolower($user->email ?? '') }}"
+                    data-role="{{ $user->role }}"
+                    data-status="{{ $user->is_active ? 'active' : 'inactive' }}">
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                                @if($user->avatar)
+                                <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}" class="w-full h-full rounded-full object-cover">
+                                @else
+                                <span class="material-symbols-outlined text-primary">person</span>
+                                @endif
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900 dark:text-white">{{ $user->name }}</p>
+                                @if($user->registration_number)
+                                <p class="text-xs text-gray-500">{{ $user->registration_number }}</p>
+                                @endif
+                            </div>
                         </div>
-                        <div>
-                            <p class="font-medium text-gray-900 dark:text-white">{{ $user->name }}</p>
-                            @if($user->registration_number)
-                            <p class="text-xs text-gray-500">{{ $user->registration_number }}</p>
-                            @endif
-                        </div>
-                    </div>
-                </td>
-                <td class="px-6 py-4 text-gray-600 dark:text-gray-400">{{ $user->email }}</td>
-                <td class="px-6 py-4">
-                    <span class="px-2 py-1 text-xs font-medium rounded-full
-                        @if($user->role === 'admin') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
-                        @elseif($user->role === 'counselor') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
-                        @else bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
-                        @endif">
-                        {{ ucfirst($user->role) }}
-                    </span>
-                </td>
-                <td class="px-6 py-4">
-                    @if($user->is_active)
-                    <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full dark:bg-green-900 dark:text-green-300">Active</span>
-                    @else
-                    <span class="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full dark:bg-gray-900 dark:text-gray-300">Inactive</span>
-                    @endif
-                </td>
-                <td class="px-6 py-4 text-gray-600 dark:text-gray-400">{{ $user->created_at->format('M d, Y') }}</td>
-                <td class="px-6 py-4">
-                    <div class="flex items-center gap-2">
-                        <a href="{{ route('admin.users.show', $user) }}" class="text-green-600 hover:text-green-800 dark:text-green-400" title="View Details">
-                            <span class="material-symbols-outlined text-sm">visibility</span>
-                        </a>
-                        <a href="{{ route('admin.users.edit', $user) }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400" title="Edit User">
-                            <span class="material-symbols-outlined text-sm">edit</span>
-                        </a>
-                        @if($user->id !== auth()->id())
-                        <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="delete-form">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" onclick="showDeleteModal(this.closest('form'), 'Are you sure you want to delete this user? This action cannot be undone.')" class="text-red-600 hover:text-red-800 dark:text-red-400">
-                                <span class="material-symbols-outlined text-sm">delete</span>
-                            </button>
-                        </form>
+                    </td>
+                    <td class="px-6 py-4 text-gray-600 dark:text-gray-400">{{ $user->email }}</td>
+                    <td class="px-6 py-4">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full
+                            @if($user->role === 'admin') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
+                            @elseif($user->role === 'counselor') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
+                            @else bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
+                            @endif">
+                            {{ ucfirst($user->role) }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4">
+                        @if($user->is_active)
+                        <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full dark:bg-green-900 dark:text-green-300">Active</span>
+                        @else
+                        <span class="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-800 rounded-full dark:bg-gray-900 dark:text-gray-300">Inactive</span>
                         @endif
-                    </div>
-                </td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="6" class="px-6 py-8 text-center text-gray-500">
-                    <div class="flex flex-col items-center gap-2">
-                        <span class="material-symbols-outlined text-4xl">person</span>
-                        <p>No users found</p>
-                    </div>
-                </td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
+                    </td>
+                    <td class="px-6 py-4 text-gray-600 dark:text-gray-400">{{ $user->created_at->format('M d, Y') }}</td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-2">
+                            <a href="{{ route('admin.users.show', $user) }}" class="text-green-600 hover:text-green-800 dark:text-green-400" title="View Details">
+                                <span class="material-symbols-outlined text-sm">visibility</span>
+                            </a>
+                            <a href="{{ route('admin.users.edit', $user) }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400" title="Edit User">
+                                <span class="material-symbols-outlined text-sm">edit</span>
+                            </a>
+                            @if($user->id !== auth()->id())
+                            <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="delete-form">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" onclick="showDeleteModal(this.closest('form'), 'Are you sure you want to delete this user? This action cannot be undone.')" class="text-red-600 hover:text-red-800 dark:text-red-400">
+                                    <span class="material-symbols-outlined text-sm">delete</span>
+                                </button>
+                            </form>
+                            @endif
+                        </div>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="6" class="px-6 py-8 text-center text-gray-500">
+                        <div class="flex flex-col items-center gap-2">
+                            <span class="material-symbols-outlined text-4xl">person</span>
+                            <p>No users found</p>
+                        </div>
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Mobile Card View -->
+    <div id="userMobileCards" class="md:hidden divide-y divide-gray-200 dark:divide-gray-700">
+        @forelse($users as $user)
+        <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 user-row" 
+            data-name="{{ strtolower($user->name ?? '') }}" 
+            data-email="{{ strtolower($user->email ?? '') }}"
+            data-role="{{ $user->role }}"
+            data-status="{{ $user->is_active ? 'active' : 'inactive' }}">
+            <div class="flex gap-3 mb-3">
+                <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                    @if($user->avatar)
+                    <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}" class="w-full h-full rounded-full object-cover">
+                    @else
+                    <span class="material-symbols-outlined text-primary">person</span>
+                    @endif
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-medium text-gray-900 dark:text-white mb-1">{{ $user->name }}</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 truncate">{{ $user->email }}</p>
+                    @if($user->registration_number)
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ $user->registration_number }}</p>
+                    @endif
+                </div>
+            </div>
+            
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+                <span class="px-2 py-0.5 text-xs font-medium rounded-full
+                    @if($user->role === 'admin') bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300
+                    @elseif($user->role === 'counselor') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
+                    @else bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
+                    @endif">
+                    {{ ucfirst($user->role) }}
+                </span>
+                @if($user->is_active)
+                <span class="px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded-full dark:bg-green-900 dark:text-green-300">Active</span>
+                @else
+                <span class="px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-800 rounded-full dark:bg-gray-900 dark:text-gray-300">Inactive</span>
+                @endif
+                <span class="text-xs text-gray-500 dark:text-gray-400 ml-auto">{{ $user->created_at->format('M d, Y') }}</span>
+            </div>
+            
+            <div class="flex items-center justify-end gap-2">
+                <a href="{{ route('admin.users.show', $user) }}" class="w-10 h-10 bg-green-600 text-white rounded-lg flex items-center justify-center hover:bg-green-700" title="View Details">
+                    <span class="material-symbols-outlined !text-lg">visibility</span>
+                </a>
+                <a href="{{ route('admin.users.edit', $user) }}" class="w-10 h-10 bg-blue-600 text-white rounded-lg flex items-center justify-center hover:bg-blue-700" title="Edit User">
+                    <span class="material-symbols-outlined !text-lg">edit</span>
+                </a>
+                @if($user->id !== auth()->id())
+                <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="delete-form">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" onclick="showDeleteModal(this.closest('form'), 'Are you sure you want to delete this user? This action cannot be undone.')" class="w-10 h-10 bg-red-600 text-white rounded-lg flex items-center justify-center hover:bg-red-700" title="Delete User">
+                        <span class="material-symbols-outlined !text-lg">delete</span>
+                    </button>
+                </form>
+                @endif
+            </div>
+        </div>
+        @empty
+        <div class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
+            <div class="flex flex-col items-center gap-2">
+                <span class="material-symbols-outlined text-4xl">person</span>
+                <p>No users found</p>
+            </div>
+        </div>
+        @endforelse
+    </div>
 </div>
 
 <!-- Pagination -->
@@ -174,14 +247,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const roleSelect = document.getElementById('userRole');
     const statusSelect = document.getElementById('userStatus');
     const tableBody = document.getElementById('userTableBody');
-    const rows = tableBody.querySelectorAll('.user-row');
+    const mobileCards = document.getElementById('userMobileCards');
+    const tableRows = tableBody ? tableBody.querySelectorAll('.user-row') : [];
+    const mobileRows = mobileCards ? mobileCards.querySelectorAll('.user-row') : [];
 
     function filterTable() {
         const searchTerm = searchInput.value.toLowerCase();
         const roleFilter = roleSelect.value;
         const statusFilter = statusSelect.value;
 
-        rows.forEach(row => {
+        // Filter desktop table rows
+        tableRows.forEach(row => {
+            const name = row.dataset.name;
+            const email = row.dataset.email;
+            const role = row.dataset.role;
+            const status = row.dataset.status;
+
+            const matchesSearch = name.includes(searchTerm) || email.includes(searchTerm);
+            const matchesRole = !roleFilter || role === roleFilter;
+            const matchesStatus = !statusFilter || status === statusFilter;
+
+            if (matchesSearch && matchesRole && matchesStatus) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        // Filter mobile card rows
+        mobileRows.forEach(row => {
             const name = row.dataset.name;
             const email = row.dataset.email;
             const role = row.dataset.role;
