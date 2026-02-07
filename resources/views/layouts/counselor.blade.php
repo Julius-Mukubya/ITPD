@@ -137,16 +137,16 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 flex flex-col lg:ml-0">
+        <main class="flex-1 flex flex-col lg:ml-0 relative">
             <!-- Header -->
-            <header class="sticky top-0 z-30 flex justify-between items-center gap-2 px-4 md:px-8 py-3 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
-                <div class="flex items-center gap-4">
+            <header class="fixed lg:sticky top-0 left-0 right-0 z-30 flex justify-between items-center gap-2 px-4 md:px-8 py-3 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 lg:left-auto">
+                <div class="flex items-center gap-3 sm:gap-4">
                     <button class="p-2 text-gray-700 dark:text-gray-300 lg:hidden hover:bg-gray-200 dark:hover:bg-white/10 rounded-lg transition-colors" onclick="openSidebar()">
                         <span class="material-symbols-outlined">menu</span>
                     </button>
-                    <h1 class="text-xl font-semibold text-gray-900 dark:text-white">@yield('page-title', 'Counselor Portal')</h1>
+                    <h1 class="text-base sm:text-xl font-semibold text-gray-900 dark:text-white truncate">@yield('page-title', 'Counselor Portal')</h1>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1 sm:gap-2">
                     <!-- Dark Mode Toggle (Mobile) -->
                     <button id="mobileDarkModeToggle" class="p-2 text-gray-700 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-white/10 lg:hidden">
                         <span class="material-symbols-outlined" id="mobileDarkModeIcon">dark_mode</span>
@@ -242,9 +242,9 @@
                     <div class="relative group">
                         <button class="rounded-full hover:ring-2 hover:ring-primary/50 transition-all">
                             @if(auth()->user()->avatar)
-                                <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="w-10 h-10 rounded-full object-cover border-2 border-gray-300 dark:border-gray-600">
+                                <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover border-2 border-gray-300 dark:border-gray-600">
                             @else
-                                <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center text-sm font-bold text-white border-2 border-gray-300 dark:border-gray-600">
+                                <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold text-white border-2 border-gray-300 dark:border-gray-600">
                                     {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
                                 </div>
                             @endif
@@ -274,7 +274,7 @@
                 </div>
             </header>
 
-            <div class="flex-1 p-4 md:p-8 space-y-8 overflow-y-auto">
+            <div class="flex-1 p-4 md:p-8 space-y-8 overflow-y-auto pt-20 lg:pt-0">
                 @yield('content')
             </div>
             
