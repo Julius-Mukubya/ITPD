@@ -197,7 +197,7 @@
     }
     
     .animate-hero-zoom {
-        animation: hero-zoom 20s ease-out infinite alternate;
+        animation: hero-zoom 8s ease-out infinite alternate;
     }
 </style>
 @endpush
