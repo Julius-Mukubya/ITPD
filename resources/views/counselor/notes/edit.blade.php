@@ -3,49 +3,52 @@
 @section('title', 'Edit Session Note')
 
 @section('content')
+<div class="px-2 sm:px-0">
 <!-- Header -->
-<div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+<div class="flex flex-col gap-4 mb-6">
     <div class="flex flex-col gap-1">
-        <p class="text-gray-900 dark:text-white text-2xl sm:text-3xl font-bold tracking-tight">Edit Session Note</p>
+        <p class="text-gray-900 dark:text-white text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight">Edit Session Note</p>
         <p class="text-gray-500 dark:text-gray-400 text-sm sm:text-base">Update your session note details and content</p>
     </div>
-    <div class="flex items-center gap-2 justify-end">
-        <a href="{{ route('counselor.notes.show', $note) }}" class="inline-flex items-center gap-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 font-medium transition-colors">
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:justify-end">
+        <a href="{{ route('counselor.notes.show', $note) }}" class="inline-flex items-center justify-center gap-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 font-medium transition-colors text-sm sm:text-base">
             <span class="material-symbols-outlined text-sm">visibility</span>
-            View Note
+            <span class="hidden sm:inline">View Note</span>
+            <span class="sm:hidden">View</span>
         </a>
-        <a href="{{ route('counselor.notes.index') }}" class="inline-flex items-center gap-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 font-medium transition-colors">
+        <a href="{{ route('counselor.notes.index') }}" class="inline-flex items-center justify-center gap-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 font-medium transition-colors text-sm sm:text-base">
             <span class="material-symbols-outlined text-sm">arrow_back</span>
-            Back to Notes
+            <span class="hidden sm:inline">Back to Notes</span>
+            <span class="sm:hidden">Back</span>
         </a>
     </div>
 </div>
 
 <!-- Edit Form -->
 <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
-    <form method="POST" action="{{ route('counselor.notes.update', $note) }}" class="p-6 space-y-6">
+    <form method="POST" action="{{ route('counselor.notes.update', $note) }}" class="p-4 sm:p-6 space-y-4 sm:space-y-6">
         @csrf
         @method('PUT')
         
         <!-- Current Session Info -->
-        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
-            <h3 class="font-medium text-gray-900 dark:text-white mb-2">Current Session</h3>
-            <div class="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+        <div class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-600">
+            <h3 class="font-medium text-gray-900 dark:text-white mb-2 text-sm sm:text-base">Current Session</h3>
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                 <span class="flex items-center gap-1">
-                    <span class="material-symbols-outlined text-sm">tag</span>
-                    Session #{{ $note->session->id }}
+                    <span class="material-symbols-outlined text-sm flex-shrink-0">tag</span>
+                    <span>Session #{{ $note->session->id }}</span>
                 </span>
                 <span class="flex items-center gap-1">
-                    <span class="material-symbols-outlined text-sm">person</span>
-                    {{ $note->session->student->name }}
+                    <span class="material-symbols-outlined text-sm flex-shrink-0">person</span>
+                    <span class="truncate">{{ $note->session->student->name }}</span>
                 </span>
                 <span class="flex items-center gap-1">
-                    <span class="material-symbols-outlined text-sm">calendar_today</span>
-                    {{ $note->session->created_at->format('M d, Y') }}
+                    <span class="material-symbols-outlined text-sm flex-shrink-0">calendar_today</span>
+                    <span>{{ $note->session->created_at->format('M d, Y') }}</span>
                 </span>
                 <span class="flex items-center gap-1">
-                    <span class="material-symbols-outlined text-sm">psychology</span>
-                    {{ ucfirst(str_replace('_', ' ', $note->session->session_type)) }}
+                    <span class="material-symbols-outlined text-sm flex-shrink-0">psychology</span>
+                    <span class="truncate">{{ ucfirst(str_replace('_', ' ', $note->session->session_type)) }}</span>
                 </span>
             </div>
         </div>
@@ -174,22 +177,25 @@
         </div>
         
         <!-- Form Actions -->
-        <div class="flex items-center justify-between pt-6 border-t border-gray-200 dark:border-gray-700">
-            <form method="POST" action="{{ route('counselor.notes.destroy', $note) }}" class="inline" onsubmit="return confirm('Are you sure you want to delete this note? This action cannot be undone.')">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
+            <form method="POST" action="{{ route('counselor.notes.destroy', $note) }}" class="inline order-2 sm:order-1" onsubmit="return confirm('Are you sure you want to delete this note? This action cannot be undone.')">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="inline-flex items-center gap-2 px-4 py-2 text-red-600 hover:text-red-700 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-colors">
+                <button type="submit" class="inline-flex items-center justify-center gap-2 px-4 py-2 text-red-600 hover:text-red-700 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-colors text-sm sm:text-base w-full sm:w-auto">
                     <span class="material-symbols-outlined text-sm">delete</span>
-                    Delete Note
+                    <span class="hidden sm:inline">Delete Note</span>
+                    <span class="sm:hidden">Delete</span>
                 </button>
             </form>
             
-            <div class="flex items-center gap-3">
-                <a href="{{ route('counselor.notes.show', $note) }}" class="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors">
-                    Cancel
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 order-1 sm:order-2">
+                <a href="{{ route('counselor.notes.show', $note) }}" class="inline-flex items-center justify-center px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-200 dark:bg-gray-600 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors text-sm sm:text-base">
+                    <span class="hidden sm:inline">Cancel</span>
+                    <span class="sm:hidden">Cancel</span>
                 </a>
-                <button type="submit" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-sm font-semibold px-6 py-3 rounded-xl hover:shadow-lg hover:shadow-emerald-500/30 transition-all duration-200">
-                    Update Note
+                <button type="submit" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-sm font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-xl hover:shadow-lg hover:shadow-emerald-500/30 transition-all duration-200">
+                    <span class="hidden sm:inline">Update Note</span>
+                    <span class="sm:hidden">Update</span>
                 </button>
             </div>
         </div>
