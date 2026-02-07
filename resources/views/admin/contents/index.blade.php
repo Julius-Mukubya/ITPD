@@ -18,6 +18,46 @@
 
 
 <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+    <!-- Filter Section -->
+    <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Content Library</h2>
+            
+            <!-- Mobile Filter Toggle Button -->
+            <button id="contentMobileFilterToggle" class="md:hidden flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors">
+                <span class="material-symbols-outlined text-base">tune</span>
+                <span>Filters</span>
+                <span id="contentFilterToggleIcon" class="material-symbols-outlined text-sm transition-transform">expand_more</span>
+            </button>
+        </div>
+        
+        <!-- Filter Section -->
+        <div id="contentFilterSection" class="hidden md:block">
+            <div class="flex flex-col md:flex-row gap-3">
+                <input type="text" id="contentSearch" placeholder="Search by title..." 
+                    class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent">
+                <select id="contentCategory" class="flex-1 md:min-w-[150px] px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent appearance-none">
+                    <option value="">All Categories</option>
+                    @foreach($categories ?? [] as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+                <select id="contentType" class="flex-1 md:min-w-[120px] px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent appearance-none">
+                    <option value="">All Types</option>
+                    <option value="article">Article</option>
+                    <option value="video">Video</option>
+                    <option value="infographic">Infographic</option>
+                    <option value="podcast">Podcast</option>
+                </select>
+                <select id="contentStatus" class="flex-1 md:min-w-[120px] px-3 py-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-primary focus:border-transparent appearance-none">
+                    <option value="">All Status</option>
+                    <option value="published">Published</option>
+                    <option value="draft">Draft</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    
     <!-- Desktop Table View -->
     <div class="hidden md:block overflow-x-auto">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -32,9 +72,13 @@
                     <th scope="col" class="px-6 py-3">Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="contentTableBody">
                 @forelse($contents as $content)
-                <tr class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                <tr class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 content-row"
+                    data-title="{{ strtolower($content->title) }}"
+                    data-category="{{ $content->category_id ?? '' }}"
+                    data-type="{{ $content->type }}"
+                    data-status="{{ $content->is_published ? 'published' : 'draft' }}">
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-3">
                             @if($content->featured_image)
@@ -119,9 +163,13 @@
     </div>
 
     <!-- Mobile Card View -->
-    <div class="md:hidden divide-y divide-gray-200 dark:divide-gray-700">
+    <div id="contentMobileCards" class="md:hidden divide-y divide-gray-200 dark:divide-gray-700">
         @forelse($contents as $content)
-        <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
+        <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 content-card"
+            data-title="{{ strtolower($content->title) }}"
+            data-category="{{ $content->category_id ?? '' }}"
+            data-type="{{ $content->type }}"
+            data-status="{{ $content->is_published ? 'published' : 'draft' }}">
             <div class="flex gap-3 mb-3">
                 @if($content->featured_image)
                 <img src="{{ asset('storage/' . $content->featured_image) }}" alt="{{ $content->title }}" class="w-16 h-16 rounded object-cover flex-shrink-0">
@@ -169,17 +217,15 @@
                 <span class="text-gray-500 dark:text-gray-400">{{ $content->created_at->format('M d, Y') }}</span>
             </div>
             
-            <div class="flex items-center gap-2">
-                <a href="{{ route('admin.contents.edit', $content) }}" class="flex-1 bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-blue-700">
-                    <span class="material-symbols-outlined !text-base">edit</span>
-                    Edit
+            <div class="flex items-center justify-end gap-2 pt-3 border-t border-gray-200 dark:border-gray-700">
+                <a href="{{ route('admin.contents.edit', $content) }}" class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50 transition-colors">
+                    <span class="material-symbols-outlined text-xl">edit</span>
                 </a>
-                <form action="{{ route('admin.contents.destroy', $content) }}" method="POST" class="delete-form flex-1">
+                <form action="{{ route('admin.contents.destroy', $content) }}" method="POST" class="delete-form">
                     @csrf
                     @method('DELETE')
-                    <button type="button" onclick="showDeleteModal(this.closest('form'), 'Are you sure you want to delete this content? This action cannot be undone.')" class="w-full bg-red-600 text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-red-700">
-                        <span class="material-symbols-outlined !text-base">delete</span>
-                        Delete
+                    <button type="button" onclick="showDeleteModal(this.closest('form'), 'Are you sure you want to delete this content? This action cannot be undone.')" class="w-10 h-10 flex items-center justify-center rounded-full bg-red-100 text-red-600 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50 transition-colors">
+                        <span class="material-symbols-outlined text-xl">delete</span>
                     </button>
                 </form>
             </div>
@@ -201,4 +247,79 @@
     </div>
     @endif
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Mobile filter toggle
+    const mobileToggle = document.getElementById('contentMobileFilterToggle');
+    const filterSection = document.getElementById('contentFilterSection');
+    const toggleIcon = document.getElementById('contentFilterToggleIcon');
+    
+    if (mobileToggle) {
+        mobileToggle.addEventListener('click', function() {
+            filterSection.classList.toggle('hidden');
+            toggleIcon.classList.toggle('rotate-180');
+        });
+    }
+    
+    // Filter functionality
+    const searchInput = document.getElementById('contentSearch');
+    const categorySelect = document.getElementById('contentCategory');
+    const typeSelect = document.getElementById('contentType');
+    const statusSelect = document.getElementById('contentStatus');
+    
+    function filterContent() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const selectedCategory = categorySelect.value;
+        const selectedType = typeSelect.value;
+        const selectedStatus = statusSelect.value;
+        
+        // Filter desktop table rows
+        const tableRows = document.querySelectorAll('.content-row');
+        tableRows.forEach(row => {
+            const title = row.dataset.title;
+            const category = row.dataset.category;
+            const type = row.dataset.type;
+            const status = row.dataset.status;
+            
+            const matchesSearch = !searchTerm || title.includes(searchTerm);
+            const matchesCategory = !selectedCategory || category === selectedCategory;
+            const matchesType = !selectedType || type === selectedType;
+            const matchesStatus = !selectedStatus || status === selectedStatus;
+            
+            if (matchesSearch && matchesCategory && matchesType && matchesStatus) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        
+        // Filter mobile cards
+        const mobileCards = document.querySelectorAll('.content-card');
+        mobileCards.forEach(card => {
+            const title = card.dataset.title;
+            const category = card.dataset.category;
+            const type = card.dataset.type;
+            const status = card.dataset.status;
+            
+            const matchesSearch = !searchTerm || title.includes(searchTerm);
+            const matchesCategory = !selectedCategory || category === selectedCategory;
+            const matchesType = !selectedType || type === selectedType;
+            const matchesStatus = !selectedStatus || status === selectedStatus;
+            
+            if (matchesSearch && matchesCategory && matchesType && matchesStatus) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+    
+    // Attach event listeners
+    if (searchInput) searchInput.addEventListener('input', filterContent);
+    if (categorySelect) categorySelect.addEventListener('change', filterContent);
+    if (typeSelect) typeSelect.addEventListener('change', filterContent);
+    if (statusSelect) statusSelect.addEventListener('change', filterContent);
+});
+</script>
 @endsection

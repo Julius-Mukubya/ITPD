@@ -15,8 +15,10 @@ class ContentController extends Controller
             ->withCount('bookmarks')
             ->latest()
             ->paginate(15);
+        
+        $categories = Category::active()->get();
 
-        return view('admin.contents.index', compact('contents'));
+        return view('admin.contents.index', compact('contents', 'categories'));
     }
 
     public function create()

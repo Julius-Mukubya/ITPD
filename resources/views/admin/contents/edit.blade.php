@@ -5,18 +5,18 @@
 
 @section('content')
 <div class="mb-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Edit Content</h2>
             <p class="text-gray-600 dark:text-gray-400">Update educational content information</p>
         </div>
-        <a href="{{ route('admin.contents.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+        <a href="{{ route('admin.contents.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors text-center">
             Back to Content
         </a>
     </div>
 </div>
 
-<div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+<div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
     @if ($errors->any())
         <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
             <strong>Please fix the following errors:</strong>
@@ -32,15 +32,15 @@
         @csrf
         @method('PUT')
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="md:col-span-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+            <div class="sm:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title *</label>
                 <input type="text" name="title" value="{{ old('title', $content->title) }}" required
                     class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
                 @error('title')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
             </div>
 
-            <div>
+            <div class="sm:col-span-2 md:col-span-1">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Category *</label>
                 <select name="category_id" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
                     @foreach($categories as $category)
@@ -50,7 +50,7 @@
                 @error('category_id')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
             </div>
 
-            <div>
+            <div class="sm:col-span-2 md:col-span-1">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Type *</label>
                 <select name="type" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
                     <option value="article" {{ old('type', $content->type) == 'article' ? 'selected' : '' }}>Article</option>
@@ -61,7 +61,7 @@
                 @error('type')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
             </div>
 
-            <div class="md:col-span-2">
+            <div class="sm:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     <span id="description-label">Description</span>
                 </label>
@@ -69,7 +69,7 @@
                 @error('description')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
             </div>
 
-            <div class="md:col-span-2">
+            <div class="sm:col-span-2">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     <span id="content-label">Content</span> *
                 </label>
@@ -79,7 +79,7 @@
                 @error('content')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
             </div>
 
-            <div>
+            <div class="sm:col-span-2 md:col-span-1">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Featured Image</label>
                 <div class="space-y-3">
                     @if($content->featured_image)
@@ -103,7 +103,7 @@
                 @error('featured_image')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
             </div>
 
-            <div>
+            <div class="sm:col-span-2 md:col-span-1">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     <span id="time-label">Reading Time</span> (minutes)
                 </label>
@@ -111,7 +111,7 @@
                 @error('reading_time')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
             </div>
 
-            <div class="md:col-span-2 flex gap-4">
+            <div class="sm:col-span-2 flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <label class="flex items-center gap-2">
                     <input type="checkbox" name="is_published" value="1" {{ old('is_published', $content->is_published) ? 'checked' : '' }} class="rounded">
                     <span class="text-sm text-gray-700 dark:text-gray-300">Published</span>
@@ -123,9 +123,9 @@
             </div>
         </div>
 
-        <div class="flex gap-3 mt-6">
-            <button type="submit" class="bg-primary text-white px-6 py-2 rounded-lg hover:opacity-90">Update Content</button>
-            <a href="{{ route('admin.contents.index') }}" class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-6 py-2 rounded-lg hover:opacity-90">Cancel</a>
+        <div class="flex flex-col sm:flex-row gap-3 mt-6">
+            <button type="submit" class="bg-primary text-white px-6 py-2 rounded-lg hover:opacity-90 order-1 sm:order-1">Update Content</button>
+            <a href="{{ route('admin.contents.index') }}" class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-6 py-2 rounded-lg hover:opacity-90 text-center order-2 sm:order-2">Cancel</a>
         </div>
     </form>
 </div>
@@ -137,12 +137,25 @@
 <style>
     .ql-container {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        height: 400px;
+        height: 300px;
     }
+    
+    @media (min-width: 768px) {
+        .ql-container {
+            height: 400px;
+        }
+    }
+    
     .ql-editor {
         font-size: 16px;
-        max-height: 400px;
+        max-height: 300px;
         overflow-y: auto;
+    }
+    
+    @media (min-width: 768px) {
+        .ql-editor {
+            max-height: 400px;
+        }
     }
     
     /* Match frontend paragraph spacing in editor */
@@ -169,8 +182,15 @@
         margin: 0.5em 0;
         min-height: 1em;
     }
+    
     #content-editor {
-        height: 450px;
+        height: 350px;
+    }
+    
+    @media (min-width: 768px) {
+        #content-editor {
+            height: 450px;
+        }
     }
     
     /* Better tooltip styling for native title attribute */
