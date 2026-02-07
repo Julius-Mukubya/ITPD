@@ -9,7 +9,7 @@
 </div>
 
 <!-- Full-width white background container -->
-<div class="w-full bg-white dark:bg-gray-900 min-h-screen">
+<div class="w-full bg-white dark:bg-gray-900 min-h-screen pt-16">
     <!-- Centered content container -->
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
     <!-- Breadcrumb Navigation -->
