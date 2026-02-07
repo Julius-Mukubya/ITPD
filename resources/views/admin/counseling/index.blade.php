@@ -4,7 +4,7 @@
 @section('page-title', 'Counseling')
 
 @section('content')
-<div class="flex flex-wrap justify-between items-center gap-3 mb-6">
+<div class="flex flex-col sm:flex-row flex-wrap justify-between items-start sm:items-center gap-3 mb-6">
     <div class="flex flex-col gap-1">
         <p class="text-gray-900 dark:text-white text-3xl font-bold tracking-tight">Counseling Management</p>
         <p class="text-gray-500 dark:text-gray-400 text-base font-normal">Monitor counseling sessions and manage counselors</p>
@@ -16,7 +16,7 @@
 </div>
 
 <!-- Summary Stats -->
-<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
         <div class="flex items-center justify-between">
             <div>
@@ -86,7 +86,8 @@
         </div>
     </div>
     
-    <div class="overflow-x-auto">
+    <!-- Desktop Table View -->
+    <div class="hidden md:block overflow-x-auto">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 dark:text-gray-300 uppercase bg-gray-50 dark:bg-gray-700">
                 <tr>
@@ -148,6 +149,50 @@
             </tbody>
         </table>
     </div>
+
+    <!-- Mobile Card View -->
+    <div class="md:hidden divide-y divide-gray-200 dark:divide-gray-700" id="counselorMobileCards">
+        @forelse($counselors ?? [] as $counselor)
+        <div class="p-4 counselor-row" 
+            data-name="{{ strtolower($counselor->name ?? '') }}" 
+            data-email="{{ strtolower($counselor->email ?? '') }}"
+            data-status="{{ $counselor->is_active ? 'active' : 'inactive' }}">
+            <div class="flex items-start gap-3 mb-3">
+                <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-primary">person</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="font-medium text-gray-900 dark:text-white">{{ $counselor->name ?? 'Counselor' }}</p>
+                    @if($counselor->registration_number)
+                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ $counselor->registration_number }}</p>
+                    @endif
+                    <p class="text-sm text-gray-600 dark:text-gray-400 truncate">{{ $counselor->email ?? 'N/A' }}</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ $counselor->phone ?? 'N/A' }}</p>
+                </div>
+            </div>
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    @if($counselor->is_active)
+                    <span class="px-2 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full dark:bg-green-900 dark:text-green-300">Active</span>
+                    @else
+                    <span class="px-2 py-1 text-xs font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-900 dark:text-gray-300">Inactive</span>
+                    @endif
+                    <span class="text-xs text-gray-500 dark:text-gray-400">{{ $counselor->created_at->format('M d, Y') }}</span>
+                </div>
+                <a href="{{ route('admin.users.show', $counselor) }}" class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900/50" title="View Details">
+                    <span class="material-symbols-outlined text-sm">visibility</span>
+                </a>
+            </div>
+        </div>
+        @empty
+        <div class="p-8 text-center text-gray-500 dark:text-gray-400">
+            <div class="flex flex-col items-center gap-2">
+                <span class="material-symbols-outlined text-4xl">person_add</span>
+                <p>No counselors found</p>
+            </div>
+        </div>
+        @endforelse
+    </div>
 </div>
 
 <!-- Recent Counseling Sessions Table -->
@@ -156,7 +201,9 @@
         <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Recent Counseling Sessions</h2>
         <p class="text-sm text-gray-500 dark:text-gray-400">Latest counseling sessions across all counselors</p>
     </div>
-    <div class="overflow-x-auto">
+    
+    <!-- Desktop Table View -->
+    <div class="hidden md:block overflow-x-auto">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 dark:text-gray-300 uppercase bg-gray-50 dark:bg-gray-700">
                 <tr>
@@ -259,11 +306,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const statusSelect = document.getElementById('counselorStatus');
     const tableBody = document.getElementById('counselorTableBody');
     const rows = tableBody.querySelectorAll('.counselor-row');
+    const mobileCards = document.getElementById('counselorMobileCards');
+    const mobileCardItems = mobileCards ? mobileCards.querySelectorAll('.counselor-row') : [];
 
     function filterTable() {
         const searchTerm = searchInput.value.toLowerCase();
         const statusFilter = statusSelect.value;
 
+        // Filter desktop table rows
         rows.forEach(row => {
             const name = row.dataset.name;
             const email = row.dataset.email;
@@ -276,6 +326,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 row.style.display = '';
             } else {
                 row.style.display = 'none';
+            }
+        });
+
+        // Filter mobile cards
+        mobileCardItems.forEach(card => {
+            const name = card.dataset.name;
+            const email = card.dataset.email;
+            const status = card.dataset.status;
+
+            const matchesSearch = name.includes(searchTerm) || email.includes(searchTerm);
+            const matchesStatus = !statusFilter || status === statusFilter;
+
+            if (matchesSearch && matchesStatus) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
             }
         });
     }

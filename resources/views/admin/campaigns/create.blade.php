@@ -5,18 +5,18 @@
 
 @section('content')
 <div class="mb-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Create Campaign</h2>
-            <p class="text-gray-600 dark:text-gray-400">Add new awareness campaign to the system</p>
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Create Campaign</h2>
+            <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">Add new awareness campaign to the system</p>
         </div>
-        <a href="{{ route('admin.campaigns.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+        <a href="{{ route('admin.campaigns.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors text-center">
             Back to Campaigns
         </a>
     </div>
 </div>
 
-<div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+<div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
 
 
 

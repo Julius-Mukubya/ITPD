@@ -10,9 +10,9 @@
             <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Analytics & Reports</h2>
             <p class="text-gray-600 dark:text-gray-400 mt-1">Comprehensive insights into system performance and user engagement</p>
         </div>
-        <div class="flex items-center gap-3">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
             <!-- Date Range Selector -->
-            <select id="dateRangeFilter" class="px-4 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary appearance-none cursor-pointer min-w-[140px]">
+            <select id="dateRangeFilter" class="w-full sm:w-auto px-4 py-2 pr-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary appearance-none cursor-pointer min-w-[140px]">
                 <option value="7">Last 7 days</option>
                 <option value="30" selected>Last 30 days</option>
                 <option value="90">Last 90 days</option>
@@ -31,9 +31,9 @@
     </div>
 
     <!-- Key Metrics Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         <!-- Total Users Card -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Users</p>
@@ -50,7 +50,7 @@
         </div>
 
         <!-- Active Sessions Card -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Active Sessions</p>
@@ -67,7 +67,7 @@
         </div>
 
         <!-- Assessment Risk Card -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600 dark:text-gray-400">High Risk Cases</p>
@@ -84,7 +84,7 @@
         </div>
 
         <!-- Content Engagement Card -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Content Views</p>
@@ -102,45 +102,45 @@
     </div>
 
     <!-- Charts and Visualizations -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         <!-- User Activity Chart -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Daily User Activity</h3>
-                <button class="text-sm text-primary hover:underline">View Details</button>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4 sm:mb-6">
+                <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Daily User Activity</h3>
+                <button class="text-xs sm:text-sm text-primary hover:underline text-left sm:text-right">View Details</button>
             </div>
-            <div class="h-64">
+            <div class="h-48 sm:h-64">
                 <canvas id="userActivityChart"></canvas>
             </div>
         </div>
 
         <!-- Risk Assessment Trends -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Risk Assessment Trends</h3>
-                <button class="text-sm text-primary hover:underline">View Details</button>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4 sm:mb-6">
+                <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Risk Assessment Trends</h3>
+                <button class="text-xs sm:text-sm text-primary hover:underline text-left sm:text-right">View Details</button>
             </div>
-            <div class="h-64">
+            <div class="h-48 sm:h-64">
                 <canvas id="riskTrendsChart"></canvas>
             </div>
         </div>
 
         <!-- Content Performance -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Content Performance</h3>
-                <button class="text-sm text-primary hover:underline">View All</button>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4 sm:mb-6">
+                <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Content Performance</h3>
+                <button class="text-xs sm:text-sm text-primary hover:underline text-left sm:text-right">View All</button>
             </div>
-            <div class="h-64">
+            <div class="h-48 sm:h-64">
                 <canvas id="contentPerformanceChart"></canvas>
             </div>
         </div>
 
         <!-- Session Statistics -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Session Statistics</h3>
-                <button class="text-sm text-primary hover:underline">View Details</button>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4 sm:mb-6">
+                <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Session Statistics</h3>
+                <button class="text-xs sm:text-sm text-primary hover:underline text-left sm:text-right">View Details</button>
             </div>
             <div class="space-y-4">
                 <div class="flex items-center justify-between">
@@ -170,25 +170,27 @@
     </div>
 
     <!-- Data Tables Section -->
-    <div class="space-y-6">
+    <div class="space-y-4 sm:space-y-6">
         <!-- Recent Activity Table -->
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-            <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Recent System Activity</h3>
+            <div class="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Recent System Activity</h3>
                     <div class="flex items-center gap-2">
-                        <button onclick="exportTable('recent-activity')" class="inline-flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">
+                        <button onclick="exportTable('recent-activity')" class="inline-flex items-center gap-1 text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-primary">
                             <span class="material-symbols-outlined text-sm">download</span>
-                            Export
+                            <span class="hidden sm:inline">Export</span>
                         </button>
-                        <button class="inline-flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400 hover:text-primary">
+                        <button class="inline-flex items-center gap-1 text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-primary">
                             <span class="material-symbols-outlined text-sm">refresh</span>
-                            Refresh
+                            <span class="hidden sm:inline">Refresh</span>
                         </button>
                     </div>
                 </div>
             </div>
-            <div class="overflow-x-auto">
+            
+            <!-- Desktop Table View -->
+            <div class="hidden md:block overflow-x-auto">
                 <table class="w-full">
                     <thead class="bg-gray-50 dark:bg-gray-900/50">
                         <tr>
@@ -241,22 +243,56 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Mobile Card View -->
+            <div class="md:hidden divide-y divide-gray-200 dark:divide-gray-700">
+                @forelse($dailyEngagement->take(10) as $activity)
+                <div class="p-4">
+                    <div class="flex items-start gap-3 mb-3">
+                        <div class="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="material-symbols-outlined text-primary text-sm">person</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="text-sm font-medium text-gray-900 dark:text-white">System Activity</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400">{{ $activity['users'] }} users active</div>
+                            <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                                {{ $activity['sessions'] }} sessions, {{ $activity['assessments'] }} assessments
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+                            Daily Summary
+                        </span>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                            Active
+                        </span>
+                        <span class="text-xs text-gray-500 dark:text-gray-400">{{ $activity['date'] }}</span>
+                    </div>
+                </div>
+                @empty
+                <div class="p-8 text-center text-gray-500 dark:text-gray-400">
+                    <span class="material-symbols-outlined text-4xl mb-2">analytics</span>
+                    <p class="text-sm">No recent activity data available</p>
+                </div>
+                @endforelse
+            </div>
         </div>
 
         <!-- Export Options Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             <!-- Users Export -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-                <div class="flex items-center gap-4 mb-4">
-                    <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                        <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-xl">group</span>
+            <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+                <div class="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-lg sm:text-xl">group</span>
                     </div>
                     <div>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Users Report</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">All user accounts and profiles</p>
+                        <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Users Report</h3>
+                        <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">All user accounts and profiles</p>
                     </div>
                 </div>
-                <div class="space-y-2 mb-4">
+                <div class="space-y-1.5 sm:space-y-2 mb-3 sm:mb-4">
                     <div class="flex justify-between text-sm">
                         <span class="text-gray-600 dark:text-gray-400">Total Users:</span>
                         <span class="font-medium text-gray-900 dark:text-white">{{ number_format($stats['total_users'] ?? 0) }}</span>
@@ -277,17 +313,17 @@
             </div>
 
             <!-- Assessments Export -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-                <div class="flex items-center gap-4 mb-4">
-                    <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
-                        <span class="material-symbols-outlined text-red-600 dark:text-red-400 text-xl">psychology</span>
+            <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+                <div class="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined text-red-600 dark:text-red-400 text-lg sm:text-xl">psychology</span>
                     </div>
                     <div>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Assessments Report</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Mental health assessment results</p>
+                        <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Assessments Report</h3>
+                        <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Mental health assessment results</p>
                     </div>
                 </div>
-                <div class="space-y-2 mb-4">
+                <div class="space-y-1.5 sm:space-y-2 mb-3 sm:mb-4">
                     <div class="flex justify-between text-sm">
                         <span class="text-gray-600 dark:text-gray-400">Total Assessments:</span>
                         <span class="font-medium text-gray-900 dark:text-white">{{ number_format($stats['total_assessments'] ?? 0) }}</span>
@@ -308,17 +344,17 @@
             </div>
 
             <!-- Sessions Export -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-                <div class="flex items-center gap-4 mb-4">
-                    <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
-                        <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-xl">support_agent</span>
+            <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+                <div class="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-lg sm:text-xl">support_agent</span>
                     </div>
                     <div>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Sessions Report</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Counseling session data</p>
+                        <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Sessions Report</h3>
+                        <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Counseling session data</p>
                     </div>
                 </div>
-                <div class="space-y-2 mb-4">
+                <div class="space-y-1.5 sm:space-y-2 mb-3 sm:mb-4">
                     <div class="flex justify-between text-sm">
                         <span class="text-gray-600 dark:text-gray-400">Total Sessions:</span>
                         <span class="font-medium text-gray-900 dark:text-white">{{ number_format($stats['total_sessions'] ?? 0) }}</span>

@@ -303,6 +303,88 @@
                 @endif
             </div>
 
+            <!-- Completed Campaigns Grid -->
+            <div id="completed-campaigns-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" style="display: none;">
+                @if(isset($completedCampaigns) && $completedCampaigns->count() > 0)
+                    @foreach($completedCampaigns as $campaign)
+                <article class="group bg-gray-50 dark:bg-gray-800/50 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transform hover:-translate-y-1 opacity-75">
+                <!-- Image Container -->
+                <div class="relative overflow-hidden">
+                    @if($campaign->banner_image)
+                        <img src="{{ $campaign->banner_url }}" alt="{{ $campaign->title }}" 
+                             class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105 grayscale group-hover:grayscale-0">
+                    @else
+                        <div class="w-full h-48 bg-gradient-to-br from-gray-300/20 to-gray-400/20 flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="w-12 h-12 bg-gray-400/30 rounded-full flex items-center justify-center mb-2 mx-auto">
+                                    <span class="material-symbols-outlined text-gray-600 !text-xl">check_circle</span>
+                                </div>
+                                <p class="text-[#111816] dark:text-white font-medium text-sm">Completed</p>
+                            </div>
+                        </div>
+                    @endif
+                    
+                    <!-- Overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    
+                    <!-- Status Badge -->
+                    <div class="absolute top-4 left-4">
+                        <div class="flex items-center gap-2 bg-gray-600 text-white px-3 py-1.5 rounded-full text-sm font-bold shadow-lg">
+                            <span class="material-symbols-outlined !text-sm">check_circle</span>
+                            Completed
+                        </div>
+                    </div>
+                    
+                    <!-- Campaign Type Badge -->
+                    <div class="absolute top-4 right-4">
+                        <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm px-3 py-1.5 rounded-full text-sm font-semibold text-[#111816] dark:text-white shadow-lg">
+                            {{ ucfirst($campaign->type ?? 'General') }}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Content -->
+                <div class="p-6">
+                    <!-- Title -->
+                    <h3 class="text-xl font-bold text-[#111816] dark:text-white mb-3 group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors duration-200 line-clamp-2">
+                        {{ $campaign->title }}
+                    </h3>
+                    
+                    <!-- Description -->
+                    <p class="text-[#61897c] dark:text-gray-400 leading-relaxed mb-4 text-sm line-clamp-3">
+                        {{ Str::limit($campaign->description, 120) }}
+                    </p>
+                    
+                    <!-- Campaign Details -->
+                    <div class="flex items-center justify-between mb-4 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
+                        <div class="flex items-center gap-2 text-[#61897c] dark:text-gray-400">
+                            <span class="material-symbols-outlined !text-lg">calendar_today</span>
+                            <span class="text-xs font-medium">
+                                {{ $campaign->start_date->format('M d') }} - {{ $campaign->end_date->format('M d, Y') }}
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-1 text-[#61897c] dark:text-gray-400">
+                            <span class="material-symbols-outlined !text-lg">group</span>
+                            <span class="text-xs font-medium">
+                                {{ $campaign->participants_count ?? 0 }} participants
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Button -->
+                    <a href="{{ route('campaigns.show', $campaign) }}" 
+                       class="w-full block bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-center py-3 rounded-xl font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-200 text-sm">
+                        <span class="flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined !text-lg">info</span>
+                            View Details
+                        </span>
+                    </a>
+                </div>
+            </article>
+            @endforeach
+                @endif
+            </div>
+
             <!-- Empty State -->
             <div id="campaigns-empty-state" class="text-center py-12" style="display: none;">
                 <div class="w-32 h-32 bg-gradient-to-br from-primary/20 to-primary/10 rounded-full flex items-center justify-center mx-auto mb-8">
@@ -573,6 +655,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateEmptyStatesForSearch(searchTerm, visibleCount) {
         const activeGrid = document.getElementById('active-campaigns-grid');
         const upcomingGrid = document.getElementById('upcoming-campaigns-grid');
+        const completedGrid = document.getElementById('completed-campaigns-grid');
         const emptyState = document.getElementById('campaigns-empty-state');
         const emptyTitle = document.getElementById('campaigns-empty-title');
         const emptyDescription = document.getElementById('campaigns-empty-description');
@@ -581,6 +664,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Hide grids and show empty state
             if (activeGrid) activeGrid.style.display = 'none';
             if (upcomingGrid) upcomingGrid.style.display = 'none';
+            if (completedGrid) completedGrid.style.display = 'none';
             if (emptyState) emptyState.style.display = 'block';
             if (emptyTitle) emptyTitle.textContent = 'No Campaigns Found';
             if (emptyDescription) emptyDescription.textContent = `No campaigns match your search for "${searchTerm}". Try different keywords or clear the search to see all campaigns.`;
@@ -591,9 +675,11 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show grids that have visible campaigns
             const activeGridHasVisible = activeGrid && activeGrid.querySelectorAll('article.group[style*="block"], article.group:not([style*="none"])').length > 0;
             const upcomingGridHasVisible = upcomingGrid && upcomingGrid.querySelectorAll('article.group[style*="block"], article.group:not([style*="none"])').length > 0;
+            const completedGridHasVisible = completedGrid && completedGrid.querySelectorAll('article.group[style*="block"], article.group:not([style*="none"])').length > 0;
             
             if (activeGridHasVisible && activeGrid) activeGrid.style.display = 'grid';
             if (upcomingGridHasVisible && upcomingGrid) upcomingGrid.style.display = 'grid';
+            if (completedGridHasVisible && completedGrid) completedGrid.style.display = 'grid';
         }
     }
     
@@ -601,6 +687,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateEmptyStates() {
         const activeGrid = document.getElementById('active-campaigns-grid');
         const upcomingGrid = document.getElementById('upcoming-campaigns-grid');
+        const completedGrid = document.getElementById('completed-campaigns-grid');
         const emptyState = document.getElementById('campaigns-empty-state');
         
         // Get current filter type
@@ -661,6 +748,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const description = document.getElementById('section-description');
         const activeGrid = document.getElementById('active-campaigns-grid');
         const upcomingGrid = document.getElementById('upcoming-campaigns-grid');
+        const completedGrid = document.getElementById('completed-campaigns-grid');
         const emptyState = document.getElementById('campaigns-empty-state');
         const emptyTitle = document.getElementById('campaigns-empty-title');
         const emptyDescription = document.getElementById('campaigns-empty-description');
@@ -810,10 +898,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (title) title.textContent = 'Completed Campaigns';
                 if (description) description.textContent = 'View our past campaigns and their impact on the community. These successful initiatives have made a lasting difference.';
                 
-                // For now, show empty state for completed campaigns
-                if (emptyState) emptyState.style.display = 'block';
-                if (emptyTitle) emptyTitle.textContent = 'No Completed Campaigns to Display';
-                if (emptyDescription) emptyDescription.textContent = 'Completed campaigns are archived and not currently displayed. Contact us for information about past campaign impacts and results.';
+                if (completedGrid) {
+                    const completedCampaignCards = completedGrid.querySelectorAll('article.group');
+                    const hasContent = completedGrid.innerHTML.trim().length > 50;
+                    console.log('Completed filter - grid check:', {
+                        articles: completedCampaignCards.length,
+                        hasContent: hasContent
+                    });
+                    
+                    if (completedCampaignCards.length > 0 || hasContent) {
+                        completedGrid.style.display = 'grid';
+                    } else {
+                        if (emptyState) emptyState.style.display = 'block';
+                        if (emptyTitle) emptyTitle.textContent = 'No Completed Campaigns';
+                        if (emptyDescription) emptyDescription.textContent = 'There are currently no completed campaigns to display. Check back later!';
+                    }
+                } else {
+                    if (emptyState) emptyState.style.display = 'block';
+                    if (emptyTitle) emptyTitle.textContent = 'No Completed Campaigns';
+                    if (emptyDescription) emptyDescription.textContent = 'There are currently no completed campaigns to display. Check back later!';
+                }
                 break;
         }
     }

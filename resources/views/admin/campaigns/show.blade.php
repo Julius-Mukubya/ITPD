@@ -5,12 +5,12 @@
 
 @section('content')
 <div class="mb-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Campaign Details</h2>
-            <p class="text-gray-600 dark:text-gray-400">View campaign information and participants</p>
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Campaign Details</h2>
+            <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">View campaign information and participants</p>
         </div>
-        <a href="{{ route('admin.campaigns.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+        <a href="{{ route('admin.campaigns.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors text-center">
             Back to Campaigns
         </a>
     </div>
@@ -22,35 +22,35 @@
         <!-- Campaign Header -->
         <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
             @if($campaign->banner_image)
-                <div class="h-64 bg-cover bg-center" style="background-image: url('{{ $campaign->banner_url }}')">
-                    <div class="h-full bg-black bg-opacity-40 flex items-end p-6">
+                <div class="h-48 sm:h-64 bg-cover bg-center" style="background-image: url('{{ $campaign->banner_url }}')">
+                    <div class="h-full bg-black bg-opacity-40 flex items-end p-4 sm:p-6">
                         <div>
-                            <h1 class="text-3xl font-bold text-white mb-2">{{ $campaign->title }}</h1>
-                            <p class="text-gray-200">{{ $campaign->description }}</p>
+                            <h1 class="text-2xl sm:text-3xl font-bold text-white mb-2">{{ $campaign->title }}</h1>
+                            <p class="text-sm sm:text-base text-gray-200">{{ $campaign->description }}</p>
                         </div>
                     </div>
                 </div>
             @else
-                <div class="p-6">
-                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">{{ $campaign->title }}</h1>
-                    <p class="text-gray-600 dark:text-gray-400">{{ $campaign->description }}</p>
+                <div class="p-4 sm:p-6">
+                    <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">{{ $campaign->title }}</h1>
+                    <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">{{ $campaign->description }}</p>
                 </div>
             @endif
         </div>
 
         <!-- Campaign Content -->
         @if($campaign->content)
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Campaign Details</h2>
-            <div class="prose dark:prose-invert max-w-none">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+            <h2 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-4">Campaign Details</h2>
+            <div class="prose dark:prose-invert max-w-none text-sm sm:text-base">
                 {!! nl2br(e($campaign->content)) !!}
             </div>
         </div>
         @endif
 
         <!-- Campaign Overview -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Campaign Overview</h2>
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+            <h2 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-4">Campaign Overview</h2>
             
             <div class="space-y-4">
                 <div>

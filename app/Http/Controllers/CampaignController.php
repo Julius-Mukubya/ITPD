@@ -20,6 +20,14 @@ class CampaignController extends Controller
             ->take(6)
             ->get();
 
+        // Add completed campaigns
+        $completedCampaigns = Campaign::where('status', 'active')
+            ->where('end_date', '<', now())
+            ->withCount('participants')
+            ->latest('end_date')
+            ->take(6)
+            ->get();
+
         // Add registration status for authenticated users
         if (auth()->check()) {
             $userRegistrations = CampaignParticipant::where('user_id', auth()->id())
@@ -35,9 +43,13 @@ class CampaignController extends Controller
             foreach ($upcomingCampaigns as $campaign) {
                 $campaign->is_user_registered = in_array($campaign->id, $userRegistrations);
             }
+
+            foreach ($completedCampaigns as $campaign) {
+                $campaign->is_user_registered = in_array($campaign->id, $userRegistrations);
+            }
         }
 
-        return view('public.campaigns.index', compact('activeCampaigns', 'upcomingCampaigns'));
+        return view('public.campaigns.index', compact('activeCampaigns', 'upcomingCampaigns', 'completedCampaigns'));
     }
 
     public function show(Campaign $campaign)

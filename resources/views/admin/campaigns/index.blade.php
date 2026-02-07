@@ -6,12 +6,12 @@
 @section('content')
 
 
-<div class="flex justify-between items-center mb-6">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 sm:mb-6">
     <div>
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Campaigns</h2>
-        <p class="text-gray-500 dark:text-gray-400">Manage awareness campaigns</p>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Campaigns</h2>
+        <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400">Manage awareness campaigns</p>
     </div>
-    <a href="{{ route('admin.campaigns.create') }}" class="bg-primary text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:opacity-90">
+    <a href="{{ route('admin.campaigns.create') }}" class="bg-primary text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:opacity-90 text-sm sm:text-base">
         <span class="material-symbols-outlined text-sm">add</span>
         Create Campaign
     </a>

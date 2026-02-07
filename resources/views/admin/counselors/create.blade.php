@@ -4,18 +4,18 @@
 
 @section('content')
 <div class="mb-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Add Counselor</h2>
-            <p class="text-gray-600 dark:text-gray-400">Add new counselor to the system</p>
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Add Counselor</h2>
+            <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">Add new counselor to the system</p>
         </div>
-        <a href="{{ route('admin.counseling.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+        <a href="{{ route('admin.counseling.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors text-center">
             Back to Counseling
         </a>
     </div>
 </div>
 
-<div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+<div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
     <form action="{{ route('admin.users.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="role" value="counselor">

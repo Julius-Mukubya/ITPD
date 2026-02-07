@@ -248,51 +248,52 @@
     </div>
 
     <!-- Recent Activity & Notifications -->
-    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-        <div class="flex items-center justify-between mb-6">
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 sm:mb-6">
             <div class="flex items-center gap-3">
-                <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
-                    <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-xl">notifications_active</span>
+                <div class="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-lg sm:text-xl">notifications_active</span>
                 </div>
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Recent System Activity</h3>
-                    <p class="text-sm text-gray-600 dark:text-gray-400">Latest system events and notifications</p>
+                    <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Recent System Activity</h3>
+                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Latest system events and notifications</p>
                 </div>
             </div>
-            <a href="{{ route('notifications.index') }}" class="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium">
-                View All
+            <a href="{{ route('notifications.index') }}" class="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium text-sm">
+                <span class="hidden sm:inline">View All</span>
+                <span class="sm:hidden">View All</span>
                 <span class="material-symbols-outlined text-sm">arrow_forward</span>
             </a>
         </div>
         
-        <div id="recentActivity" class="space-y-4">
+        <div id="recentActivity" class="space-y-3 sm:space-y-4">
             <!-- Activity items will be loaded here -->
-            <div class="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
-                <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
+            <div class="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
+                <div class="w-8 h-8 sm:w-10 sm:h-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center flex-shrink-0">
                     <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-sm">person_add</span>
                 </div>
-                <div class="flex-1">
-                    <p class="text-sm font-medium text-gray-900 dark:text-white">New user registered</p>
+                <div class="flex-1 min-w-0">
+                    <p class="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">New user registered</p>
                     <p class="text-xs text-gray-600 dark:text-gray-400">{{ now()->subMinutes(5)->diffForHumans() }}</p>
                 </div>
             </div>
             
-            <div class="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
-                <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+            <div class="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
+                <div class="w-8 h-8 sm:w-10 sm:h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center flex-shrink-0">
                     <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-sm">campaign</span>
                 </div>
-                <div class="flex-1">
-                    <p class="text-sm font-medium text-gray-900 dark:text-white">New campaign created</p>
+                <div class="flex-1 min-w-0">
+                    <p class="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">New campaign created</p>
                     <p class="text-xs text-gray-600 dark:text-gray-400">{{ now()->subHour()->diffForHumans() }}</p>
                 </div>
             </div>
             
-            <div class="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
-                <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
+            <div class="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
+                <div class="w-8 h-8 sm:w-10 sm:h-10 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center flex-shrink-0">
                     <span class="material-symbols-outlined text-purple-600 dark:text-purple-400 text-sm">support_agent</span>
                 </div>
-                <div class="flex-1">
-                    <p class="text-sm font-medium text-gray-900 dark:text-white">Counseling session completed</p>
+                <div class="flex-1 min-w-0">
+                    <p class="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">Counseling session completed</p>
                     <p class="text-xs text-gray-600 dark:text-gray-400">{{ now()->subHours(2)->diffForHumans() }}</p>
                 </div>
             </div>

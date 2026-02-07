@@ -3,12 +3,12 @@
 @section('title', 'Manage Users - Admin')
 
 @section('content')
-<div class="flex justify-between items-center mb-6">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 sm:mb-6">
     <div>
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Users</h2>
-        <p class="text-gray-500 dark:text-gray-400">Manage system users</p>
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Users</h2>
+        <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400">Manage system users</p>
     </div>
-    <a href="{{ route('admin.users.create') }}" class="bg-primary text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:opacity-90">
+    <a href="{{ route('admin.users.create') }}" class="bg-primary text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:opacity-90 text-sm sm:text-base">
         <span class="material-symbols-outlined text-sm">add</span>
         Add User
     </a>
@@ -107,17 +107,17 @@
                     <td class="px-6 py-4 text-gray-600 dark:text-gray-400">{{ $user->created_at->format('M d, Y') }}</td>
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-2">
-                            <a href="{{ route('admin.users.show', $user) }}" class="text-green-600 hover:text-green-800 dark:text-green-400" title="View Details">
+                            <a href="{{ route('admin.users.show', $user) }}" class="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900/50" title="View Details">
                                 <span class="material-symbols-outlined text-sm">visibility</span>
                             </a>
-                            <a href="{{ route('admin.users.edit', $user) }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400" title="Edit User">
+                            <a href="{{ route('admin.users.edit', $user) }}" class="w-8 h-8 flex items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50" title="Edit User">
                                 <span class="material-symbols-outlined text-sm">edit</span>
                             </a>
                             @if($user->id !== auth()->id())
                             <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="delete-form">
                                 @csrf
                                 @method('DELETE')
-                                <button type="button" onclick="showDeleteModal(this.closest('form'), 'Are you sure you want to delete this user? This action cannot be undone.')" class="text-red-600 hover:text-red-800 dark:text-red-400">
+                                <button type="button" onclick="showDeleteModal(this.closest('form'), 'Are you sure you want to delete this user? This action cannot be undone.')" class="w-8 h-8 flex items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50" title="Delete User">
                                     <span class="material-symbols-outlined text-sm">delete</span>
                                 </button>
                             </form>
@@ -181,18 +181,18 @@
             </div>
             
             <div class="flex items-center justify-end gap-2">
-                <a href="{{ route('admin.users.show', $user) }}" class="w-10 h-10 bg-green-600 text-white rounded-lg flex items-center justify-center hover:bg-green-700" title="View Details">
-                    <span class="material-symbols-outlined !text-lg">visibility</span>
+                <a href="{{ route('admin.users.show', $user) }}" class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900/50" title="View Details">
+                    <span class="material-symbols-outlined text-sm">visibility</span>
                 </a>
-                <a href="{{ route('admin.users.edit', $user) }}" class="w-10 h-10 bg-blue-600 text-white rounded-lg flex items-center justify-center hover:bg-blue-700" title="Edit User">
-                    <span class="material-symbols-outlined !text-lg">edit</span>
+                <a href="{{ route('admin.users.edit', $user) }}" class="w-10 h-10 flex items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50" title="Edit User">
+                    <span class="material-symbols-outlined text-sm">edit</span>
                 </a>
                 @if($user->id !== auth()->id())
                 <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="delete-form">
                     @csrf
                     @method('DELETE')
-                    <button type="button" onclick="showDeleteModal(this.closest('form'), 'Are you sure you want to delete this user? This action cannot be undone.')" class="w-10 h-10 bg-red-600 text-white rounded-lg flex items-center justify-center hover:bg-red-700" title="Delete User">
-                        <span class="material-symbols-outlined !text-lg">delete</span>
+                    <button type="button" onclick="showDeleteModal(this.closest('form'), 'Are you sure you want to delete this user? This action cannot be undone.')" class="w-10 h-10 flex items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50" title="Delete User">
+                        <span class="material-symbols-outlined text-sm">delete</span>
                     </button>
                 </form>
                 @endif

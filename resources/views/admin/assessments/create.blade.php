@@ -5,18 +5,18 @@
 
 @section('content')
 <div class="mb-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Create Assessment</h2>
-            <p class="text-gray-600 dark:text-gray-400">Add new mental health assessment to the system</p>
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Create Assessment</h2>
+            <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">Add new mental health assessment to the system</p>
         </div>
-        <a href="{{ route('admin.assessments.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+        <a href="{{ route('admin.assessments.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors text-center">
             Back to Assessments
         </a>
     </div>
 </div>
 
-<div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+<div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
 
     <form action="{{ route('admin.assessments.store') }}" method="POST" id="assessmentForm">
         @csrf
@@ -100,11 +100,11 @@
 
             <!-- Questions Section -->
             <div class="border-t border-gray-200 dark:border-gray-700 pt-6 mt-6">
-                <div class="flex items-center justify-between mb-4">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Questions</h3>
                     <button type="button" onclick="addQuestion()" 
                         title="Add a new question to this assessment"
-                        class="bg-primary text-white px-4 py-2 rounded-lg hover:opacity-90 flex items-center gap-2">
+                        class="bg-primary text-white px-4 py-2 rounded-lg hover:opacity-90 flex items-center justify-center gap-2">
                         <span class="material-symbols-outlined text-sm">add</span>
                         Add Question
                     </button>
@@ -116,13 +116,13 @@
             </div>
         </div>
 
-        <div class="flex gap-3 mt-6">
+        <div class="flex flex-col sm:flex-row gap-3 mt-6">
             <button type="submit" 
                 title="Save and create this assessment"
-                class="bg-primary text-white px-6 py-2 rounded-lg hover:opacity-90">Create Assessment</button>
+                class="bg-primary text-white px-6 py-2 rounded-lg hover:opacity-90 text-center">Create Assessment</button>
             <a href="{{ route('admin.assessments.index') }}" 
                 title="Cancel and return to assessments list"
-                class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-6 py-2 rounded-lg hover:opacity-90">Cancel</a>
+                class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-6 py-2 rounded-lg hover:opacity-90 text-center">Cancel</a>
         </div>
     </form>
 </div>
@@ -135,15 +135,15 @@ let questionCount = 0;
 function addQuestion() {
     const container = document.getElementById('questionsContainer');
     const questionDiv = document.createElement('div');
-    questionDiv.className = 'bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4 border border-gray-200 dark:border-gray-600';
+    questionDiv.className = 'bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-600';
     questionDiv.id = `question-${questionCount}`;
     
     questionDiv.innerHTML = `
         <div class="flex items-start justify-between mb-3">
-            <h4 class="font-medium text-gray-900 dark:text-white">Question ${questionCount + 1}</h4>
+            <h4 class="font-medium text-gray-900 dark:text-white text-sm sm:text-base">Question ${questionCount + 1}</h4>
             <button type="button" onclick="removeQuestion(${questionCount})" 
                 title="Remove this question"
-                class="text-red-600 hover:text-red-800">
+                class="text-red-600 hover:text-red-800 p-1">
                 <span class="material-symbols-outlined text-sm">delete</span>
             </button>
         </div>
@@ -158,11 +158,11 @@ function addQuestion() {
             </div>
             
             <div id="options-${questionCount}">
-                <div class="flex items-center justify-between mb-2">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Answer Options *</label>
                     <button type="button" onclick="addOption(${questionCount})" 
                         title="Add a new answer option for this question"
-                        class="text-primary hover:text-primary/80 text-sm flex items-center gap-1">
+                        class="text-primary hover:text-primary/80 text-sm flex items-center justify-center gap-1 px-3 py-1 bg-primary/10 rounded">
                         <span class="material-symbols-outlined text-sm">add</span>
                         Add Option
                     </button>
@@ -199,7 +199,7 @@ function addOption(questionId) {
     const optionId = optionCounters[questionId];
     
     const optionDiv = document.createElement('div');
-    optionDiv.className = 'flex gap-2 items-start';
+    optionDiv.className = 'flex flex-col sm:flex-row gap-2 items-stretch sm:items-start';
     optionDiv.id = `option-${questionId}-${optionId}`;
     
     optionDiv.innerHTML = `
@@ -214,23 +214,25 @@ function addOption(questionId) {
                 onchange="updateOptionsJSON(${questionId})"
                 required>
         </div>
-        <div class="w-24">
-            <input type="number" 
-                title="Score value for this option (higher scores indicate greater severity)"
-                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white text-sm"
-                placeholder="Score"
-                value="${optionId}"
-                data-question="${questionId}"
-                data-option="${optionId}"
-                data-field="score"
-                onchange="updateOptionsJSON(${questionId})"
-                required>
+        <div class="flex gap-2">
+            <div class="flex-1 sm:w-24">
+                <input type="number" 
+                    title="Score value for this option (higher scores indicate greater severity)"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white text-sm"
+                    placeholder="Score"
+                    value="${optionId}"
+                    data-question="${questionId}"
+                    data-option="${optionId}"
+                    data-field="score"
+                    onchange="updateOptionsJSON(${questionId})"
+                    required>
+            </div>
+            <button type="button" onclick="removeOption(${questionId}, ${optionId})" 
+                title="Remove this answer option"
+                class="text-red-600 hover:text-red-800 p-2 border border-red-300 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20">
+                <span class="material-symbols-outlined text-sm">delete</span>
+            </button>
         </div>
-        <button type="button" onclick="removeOption(${questionId}, ${optionId})" 
-            title="Remove this answer option"
-            class="text-red-600 hover:text-red-800 p-2">
-            <span class="material-symbols-outlined text-sm">delete</span>
-        </button>
     `;
     
     container.appendChild(optionDiv);

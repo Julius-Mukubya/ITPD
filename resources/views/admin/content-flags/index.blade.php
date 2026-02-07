@@ -3,15 +3,15 @@
 @section('title', 'Content Flags - Admin')
 
 @section('content')
-<div class="flex flex-wrap justify-between items-center gap-3 mb-6">
+<div class="flex flex-col sm:flex-row flex-wrap justify-between items-start sm:items-center gap-3 mb-6">
     <div class="flex flex-col gap-1">
         <p class="text-gray-900 dark:text-white text-3xl font-bold tracking-tight">Content Flags</p>
         <p class="text-gray-500 dark:text-gray-400 text-base font-normal">Review and manage flagged content from users</p>
     </div>
 </div>
 
-<!-- Stats Cards -->
-<div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+<!-- Stats Cards Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
         <div class="flex items-center justify-between">
             <div>
@@ -107,7 +107,8 @@
         </div>
     </div>
     
-    <div class="overflow-x-auto">
+    <!-- Desktop Table View -->
+    <div class="hidden md:block overflow-x-auto">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 dark:text-gray-300 uppercase bg-gray-50 dark:bg-gray-700">
                 <tr>
@@ -203,6 +204,77 @@
         </table>
     </div>
 
+    <!-- Mobile Card View -->
+    <div class="md:hidden divide-y divide-gray-200 dark:divide-gray-700">
+        @forelse($flags as $flag)
+        <div class="p-4 flag-row" 
+            data-status="{{ $flag->status }}" 
+            data-reason="{{ $flag->reason }}" 
+            data-type="{{ $flag->flaggable_type }}">
+            <div class="flex items-start gap-3 mb-3">
+                <div class="flex-shrink-0">
+                    @if($flag->flaggable_type === 'App\Models\ForumPost')
+                        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">forum</span>
+                        </div>
+                    @else
+                        <div class="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-outlined text-green-600 dark:text-green-400">chat_bubble</span>
+                        </div>
+                    @endif
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="font-medium text-gray-900 dark:text-white">
+                        {{ $flag->flaggable_type === 'App\Models\ForumPost' ? 'Forum Post' : 'Comment' }}
+                    </p>
+                    @if($flag->flaggable)
+                        <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
+                            {{ Str::limit($flag->flaggable_type === 'App\Models\ForumPost' ? $flag->flaggable->title : $flag->flaggable->comment, 60) }}
+                        </p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">
+                            by {{ $flag->flaggable->user->name ?? 'Unknown' }}
+                        </p>
+                    @else
+                        <p class="text-sm text-red-500 dark:text-red-400">Content deleted</p>
+                    @endif
+                </div>
+            </div>
+            <div class="space-y-2 mb-3">
+                <div class="flex items-center gap-2 flex-wrap">
+                    <span class="px-2 py-1 text-xs font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-900 dark:text-gray-200">
+                        {{ $flag->reason_label }}
+                    </span>
+                    <span class="px-2 py-1 text-xs font-medium rounded-full
+                        @if($flag->status === 'pending') text-yellow-800 bg-yellow-100 dark:bg-yellow-900 dark:text-yellow-300
+                        @elseif($flag->status === 'reviewed') text-blue-800 bg-blue-100 dark:bg-blue-900 dark:text-blue-300
+                        @elseif($flag->status === 'action_taken') text-green-800 bg-green-100 dark:bg-green-900 dark:text-green-300
+                        @else text-gray-800 bg-gray-100 dark:bg-gray-900 dark:text-gray-300
+                        @endif">
+                        {{ $flag->status_label }}
+                    </span>
+                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">
+                    <p>Reporter: {{ $flag->user->name }}</p>
+                    <p class="text-xs">{{ $flag->created_at->format('M d, Y') }}</p>
+                </div>
+            </div>
+            <div class="flex items-center justify-between">
+                <input type="checkbox" name="flag_ids[]" value="{{ $flag->id }}" class="flag-checkbox rounded border-gray-300 dark:border-gray-600">
+                <a href="{{ route('admin.content-flags.show', $flag) }}" class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900/50" title="View Details">
+                    <span class="material-symbols-outlined text-sm">visibility</span>
+                </a>
+            </div>
+        </div>
+        @empty
+        <div class="p-8 text-center text-gray-500 dark:text-gray-400">
+            <div class="flex flex-col items-center gap-2">
+                <span class="material-symbols-outlined text-4xl">flag</span>
+                <p>No flags found</p>
+            </div>
+        </div>
+        @endforelse
+    </div>
+
     @if($flags->hasPages())
     <div class="px-6 py-3 border-t border-gray-200 dark:border-gray-700">
         {{ $flags->links() }}
@@ -292,13 +364,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const typeFilter = document.getElementById('typeFilter');
     const tableBody = document.getElementById('flagTableBody');
     const rows = tableBody.querySelectorAll('.flag-row');
+    const mobileCards = document.querySelectorAll('.flag-row');
 
     function filterTable() {
         const statusValue = statusFilter.value;
         const reasonValue = reasonFilter.value;
         const typeValue = typeFilter.value;
 
-        rows.forEach(row => {
+        // Filter both desktop rows and mobile cards
+        mobileCards.forEach(row => {
             const status = row.dataset.status;
             const reason = row.dataset.reason;
             const type = row.dataset.type;
