@@ -60,7 +60,8 @@
         This Week's Sessions
     </h2>
     <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
+        <!-- Desktop Table View -->
+        <div class="hidden lg:block overflow-x-auto">
             <table class="w-full">
                 <thead class="bg-green-50 dark:bg-green-900/20 border-b border-green-100 dark:border-green-900/30">
                     <tr>
@@ -113,6 +114,42 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Mobile Card View -->
+        <div class="lg:hidden divide-y divide-gray-200 dark:divide-gray-700">
+            @foreach($weekSessions as $session)
+            <div class="p-4 hover:bg-green-50/50 dark:hover:bg-green-900/10 transition-colors">
+                <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center text-white font-bold text-sm shadow-lg flex-shrink-0">
+                        {{ substr($session->student->name, 0, 1) }}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                            <div class="flex-1 min-w-0">
+                                <p class="font-medium text-gray-900 dark:text-white text-base">{{ $session->student->name }}</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">{{ ucfirst(str_replace('_', ' ', $session->session_type)) }}</p>
+                                <div class="flex items-center gap-2 mt-2">
+                                    <div class="text-sm text-gray-500 dark:text-gray-400">
+                                        {{ $session->scheduled_at ? $session->scheduled_at->format('M d, Y \a\t g:i A') : 'TBD' }}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-col items-end gap-2">
+                                <span class="px-3 py-1 bg-{{ $session->status === 'active' ? 'green' : 'yellow' }}-100 dark:bg-{{ $session->status === 'active' ? 'green' : 'yellow' }}-900/30 text-{{ $session->status === 'active' ? 'green' : 'yellow' }}-700 dark:text-{{ $session->status === 'active' ? 'green' : 'yellow' }}-300 text-xs font-semibold rounded-full">
+                                    {{ ucfirst($session->status) }}
+                                </span>
+                                <a href="{{ route('counselor.sessions.show', $session) }}" class="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-medium text-sm transition-colors">
+                                    <span class="material-symbols-outlined text-sm">visibility</span>
+                                    <span class="hidden sm:inline">View</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
     </div>
 </div>
 @endif
@@ -125,7 +162,8 @@
         All Upcoming Sessions
     </h2>
     <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
+        <!-- Desktop Table View -->
+        <div class="hidden lg:block overflow-x-auto">
             <table class="w-full">
                 <thead class="bg-teal-50 dark:bg-teal-900/20 border-b border-teal-100 dark:border-teal-900/30">
                     <tr>
@@ -177,6 +215,42 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+
+        <!-- Mobile Card View -->
+        <div class="lg:hidden divide-y divide-gray-200 dark:divide-gray-700">
+            @foreach($upcomingSessions as $session)
+            <div class="p-4 hover:bg-teal-50/50 dark:hover:bg-teal-900/10 transition-colors">
+                <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-white font-bold text-sm shadow-lg flex-shrink-0">
+                        {{ substr($session->student->name, 0, 1) }}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                            <div class="flex-1 min-w-0">
+                                <p class="font-medium text-gray-900 dark:text-white text-base">{{ $session->student->name }}</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">{{ ucfirst(str_replace('_', ' ', $session->session_type)) }}</p>
+                                <div class="flex items-center gap-2 mt-2">
+                                    <div class="text-sm text-gray-500 dark:text-gray-400">
+                                        {{ $session->scheduled_at ? $session->scheduled_at->format('M d, Y \a\t g:i A') : 'TBD' }}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-col items-end gap-2">
+                                <span class="px-3 py-1 bg-{{ $session->status === 'active' ? 'green' : 'yellow' }}-100 dark:bg-{{ $session->status === 'active' ? 'green' : 'yellow' }}-900/30 text-{{ $session->status === 'active' ? 'green' : 'yellow' }}-700 dark:text-{{ $session->status === 'active' ? 'green' : 'yellow' }}-300 text-xs font-semibold rounded-full">
+                                    {{ ucfirst($session->status) }}
+                                </span>
+                                <a href="{{ route('counselor.sessions.show', $session) }}" class="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium text-sm transition-colors">
+                                    <span class="material-symbols-outlined text-sm">visibility</span>
+                                    <span class="hidden sm:inline">View</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
         </div>
     </div>
 </div>

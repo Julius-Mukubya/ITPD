@@ -104,7 +104,8 @@
         Recent Completed Sessions
     </h2>
     <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
+        <!-- Desktop Table View -->
+        <div class="hidden lg:block overflow-x-auto">
             <table class="w-full">
                 <thead class="bg-emerald-50 dark:bg-emerald-900/20 border-b border-emerald-100 dark:border-emerald-900/30">
                     <tr>
@@ -153,6 +154,42 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+
+        <!-- Mobile Card View -->
+        <div class="lg:hidden divide-y divide-gray-200 dark:divide-gray-700">
+            @foreach($recentSessions as $session)
+            <div class="p-4 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10 transition-colors">
+                <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center text-white font-bold text-sm shadow-lg flex-shrink-0">
+                        {{ substr($session->student->name, 0, 1) }}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                            <div class="flex-1 min-w-0">
+                                <p class="font-medium text-gray-900 dark:text-white text-base">{{ $session->student->name }}</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">{{ ucfirst(str_replace('_', ' ', $session->session_type)) }}</p>
+                                <div class="flex items-center gap-4 mt-2 text-sm text-gray-500 dark:text-gray-400">
+                                    <span>{{ $session->completed_at->format('M d, Y') }}</span>
+                                    @if($session->started_at && $session->completed_at)
+                                        <span>{{ $session->started_at->diffInMinutes($session->completed_at) }} min</span>
+                                    @else
+                                        <span>-</span>
+                                    @endif
+                                </div>
+                            </div>
+                            
+                            <div class="flex-shrink-0">
+                                <a href="{{ route('counselor.sessions.show', $session) }}" class="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-medium text-sm transition-colors">
+                                    <span class="material-symbols-outlined text-sm">visibility</span>
+                                    <span class="hidden sm:inline">View</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
         </div>
     </div>
 </div>

@@ -87,7 +87,8 @@
 <!-- Clients List -->
 @if($students->count() > 0)
 <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
-    <div class="overflow-x-auto">
+    <!-- Desktop Table View -->
+    <div class="hidden lg:block overflow-x-auto">
         <table class="w-full">
             <thead class="bg-emerald-50 dark:bg-emerald-900/20 border-b border-emerald-100 dark:border-emerald-900/30">
                 <tr>
@@ -157,6 +158,71 @@
                 @endforeach
             </tbody>
         </table>
+    </div>
+
+    <!-- Mobile Card View -->
+    <div class="lg:hidden divide-y divide-gray-200 dark:divide-gray-700">
+        @foreach($students as $student)
+        <div class="p-4 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10 transition-colors">
+            <div class="flex items-start gap-3">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center text-white font-bold shadow-lg flex-shrink-0">
+                    {{ substr($student->name, 0, 1) }}
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                        <div class="flex-1 min-w-0">
+                            <p class="font-semibold text-gray-900 dark:text-white text-base">{{ $student->name }}</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 truncate">{{ $student->email }}</p>
+                            
+                            @if(isset($student->session_types) && count($student->session_types) > 0)
+                            <div class="flex flex-wrap gap-1 mt-2">
+                                @foreach($student->session_types as $type)
+                                    <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium
+                                        @if($type === 'individual') bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300
+                                        @else bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300
+                                        @endif">
+                                        @if($type === 'individual')
+                                            <span class="material-symbols-outlined text-xs mr-1">person</span>
+                                        @else
+                                            <span class="material-symbols-outlined text-xs mr-1">group</span>
+                                        @endif
+                                        {{ ucfirst($type) }}
+                                    </span>
+                                @endforeach
+                            </div>
+                            @endif
+                        </div>
+                        
+                        <div class="flex flex-col sm:items-end gap-2">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 w-fit">
+                                {{ $student->total_sessions }} {{ $student->total_sessions == 1 ? 'session' : 'sessions' }}
+                            </span>
+                            
+                            @if($student->last_session)
+                                <div class="text-right">
+                                    <div class="text-sm text-gray-600 dark:text-gray-400">
+                                        {{ $student->last_session->created_at->format('M d, Y') }}
+                                    </div>
+                                    <div class="text-xs text-gray-500 dark:text-gray-500">
+                                        {{ ucfirst(str_replace('_', ' ', $student->last_session->session_type)) }}
+                                    </div>
+                                </div>
+                            @else
+                                <span class="text-sm text-gray-400">No sessions</span>
+                            @endif
+                        </div>
+                    </div>
+                    
+                    <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                        <a href="{{ route('counselor.sessions.index') }}?student={{ $student->id }}" class="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-medium text-sm transition-colors">
+                            <span class="material-symbols-outlined text-sm">history</span>
+                            View History
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endforeach
     </div>
 </div>
 @else
