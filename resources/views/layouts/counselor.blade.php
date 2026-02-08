@@ -430,13 +430,11 @@
         handleLogout('logoutFormDropdown');
 
         // Auto-refresh notifications every 30 seconds for counselors
-        if (document.querySelector('.group:has(.material-symbols-outlined:contains("notifications"))')) {
+        // Check if we're on a notifications-related page
+        if (window.location.pathname.includes('/notifications')) {
             setInterval(function() {
-                // Only refresh if user is a counselor and on the notifications page
-                if (window.location.pathname.includes('/notifications')) {
-                    // Refresh the page to get updated notifications
-                    window.location.reload();
-                }
+                // Refresh the page to get updated notifications
+                window.location.reload();
             }, 30000); // 30 seconds
         }
     </script>

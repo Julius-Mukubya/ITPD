@@ -45,7 +45,7 @@
 <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-4">
     <!-- Session Info Sidebar -->
     <div class="lg:col-span-1 order-2 lg:order-1">
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 flex flex-col h-auto lg:h-[calc(100vh-12rem)]">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-3 sm:p-4 flex flex-col h-auto lg:h-[calc(100vh-12rem)]">
             <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
                 <span class="material-symbols-outlined text-lg">info</span>
                 Session Info
@@ -204,39 +204,39 @@
 
     <!-- Chat Area -->
     <div class="lg:col-span-3 order-1 lg:order-2">
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 flex flex-col h-96 lg:h-[calc(100vh-12rem)]">
-            <div class="p-3 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-900/50 dark:to-gray-800/50 rounded-t-xl">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 flex flex-col h-[500px] sm:h-96 lg:h-[calc(100vh-12rem)]">
+            <div class="p-2 sm:p-3 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-900/50 dark:to-gray-800/50 rounded-t-xl">
                 <div class="flex items-center justify-between">
-                    <h3 class="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                        <span class="material-symbols-outlined text-lg">chat</span>
-                        Messages
+                    <h3 class="text-sm sm:text-base font-semibold text-gray-900 dark:text-white flex items-center gap-1.5 sm:gap-2">
+                        <span class="material-symbols-outlined text-base sm:text-lg">chat</span>
+                        <span class="hidden xs:inline">Messages</span>
                     </h3>
                     <button onclick="maximizeChat()" 
-                            class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5">
+                            class="bg-gray-500 hover:bg-gray-600 text-white px-2 sm:px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1 sm:gap-1.5">
                         <span class="material-symbols-outlined text-sm">fullscreen</span>
                         <span class="hidden sm:inline">Maximize</span>
                     </button>
                 </div>
             </div>
 
-            <div id="chat-messages" class="flex-1 overflow-y-auto p-3 space-y-3">
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-2 sm:p-3 space-y-2 sm:space-y-3">
                 @forelse($session->messages->sortBy('created_at') as $message)
                 <div class="flex {{ $message->sender_id === auth()->id() ? 'justify-end' : 'justify-start' }}">
-                    <div class="max-w-[85%] sm:max-w-[75%]">
-                        <div class="flex items-center gap-1.5 mb-0.5 {{ $message->sender_id === auth()->id() ? 'justify-end' : 'justify-start' }}">
-                            <p class="text-xs text-gray-500 dark:text-gray-400">
+                    <div class="max-w-[90%] sm:max-w-[85%] lg:max-w-[75%]">
+                        <div class="flex items-center gap-1 sm:gap-1.5 mb-0.5 {{ $message->sender_id === auth()->id() ? 'justify-end' : 'justify-start' }}">
+                            <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">
                                 {{ $message->sender->name }}
                             </p>
-                            <p class="text-xs text-gray-400">
+                            <p class="text-[10px] sm:text-xs text-gray-400">
                                 {{ $message->created_at->format('h:i A') }}
                             </p>
                         </div>
-                        <div class="rounded-lg p-2.5 {{ $message->sender_id === auth()->id() ? 'bg-primary text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white' }}">
-                            <div class="text-sm message-content" data-sender="{{ $message->sender_id === auth()->id() ? 'self' : 'other' }}">
+                        <div class="rounded-lg p-2 sm:p-2.5 {{ $message->sender_id === auth()->id() ? 'bg-primary text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white' }}">
+                            <div class="text-xs sm:text-sm message-content break-words" data-sender="{{ $message->sender_id === auth()->id() ? 'self' : 'other' }}">
                                 {!! nl2br(e($message->message)) !!}
                             </div>
                             @if($message->attachment_path)
-                            <a href="{{ asset('storage/' . $message->attachment_path) }}" target="_blank" class="text-xs underline mt-1.5 block">
+                            <a href="{{ asset('storage/' . $message->attachment_path) }}" target="_blank" class="text-[10px] sm:text-xs underline mt-1 sm:mt-1.5 block">
                                 View Attachment
                             </a>
                             @endif
@@ -263,21 +263,21 @@
             </div>
 
             @if($session->status === 'pending')
-            <div class="p-3 border-t border-gray-200 dark:border-gray-700 bg-yellow-50 dark:bg-yellow-900/20 rounded-b-xl">
-                <div class="flex items-center gap-2 text-yellow-700 dark:text-yellow-300">
-                    <span class="material-symbols-outlined text-sm">info</span>
-                    <p class="text-xs font-medium">Accept this session to start messaging.</p>
+            <div class="p-2 sm:p-3 border-t border-gray-200 dark:border-gray-700 bg-yellow-50 dark:bg-yellow-900/20 rounded-b-xl">
+                <div class="flex items-center gap-1.5 sm:gap-2 text-yellow-700 dark:text-yellow-300">
+                    <span class="material-symbols-outlined text-xs sm:text-sm">info</span>
+                    <p class="text-[10px] sm:text-xs font-medium">Accept this session to start messaging.</p>
                 </div>
             </div>
             @elseif($session->status === 'active')
-            <div class="p-3 border-t border-gray-200 dark:border-gray-700 rounded-b-xl">
+            <div class="p-2 sm:p-3 border-t border-gray-200 dark:border-gray-700 rounded-b-xl">
                 <form action="{{ route('counselor.sessions.message', $session) }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="flex gap-2">
+                    <div class="flex gap-1.5 sm:gap-2">
                         <input type="text" name="message" required placeholder="Type your message..." 
-                            class="flex-1 px-3 sm:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white text-sm">
-                        <button type="submit" class="bg-primary text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
-                            <span class="material-symbols-outlined">send</span>
+                            class="flex-1 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white text-xs sm:text-sm">
+                        <button type="submit" class="bg-primary text-white px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-lg hover:bg-primary/90 transition-colors flex-shrink-0">
+                            <span class="material-symbols-outlined text-base sm:text-xl">send</span>
                         </button>
                     </div>
                 </form>
@@ -289,99 +289,102 @@
 
 {{-- Video Meeting Link Section - Below Messages --}}
 @if($session->status === 'active')
-<div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
+<div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
     <!-- Contact Information Section -->
     <div class="lg:col-span-1">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg">
-            <div class="p-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-t-2xl">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                    <span class="material-symbols-outlined text-green-600">contact_phone</span>
-                    My Contact Info
+        <div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg">
+            <div class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-t-xl sm:rounded-t-2xl">
+                <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-1.5 sm:gap-2">
+                    <span class="material-symbols-outlined text-base sm:text-xl text-green-600">contact_phone</span>
+                    <span class="text-sm sm:text-lg">My Contact Info</span>
                 </h3>
-                <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Enter your contact details to share with the student</p>
+                <p class="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-0.5 sm:mt-1">Enter your contact details to share with the student</p>
             </div>
             
-            <div class="p-4 space-y-4">
+            <div class="p-3 sm:p-4 space-y-3 sm:space-y-4">
                 <!-- Phone Number -->
-                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="material-symbols-outlined text-blue-600 text-sm">phone</span>
-                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Phone Number</span>
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-2 sm:p-3">
+                    <div class="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
+                        <span class="material-symbols-outlined text-blue-600 text-xs sm:text-sm">phone</span>
+                        <span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Phone Number</span>
                     </div>
-                    <div class="flex items-center gap-2 mb-2">
+                    <div class="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
                         <input type="text" id="counselor-phone" placeholder="Enter your phone number..." 
                                value="{{ auth()->user()->phone ?? '' }}"
-                               class="flex-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm">
+                               class="flex-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-xs sm:text-sm min-w-0">
                         <button onclick="saveContactField('phone')" 
-                                class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs">
+                                class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0">
                             Save
                         </button>
                     </div>
-                    <div class="flex items-center gap-2">
+                    <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
                         <button onclick="copyContactField('counselor-phone', 'Phone number')" 
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-xs">
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-[10px] sm:text-xs flex-shrink-0">
                             Copy
                         </button>
                         <button onclick="shareContactField('phone', 'counselor-phone')" 
-                                class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
+                                class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-[10px] sm:text-xs flex items-center gap-1 flex-shrink-0">
                             <span class="material-symbols-outlined text-xs">share</span>
-                            Share in Chat
+                            <span class="hidden xs:inline">Share in Chat</span>
+                            <span class="xs:hidden">Share</span>
                         </button>
                     </div>
                 </div>
                 
                 <!-- WhatsApp -->
-                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="material-symbols-outlined text-green-600 text-sm">chat</span>
-                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">WhatsApp</span>
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-2 sm:p-3">
+                    <div class="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
+                        <span class="material-symbols-outlined text-green-600 text-xs sm:text-sm">chat</span>
+                        <span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">WhatsApp</span>
                     </div>
-                    <div class="flex items-center gap-2 mb-2">
+                    <div class="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
                         <input type="text" id="counselor-whatsapp" placeholder="Enter your WhatsApp number..." 
                                value="{{ auth()->user()->whatsapp_number ?? auth()->user()->phone ?? '' }}"
-                               class="flex-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm">
+                               class="flex-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-xs sm:text-sm min-w-0">
                         <button onclick="saveContactField('whatsapp')" 
-                                class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs">
+                                class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0">
                             Save
                         </button>
                     </div>
-                    <div class="flex items-center gap-2">
+                    <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
                         <button onclick="copyContactField('counselor-whatsapp', 'WhatsApp number')" 
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-xs">
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-[10px] sm:text-xs flex-shrink-0">
                             Copy
                         </button>
                         <button onclick="shareContactField('whatsapp', 'counselor-whatsapp')" 
-                                class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
+                                class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-[10px] sm:text-xs flex items-center gap-1 flex-shrink-0">
                             <span class="material-symbols-outlined text-xs">share</span>
-                            Share in Chat
+                            <span class="hidden xs:inline">Share in Chat</span>
+                            <span class="xs:hidden">Share</span>
                         </button>
                     </div>
                 </div>
                 
                 <!-- Email -->
-                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="material-symbols-outlined text-blue-600 text-sm">email</span>
-                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Email</span>
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-2 sm:p-3">
+                    <div class="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
+                        <span class="material-symbols-outlined text-blue-600 text-xs sm:text-sm">email</span>
+                        <span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">Email</span>
                     </div>
-                    <div class="flex items-center gap-2 mb-2">
+                    <div class="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
                         <input type="email" id="counselor-email" placeholder="Enter your email address..." 
                                value="{{ auth()->user()->counselor_email ?? auth()->user()->email ?? '' }}"
-                               class="flex-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm">
+                               class="flex-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-xs sm:text-sm min-w-0">
                         <button onclick="saveContactField('email')" 
-                                class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs">
+                                class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-[10px] sm:text-xs whitespace-nowrap flex-shrink-0">
                             Save
                         </button>
                     </div>
-                    <div class="flex items-center gap-2">
+                    <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
                         <button onclick="copyContactField('counselor-email', 'Email address')" 
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-xs">
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-[10px] sm:text-xs flex-shrink-0">
                             Copy
                         </button>
                         <button onclick="shareContactField('email', 'counselor-email')" 
-                                class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
+                                class="bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-[10px] sm:text-xs flex items-center gap-1 flex-shrink-0">
                             <span class="material-symbols-outlined text-xs">share</span>
-                            Share in Chat
+                            <span class="hidden xs:inline">Share in Chat</span>
+                            <span class="xs:hidden">Share</span>
                         </button>
                     </div>
                 </div>
@@ -423,16 +426,16 @@
     
     <!-- Video Meeting Link Section -->
     <div class="lg:col-span-1">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg">
-            <div class="p-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-t-2xl">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                    <span class="material-symbols-outlined text-blue-600">videocam</span>
-                    Video Meeting
+        <div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg">
+            <div class="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-t-xl sm:rounded-t-2xl">
+                <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-1.5 sm:gap-2">
+                    <span class="material-symbols-outlined text-base sm:text-xl text-blue-600">videocam</span>
+                    <span class="text-sm sm:text-lg">Video Meeting</span>
                 </h3>
-                <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Set up and share video meeting details</p>
+                <p class="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-0.5 sm:mt-1">Set up and share video meeting details</p>
             </div>
 
-            <div class="p-4 space-y-4">
+            <div class="p-3 sm:p-4 space-y-3 sm:space-y-4">
                 <!-- Multiple Meeting Links -->
                 <div id="meeting-links-container">
                     @if($session->meeting_link)
@@ -490,17 +493,17 @@
                 
                 <!-- Add New Meeting Link Button -->
                 <button onclick="openMeetingLinkModal()" 
-                        class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg font-semibold transition-all flex items-center justify-center gap-2">
-                    <span class="material-symbols-outlined">add</span>
-                    Add Meeting Link
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-sm sm:text-base font-semibold transition-all flex items-center justify-center gap-1.5 sm:gap-2">
+                    <span class="material-symbols-outlined text-base sm:text-xl">add</span>
+                    <span>Add Meeting Link</span>
                 </button>
                 
-                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-                    <div class="flex items-start gap-2">
-                        <span class="material-symbols-outlined text-sm text-gray-600 dark:text-gray-400 mt-0.5">info</span>
-                        <div class="text-sm text-gray-600 dark:text-gray-400">
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-2 sm:p-3">
+                    <div class="flex items-start gap-1.5 sm:gap-2">
+                        <span class="material-symbols-outlined text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-0.5">info</span>
+                        <div class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                             <p class="font-medium mb-1">Supported Platforms:</p>
-                            <ul class="text-xs space-y-1">
+                            <ul class="text-[10px] sm:text-xs space-y-0.5 sm:space-y-1">
                                 <li>• Zoom: Create meeting in your Zoom account</li>
                                 <li>• Google Meet: Create meeting in Google Calendar</li>
                                 <li>• Microsoft Teams: Create meeting in Teams</li>
@@ -517,22 +520,81 @@
 
 <!-- Notes Section - Full Width -->
 @if($session->status !== 'pending')
-<div class="mt-4 px-4 py-4 mb-8">
-    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-        <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                <span class="material-symbols-outlined text-lg text-primary">note_alt</span>
-                Session Notes
+<div class="mt-4 px-2 sm:px-4 py-3 sm:py-4 mb-6 sm:mb-8">
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-3 sm:p-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-0 mb-3 sm:mb-4">
+            <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-1.5 sm:gap-2">
+                <span class="material-symbols-outlined text-base sm:text-lg text-primary">note_alt</span>
+                <span>Session Notes</span>
             </h3>
             <button onclick="openNoteModal()" 
-                class="bg-primary text-white px-3 py-2 rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2 text-sm">
+                class="bg-primary text-white px-3 py-2 rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-1.5 sm:gap-2 text-xs sm:text-sm w-full sm:w-auto">
                 <span class="material-symbols-outlined text-sm">add</span>
-                Add Note
+                <span>Add Note</span>
             </button>
         </div>
 
         @if($session->notes->count() > 0)
-        <div class="overflow-x-auto">
+        <!-- Mobile Grid View (< md) -->
+        <div class="md:hidden space-y-3">
+            @foreach($session->notes as $note)
+            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 border border-gray-200 dark:border-gray-600">
+                <div class="flex items-start justify-between mb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="px-2 py-0.5 text-[10px] font-medium rounded-full whitespace-nowrap
+                            @if($note->type === 'progress') bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300
+                            @elseif($note->type === 'observation') bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300
+                            @elseif($note->type === 'reminder') bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300
+                            @else bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-300
+                            @endif">
+                            {{ ucfirst($note->type) }}
+                        </span>
+                        @if($note->is_private)
+                            <span class="inline-flex items-center gap-0.5 text-[10px] text-amber-600 dark:text-amber-400">
+                                <span class="material-symbols-outlined text-xs">lock</span>
+                            </span>
+                        @else
+                            <span class="inline-flex items-center gap-0.5 text-[10px] text-green-600 dark:text-green-400">
+                                <span class="material-symbols-outlined text-xs">public</span>
+                            </span>
+                        @endif
+                    </div>
+                    <form action="{{ route('counselor.sessions.notes.delete', [$session, $note->id]) }}" method="POST" 
+                        onsubmit="return confirm('Delete this note?')" class="inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 p-1 rounded transition-colors">
+                            <span class="material-symbols-outlined text-sm">delete</span>
+                        </button>
+                    </form>
+                </div>
+                
+                @if($note->title)
+                    <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-1">{{ $note->title }}</h4>
+                @endif
+                
+                <div class="text-xs text-gray-700 dark:text-gray-300 mb-2">
+                    <p class="line-clamp-3">{{ $note->content }}</p>
+                    @if(strlen($note->content) > 150)
+                        <button onclick="toggleNoteContent({{ $note->id }})" class="text-primary hover:underline text-[10px] mt-1">
+                            Show more
+                        </button>
+                        <div id="note-content-{{ $note->id }}" class="hidden mt-2 p-2 bg-white dark:bg-gray-600 rounded text-[10px]">
+                            {{ $note->content }}
+                        </div>
+                    @endif
+                </div>
+                
+                <div class="flex items-center justify-between text-[10px] text-gray-500 dark:text-gray-400">
+                    <span>{{ $note->created_at->format('M d, Y') }}</span>
+                    <span>{{ $note->created_at->format('h:i A') }}</span>
+                </div>
+            </div>
+            @endforeach
+        </div>
+
+        <!-- Desktop Table View (>= md) -->
+        <div class="hidden md:block overflow-x-auto">
             <table class="w-full border-collapse">
                 <thead>
                     <tr class="bg-gray-50 dark:bg-gray-700">
@@ -548,7 +610,7 @@
                     @foreach($session->notes as $note)
                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                         <td class="p-3 border-b border-gray-100 dark:border-gray-700">
-                            <span class="px-2 py-1 text-xs font-medium rounded-full
+                            <span class="px-2 py-1 text-xs font-medium rounded-full whitespace-nowrap
                                 @if($note->type === 'progress') bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300
                                 @elseif($note->type === 'observation') bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300
                                 @elseif($note->type === 'reminder') bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300
@@ -628,63 +690,63 @@
 @endif
 
 <!-- Meeting Link Modal -->
-<div id="meetingLinkModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Add Meeting Link</h3>
+<div id="meetingLinkModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3 sm:p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">Add Meeting Link</h3>
         
         <form action="{{ route('counselor.sessions.update-meeting-link', $session) }}" method="POST">
             @csrf
-            <div class="space-y-4">
+            <div class="space-y-3 sm:space-y-4">
                 <!-- Method Selection -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Select Communication Method</label>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 sm:mb-3">Select Communication Method</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                         <label class="relative cursor-pointer">
                             <input type="radio" name="contact_method" value="zoom" class="sr-only peer" {{ ($session->preferred_method === 'zoom') ? 'checked' : '' }}>
-                            <div class="bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg p-3 peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 transition-all">
-                                <div class="flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-blue-600">videocam</span>
-                                    <span class="font-medium text-gray-900 dark:text-white">Zoom</span>
+                            <div class="bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg p-2 sm:p-3 peer-checked:border-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 transition-all">
+                                <div class="flex items-center gap-1.5 sm:gap-2">
+                                    <span class="material-symbols-outlined text-base sm:text-xl text-blue-600">videocam</span>
+                                    <span class="text-sm sm:text-base font-medium text-gray-900 dark:text-white">Zoom</span>
                                 </div>
                             </div>
                         </label>
 
                         <label class="relative cursor-pointer">
                             <input type="radio" name="contact_method" value="google_meet" class="sr-only peer" {{ ($session->preferred_method === 'google_meet') ? 'checked' : '' }}>
-                            <div class="bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg p-3 peer-checked:border-green-500 peer-checked:bg-green-50 dark:peer-checked:bg-green-900/20 transition-all">
-                                <div class="flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-green-600">video_call</span>
-                                    <span class="font-medium text-gray-900 dark:text-white">Google Meet</span>
+                            <div class="bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg p-2 sm:p-3 peer-checked:border-green-500 peer-checked:bg-green-50 dark:peer-checked:bg-green-900/20 transition-all">
+                                <div class="flex items-center gap-1.5 sm:gap-2">
+                                    <span class="material-symbols-outlined text-base sm:text-xl text-green-600">video_call</span>
+                                    <span class="text-sm sm:text-base font-medium text-gray-900 dark:text-white">Google Meet</span>
                                 </div>
                             </div>
                         </label>
 
                         <label class="relative cursor-pointer">
                             <input type="radio" name="contact_method" value="whatsapp" class="sr-only peer" {{ ($session->preferred_method === 'whatsapp') ? 'checked' : '' }}>
-                            <div class="bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg p-3 peer-checked:border-emerald-500 peer-checked:bg-emerald-50 dark:peer-checked:bg-emerald-900/20 transition-all">
-                                <div class="flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-emerald-600">chat</span>
-                                    <span class="font-medium text-gray-900 dark:text-white">WhatsApp</span>
+                            <div class="bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg p-2 sm:p-3 peer-checked:border-emerald-500 peer-checked:bg-emerald-50 dark:peer-checked:bg-emerald-900/20 transition-all">
+                                <div class="flex items-center gap-1.5 sm:gap-2">
+                                    <span class="material-symbols-outlined text-base sm:text-xl text-emerald-600">chat</span>
+                                    <span class="text-sm sm:text-base font-medium text-gray-900 dark:text-white">WhatsApp</span>
                                 </div>
                             </div>
                         </label>
 
                         <label class="relative cursor-pointer">
                             <input type="radio" name="contact_method" value="phone_call" class="sr-only peer" {{ ($session->preferred_method === 'phone_call') ? 'checked' : '' }}>
-                            <div class="bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg p-3 peer-checked:border-purple-500 peer-checked:bg-purple-50 dark:peer-checked:bg-purple-900/20 transition-all">
-                                <div class="flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-purple-600">call</span>
-                                    <span class="font-medium text-gray-900 dark:text-white">Phone Call</span>
+                            <div class="bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg p-2 sm:p-3 peer-checked:border-purple-500 peer-checked:bg-purple-50 dark:peer-checked:bg-purple-900/20 transition-all">
+                                <div class="flex items-center gap-1.5 sm:gap-2">
+                                    <span class="material-symbols-outlined text-base sm:text-xl text-purple-600">call</span>
+                                    <span class="text-sm sm:text-base font-medium text-gray-900 dark:text-white">Phone Call</span>
                                 </div>
                             </div>
                         </label>
 
-                        <label class="relative cursor-pointer md:col-span-2">
+                        <label class="relative cursor-pointer sm:col-span-2">
                             <input type="radio" name="contact_method" value="physical" class="sr-only peer" {{ ($session->preferred_method === 'physical') ? 'checked' : '' }}>
-                            <div class="bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg p-3 peer-checked:border-orange-500 peer-checked:bg-orange-50 dark:peer-checked:bg-orange-900/20 transition-all">
-                                <div class="flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-orange-600">location_on</span>
-                                    <span class="font-medium text-gray-900 dark:text-white">Physical (In-Person)</span>
+                            <div class="bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 rounded-lg p-2 sm:p-3 peer-checked:border-orange-500 peer-checked:bg-orange-50 dark:peer-checked:bg-orange-900/20 transition-all">
+                                <div class="flex items-center gap-1.5 sm:gap-2">
+                                    <span class="material-symbols-outlined text-base sm:text-xl text-orange-600">location_on</span>
+                                    <span class="text-sm sm:text-base font-medium text-gray-900 dark:text-white">Physical (In-Person)</span>
                                 </div>
                             </div>
                         </label>
@@ -1552,6 +1614,13 @@ function getScrollbarWidth() {
     overflow: hidden;
 }
 
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
 /* Ensure fullscreen chat modal covers entire viewport */
 #fullscreenChatModal {
     position: fixed !important;
@@ -1570,6 +1639,24 @@ body.fullscreen-chat-active {
     overflow: hidden !important;
     margin: 0 !important;
     padding: 0 !important;
+}
+
+/* Custom breakpoint for extra small screens */
+@media (min-width: 475px) {
+    .xs\:inline {
+        display: inline;
+    }
+    .xs\:hidden {
+        display: none;
+    }
+}
+
+/* Improve mobile text readability */
+@media (max-width: 640px) {
+    .message-content {
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
 }
 </style>
 
@@ -1640,14 +1727,14 @@ body.fullscreen-chat-active {
 <!-- Fullscreen Chat Modal -->
 <div id="fullscreenChatModal" class="hidden fixed inset-0 bg-white dark:bg-gray-900 z-[9999] flex flex-col" style="top: 0; left: 0; right: 0; bottom: 0; margin: 0; padding: 0;">
     <!-- Header -->
-    <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                    <span class="material-symbols-outlined text-xl">chat</span>
-                    Chat with {{ $session->student->name }}
+    <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-3 sm:p-4">
+        <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                <h2 class="text-base sm:text-xl font-bold text-gray-900 dark:text-white flex items-center gap-1.5 sm:gap-2 truncate">
+                    <span class="material-symbols-outlined text-lg sm:text-xl flex-shrink-0">chat</span>
+                    <span class="truncate">Chat with {{ $session->student->name }}</span>
                 </h2>
-                <span class="px-3 py-1 text-xs font-medium rounded-full
+                <span class="px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium rounded-full whitespace-nowrap flex-shrink-0
                     @if($session->status === 'pending') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
                     @elseif($session->status === 'active') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
                     @elseif($session->status === 'completed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
@@ -1657,32 +1744,32 @@ body.fullscreen-chat-active {
                 </span>
             </div>
             <button onclick="minimizeChat()" 
-                    class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2">
+                    class="bg-gray-500 hover:bg-gray-600 text-white px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1 sm:gap-2 flex-shrink-0">
                 <span class="material-symbols-outlined text-sm">fullscreen_exit</span>
-                Minimize
+                <span class="hidden xs:inline">Minimize</span>
             </button>
         </div>
     </div>
 
     <!-- Chat Messages -->
-    <div id="fullscreen-chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 dark:bg-gray-900">
+    <div id="fullscreen-chat-messages" class="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 bg-gray-50 dark:bg-gray-900">
         @forelse($session->messages->sortBy('created_at') as $message)
         <div class="flex {{ $message->sender_id === auth()->id() ? 'justify-end' : 'justify-start' }}">
-            <div class="max-w-[70%]">
-                <div class="flex items-center gap-2 mb-1 {{ $message->sender_id === auth()->id() ? 'justify-end' : 'justify-start' }}">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
+            <div class="max-w-[85%] sm:max-w-[75%] md:max-w-[70%]">
+                <div class="flex items-center gap-1 sm:gap-2 mb-1 {{ $message->sender_id === auth()->id() ? 'justify-end' : 'justify-start' }}">
+                    <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                         {{ $message->sender->name }}
                     </p>
-                    <p class="text-sm text-gray-400">
+                    <p class="text-xs sm:text-sm text-gray-400">
                         {{ $message->created_at->format('h:i A') }}
                     </p>
                 </div>
-                <div class="rounded-xl p-4 {{ $message->sender_id === auth()->id() ? 'bg-primary text-white' : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm' }}">
-                    <div class="text-sm message-content" data-sender="{{ $message->sender_id === auth()->id() ? 'self' : 'other' }}">
+                <div class="rounded-lg sm:rounded-xl p-3 sm:p-4 {{ $message->sender_id === auth()->id() ? 'bg-primary text-white' : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm' }}">
+                    <div class="text-sm sm:text-base message-content break-words" data-sender="{{ $message->sender_id === auth()->id() ? 'self' : 'other' }}">
                         {!! nl2br(e($message->message)) !!}
                     </div>
                     @if($message->attachment_path)
-                    <a href="{{ asset('storage/' . $message->attachment_path) }}" target="_blank" class="text-sm underline mt-2 block">
+                    <a href="{{ asset('storage/' . $message->attachment_path) }}" target="_blank" class="text-xs sm:text-sm underline mt-1.5 sm:mt-2 block">
                         View Attachment
                     </a>
                     @endif
@@ -1691,12 +1778,12 @@ body.fullscreen-chat-active {
         </div>
         @empty
         <div class="flex items-center justify-center h-full">
-            <div class="text-center">
-                <div class="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span class="material-symbols-outlined text-4xl text-gray-400">chat</span>
+            <div class="text-center px-4">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                    <span class="material-symbols-outlined text-3xl sm:text-4xl text-gray-400">chat</span>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">No messages yet</h3>
-                <p class="text-gray-500 dark:text-gray-400">
+                <h3 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-1 sm:mb-2">No messages yet</h3>
+                <p class="text-sm sm:text-base text-gray-500 dark:text-gray-400">
                     @if($session->status === 'pending')
                         Accept this session to start communicating.
                     @else
@@ -1710,37 +1797,37 @@ body.fullscreen-chat-active {
 
     <!-- Message Input -->
     @if($session->status === 'pending')
-    <div class="p-4 border-t border-gray-200 dark:border-gray-700 bg-yellow-50 dark:bg-yellow-900/20">
-        <div class="flex items-center gap-3 text-yellow-700 dark:text-yellow-300">
-            <span class="material-symbols-outlined">info</span>
-            <p class="font-medium">Accept this session to start messaging.</p>
+    <div class="p-3 sm:p-4 border-t border-gray-200 dark:border-gray-700 bg-yellow-50 dark:bg-yellow-900/20">
+        <div class="flex items-center gap-2 sm:gap-3 text-yellow-700 dark:text-yellow-300">
+            <span class="material-symbols-outlined text-base sm:text-xl flex-shrink-0">info</span>
+            <p class="text-sm sm:text-base font-medium">Accept this session to start messaging.</p>
         </div>
     </div>
     @elseif($session->status === 'active')
-    <div class="p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+    <div class="p-3 sm:p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
         <form action="{{ route('counselor.sessions.message', $session) }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <div class="flex gap-3">
+            <div class="flex gap-2 sm:gap-3">
                 <input type="text" name="message" required placeholder="Type your message..." 
-                    class="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white text-base">
-                <button type="submit" class="bg-primary text-white px-6 py-3 rounded-xl hover:bg-primary/90 transition-colors">
-                    <span class="material-symbols-outlined">send</span>
+                    class="flex-1 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 dark:border-gray-600 rounded-lg sm:rounded-xl focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white text-sm sm:text-base">
+                <button type="submit" class="bg-primary text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl hover:bg-primary/90 transition-colors flex-shrink-0">
+                    <span class="material-symbols-outlined text-xl sm:text-2xl">send</span>
                 </button>
             </div>
         </form>
     </div>
     @elseif($session->status === 'completed')
-    <div class="p-4 border-t border-gray-200 dark:border-gray-700 bg-green-50 dark:bg-green-900/20">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3 text-green-700 dark:text-green-300">
-                <span class="material-symbols-outlined">check_circle</span>
-                <p class="text-sm font-medium">This session has been completed.</p>
+    <div class="p-3 sm:p-4 border-t border-gray-200 dark:border-gray-700 bg-green-50 dark:bg-green-900/20">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div class="flex items-center gap-2 sm:gap-3 text-green-700 dark:text-green-300">
+                <span class="material-symbols-outlined text-base sm:text-xl flex-shrink-0">check_circle</span>
+                <p class="text-xs sm:text-sm font-medium">This session has been completed.</p>
             </div>
             @if(!$session->hasFeedbackFrom(auth()->id(), 'counselor_to_student'))
             <button onclick="openFeedbackModal({{ $session->id }})" 
-                class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-4 py-2 rounded-lg font-semibold hover:from-emerald-600 hover:to-teal-700 transition-all flex items-center gap-2 text-sm">
+                class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold hover:from-emerald-600 hover:to-teal-700 transition-all flex items-center gap-1.5 sm:gap-2 w-full sm:w-auto justify-center">
                 <span class="material-symbols-outlined text-sm">rate_review</span>
-                Leave Feedback
+                <span>Leave Feedback</span>
             </button>
             @endif
         </div>
