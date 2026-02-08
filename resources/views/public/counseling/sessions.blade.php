@@ -7,7 +7,7 @@
 <section class="relative overflow-hidden h-screen">
     <!-- Background Image -->
     <div class="absolute inset-0">
-        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2087&q=80" 
+        <img src="{{ asset('images/counselling-mysessions-hero.avif') }}" 
              alt="Counseling sessions" 
              class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-black/50"></div>
@@ -182,14 +182,14 @@
                     @php
                         $sessionImages = [
                             'individual' => [
-                                'pending' => 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                                'active' => 'https://images.unsplash.com/photo-1544027993-37dbfe43562a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                                'completed' => 'https://images.unsplash.com/photo-1519834785169-98be25ec3f84?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80'
+                                'pending' => asset('images/pending-individual-session.avif'),
+                                'active' => asset('images/active-individual-session.avif'),
+                                'completed' => asset('images/completed-individual-session.avif')
                             ],
                             'group' => [
-                                'pending' => 'https://images.unsplash.com/photo-1544027993-37dbfe43562a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-                                'active' => 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2088&q=80',
-                                'completed' => 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80'
+                                'pending' => asset('images/pending-group-session.avif'),
+                                'active' => asset('images/active-group-session.avif'),
+                                'completed' => asset('images/completed-group-session.avif')
                             ]
                         ];
                         

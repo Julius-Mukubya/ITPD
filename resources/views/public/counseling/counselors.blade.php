@@ -7,7 +7,7 @@
 <section class="relative overflow-hidden min-h-screen flex items-center">
     <!-- Background Image -->
     <div class="absolute inset-0">
-        <img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2087&q=80" 
+        <img src="{{ asset('images/counselling-counsellors-hero.avif') }}" 
              alt="Professional counselors and therapists" 
              class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-black/50"></div>

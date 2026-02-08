@@ -7,7 +7,7 @@
 <section class="relative overflow-hidden min-h-screen flex items-center">
     <!-- Background Image -->
     <div class="absolute inset-0 bg-gray-600">
-        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+        <img src="{{ asset('images/assessments-hero.avif') }}" 
              alt="Mental health assessment and self-reflection" 
              class="w-full h-full object-cover"
              loading="eager">

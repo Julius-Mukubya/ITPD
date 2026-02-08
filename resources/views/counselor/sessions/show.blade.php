@@ -3,12 +3,12 @@
 @section('title', 'Session Details - Counselor')
 
 @section('content')
-<div class="mb-6 flex items-center justify-between">
+<div class="mb-4 sm:mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
     <div>
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Session with {{ $session->student->name }}</h1>
-        <p class="text-sm text-gray-500 dark:text-gray-400">{{ ucfirst($session->session_type) }} • {{ ucfirst($session->status) }} • {{ $session->created_at->format('M d, Y') }}</p>
+        <h1 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Session with {{ $session->student->name }}</h1>
+        <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{{ ucfirst($session->session_type) }} • {{ ucfirst($session->status) }} • {{ $session->created_at->format('M d, Y') }}</p>
     </div>
-    <a href="{{ route('counselor.sessions.index') }}" class="inline-flex items-center gap-2 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+    <a href="{{ route('counselor.sessions.index') }}" class="inline-flex items-center justify-center gap-2 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors text-sm w-full sm:w-auto">
         <span class="material-symbols-outlined text-sm">arrow_back</span>
         Back to Sessions
     </a>
@@ -16,17 +16,17 @@
 
 @if($session->status === 'pending')
 <!-- Pending Session Alert -->
-<div class="bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border-2 border-yellow-200 dark:border-yellow-800 rounded-2xl p-6 mb-6">
-    <div class="flex items-start gap-4">
+<div class="bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border-2 border-yellow-200 dark:border-yellow-800 rounded-2xl p-4 sm:p-6 mb-4 sm:mb-6">
+    <div class="flex flex-col sm:flex-row sm:items-start gap-4">
         <div class="w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl flex items-center justify-center flex-shrink-0">
             <span class="material-symbols-outlined text-2xl text-yellow-600 dark:text-yellow-400">pending_actions</span>
         </div>
         <div class="flex-1">
             <h3 class="text-lg font-bold text-yellow-900 dark:text-yellow-100 mb-2">New Session Request</h3>
-            <p class="text-yellow-800 dark:text-yellow-200 mb-4">
+            <p class="text-yellow-800 dark:text-yellow-200 mb-4 text-sm sm:text-base">
                 Please review the session details below. If you can accommodate this request, click "Accept Session" to begin working with the student.
             </p>
-            <div class="flex items-center gap-4 text-sm">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm">
                 <div class="flex items-center gap-2 text-yellow-700 dark:text-yellow-300">
                     <span class="material-symbols-outlined text-sm">schedule</span>
                     <span>Requested {{ $session->created_at->diffForHumans() }}</span>
@@ -44,8 +44,8 @@
 <!-- Session Info and Messages Row -->
 <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-4">
     <!-- Session Info Sidebar -->
-    <div class="lg:col-span-1">
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 flex flex-col" style="height: calc(100vh - 12rem);">
+    <div class="lg:col-span-1 order-2 lg:order-1">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 flex flex-col h-auto lg:h-[calc(100vh-12rem)]">
             <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
                 <span class="material-symbols-outlined text-lg">info</span>
                 Session Info
@@ -203,9 +203,9 @@
     </div>
 
     <!-- Chat Area -->
-    <div class="lg:col-span-3">
-        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 flex flex-col" style="height: calc(100vh - 12rem);">
-            <div class="p-3 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-900/50 dark:to-gray-800/50">
+    <div class="lg:col-span-3 order-1 lg:order-2">
+        <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 flex flex-col h-96 lg:h-[calc(100vh-12rem)]">
+            <div class="p-3 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-900/50 dark:to-gray-800/50 rounded-t-xl">
                 <div class="flex items-center justify-between">
                     <h3 class="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                         <span class="material-symbols-outlined text-lg">chat</span>
@@ -214,7 +214,7 @@
                     <button onclick="maximizeChat()" 
                             class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5">
                         <span class="material-symbols-outlined text-sm">fullscreen</span>
-                        Maximize
+                        <span class="hidden sm:inline">Maximize</span>
                     </button>
                 </div>
             </div>
@@ -222,7 +222,7 @@
             <div id="chat-messages" class="flex-1 overflow-y-auto p-3 space-y-3">
                 @forelse($session->messages->sortBy('created_at') as $message)
                 <div class="flex {{ $message->sender_id === auth()->id() ? 'justify-end' : 'justify-start' }}">
-                    <div class="max-w-[75%]">
+                    <div class="max-w-[85%] sm:max-w-[75%]">
                         <div class="flex items-center gap-1.5 mb-0.5 {{ $message->sender_id === auth()->id() ? 'justify-end' : 'justify-start' }}">
                             <p class="text-xs text-gray-500 dark:text-gray-400">
                                 {{ $message->sender->name }}
@@ -263,20 +263,20 @@
             </div>
 
             @if($session->status === 'pending')
-            <div class="p-3 border-t border-gray-200 dark:border-gray-700 bg-yellow-50 dark:bg-yellow-900/20">
+            <div class="p-3 border-t border-gray-200 dark:border-gray-700 bg-yellow-50 dark:bg-yellow-900/20 rounded-b-xl">
                 <div class="flex items-center gap-2 text-yellow-700 dark:text-yellow-300">
                     <span class="material-symbols-outlined text-sm">info</span>
                     <p class="text-xs font-medium">Accept this session to start messaging.</p>
                 </div>
             </div>
             @elseif($session->status === 'active')
-            <div class="p-3 border-t border-gray-200 dark:border-gray-700">
+            <div class="p-3 border-t border-gray-200 dark:border-gray-700 rounded-b-xl">
                 <form action="{{ route('counselor.sessions.message', $session) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="flex gap-2">
                         <input type="text" name="message" required placeholder="Type your message..." 
-                            class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
-                        <button type="submit" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                            class="flex-1 px-3 sm:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white text-sm">
+                        <button type="submit" class="bg-primary text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
                             <span class="material-symbols-outlined">send</span>
                         </button>
                     </div>

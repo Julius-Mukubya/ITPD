@@ -258,8 +258,8 @@
         <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
             <!-- Background Image -->
             <div class="relative h-48 bg-gradient-to-br from-emerald-400 via-teal-500 to-blue-600 overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                     alt="Mountain landscape" 
+                <img src="{{ asset('images/' . ($session->session_type === 'group' ? 'pending-group-session.avif' : 'pending-individual-session.avif')) }}" 
+                     alt="{{ ucfirst($session->session_type) }} session" 
                      class="w-full h-full object-cover opacity-80">
                 
                 <!-- Badges -->
@@ -314,8 +314,8 @@
         <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
             <!-- Background Image -->
             <div class="relative h-48 bg-gradient-to-br from-green-400 via-emerald-500 to-teal-600 overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                     alt="Forest landscape" 
+                <img src="{{ asset('images/' . ($session->session_type === 'group' ? 'active-group-session.avif' : 'active-individual-session.avif')) }}" 
+                     alt="{{ ucfirst($session->session_type) }} session" 
                      class="w-full h-full object-cover opacity-80">
                 
                 <!-- Badges -->
@@ -370,8 +370,8 @@
         <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
             <!-- Background Image -->
             <div class="relative h-48 bg-gradient-to-br from-blue-400 via-indigo-500 to-purple-600 overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                     alt="Peaceful lake landscape" 
+                <img src="{{ asset('images/' . ($session->session_type === 'group' ? 'completed-group-session.avif' : 'completed-individual-session.avif')) }}" 
+                     alt="{{ ucfirst($session->session_type) }} session" 
                      class="w-full h-full object-cover opacity-80">
                 
                 <!-- Badges -->

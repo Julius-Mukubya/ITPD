@@ -201,6 +201,7 @@ Route::middleware([
     // Notification Routes
     Route::prefix('notifications')->name('notifications.')->group(function () {
         Route::get('/', [NotificationController::class, 'index'])->name('index');
+        Route::get('/dropdown', [NotificationController::class, 'dropdown'])->name('dropdown');
         Route::patch('/{id}/read', [NotificationController::class, 'markAsRead'])->name('read');
         Route::patch('/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('mark-all-read');
         Route::post('/mark-message-read', [NotificationController::class, 'markMessageAsRead'])->name('mark-message-read');
@@ -408,6 +409,10 @@ Route::middleware([
     // Admin Routes
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        
+        // Search functionality
+        Route::get('/search', [\App\Http\Controllers\Admin\SearchController::class, 'search'])->name('search');
+        Route::get('/search/suggestions', [\App\Http\Controllers\Admin\SearchController::class, 'suggestions'])->name('search.suggestions');
         
         // User Management (Admin only)
         Route::resource('users', AdminUserController::class);

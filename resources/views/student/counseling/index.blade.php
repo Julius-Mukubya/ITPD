@@ -281,21 +281,21 @@
 </div>
 @else
 <!-- Empty State -->
-<div class="bg-gradient-to-br from-white to-gray-50/30 dark:from-gray-800 dark:to-gray-950/20 rounded-2xl border border-gray-200 dark:border-gray-700 p-12 text-center shadow-lg">
-    <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-900/30 dark:to-teal-900/30 flex items-center justify-center">
-        <span class="material-symbols-outlined text-5xl text-emerald-600 dark:text-emerald-400">support_agent</span>
+<div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-8 sm:p-12 text-center shadow-sm">
+    <div class="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 flex items-center justify-center">
+        <span class="material-symbols-outlined text-4xl sm:text-5xl text-emerald-600 dark:text-emerald-400">support_agent</span>
     </div>
-    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Ready to Start Your Journey?</h3>
-    <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
+    <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3">Ready to Start Your Journey?</h3>
+    <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
         You haven't requested any counseling sessions yet. Our professional counselors are here to support you through any challenges you're facing.
     </p>
     <div class="flex flex-col sm:flex-row gap-3 justify-center">
-        <a href="{{ route('public.counseling.sessions') }}" class="bg-primary text-white px-8 py-3 rounded-xl font-semibold hover:opacity-90 transition-all flex items-center gap-2 shadow-lg">
-            <span class="material-symbols-outlined">add</span>
+        <a href="{{ route('public.counseling.sessions') }}" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-emerald-500/30 transition-all flex items-center justify-center gap-2 text-sm sm:text-base">
+            <span class="material-symbols-outlined text-lg sm:text-xl">add</span>
             Request Your First Session
         </a>
-        <button onclick="document.getElementById('infoModal').classList.remove('hidden')" class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-8 py-3 rounded-xl font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-all flex items-center gap-2">
-            <span class="material-symbols-outlined">info</span>
+        <button onclick="document.getElementById('infoModal').classList.remove('hidden')" class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-all flex items-center justify-center gap-2 text-sm sm:text-base">
+            <span class="material-symbols-outlined text-lg sm:text-xl">info</span>
             Learn More
         </button>
     </div>

@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'WellPath - Admin Dashboard')</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -51,20 +52,64 @@
             </button>
             
             <!-- Search Bar -->
-            <div class="flex-1 relative">
+            <div class="flex-1 relative" id="mobileSearchContainer">
                 <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-lg">search</span>
-                <input class="w-full pl-9 pr-3 py-2 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary focus:border-primary" placeholder="Search..." type="text"/>
+                <input 
+                    id="mobileSearchInput"
+                    class="w-full pl-9 pr-3 py-2 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary focus:border-primary" 
+                    placeholder="Search..." 
+                    type="text"
+                    autocomplete="off"
+                />
+                
+                <!-- Mobile Search Results -->
+                <div id="mobileSearchResults" class="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg max-h-96 overflow-y-auto z-50 hidden">
+                    <div id="mobileSearchResultsContent" class="p-2">
+                        <!-- Results will be populated here -->
+                    </div>
+                </div>
             </div>
 
             <!-- Notifications Icon -->
-            <a href="{{ route('notifications.index') }}" class="p-2 text-gray-700 dark:text-gray-300 rounded-full hover:bg-emerald-50 dark:hover:bg-emerald-900/20 relative">
-                <span class="material-symbols-outlined">notifications</span>
-                @if(auth()->user()->unreadNotificationsCount() > 0)
-                    <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                        {{ auth()->user()->unreadNotificationsCount() }}
-                    </span>
-                @endif
-            </a>
+            <div class="relative" id="mobileNotificationContainer">
+                <button 
+                    id="mobileNotificationBtn"
+                    class="p-2 text-gray-700 dark:text-gray-300 rounded-full hover:bg-emerald-50 dark:hover:bg-emerald-900/20 relative transition-colors"
+                >
+                    <span class="material-symbols-outlined">notifications</span>
+                    @if(auth()->user()->unreadNotificationsCount() > 0)
+                        <span id="mobileNotificationBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                            {{ auth()->user()->unreadNotificationsCount() }}
+                        </span>
+                    @endif
+                </button>
+                
+                <!-- Mobile Notification Dropdown -->
+                <div id="mobileNotificationDropdown" class="absolute right-0 top-full mt-2 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 opacity-0 invisible transition-all duration-200 z-50">
+                    <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Notifications</h3>
+                            <a href="{{ route('notifications.mark-all-read') }}" 
+                               class="text-xs text-primary hover:underline"
+                               onclick="event.preventDefault(); markAllAsRead();">
+                                Mark all read
+                            </a>
+                        </div>
+                    </div>
+                    <div id="mobileNotificationList" class="max-h-64 overflow-y-auto">
+                        <div class="p-4 text-center text-gray-500 dark:text-gray-400">
+                            <div class="animate-spin w-5 h-5 border-2 border-primary border-t-transparent rounded-full mx-auto mb-2"></div>
+                            Loading notifications...
+                        </div>
+                    </div>
+                    <div class="p-3 border-t border-gray-200 dark:border-gray-700">
+                        <a href="{{ route('notifications.index') }}" 
+                           class="block text-center text-sm text-primary hover:underline">
+                            View all notifications
+                        </a>
+                    </div>
+                </div>
+            </div>
 
             <!-- Profile Icon -->
             <div class="relative group">
@@ -192,20 +237,66 @@
             <!-- ToolBar -->
             <header class="sticky top-0 z-10 flex justify-between items-center gap-2 px-4 md:px-8 py-3 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 hidden lg:flex">
                 <div class="flex items-center gap-4">
-                    <div class="relative">
+                    <div class="relative" id="searchContainer">
                         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">search</span>
-                        <input class="w-full max-w-xs pl-10 pr-4 py-2 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary focus:border-primary" placeholder="Search..." type="text"/>
+                        <input 
+                            id="searchInput"
+                            class="w-full max-w-xs pl-10 pr-4 py-2 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary focus:border-primary" 
+                            placeholder="Search users, content, sessions..." 
+                            type="text"
+                            autocomplete="off"
+                        />
+                        
+                        <!-- Search Results Dropdown -->
+                        <div id="searchResults" class="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg max-h-96 overflow-y-auto z-50 hidden">
+                            <div id="searchResultsContent" class="p-2">
+                                <!-- Results will be populated here -->
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <a href="{{ route('notifications.index') }}" class="p-2 text-gray-700 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-white/10 relative">
-                        <span class="material-symbols-outlined">notifications</span>
-                        @if(auth()->user()->unreadNotificationsCount() > 0)
-                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                                {{ auth()->user()->unreadNotificationsCount() }}
-                            </span>
-                        @endif
-                    </a>
+                    <!-- Notification Dropdown -->
+                    <div class="relative" id="notificationContainer">
+                        <button 
+                            id="notificationBtn"
+                            class="p-2 text-gray-700 dark:text-gray-300 rounded-full hover:bg-gray-200 dark:hover:bg-white/10 relative transition-colors"
+                        >
+                            <span class="material-symbols-outlined">notifications</span>
+                            @if(auth()->user()->unreadNotificationsCount() > 0)
+                                <span id="notificationBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                                    {{ auth()->user()->unreadNotificationsCount() }}
+                                </span>
+                            @endif
+                        </button>
+                        
+                        <!-- Notification Dropdown -->
+                        <div id="notificationDropdown" class="absolute right-0 top-full mt-2 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 opacity-0 invisible transition-all duration-200 z-50">
+                            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-sm font-semibold text-gray-900 dark:text-white">Notifications</h3>
+                                    <a href="{{ route('notifications.mark-all-read') }}" 
+                                       class="text-xs text-primary hover:underline"
+                                       onclick="event.preventDefault(); markAllAsRead();">
+                                        Mark all read
+                                    </a>
+                                </div>
+                            </div>
+                            <div id="notificationList" class="max-h-64 overflow-y-auto">
+                                <div class="p-4 text-center text-gray-500 dark:text-gray-400">
+                                    <div class="animate-spin w-5 h-5 border-2 border-primary border-t-transparent rounded-full mx-auto mb-2"></div>
+                                    Loading notifications...
+                                </div>
+                            </div>
+                            <div class="p-3 border-t border-gray-200 dark:border-gray-700">
+                                <a href="{{ route('notifications.index') }}" 
+                                   class="block text-center text-sm text-primary hover:underline">
+                                    View all notifications
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="relative group">
                         <button class="flex items-center gap-2 hover:opacity-80 transition-opacity">
                             @if(auth()->user()->avatar)
@@ -348,6 +439,259 @@
         handleLogout('logoutForm');
         handleLogout('logoutFormDropdown');
         handleLogout('logoutFormMobile');
+
+        // Search functionality
+        let searchTimeout;
+        const searchInput = document.getElementById('searchInput');
+        const mobileSearchInput = document.getElementById('mobileSearchInput');
+        const searchResults = document.getElementById('searchResults');
+        const mobileSearchResults = document.getElementById('mobileSearchResults');
+        const searchResultsContent = document.getElementById('searchResultsContent');
+        const mobileSearchResultsContent = document.getElementById('mobileSearchResultsContent');
+
+        function performSearch(query, resultsContainer, contentContainer) {
+            if (query.length < 2) {
+                resultsContainer.classList.add('hidden');
+                return;
+            }
+
+            // Show loading
+            contentContainer.innerHTML = `
+                <div class="p-4 text-center text-gray-500 dark:text-gray-400">
+                    <div class="animate-spin w-5 h-5 border-2 border-primary border-t-transparent rounded-full mx-auto mb-2"></div>
+                    Searching...
+                </div>
+            `;
+            resultsContainer.classList.remove('hidden');
+
+            fetch(`{{ route('admin.search') }}?q=${encodeURIComponent(query)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.error) {
+                        contentContainer.innerHTML = `
+                            <div class="p-4 text-center text-red-500">
+                                <span class="material-symbols-outlined text-2xl mb-2 block">error</span>
+                                ${data.error}
+                            </div>
+                        `;
+                    } else if (data.results.length === 0) {
+                        contentContainer.innerHTML = `
+                            <div class="p-4 text-center text-gray-500 dark:text-gray-400">
+                                <span class="material-symbols-outlined text-2xl mb-2 block">search_off</span>
+                                No results found for "${query}"
+                            </div>
+                        `;
+                    } else {
+                        contentContainer.innerHTML = data.results.map(result => {
+                            const getTypeColor = (type) => {
+                                const colors = {
+                                    'user': 'blue',
+                                    'content': 'purple', 
+                                    'assessment': 'emerald',
+                                    'campaign': 'teal',
+                                    'session': 'indigo',
+                                    'no-results': 'gray',
+                                    'error': 'red'
+                                };
+                                return colors[type] || 'gray';
+                            };
+                            
+                            const color = getTypeColor(result.type);
+                            const isClickable = result.url !== '#';
+                            
+                            return `
+                                <${isClickable ? 'a href="' + result.url + '"' : 'div'} class="flex items-center gap-3 p-3 ${isClickable ? 'hover:bg-gray-50 dark:hover:bg-gray-700' : ''} rounded-lg transition-colors">
+                                    <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-${color}-100 dark:bg-${color}-900/20">
+                                        <span class="material-symbols-outlined text-sm text-${color}-600 dark:text-${color}-400">${result.icon}</span>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-medium text-gray-900 dark:text-white truncate">${result.title}</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 truncate">${result.subtitle}</p>
+                                    </div>
+                                    <span class="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-full">${result.badge}</span>
+                                </${isClickable ? 'a' : 'div'}>
+                            `;
+                        }).join('');
+                    }
+                })
+                .catch(error => {
+                    console.error('Search error:', error);
+                    contentContainer.innerHTML = `
+                        <div class="p-4 text-center text-red-500">
+                            <span class="material-symbols-outlined text-2xl mb-2 block">error</span>
+                            Search failed: ${error.message}
+                        </div>
+                    `;
+                });
+        }
+
+        // Desktop search
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                const query = this.value.trim();
+                
+                searchTimeout = setTimeout(() => {
+                    performSearch(query, searchResults, searchResultsContent);
+                }, 300);
+            });
+
+            searchInput.addEventListener('focus', function() {
+                if (this.value.trim().length >= 2) {
+                    searchResults.classList.remove('hidden');
+                }
+            });
+        }
+
+        // Mobile search
+        if (mobileSearchInput) {
+            mobileSearchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                const query = this.value.trim();
+                
+                searchTimeout = setTimeout(() => {
+                    performSearch(query, mobileSearchResults, mobileSearchResultsContent);
+                }, 300);
+            });
+
+            mobileSearchInput.addEventListener('focus', function() {
+                if (this.value.trim().length >= 2) {
+                    mobileSearchResults.classList.remove('hidden');
+                }
+            });
+        }
+
+        // Hide search results when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!document.getElementById('searchContainer')?.contains(e.target)) {
+                searchResults?.classList.add('hidden');
+            }
+            if (!document.getElementById('mobileSearchContainer')?.contains(e.target)) {
+                mobileSearchResults?.classList.add('hidden');
+            }
+        });
+
+        // Notification dropdown functionality
+        const notificationBtn = document.getElementById('notificationBtn');
+        const mobileNotificationBtn = document.getElementById('mobileNotificationBtn');
+        const notificationDropdown = document.getElementById('notificationDropdown');
+        const mobileNotificationDropdown = document.getElementById('mobileNotificationDropdown');
+        const notificationList = document.getElementById('notificationList');
+        const mobileNotificationList = document.getElementById('mobileNotificationList');
+
+        function loadNotifications(listContainer) {
+            fetch('{{ route('notifications.dropdown') }}')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.notifications.length === 0) {
+                        listContainer.innerHTML = `
+                            <div class="p-4 text-center text-gray-500 dark:text-gray-400">
+                                <span class="material-symbols-outlined text-2xl mb-2 block">notifications_off</span>
+                                No new notifications
+                            </div>
+                        `;
+                    } else {
+                        listContainer.innerHTML = data.notifications.map(notification => `
+                            <a href="${notification.url}" class="flex items-center gap-3 p-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-b border-gray-100 dark:border-gray-700 last:border-b-0">
+                                <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-${notification.color}-100 dark:bg-${notification.color}-900/20">
+                                    <span class="material-symbols-outlined text-sm text-${notification.color}-600 dark:text-${notification.color}-400">${notification.icon}</span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 dark:text-white truncate">${notification.title}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 truncate">${notification.message}</p>
+                                    <p class="text-xs text-gray-400 dark:text-gray-500">${timeAgo(notification.created_at)}</p>
+                                </div>
+                            </a>
+                        `).join('');
+                    }
+                })
+                .catch(error => {
+                    console.error('Notification loading error:', error);
+                    listContainer.innerHTML = `
+                        <div class="p-4 text-center text-red-500">
+                            <span class="material-symbols-outlined text-2xl mb-2 block">error</span>
+                            Failed to load notifications
+                        </div>
+                    `;
+                });
+        }
+
+        function toggleNotificationDropdown(dropdown, listContainer) {
+            const isVisible = !dropdown.classList.contains('opacity-0');
+            
+            if (isVisible) {
+                dropdown.classList.add('opacity-0', 'invisible');
+            } else {
+                dropdown.classList.remove('opacity-0', 'invisible');
+                loadNotifications(listContainer);
+            }
+        }
+
+        // Desktop notification dropdown
+        if (notificationBtn) {
+            notificationBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleNotificationDropdown(notificationDropdown, notificationList);
+            });
+        }
+
+        // Mobile notification dropdown
+        if (mobileNotificationBtn) {
+            mobileNotificationBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleNotificationDropdown(mobileNotificationDropdown, mobileNotificationList);
+            });
+        }
+
+        // Hide notification dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!document.getElementById('notificationContainer')?.contains(e.target)) {
+                notificationDropdown?.classList.add('opacity-0', 'invisible');
+            }
+            if (!document.getElementById('mobileNotificationContainer')?.contains(e.target)) {
+                mobileNotificationDropdown?.classList.add('opacity-0', 'invisible');
+            }
+        });
+
+        // Helper function for time ago
+        function timeAgo(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffInSeconds = Math.floor((now - date) / 1000);
+            
+            if (diffInSeconds < 60) return 'Just now';
+            if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+            if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+            return `${Math.floor(diffInSeconds / 86400)}d ago`;
+        }
+
+        // Mark all notifications as read
+        window.markAllAsRead = function() {
+            fetch('{{ route('notifications.mark-all-read') }}', {
+                method: 'PATCH',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Update badge counts
+                    const badges = document.querySelectorAll('#notificationBadge, #mobileNotificationBadge');
+                    badges.forEach(badge => badge.style.display = 'none');
+                    
+                    // Reload notifications
+                    loadNotifications(notificationList);
+                    loadNotifications(mobileNotificationList);
+                }
+            })
+            .catch(error => console.error('Error marking notifications as read:', error));
+        };
     </script>
     @stack('scripts')
 </body>
