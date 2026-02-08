@@ -9,7 +9,7 @@
     <div class="absolute inset-0">
         <img src="{{ asset('images/counselling-counsellors-hero.avif') }}" 
              alt="Professional counselors and therapists" 
-             class="w-full h-full object-cover">
+             class="w-full h-full object-cover animate-hero-zoom">
         <div class="absolute inset-0 bg-black/50"></div>
     </div>
     
@@ -436,4 +436,21 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+@endpush
+
+@push('styles')
+<style>
+    @keyframes hero-zoom {
+        0% {
+            transform: scale(1);
+        }
+        100% {
+            transform: scale(1.05);
+        }
+    }
+    
+    .animate-hero-zoom {
+        animation: hero-zoom 8s ease-out infinite alternate;
+    }
+</style>
 @endpush

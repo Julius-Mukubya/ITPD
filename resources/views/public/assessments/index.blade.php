@@ -9,7 +9,7 @@
     <div class="absolute inset-0 bg-gray-600">
         <img src="{{ asset('images/assessments-hero.avif') }}" 
              alt="Mental health assessment and self-reflection" 
-             class="w-full h-full object-cover"
+             class="w-full h-full object-cover animate-hero-zoom"
              loading="eager">
         <div class="absolute inset-0 bg-black/50"></div>
     </div>
@@ -739,4 +739,21 @@ function showToast(message, type = 'info') {
     }, 5000);
 }
 </script>
+@endpush
+
+@push('styles')
+<style>
+    @keyframes hero-zoom {
+        0% {
+            transform: scale(1);
+        }
+        100% {
+            transform: scale(1.05);
+        }
+    }
+    
+    .animate-hero-zoom {
+        animation: hero-zoom 8s ease-out infinite alternate;
+    }
+</style>
 @endpush
