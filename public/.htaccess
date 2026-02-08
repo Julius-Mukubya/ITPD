@@ -19,3 +19,9 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+# Add MIME types for modern image formats
+<IfModule mod_mime.c>
+    AddType image/avif .avif
+    AddType image/webp .webp
+</IfModule>

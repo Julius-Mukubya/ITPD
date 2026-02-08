@@ -9,6 +9,10 @@
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
+    # Redirect image requests to public folder
+    RewriteCond %{REQUEST_URI} ^/images/
+    RewriteRule ^images/(.*)$ public/images/$1 [L]
+
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
@@ -17,5 +21,11 @@
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L]
+    RewriteRule ^ public/index.php [L]
+</IfModule>
+
+# Add MIME types for modern image formats
+<IfModule mod_mime.c>
+    AddType image/avif .avif
+    AddType image/webp .webp
 </IfModule>
