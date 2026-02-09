@@ -194,6 +194,49 @@
                     </button>
                 </form>
             </div>
+            @else
+            <!-- Edit Action (for already reviewed flags) -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Change Action</h3>
+                
+                <form method="POST" action="{{ route('admin.content-flags.update', $flag) }}">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" name="is_change_action" value="1">
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">New Status</label>
+                        <select name="status" required class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white">
+                            <option value="">Select new status...</option>
+                            <option value="dismissed" {{ $flag->status === 'dismissed' ? 'selected' : '' }}>Dismiss Flag</option>
+                            <option value="reviewed" {{ $flag->status === 'reviewed' ? 'selected' : '' }}>Mark as Reviewed</option>
+                            <option value="action_taken" {{ $flag->status === 'action_taken' ? 'selected' : '' }}>Take Action</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4" id="editActionField" style="{{ $flag->status === 'action_taken' ? 'display: block;' : 'display: none;' }}">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Action to Take</label>
+                        <select name="action" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white">
+                            <option value="">Select action...</option>
+                            <option value="delete_content">Delete Content</option>
+                            <option value="hide_content">Hide Content</option>
+                            <option value="unhide_content">Unhide Content</option>
+                            <option value="warn_user">Warn User</option>
+                            <option value="ban_user">Ban User</option>
+                            <option value="unban_user">Unban User</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Additional Notes</label>
+                        <textarea name="admin_notes" rows="4" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-gray-700 dark:text-white resize-none" placeholder="Add notes about this change...">{{ $flag->admin_notes }}</textarea>
+                    </div>
+
+                    <button type="submit" class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        Update Action
+                    </button>
+                </form>
+            </div>
             @endif
 
             <!-- Flag Statistics -->
@@ -259,16 +302,33 @@
     </div>
 
 <script>
-// Show/hide action field based on status selection
-document.querySelector('select[name="status"]').addEventListener('change', function() {
-    const actionField = document.getElementById('actionField');
-    if (this.value === 'action_taken') {
-        actionField.style.display = 'block';
-        actionField.querySelector('select').required = true;
-    } else {
-        actionField.style.display = 'none';
-        actionField.querySelector('select').required = false;
-    }
-});
+// Show/hide action field based on status selection (for pending flags)
+const statusSelect = document.querySelector('select[name="status"]');
+if (statusSelect) {
+    statusSelect.addEventListener('change', function() {
+        const actionField = document.getElementById('actionField');
+        if (actionField) {
+            if (this.value === 'action_taken') {
+                actionField.style.display = 'block';
+                actionField.querySelector('select').required = true;
+            } else {
+                actionField.style.display = 'none';
+                actionField.querySelector('select').required = false;
+            }
+        }
+        
+        // For edit action field
+        const editActionField = document.getElementById('editActionField');
+        if (editActionField) {
+            if (this.value === 'action_taken') {
+                editActionField.style.display = 'block';
+                editActionField.querySelector('select').required = true;
+            } else {
+                editActionField.style.display = 'none';
+                editActionField.querySelector('select').required = false;
+            }
+        }
+    });
+}
 </script>
 @endsection

@@ -455,9 +455,9 @@ Route::middleware([
         // Content Flags Management
         Route::prefix('content-flags')->name('content-flags.')->group(function () {
             Route::get('/', [\App\Http\Controllers\Admin\ContentFlagController::class, 'index'])->name('index');
+            Route::post('/bulk-update', [\App\Http\Controllers\Admin\ContentFlagController::class, 'bulkUpdate'])->name('bulk-update');
             Route::get('/{flag}', [\App\Http\Controllers\Admin\ContentFlagController::class, 'show'])->name('show');
             Route::put('/{flag}', [\App\Http\Controllers\Admin\ContentFlagController::class, 'update'])->name('update');
-            Route::post('/bulk-update', [\App\Http\Controllers\Admin\ContentFlagController::class, 'bulkUpdate'])->name('bulk-update');
         });
     });
 });

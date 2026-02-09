@@ -62,10 +62,14 @@ class ContentFlagController extends Controller
      */
     public function update(Request $request, ContentFlag $flag)
     {
+        $isChangeAction = $request->has('is_change_action');
+        
         $request->validate([
             'status' => 'required|in:reviewed,dismissed,action_taken',
             'admin_notes' => 'nullable|string|max:1000',
-            'action' => 'nullable|in:delete_content,hide_content,warn_user,ban_user',
+            'action' => $isChangeAction 
+                ? 'nullable|in:delete_content,hide_content,unhide_content,warn_user,ban_user,unban_user'
+                : 'nullable|in:delete_content,hide_content,warn_user,ban_user',
         ]);
 
         $flag->update([
@@ -76,12 +80,19 @@ class ContentFlagController extends Controller
         ]);
 
         // Take action on the content if specified
-        if ($request->filled('action') && $request->status === 'action_taken') {
+        if ($request->filled('action')) {
             $this->takeAction($flag, $request->action);
         }
 
-        return redirect()->route('admin.content-flags.index')
-            ->with('success', 'Flag has been updated successfully.');
+        $redirectRoute = $isChangeAction 
+            ? route('admin.content-flags.show', $flag)
+            : route('admin.content-flags.index');
+            
+        $message = $isChangeAction 
+            ? 'Action has been changed successfully.'
+            : 'Flag has been updated successfully.';
+
+        return redirect($redirectRoute)->with('success', $message);
     }
 
     /**
@@ -106,6 +117,11 @@ class ContentFlagController extends Controller
             case 'hide_content':
                 // Mark content as hidden (hidden from public view)
                 $content->update(['is_hidden' => true]);
+                break;
+                
+            case 'unhide_content':
+                // Unhide content (make it visible again)
+                $content->update(['is_hidden' => false, 'is_reported' => false]);
                 break;
                 
             case 'warn_user':
@@ -149,6 +165,18 @@ class ContentFlagController extends Controller
                         $flag->admin_notes ?? "Banned due to flagged content: {$flag->reason_label}",
                         Auth::user()->name
                     ));
+                }
+                break;
+                
+            case 'unban_user':
+                if ($user && $user->is_banned) {
+                    // Unban the user
+                    $user->update([
+                        'is_banned' => false,
+                        'banned_at' => null,
+                        'banned_by' => null,
+                        'ban_reason' => null,
+                    ]);
                 }
                 break;
         }
