@@ -161,13 +161,16 @@
             <div class="px-4 sm:px-6 lg:px-12">
                 <div class="prose prose-base max-w-none dark:prose-invert 
                            prose-headings:font-bold prose-headings:text-[#111816] dark:prose-headings:text-white prose-headings:tracking-tight
-                           prose-p:text-[#61897c] dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:text-lg
+                           prose-h1:text-3xl prose-h1:mb-4 prose-h1:mt-6
+                           prose-h2:text-2xl prose-h2:mb-3 prose-h2:mt-5
+                           prose-h3:text-xl prose-h3:mb-2 prose-h3:mt-4
+                           prose-p:text-[#61897c] dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:text-lg prose-p:my-4
                            prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-a:font-semibold
                            prose-strong:text-[#111816] dark:prose-strong:text-white prose-strong:font-bold
                            prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-primary/5 dark:prose-blockquote:bg-primary/10 
                            prose-blockquote:rounded-r-xl prose-blockquote:p-6 prose-blockquote:my-8 prose-blockquote:font-medium
-                           prose-ul:text-[#61897c] dark:prose-ul:text-gray-300 prose-li:text-lg prose-li:leading-relaxed
-                           prose-ol:text-[#61897c] dark:prose-ol:text-gray-300
+                           prose-ul:text-[#61897c] dark:prose-ul:text-gray-300 prose-ul:my-4 prose-li:text-lg prose-li:leading-relaxed prose-li:my-2
+                           prose-ol:text-[#61897c] dark:prose-ol:text-gray-300 prose-ol:my-4
                            prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm
                            prose-pre:bg-gray-900 prose-pre:rounded-xl prose-pre:p-6">
                     {!! $content->content !!}
@@ -559,6 +562,85 @@
     
     .toast-exit {
         animation: slideOutRight 0.3s ease-out;
+    }
+    
+    /* Force h1 styling to override any conflicts */
+    .prose h1 {
+        font-size: 2.25rem !important;
+        line-height: 2.5rem !important;
+        font-weight: 700 !important;
+        margin-top: 1.5rem !important;
+        margin-bottom: 1rem !important;
+        color: #111816 !important;
+    }
+    
+    .dark .prose h1 {
+        color: white !important;
+    }
+    
+    .prose h2 {
+        font-size: 1.875rem !important;
+        line-height: 2.25rem !important;
+        font-weight: 700 !important;
+        margin-top: 1.25rem !important;
+        margin-bottom: 0.75rem !important;
+        color: #111816 !important;
+    }
+    
+    .dark .prose h2 {
+        color: white !important;
+    }
+    
+    .prose h3 {
+        font-size: 1.5rem !important;
+        line-height: 2rem !important;
+        font-weight: 600 !important;
+        margin-top: 1rem !important;
+        margin-bottom: 0.5rem !important;
+        color: #111816 !important;
+    }
+    
+    .dark .prose h3 {
+        color: white !important;
+    }
+    
+    .prose h4 {
+        font-size: 1.25rem !important;
+        line-height: 1.75rem !important;
+        font-weight: 600 !important;
+        margin-top: 0.75rem !important;
+        margin-bottom: 0.5rem !important;
+        color: #111816 !important;
+    }
+    
+    .dark .prose h4 {
+        color: white !important;
+    }
+    
+    .prose h5 {
+        font-size: 1.125rem !important;
+        line-height: 1.75rem !important;
+        font-weight: 600 !important;
+        margin-top: 0.75rem !important;
+        margin-bottom: 0.5rem !important;
+        color: #111816 !important;
+    }
+    
+    .dark .prose h5 {
+        color: white !important;
+    }
+    
+    .prose h6 {
+        font-size: 1rem !important;
+        line-height: 1.5rem !important;
+        font-weight: 600 !important;
+        margin-top: 0.75rem !important;
+        margin-bottom: 0.5rem !important;
+        color: #111816 !important;
+    }
+    
+    .dark .prose h6 {
+        color: white !important;
     }
 </style>
 @endpush

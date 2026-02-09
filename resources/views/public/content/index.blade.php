@@ -184,7 +184,7 @@
         </div>
 
         <!-- Enhanced Content Grid -->
-        <div id="resources" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 scroll-mt-24">
+        <div id="content-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 scroll-mt-24">
             @forelse($contents as $content)
             <article class="group bg-white dark:bg-gray-800/50 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-[#f0f4f3] dark:border-gray-800 transform hover:-translate-y-1 flex flex-col h-full" 
                      data-title="{{ strtolower($content->title) }}" 
@@ -349,7 +349,7 @@
 
         <!-- Enhanced Pagination -->
         @if($contents->hasPages())
-        <div class="bg-white dark:bg-gray-800/50 rounded-2xl p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
+        <div class="pagination-container bg-white dark:bg-gray-800/50 rounded-2xl p-6 shadow-sm border border-[#f0f4f3] dark:border-gray-800">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
                 <!-- Results Info -->
                 <div class="flex items-center gap-4">
@@ -1050,11 +1050,82 @@ document.addEventListener('DOMContentLoaded', function() {
     const categorySelectDesktop = document.getElementById('category-filter-desktop');
     
     function handleCategoryChange(value) {
-        currentFilters.category = value;
-        // Sync both selects
-        if (categorySelect) categorySelect.value = value;
-        if (categorySelectDesktop) categorySelectDesktop.value = value;
-        applyFilters();
+        // Show loading state
+        const contentGrid = document.getElementById('content-grid');
+        const paginationContainer = document.querySelector('.pagination-container');
+        
+        if (contentGrid) {
+            contentGrid.style.opacity = '0.5';
+            contentGrid.style.pointerEvents = 'none';
+        }
+        
+        // Build URL with filters
+        const url = new URL('{{ route("content.index") }}', window.location.origin);
+        if (value) {
+            url.searchParams.set('category', value);
+        }
+        
+        // Add other active filters
+        if (currentFilters.type) {
+            url.searchParams.set('type', currentFilters.type);
+        }
+        if (currentFilters.search) {
+            url.searchParams.set('search', currentFilters.search);
+        }
+        if (currentFilters.bookmarked) {
+            url.searchParams.set('bookmarked', '1');
+        }
+        
+        // Fetch filtered content via AJAX
+        fetch(url.toString(), {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'text/html'
+            }
+        })
+        .then(response => response.text())
+        .then(html => {
+            // Parse the response HTML
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            
+            // Extract the content grid
+            const newContentGrid = doc.getElementById('content-grid');
+            const newPagination = doc.querySelector('.pagination-container');
+            
+            if (newContentGrid && contentGrid) {
+                contentGrid.innerHTML = newContentGrid.innerHTML;
+                contentGrid.style.opacity = '1';
+                contentGrid.style.pointerEvents = 'auto';
+            }
+            
+            // Update pagination
+            if (paginationContainer && newPagination) {
+                paginationContainer.innerHTML = newPagination.innerHTML;
+            } else if (paginationContainer) {
+                paginationContainer.innerHTML = '';
+            }
+            
+            // Update URL without reload
+            window.history.pushState({}, '', url.toString());
+            
+            // Update current filters
+            currentFilters.category = value;
+            
+            // Sync both selects
+            if (categorySelect) categorySelect.value = value;
+            if (categorySelectDesktop) categorySelectDesktop.value = value;
+            
+            // Don't scroll - keep filters visible
+            // User can see the updated content without losing sight of filters
+        })
+        .catch(error => {
+            console.error('Error fetching filtered content:', error);
+            if (contentGrid) {
+                contentGrid.style.opacity = '1';
+                contentGrid.style.pointerEvents = 'auto';
+            }
+        });
     }
     
     if (categorySelect) {

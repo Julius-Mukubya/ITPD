@@ -79,6 +79,8 @@ class ContentController extends Controller
     public function update(Request $request, EducationalContent $content)
     {
         // Debug: Check what content is being received
+        \Log::info('Content received:', ['content' => substr($request->content, 0, 500)]);
+        
         if (strlen($request->content) < 50) {
             return back()->withErrors(['content' => 'Content seems too short. Please make sure your changes are saved in the editor.'])->withInput();
         }
@@ -123,7 +125,9 @@ class ContentController extends Controller
             $validated['published_at'] = null;
         }
 
+        \Log::info('Content before update:', ['content' => substr($validated['content'], 0, 500)]);
         $content->update($validated);
+        \Log::info('Content after update:', ['content' => substr($content->fresh()->content, 0, 500)]);
 
         return redirect()->route('admin.contents.index')
             ->with('success', 'Content updated successfully!');
