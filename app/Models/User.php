@@ -38,6 +38,11 @@ class User extends Authenticatable
         'auto_start_video',
         'default_camera_on',
         'default_microphone_on',
+        'banned_at',
+        'ban_reason',
+        'banned_by',
+        'warning_count',
+        'last_warned_at',
     ];
 
     protected $hidden = [
@@ -50,6 +55,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'last_login_at' => 'datetime',
+        'banned_at' => 'datetime',
+        'last_warned_at' => 'datetime',
         'is_active' => 'boolean',
         'auto_start_video' => 'boolean',
         'default_camera_on' => 'boolean',
@@ -178,6 +185,16 @@ class User extends Authenticatable
         return $this->hasMany(ForumUpvote::class);
     }
 
+    public function warnings()
+    {
+        return $this->hasMany(UserWarning::class);
+    }
+
+    public function issuedWarnings()
+    {
+        return $this->hasMany(UserWarning::class, 'issued_by');
+    }
+
     // Helper Methods
     public function isAdmin()
     {
@@ -203,6 +220,38 @@ class User extends Authenticatable
     public function hasRole($role)
     {
         return $this->role === $role;
+    }
+
+    /**
+     * Check if user is banned
+     */
+    public function isBanned(): bool
+    {
+        return !is_null($this->banned_at);
+    }
+
+    /**
+     * Ban the user
+     */
+    public function ban(string $reason, int $bannedBy): void
+    {
+        $this->update([
+            'banned_at' => now(),
+            'ban_reason' => $reason,
+            'banned_by' => $bannedBy,
+        ]);
+    }
+
+    /**
+     * Unban the user
+     */
+    public function unban(): void
+    {
+        $this->update([
+            'banned_at' => null,
+            'ban_reason' => null,
+            'banned_by' => null,
+        ]);
     }
 
     public function unreadNotifications()

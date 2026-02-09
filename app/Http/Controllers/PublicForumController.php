@@ -16,6 +16,14 @@ class PublicForumController extends Controller
         $query = ForumPost::with(['user', 'category'])
             ->withCount(['comments', 'upvoteRecords']);
         
+        // Hide hidden posts from non-admin users
+        if (!auth()->check() || auth()->user()->role !== 'admin') {
+            $query->where(function($q) {
+                $q->where('is_hidden', false)
+                  ->orWhereNull('is_hidden');
+            });
+        }
+        
         // Filter by category if specified
         if ($request->has('category') && $request->category !== 'all') {
             $category = ForumCategory::where('slug', $request->category)->first();
@@ -41,11 +49,19 @@ class PublicForumController extends Controller
             ->findOrFail($id);
         
         // Load comments with their replies and users
-        $comments = $post->comments()
+        $commentsQuery = $post->comments()
             ->with(['user', 'replies.user'])
-            ->whereNull('parent_id') // Only get top-level comments
-            ->latest()
-            ->get();
+            ->whereNull('parent_id'); // Only get top-level comments
+        
+        // Hide hidden comments from non-admin users
+        if (!auth()->check() || auth()->user()->role !== 'admin') {
+            $commentsQuery->where(function($q) {
+                $q->where('is_hidden', false)
+                  ->orWhereNull('is_hidden');
+            });
+        }
+        
+        $comments = $commentsQuery->latest()->get();
 
         return view('public.forum.show', compact('post', 'comments'));
     }
@@ -54,11 +70,19 @@ class PublicForumController extends Controller
     {
         $category = ForumCategory::where('slug', $slug)->firstOrFail();
         
-        $posts = ForumPost::with(['user', 'category'])
+        $query = ForumPost::with(['user', 'category'])
             ->withCount(['comments', 'upvoteRecords'])
-            ->where('category_id', $category->id)
-            ->latest()
-            ->paginate(15);
+            ->where('category_id', $category->id);
+        
+        // Hide hidden posts from non-admin users
+        if (!auth()->check() || auth()->user()->role !== 'admin') {
+            $query->where(function($q) {
+                $q->where('is_hidden', false)
+                  ->orWhereNull('is_hidden');
+            });
+        }
+        
+        $posts = $query->latest()->paginate(15);
 
         $categories = ForumCategory::withCount('posts')->get();
 

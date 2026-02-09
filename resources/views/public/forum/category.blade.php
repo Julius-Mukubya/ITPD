@@ -25,7 +25,7 @@
 @endif
 
 <!-- Hero Section -->
-<section class="relative overflow-hidden h-96">
+<section class="relative overflow-hidden min-h-[300px] sm:min-h-[400px] lg:h-96 pt-16 sm:pt-20">
     <!-- Background Image -->
     <div class="absolute inset-0">
         @php
@@ -48,34 +48,34 @@
     </div>
     
     <!-- Content -->
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center py-8 sm:py-12">
         <div class="w-full">
             <!-- Breadcrumb -->
-            <nav class="flex items-center gap-2 text-sm text-white/80 mb-6">
+            <nav class="flex items-center gap-2 text-xs sm:text-sm text-white/80 mb-4 sm:mb-6">
                 <a href="{{ route('public.forum.index') }}" class="hover:text-white transition-colors flex items-center gap-1">
-                    <span class="material-symbols-outlined text-sm">arrow_back</span>
+                    <span class="material-symbols-outlined !text-sm">arrow_back</span>
                     Forum
                 </a>
-                <span class="material-symbols-outlined text-xs">chevron_right</span>
-                <span class="text-white font-medium">{{ $category->name }}</span>
+                <span class="material-symbols-outlined !text-xs">chevron_right</span>
+                <span class="text-white font-medium truncate">{{ $category->name }}</span>
             </nav>
             
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-6">
-                    <div class="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg border border-white/30">
-                        <span class="material-symbols-outlined text-white text-3xl">{{ $category->icon ?? 'forum' }}</span>
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-8">
+                <div class="flex items-start sm:items-center gap-3 sm:gap-6">
+                    <div class="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-white/20 backdrop-blur-sm rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg border border-white/30 flex-shrink-0">
+                        <span class="material-symbols-outlined text-white text-2xl sm:text-2xl lg:text-3xl">{{ $category->icon ?? 'forum' }}</span>
                     </div>
-                    <div>
-                        <h1 class="text-4xl lg:text-5xl font-black text-white tracking-tight mb-4">{{ $category->name }}</h1>
-                        <p class="text-lg text-white/90 max-w-2xl mb-4">{{ $category->description ?? 'Discussions in this category' }}</p>
-                        <div class="flex items-center gap-4 text-sm text-white/80">
+                    <div class="flex-1 min-w-0">
+                        <h1 class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-black text-white tracking-tight mb-2 sm:mb-4 break-words">{{ $category->name }}</h1>
+                        <p class="text-sm sm:text-base lg:text-lg text-white/90 mb-2 sm:mb-4 line-clamp-2">{{ $category->description ?? 'Discussions in this category' }}</p>
+                        <div class="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-white/80">
                             <span class="flex items-center gap-1">
-                                <span class="material-symbols-outlined text-sm">article</span>
+                                <span class="material-symbols-outlined !text-sm">article</span>
                                 {{ $posts->total() }} {{ Str::plural('discussion', $posts->total()) }}
                             </span>
-                            <span>•</span>
+                            <span class="hidden sm:inline">•</span>
                             <span class="flex items-center gap-1">
-                                <span class="material-symbols-outlined text-sm">groups</span>
+                                <span class="material-symbols-outlined !text-sm">groups</span>
                                 Active community
                             </span>
                         </div>
@@ -83,18 +83,18 @@
                 </div>
                 
                 <div class="hidden md:flex flex-col gap-3">
-                    <a href="{{ route('public.forum.index') }}" class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-6 py-3 rounded-xl font-bold hover:bg-white/30 transition-all duration-200 transform hover:scale-105">
-                        <span class="material-symbols-outlined">forum</span>
+                    <a href="{{ route('public.forum.index') }}" class="inline-flex items-center justify-center gap-2 bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white px-4 lg:px-6 py-2.5 lg:py-3 rounded-xl font-bold hover:bg-white/30 transition-all duration-200 transform hover:scale-105 text-sm">
+                        <span class="material-symbols-outlined !text-base">forum</span>
                         All Categories
                     </a>
                     @auth
-                        <button onclick="openCreateDiscussionModal({{ $category->id }})" class="inline-flex items-center gap-2 bg-white text-primary px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                            <span class="material-symbols-outlined">add_circle</span>
+                        <button onclick="openCreateDiscussionModal({{ $category->id }})" class="inline-flex items-center justify-center gap-2 bg-white text-primary px-4 lg:px-6 py-2.5 lg:py-3 rounded-xl font-bold hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg text-sm">
+                            <span class="material-symbols-outlined !text-base">add_circle</span>
                             New Discussion
                         </button>
                     @else
-                        <button onclick="openLoginModal()" class="inline-flex items-center gap-2 bg-white text-primary px-6 py-3 rounded-xl font-bold hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                            <span class="material-symbols-outlined">login</span>
+                        <button onclick="openLoginModal()" class="inline-flex items-center justify-center gap-2 bg-white text-primary px-4 lg:px-6 py-2.5 lg:py-3 rounded-xl font-bold hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 shadow-lg text-sm">
+                            <span class="material-symbols-outlined !text-base">login</span>
                             Login to Post
                         </button>
                     @endauth
@@ -104,27 +104,27 @@
     </div>
 </section>
 
-<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="flex flex-col lg:flex-row gap-8">
+<div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div class="flex flex-col lg:flex-row gap-6 sm:gap-8">
         <!-- Main Content -->
-        <div class="flex-1">
+        <div class="flex-1 min-w-0">
             <!-- Create Post Button (for authenticated users) -->
             @auth
-            <div class="mb-8">
-                <div class="bg-gradient-to-r from-primary/5 to-green-50 dark:from-primary/10 dark:to-gray-800 rounded-2xl border border-primary/20 dark:border-primary/30 p-6">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-gradient-to-br from-primary to-green-600 rounded-full flex items-center justify-center text-white font-bold">
+            <div class="mb-6 sm:mb-8">
+                <div class="bg-gradient-to-r from-primary/5 to-green-50 dark:from-primary/10 dark:to-gray-800 rounded-xl sm:rounded-2xl border border-primary/20 dark:border-primary/30 p-4 sm:p-6">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+                        <div class="flex items-center gap-3 sm:gap-4">
+                            <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-primary to-green-600 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
                                 {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                             </div>
                             <div>
-                                <h3 class="font-bold text-gray-900 dark:text-white">Share in {{ $category->name }}</h3>
-                                <p class="text-sm text-gray-600 dark:text-gray-400">Start a discussion in this category</p>
+                                <h3 class="font-bold text-gray-900 dark:text-white text-sm sm:text-base">Share in {{ $category->name }}</h3>
+                                <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Start a discussion in this category</p>
                             </div>
                         </div>
                         <button onclick="openCreateDiscussionModal({{ $category->id }})" 
-                                class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-lg">
-                            <span class="material-symbols-outlined">add</span>
+                                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary/90 transition-all duration-200 transform hover:scale-105 shadow-lg text-sm">
+                            <span class="material-symbols-outlined !text-base">add</span>
                             New Discussion
                         </button>
                     </div>
@@ -133,20 +133,20 @@
             @endauth
 
             <!-- Discussions List -->
-            <div class="space-y-3">
+            <div class="space-y-3 sm:space-y-4">
                 @forelse($posts as $post)
-                <article class="group bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-primary/30 hover:shadow-lg transition-all duration-300">
-                    <div class="p-6">
-                        <div class="flex gap-4">
+                <article class="group bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-primary/30 hover:shadow-lg transition-all duration-300">
+                    <div class="p-4 sm:p-6">
+                        <div class="flex gap-3 sm:gap-4">
                             <!-- Left: Engagement Stats -->
-                            <div class="flex flex-col items-center gap-3 min-w-[60px]">
+                            <div class="hidden sm:flex flex-col items-center gap-3 min-w-[60px]">
                                 <!-- Comments -->
                                 <div class="flex flex-col items-center relative">
                                     <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center cursor-pointer comment-hover-trigger" 
                                          data-post-id="{{ $post->id }}"
                                          onmouseenter="showCommentPreview(this)" 
                                          onmouseleave="hideCommentPreview(this)">
-                                        <span class="material-symbols-outlined text-primary">comment</span>
+                                        <span class="material-symbols-outlined text-primary !text-base">comment</span>
                                     </div>
                                     <span class="text-xs font-semibold text-gray-600 dark:text-gray-400 mt-1">{{ $post->comments_count ?? 0 }}</span>
                                     
@@ -168,64 +168,69 @@
                             <!-- Right: Content -->
                             <div class="flex-1 min-w-0">
                                 <!-- Header -->
-                                <div class="flex items-start justify-between gap-4 mb-3">
-                                    <div class="flex-1">
+                                <div class="flex items-start justify-between gap-3 sm:gap-4 mb-2 sm:mb-3">
+                                    <div class="flex-1 min-w-0">
                                         <div class="flex items-center gap-2 mb-2">
                                             <!-- Hot/Trending Badge -->
                                             @if(($post->comments_count ?? 0) > 5)
-                                            <span class="inline-flex items-center gap-1 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 text-xs px-2.5 py-1 rounded-full font-semibold">
-                                                <span class="material-symbols-outlined !text-sm">local_fire_department</span>
-                                                Hot
+                                            <span class="inline-flex items-center gap-1 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 text-xs px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full font-semibold">
+                                                <span class="material-symbols-outlined !text-xs sm:!text-sm">local_fire_department</span>
+                                                <span class="hidden xs:inline">Hot</span>
                                             </span>
                                             @endif
                                         </div>
                                         
-                                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                                        <h3 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary transition-colors line-clamp-2">
                                             <a href="{{ route('public.forum.show', $post->id) }}">{{ $post->title ?? 'Untitled Post' }}</a>
                                         </h3>
                                         
                                         <!-- Content Preview -->
-                                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2 leading-relaxed">
+                                        <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-2 sm:mb-3 line-clamp-2 leading-relaxed">
                                             {{ Str::limit($post->content ?? 'No content available', 150) }}
                                         </p>
                                         
                                         <!-- Meta Info -->
-                                        <div class="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
-                                            <div class="flex items-center gap-2">
-                                                <div class="w-6 h-6 bg-gradient-to-br from-primary to-green-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                                        <div class="flex flex-wrap items-center gap-2 sm:gap-4 text-xs text-gray-500 dark:text-gray-400">
+                                            <div class="flex items-center gap-1.5 sm:gap-2">
+                                                <div class="w-5 h-5 sm:w-6 sm:h-6 bg-gradient-to-br from-primary to-green-600 rounded-full flex items-center justify-center text-white text-[10px] sm:text-xs font-bold">
                                                     {{ $post->is_anonymous ? '?' : strtoupper(substr($post->user->name ?? 'A', 0, 1)) }}
                                                 </div>
-                                                <span class="font-medium">{{ $post->is_anonymous ? 'Anonymous' : ($post->user->name ?? 'Unknown') }}</span>
+                                                <span class="font-medium truncate max-w-[100px] sm:max-w-none">{{ $post->is_anonymous ? 'Anonymous' : ($post->user->name ?? 'Unknown') }}</span>
                                             </div>
-                                            <span>•</span>
+                                            <span class="hidden xs:inline">•</span>
                                             <span class="flex items-center gap-1">
-                                                <span class="material-symbols-outlined !text-sm">schedule</span>
-                                                {{ $post->created_at->diffForHumans() ?? 'Recently' }}
+                                                <span class="material-symbols-outlined !text-xs sm:!text-sm">schedule</span>
+                                                <span class="hidden sm:inline">{{ $post->created_at->diffForHumans() ?? 'Recently' }}</span>
+                                                <span class="sm:hidden">{{ $post->created_at->diffForHumans() ? Str::replace([' ago', ' minutes', ' hours', ' days'], ['', 'm', 'h', 'd'], $post->created_at->diffForHumans()) : 'Now' }}</span>
                                             </span>
-                                            <span>•</span>
+                                            <span class="hidden xs:inline">•</span>
                                             <span class="flex items-center gap-1">
-                                                <span class="material-symbols-outlined !text-sm">visibility</span>
-                                                {{ $post->views ?? 0 }} views
+                                                <span class="material-symbols-outlined !text-xs sm:!text-sm">visibility</span>
+                                                {{ $post->views ?? 0 }}
+                                            </span>
+                                            <span class="sm:hidden flex items-center gap-1">
+                                                <span class="material-symbols-outlined !text-xs">comment</span>
+                                                {{ $post->comments_count ?? 0 }}
                                             </span>
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <!-- Actions -->
-                                <div class="flex items-center gap-3 pt-3 border-t border-gray-100 dark:border-gray-700">
-                                    <a href="{{ route('public.forum.show', $post->id) }}" class="flex items-center gap-1 text-primary hover:text-primary/80 text-sm font-semibold transition-colors">
-                                        <span>Read & Reply</span>
-                                        <span class="material-symbols-outlined !text-base group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+                                <div class="flex flex-wrap items-center gap-2 sm:gap-3 pt-2 sm:pt-3 border-t border-gray-100 dark:border-gray-700">
+                                    <a href="{{ route('public.forum.show', $post->id) }}" class="flex items-center gap-1 text-primary hover:text-primary/80 text-xs sm:text-sm font-semibold transition-colors">
+                                        <span>Read</span>
+                                        <span class="material-symbols-outlined !text-sm group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
                                     </a>
                                     
-                                    <button class="flex items-center gap-1 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 text-sm font-medium transition-colors">
-                                        <span class="material-symbols-outlined !text-base">bookmark_border</span>
-                                        <span>Save</span>
+                                    <button class="flex items-center gap-1 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 text-xs sm:text-sm font-medium transition-colors">
+                                        <span class="material-symbols-outlined !text-sm">bookmark_border</span>
+                                        <span class="hidden xs:inline">Save</span>
                                     </button>
                                     
-                                    <button class="flex items-center gap-1 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 text-sm font-medium transition-colors">
-                                        <span class="material-symbols-outlined !text-base">share</span>
-                                        <span>Share</span>
+                                    <button class="flex items-center gap-1 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 text-xs sm:text-sm font-medium transition-colors">
+                                        <span class="material-symbols-outlined !text-sm">share</span>
+                                        <span class="hidden xs:inline">Share</span>
                                     </button>
                                 </div>
                             </div>
@@ -233,15 +238,15 @@
                     </div>
                 </article>
                 @empty
-                <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-16 text-center">
-                    <div class="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="material-symbols-outlined text-4xl text-gray-400">{{ $category->icon ?? 'forum' }}</span>
+                <div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-700 p-8 sm:p-16 text-center">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="material-symbols-outlined text-3xl sm:text-4xl text-gray-400">{{ $category->icon ?? 'forum' }}</span>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">No Discussions Yet</h3>
-                    <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">Be the first to start a conversation in {{ $category->name }}!</p>
+                    <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2">No Discussions Yet</h3>
+                    <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4 sm:mb-6 max-w-md mx-auto">Be the first to start a conversation in {{ $category->name }}!</p>
                     @guest
-                    <button onclick="openSignupModal()" class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-bold hover:bg-primary/90 transition-colors">
-                        <span class="material-symbols-outlined">person_add</span>
+                    <button onclick="openSignupModal()" class="inline-flex items-center gap-2 bg-primary text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl font-bold hover:bg-primary/90 transition-colors text-sm">
+                        <span class="material-symbols-outlined !text-base">person_add</span>
                         Sign Up to Post
                     </button>
                     @endguest
@@ -258,11 +263,11 @@
         </div>
 
         <!-- Sidebar -->
-        <div class="lg:w-80">
+        <div class="lg:w-80 space-y-4 sm:space-y-6">
             <!-- Category Info -->
-            <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 mb-6">
-                <h3 class="font-bold text-gray-900 dark:text-white mb-4">About This Category</h3>
-                <div class="space-y-3 text-sm">
+            <div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+                <h3 class="font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 text-sm sm:text-base">About This Category</h3>
+                <div class="space-y-2 sm:space-y-3 text-xs sm:text-sm">
                     <div class="flex items-center justify-between">
                         <span class="text-gray-600 dark:text-gray-400">Total Discussions</span>
                         <span class="font-semibold text-gray-900 dark:text-white">{{ $posts->total() }}</span>
@@ -275,25 +280,25 @@
             </div>
 
             <!-- Other Categories -->
-            <div class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-6">
-                <h3 class="font-bold text-gray-900 dark:text-white mb-4">Other Categories</h3>
-                <div class="space-y-3">
+            <div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+                <h3 class="font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 text-sm sm:text-base">Other Categories</h3>
+                <div class="space-y-2 sm:space-y-3">
                     @foreach($categories->where('id', '!=', $category->id)->take(5) as $otherCategory)
-                    <a href="{{ route('public.forum.category', $otherCategory->slug) }}" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group">
-                        <div class="w-10 h-10 bg-gradient-to-br from-primary to-green-600 rounded-lg flex items-center justify-center">
-                            <span class="material-symbols-outlined text-white text-lg">{{ $otherCategory->icon ?? 'forum' }}</span>
+                    <a href="{{ route('public.forum.category', $otherCategory->slug) }}" class="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group">
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-primary to-green-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <span class="material-symbols-outlined text-white text-base sm:text-lg">{{ $otherCategory->icon ?? 'forum' }}</span>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <h4 class="font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors text-sm">{{ $otherCategory->name }}</h4>
-                            <p class="text-xs text-gray-500 dark:text-gray-400">{{ $otherCategory->posts_count ?? 0 }} discussions</p>
+                            <h4 class="font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors text-xs sm:text-sm truncate">{{ $otherCategory->name }}</h4>
+                            <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">{{ $otherCategory->posts_count ?? 0 }} discussions</p>
                         </div>
                     </a>
                     @endforeach
                     
-                    <div class="border-t border-gray-200 dark:border-gray-700 pt-3 mt-3">
-                        <a href="{{ route('public.forum.index') }}" class="flex items-center justify-center gap-2 p-3 text-primary hover:bg-primary/5 rounded-lg transition-colors text-sm font-semibold">
+                    <div class="border-t border-gray-200 dark:border-gray-700 pt-2 sm:pt-3 mt-2 sm:mt-3">
+                        <a href="{{ route('public.forum.index') }}" class="flex items-center justify-center gap-2 p-2 sm:p-3 text-primary hover:bg-primary/5 rounded-lg transition-colors text-xs sm:text-sm font-semibold">
                             <span>View All Categories</span>
-                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                            <span class="material-symbols-outlined !text-sm">arrow_forward</span>
                         </a>
                     </div>
                 </div>
@@ -304,30 +309,30 @@
 
 @guest
 <!-- CTA Section -->
-<section class="py-12">
+<section class="py-8 sm:py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="relative bg-gradient-to-r from-primary/10 to-green-50 dark:from-gray-800 dark:to-gray-800/50 rounded-2xl p-8 border border-primary/20 dark:border-gray-700 overflow-hidden">
+        <div class="relative bg-gradient-to-r from-primary/10 to-green-50 dark:from-gray-800 dark:to-gray-800/50 rounded-xl sm:rounded-2xl p-6 sm:p-8 border border-primary/20 dark:border-gray-700 overflow-hidden">
             <!-- Decorative Icons -->
-            <div class="absolute top-4 left-4 opacity-10">
-                <span class="material-symbols-outlined text-6xl text-primary">{{ $category->icon ?? 'forum' }}</span>
+            <div class="absolute top-2 left-2 sm:top-4 sm:left-4 opacity-10">
+                <span class="material-symbols-outlined text-4xl sm:text-6xl text-primary">{{ $category->icon ?? 'forum' }}</span>
             </div>
-            <div class="absolute bottom-4 right-4 opacity-10">
-                <span class="material-symbols-outlined text-6xl text-primary">groups</span>
+            <div class="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 opacity-10">
+                <span class="material-symbols-outlined text-4xl sm:text-6xl text-primary">groups</span>
             </div>
             
             <div class="relative text-center">
-                <div class="inline-flex items-center justify-center w-16 h-16 bg-primary/20 rounded-full mb-4">
-                    <span class="material-symbols-outlined text-3xl text-primary">favorite</span>
+                <div class="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-primary/20 rounded-full mb-3 sm:mb-4">
+                    <span class="material-symbols-outlined text-2xl sm:text-3xl text-primary">favorite</span>
                 </div>
-                <h3 class="text-xl font-bold text-[#111816] dark:text-white mb-2">Join the {{ $category->name }} Discussion</h3>
-                <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">Connect with peers, share your experiences, and find support in a safe, moderated environment. Your voice matters.</p>
-                <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                    <button onclick="openSignupModal()" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
-                        <span class="material-symbols-outlined text-base">person_add</span>
+                <h3 class="text-lg sm:text-xl font-bold text-[#111816] dark:text-white mb-2">Join the {{ $category->name }} Discussion</h3>
+                <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4 sm:mb-6 max-w-2xl mx-auto">Connect with peers, share your experiences, and find support in a safe, moderated environment. Your voice matters.</p>
+                <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center">
+                    <button onclick="openSignupModal()" class="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-primary/90 transition-colors text-sm">
+                        <span class="material-symbols-outlined !text-base">person_add</span>
                         <span>Create Free Account</span>
                     </button>
-                    <button onclick="openLoginModal()" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-700 text-[#111816] dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg font-semibold hover:border-primary hover:text-primary transition-colors text-sm">
-                        <span class="material-symbols-outlined text-base">login</span>
+                    <button onclick="openLoginModal()" class="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-white dark:bg-gray-700 text-[#111816] dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg font-semibold hover:border-primary hover:text-primary transition-colors text-sm">
+                        <span class="material-symbols-outlined !text-base">login</span>
                         <span>Sign In</span>
                     </button>
                 </div>

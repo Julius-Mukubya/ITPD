@@ -302,6 +302,11 @@
 </div>
 @endif
 
+<!-- Floating Action Button (Mobile Only) -->
+<a href="{{ route('public.counseling.sessions') }}" class="md:hidden fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-full shadow-2xl hover:shadow-emerald-500/50 transition-all duration-300 flex items-center justify-center group" style="z-index: 9999;">
+    <span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform duration-300">add</span>
+</a>
+
 <!-- Emergency Support Modal -->
 @include('components.crisis-support-modal')
 @include('components.session-feedback-modal')

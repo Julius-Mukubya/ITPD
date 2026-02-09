@@ -82,154 +82,173 @@
 </div>
 
 <script>
-let currentFlaggableType = '';
-let currentFlaggableId = '';
+// Wrap in IIFE to avoid duplicate declarations
+(function() {
+    // Only initialize once
+    if (window.flagModalInitialized) {
+        return;
+    }
+    window.flagModalInitialized = true;
 
-function openFlagModal(type, id) {
-    currentFlaggableType = type;
-    currentFlaggableId = id;
-    
-    document.getElementById('flaggable_type').value = type;
-    document.getElementById('flaggable_id').value = id;
-    document.getElementById('flagContentModal').classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-}
+    let currentFlaggableType = '';
+    let currentFlaggableId = '';
 
-function closeFlagModal() {
-    document.getElementById('flagContentModal').classList.add('hidden');
-    document.body.style.overflow = 'auto';
-    
-    // Reset form
-    document.getElementById('flagContentForm').reset();
-    document.getElementById('description_count').textContent = '0';
-}
+    window.openFlagModal = function(type, id) {
+        currentFlaggableType = type;
+        currentFlaggableId = id;
+        
+        document.getElementById('flaggable_type').value = type;
+        document.getElementById('flaggable_id').value = id;
+        document.getElementById('flagContentModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    };
 
-// Character counter for description
-document.getElementById('flag_description').addEventListener('input', function() {
-    const count = this.value.length;
-    document.getElementById('description_count').textContent = count;
-});
+    window.closeFlagModal = function() {
+        document.getElementById('flagContentModal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
+        
+        // Reset form
+        document.getElementById('flagContentForm').reset();
+        document.getElementById('description_count').textContent = '0';
+    };
 
-// Handle form submission
-document.getElementById('flagContentForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const formData = new FormData(this);
-    const submitButton = this.querySelector('button[type="submit"]');
-    const originalText = submitButton.innerHTML;
-    
-    // Show loading state
-    submitButton.disabled = true;
-    submitButton.innerHTML = '<svg class="w-4 h-4 animate-spin mr-2" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Submitting...';
-    
-    fetch('/content-flags', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            closeFlagModal();
-            showToast(data.message, 'success');
+    // Character counter for description
+    const descriptionField = document.getElementById('flag_description');
+    if (descriptionField) {
+        descriptionField.addEventListener('input', function() {
+            const count = this.value.length;
+            document.getElementById('description_count').textContent = count;
+        });
+    }
+
+    // Handle form submission
+    const flagForm = document.getElementById('flagContentForm');
+    if (flagForm) {
+        flagForm.addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            // Update flag button state
-            updateFlagButtonState(currentFlaggableType, currentFlaggableId, true);
-        } else {
-            showToast(data.message, 'error');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showToast('An error occurred while submitting the flag.', 'error');
-    })
-    .finally(() => {
-        // Reset button state
-        submitButton.disabled = false;
-        submitButton.innerHTML = originalText;
-    });
-});
-
-// Update flag button state
-function updateFlagButtonState(type, id, isFlagged) {
-    const flagButton = document.querySelector(`[data-flag-type="${type}"][data-flag-id="${id}"]`);
-    if (flagButton) {
-        if (isFlagged) {
-            flagButton.classList.add('text-red-600', 'dark:text-red-400');
-            flagButton.classList.remove('text-gray-500', 'dark:text-gray-400');
-            flagButton.title = 'Content flagged';
-        } else {
-            flagButton.classList.remove('text-red-600', 'dark:text-red-400');
-            flagButton.classList.add('text-gray-500', 'dark:text-gray-400');
-            flagButton.title = 'Flag content';
-        }
-    }
-}
-
-// Close modal when clicking outside
-document.getElementById('flagContentModal').addEventListener('click', function(e) {
-    if (e.target === this) {
-        closeFlagModal();
-    }
-});
-
-// Close modal with Escape key
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && !document.getElementById('flagContentModal').classList.contains('hidden')) {
-        closeFlagModal();
-    }
-});
-
-// Toast notification function
-function showToast(message, type = 'info') {
-    // Create toast element
-    const toast = document.createElement('div');
-    toast.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transform transition-all duration-300 translate-x-full ${
-        type === 'success' ? 'bg-green-500 text-white' : 
-        type === 'error' ? 'bg-red-500 text-white' : 
-        'bg-blue-500 text-white'
-    }`;
-    toast.innerHTML = `
-        <div class="flex items-center gap-2">
-            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                ${type === 'success' ? 
-                    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>' :
-                    type === 'error' ?
-                    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>' :
-                    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>'
+            const formData = new FormData(this);
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            
+            // Show loading state
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<svg class="w-4 h-4 animate-spin mr-2" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Submitting...';
+            
+            fetch('/content-flags', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 }
-            </svg>
-            <span class="text-sm">${message}</span>
-        </div>
-    `;
-    
-    document.body.appendChild(toast);
-    
-    // Slide in
-    setTimeout(() => {
-        toast.classList.remove('translate-x-full');
-    }, 100);
-    
-    // Auto hide after 5 seconds
-    setTimeout(() => {
-        toast.classList.add('translate-x-full');
-        setTimeout(() => {
-            if (toast.parentNode) {
-                toast.parentNode.removeChild(toast);
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.closeFlagModal();
+                    showToast(data.message, 'success');
+                    
+                    // Update flag button state
+                    updateFlagButtonState(currentFlaggableType, currentFlaggableId, true);
+                } else {
+                    showToast(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('An error occurred while submitting the flag.', 'error');
+            })
+            .finally(() => {
+                // Reset button state
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalText;
+            });
+        });
+    }
+
+    // Update flag button state
+    function updateFlagButtonState(type, id, isFlagged) {
+        const flagButton = document.querySelector(`[data-flag-type="${type}"][data-flag-id="${id}"]`);
+        if (flagButton) {
+            if (isFlagged) {
+                flagButton.classList.add('text-red-600', 'dark:text-red-400');
+                flagButton.classList.remove('text-gray-500', 'dark:text-gray-400');
+                flagButton.title = 'Content flagged';
+            } else {
+                flagButton.classList.remove('text-red-600', 'dark:text-red-400');
+                flagButton.classList.add('text-gray-500', 'dark:text-gray-400');
+                flagButton.title = 'Flag content';
             }
-        }, 300);
-    }, 5000);
-    
-    // Click to dismiss
-    toast.addEventListener('click', () => {
-        toast.classList.add('translate-x-full');
-        setTimeout(() => {
-            if (toast.parentNode) {
-                toast.parentNode.removeChild(toast);
+        }
+    }
+
+    // Close modal when clicking outside
+    const flagModal = document.getElementById('flagContentModal');
+    if (flagModal) {
+        flagModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                window.closeFlagModal();
             }
-        }, 300);
+        });
+    }
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        const modal = document.getElementById('flagContentModal');
+        if (modal && e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            window.closeFlagModal();
+        }
     });
-}
+
+    // Toast notification function
+    function showToast(message, type = 'info') {
+        // Create toast element
+        const toast = document.createElement('div');
+        toast.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transform transition-all duration-300 translate-x-full ${
+            type === 'success' ? 'bg-green-500 text-white' : 
+            type === 'error' ? 'bg-red-500 text-white' : 
+            'bg-blue-500 text-white'
+        }`;
+        toast.innerHTML = `
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    ${type === 'success' ? 
+                        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>' :
+                        type === 'error' ?
+                        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>' :
+                        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>'
+                    }
+                </svg>
+                <span class="text-sm">${message}</span>
+            </div>
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // Slide in
+        setTimeout(() => {
+            toast.classList.remove('translate-x-full');
+        }, 100);
+        
+        // Auto hide after 5 seconds
+        setTimeout(() => {
+            toast.classList.add('translate-x-full');
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }, 5000);
+        
+        // Click to dismiss
+        toast.addEventListener('click', () => {
+            toast.classList.add('translate-x-full');
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        });
+    }
+})();
 </script>

@@ -138,9 +138,22 @@
         <article class="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm mb-6 sm:mb-8">
             <div class="p-4 sm:p-6 lg:p-8">
                 <!-- Post Content -->
-                <div class="prose prose-sm sm:prose-base lg:prose-lg max-w-none dark:prose-invert mb-6 sm:mb-8">
-                    <div class="text-gray-700 dark:text-gray-300 leading-relaxed text-sm sm:text-base lg:text-lg whitespace-pre-wrap break-words">{{ $post->content ?? 'No content available' }}</div>
-                </div>
+                @if($post->is_hidden && (!auth()->check() || auth()->user()->role !== 'admin'))
+                    <!-- Hidden Content Message -->
+                    <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6 text-center">
+                        <div class="w-16 h-16 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="material-symbols-outlined text-3xl text-yellow-600 dark:text-yellow-400">visibility_off</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-yellow-900 dark:text-yellow-100 mb-2">Content Hidden</h3>
+                        <p class="text-sm text-yellow-700 dark:text-yellow-300">
+                            This content has been hidden by moderators as it may violate our community guidelines.
+                        </p>
+                    </div>
+                @else
+                    <div class="prose prose-sm sm:prose-base lg:prose-lg max-w-none dark:prose-invert mb-6 sm:mb-8">
+                        <div class="text-gray-700 dark:text-gray-300 leading-relaxed text-sm sm:text-base lg:text-lg whitespace-pre-wrap break-words">{{ $post->content ?? 'No content available' }}</div>
+                    </div>
+                @endif
 
                 <!-- Post Actions -->
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
@@ -324,9 +337,18 @@
                                     </div>
                                     
                                     <!-- Comment Text -->
-                                    <div class="text-gray-700 dark:text-gray-300 leading-relaxed pl-13">
-                                        {{ $comment->comment ?? $comment->content ?? '' }}
-                                    </div>
+                                    @if($comment->is_hidden && (!auth()->check() || auth()->user()->role !== 'admin'))
+                                        <div class="pl-13 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-lg p-3 text-sm">
+                                            <div class="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+                                                <span class="material-symbols-outlined !text-sm">visibility_off</span>
+                                                <span class="italic">This comment has been hidden by moderators.</span>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="text-gray-700 dark:text-gray-300 leading-relaxed pl-13">
+                                            {{ $comment->comment ?? $comment->content ?? '' }}
+                                        </div>
+                                    @endif
 
                                     <!-- Comment Actions -->
                                     @auth

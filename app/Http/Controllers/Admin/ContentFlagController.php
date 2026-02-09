@@ -95,31 +95,60 @@ class ContentFlagController extends Controller
             return;
         }
 
+        $user = $content->user;
+
         switch ($action) {
             case 'delete_content':
+                // Delete the content permanently
                 $content->delete();
                 break;
                 
             case 'hide_content':
-                // Add a hidden/moderated field if it exists
-                if (method_exists($content, 'hide')) {
-                    $content->hide();
-                }
+                // Mark content as hidden (hidden from public view)
+                $content->update(['is_hidden' => true]);
                 break;
                 
             case 'warn_user':
-                // Could implement a warning system
-                // For now, just mark the content as reported
+                // Mark the content as reported
                 $content->update(['is_reported' => true]);
+                
+                if ($user) {
+                    // Create warning record
+                    $warning = \App\Models\UserWarning::create([
+                        'user_id' => $user->id,
+                        'issued_by' => Auth::id(),
+                        'content_flag_id' => $flag->id,
+                        'reason' => $flag->reason_label,
+                        'message' => "Your content has been flagged for: {$flag->reason_label}. " . 
+                                   ($flag->admin_notes ? "Admin notes: {$flag->admin_notes}" : "Please review our community guidelines."),
+                    ]);
+
+                    // Increment warning count
+                    $user->increment('warning_count');
+                    $user->update(['last_warned_at' => now()]);
+
+                    // Send notification
+                    $user->notify(new \App\Notifications\ContentWarningNotification($warning));
+                }
                 break;
                 
             case 'ban_user':
-                // Could implement user banning
-                // For now, just mark all their content as reported
-                $user = $content->user;
                 if ($user) {
-                    ForumPost::where('user_id', $user->id)->update(['is_reported' => true]);
-                    ForumComment::where('user_id', $user->id)->update(['is_reported' => true]);
+                    // Ban the user
+                    $user->ban(
+                        $flag->admin_notes ?? "Banned due to flagged content: {$flag->reason_label}",
+                        Auth::id()
+                    );
+
+                    // Mark all user's content as reported
+                    \App\Models\ForumPost::where('user_id', $user->id)->update(['is_reported' => true]);
+                    \App\Models\ForumComment::where('user_id', $user->id)->update(['is_reported' => true]);
+
+                    // Send notification
+                    $user->notify(new \App\Notifications\UserBannedNotification(
+                        $flag->admin_notes ?? "Banned due to flagged content: {$flag->reason_label}",
+                        Auth::user()->name
+                    ));
                 }
                 break;
         }

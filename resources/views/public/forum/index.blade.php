@@ -441,7 +441,6 @@
 
 @auth
 @include('components.create-discussion-modal')
-@include('components.flag-content-modal')
 
 <!-- Floating Action Button (Mobile) -->
 <button onclick="openCreateDiscussionModal()" 
