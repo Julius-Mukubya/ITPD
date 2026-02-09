@@ -470,6 +470,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Update the existing review display if it's an update
                     if (isUpdate) {
                         updateExistingReviewDisplay(data.review);
+                        updateReviewInList(data.review); // Also update in the community reviews list
                         cancelEdit();
                     } else {
                         // For new reviews, reload to show the new review in the list
@@ -669,20 +670,27 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateExistingReviewDisplay(review) {
         console.log('Updating existing review display:', review);
         
+        // Update global variables with the new review data
+        currentRating = review.rating;
+        currentHelpful = review.is_helpful !== null ? (review.is_helpful ? 'true' : 'false') : 'null';
+        
         // Update the review display in the existing review section
         const existingReview = document.getElementById('existing-review');
         if (existingReview) {
-            // Update rating stars
-            const stars = existingReview.querySelectorAll('.material-symbols-outlined');
-            stars.forEach((star, index) => {
-                if (index < review.rating) {
-                    star.classList.remove('text-gray-300', 'dark:text-gray-600');
-                    star.classList.add('text-yellow-400');
-                } else {
-                    star.classList.remove('text-yellow-400');
-                    star.classList.add('text-gray-300', 'dark:text-gray-600');
-                }
-            });
+            // Update rating stars - be specific to only get stars in the rating display
+            const starsContainer = existingReview.querySelector('.flex.items-center.gap-1');
+            if (starsContainer) {
+                const stars = starsContainer.querySelectorAll('.material-symbols-outlined');
+                stars.forEach((star, index) => {
+                    if (index < review.rating) {
+                        star.classList.remove('text-gray-300', 'dark:text-gray-600');
+                        star.classList.add('text-yellow-400');
+                    } else {
+                        star.classList.remove('text-yellow-400');
+                        star.classList.add('text-gray-300', 'dark:text-gray-600');
+                    }
+                });
+            }
             
             // Update review text
             const reviewTextEl = existingReview.querySelector('p');
@@ -696,27 +704,115 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Update helpful status
-            const helpfulEl = existingReview.querySelector('.inline-flex');
-            if (helpfulEl && review.is_helpful !== null) {
-                const isHelpful = review.is_helpful;
-                helpfulEl.className = `inline-flex items-center gap-1 text-sm ${isHelpful ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`;
-                helpfulEl.innerHTML = `
-                    <span class="material-symbols-outlined !text-base">${isHelpful ? 'thumb_up' : 'thumb_down'}</span>
-                    ${isHelpful ? 'Helpful' : 'Not Helpful'}
-                `;
-                helpfulEl.style.display = 'flex';
-            } else if (helpfulEl) {
-                helpfulEl.style.display = 'none';
+            const helpfulContainer = existingReview.querySelector('.mt-2');
+            if (helpfulContainer) {
+                const helpfulEl = helpfulContainer.querySelector('.inline-flex');
+                if (helpfulEl && review.is_helpful !== null) {
+                    const isHelpful = review.is_helpful;
+                    helpfulEl.className = `inline-flex items-center gap-1 text-sm ${isHelpful ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`;
+                    helpfulEl.innerHTML = `
+                        <span class="material-symbols-outlined !text-base">${isHelpful ? 'thumb_up' : 'thumb_down'}</span>
+                        ${isHelpful ? 'Helpful' : 'Not Helpful'}
+                    `;
+                    helpfulContainer.style.display = 'block';
+                } else if (helpfulContainer) {
+                    helpfulContainer.style.display = 'none';
+                }
             }
             
-            // Update timestamp - find the span with time ago text
-            const timeElements = existingReview.querySelectorAll('span');
-            timeElements.forEach(el => {
-                if (el.textContent.includes('ago') || el.textContent.includes('minute') || el.textContent.includes('hour') || el.textContent.includes('day')) {
-                    el.textContent = 'just now';
-                }
-            });
+            // Update timestamp - find the span with time ago text in the rating container
+            const timeSpan = existingReview.querySelector('.flex.items-center.gap-2 .text-sm.text-\\[\\#61897c\\]');
+            if (timeSpan) {
+                timeSpan.textContent = 'just now';
+            }
         }
+        
+        // Also update the form fields with the new values
+        const ratingInput = document.getElementById('rating-input');
+        if (ratingInput) {
+            ratingInput.value = review.rating;
+        }
+        
+        const reviewTextarea = document.getElementById('review-text');
+        if (reviewTextarea) {
+            reviewTextarea.value = review.review || '';
+        }
+        
+        const helpfulInput = document.getElementById('helpful-input');
+        if (helpfulInput) {
+            helpfulInput.value = review.is_helpful !== null ? (review.is_helpful ? 'true' : 'false') : '';
+        }
+        
+        // Update the form's star display to match the new rating
+        setRating(review.rating);
+        
+        // Update the helpful buttons to match the new state
+        if (review.is_helpful !== null) {
+            setHelpful(review.is_helpful);
+        }
+    }
+    
+    // Update user's review in the community reviews list
+    function updateReviewInList(review) {
+        console.log('Updating review in community list:', review);
+        
+        // Find the user's review in the reviews container
+        const reviewsContainer = document.getElementById('reviews-container');
+        if (!reviewsContainer) return;
+        
+        // Find all review elements
+        const reviewElements = reviewsContainer.querySelectorAll('.border-b');
+        
+        reviewElements.forEach(reviewEl => {
+            // Check if this is the current user's review by looking at the user name or image
+            const userName = reviewEl.querySelector('h5');
+            if (userName && userName.textContent.trim() === '{{ auth()->user()->name ?? "" }}') {
+                // Update the stars
+                const starsContainer = reviewEl.querySelector('.flex.items-center.gap-1');
+                if (starsContainer) {
+                    const stars = Array.from({length: 5}, (_, i) => 
+                        `<span class="material-symbols-outlined !text-base ${i < review.rating ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600'}">star</span>`
+                    ).join('');
+                    starsContainer.innerHTML = stars;
+                }
+                
+                // Update the review text
+                const reviewTextEl = reviewEl.querySelector('p');
+                if (reviewTextEl) {
+                    if (review.review && review.review.trim()) {
+                        reviewTextEl.textContent = review.review;
+                        reviewTextEl.style.display = 'block';
+                    } else {
+                        reviewTextEl.style.display = 'none';
+                    }
+                }
+                
+                // Update the helpful status
+                const helpfulContainer = reviewEl.querySelector('.flex.items-center.gap-2');
+                if (helpfulContainer) {
+                    if (review.is_helpful !== null) {
+                        const isHelpful = review.is_helpful;
+                        helpfulContainer.innerHTML = `
+                            <span class="material-symbols-outlined !text-base ${isHelpful ? 'text-green-600' : 'text-red-600'}">
+                                ${isHelpful ? 'thumb_up' : 'thumb_down'}
+                            </span>
+                            <span class="text-sm ${isHelpful ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}">
+                                ${isHelpful ? 'Found this helpful' : 'Did not find this helpful'}
+                            </span>
+                        `;
+                        helpfulContainer.style.display = 'flex';
+                    } else {
+                        helpfulContainer.style.display = 'none';
+                    }
+                }
+                
+                // Update timestamp
+                const timeSpan = reviewEl.querySelector('.text-xs.text-\\[\\#61897c\\]');
+                if (timeSpan) {
+                    timeSpan.textContent = 'just now';
+                }
+            }
+        });
     }
     
     // Sort change handler
