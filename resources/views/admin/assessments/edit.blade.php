@@ -18,7 +18,7 @@
 
 <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
 
-    <form action="{{ route('admin.assessments.update', $assessment) }}" method="POST" id="assessmentForm">
+    <form action="{{ route('admin.assessments.update', $assessment) }}" method="POST" id="assessmentForm" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -40,6 +40,32 @@
                     class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white"
                     placeholder="Brief description of what this assessment evaluates">{{ old('description', $assessment->description) }}</textarea>
                 @error('description')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Card Image</label>
+                <div class="space-y-3">
+                    @if($assessment->card_image)
+                    <div class="relative inline-block" id="current_image">
+                        <img src="{{ $assessment->card_image_url }}" alt="Current card image" class="max-w-full h-48 rounded-lg border-2 border-gray-300 dark:border-gray-600">
+                        <div class="absolute top-2 left-2 bg-blue-500 text-white text-xs px-2 py-1 rounded">Current Image</div>
+                    </div>
+                    @endif
+                    <input type="file" name="card_image" accept="image/*" id="card_image" onchange="previewImage(event)"
+                        title="Upload an image for the assessment card (recommended size: 400x300px)"
+                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary dark:bg-gray-700 dark:text-white">
+                    <div id="image_preview" class="hidden">
+                        <div class="relative inline-block">
+                            <img id="preview_img" src="" alt="Preview" class="max-w-full h-48 rounded-lg border-2 border-green-500">
+                            <div class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded">New Image</div>
+                            <button type="button" onclick="clearImage()" class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600">
+                                <span class="material-symbols-outlined text-sm">close</span>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Recommended size: 400x300px. Max file size: 2MB</p>
+                </div>
+                @error('card_image')<p class="text-red-500 text-sm mt-1">{{ $message }}</p>@enderror
             </div>
 
             <div>
@@ -359,6 +385,25 @@ function updateOptionsJSON(questionId) {
     if (jsonTextarea) {
         jsonTextarea.value = JSON.stringify(options);
     }
+}
+
+// Image Preview Functions
+function previewImage(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('preview_img').src = e.target.result;
+            document.getElementById('image_preview').classList.remove('hidden');
+        }
+        reader.readAsDataURL(file);
+    }
+}
+
+function clearImage() {
+    document.getElementById('card_image').value = '';
+    document.getElementById('image_preview').classList.add('hidden');
+    document.getElementById('preview_img').src = '';
 }
 </script>
 @endpush

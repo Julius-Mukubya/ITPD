@@ -13,6 +13,7 @@ class Assessment extends Model
         'name',
         'full_name',
         'description',
+        'card_image',
         'type',
         'scoring_guidelines',
         'is_active',
@@ -99,5 +100,14 @@ class Assessment extends Model
             'level' => 'Unknown',
             'interpretation' => 'Unable to determine risk level.'
         ];
+    }
+
+    // Accessor for card image URL
+    public function getCardImageUrlAttribute()
+    {
+        if ($this->card_image) {
+            return asset('storage/' . $this->card_image);
+        }
+        return null;
     }
 }

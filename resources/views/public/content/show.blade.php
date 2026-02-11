@@ -164,7 +164,7 @@
                            prose-h1:text-3xl prose-h1:mb-4 prose-h1:mt-6
                            prose-h2:text-2xl prose-h2:mb-3 prose-h2:mt-5
                            prose-h3:text-xl prose-h3:mb-2 prose-h3:mt-4
-                           prose-p:text-[#61897c] dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:text-lg prose-p:my-4
+                           prose-p:text-[#61897c] dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:text-lg
                            prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-a:font-semibold
                            prose-strong:text-[#111816] dark:prose-strong:text-white prose-strong:font-bold
                            prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-primary/5 dark:prose-blockquote:bg-primary/10 
@@ -462,9 +462,9 @@
         list-style-type: lower-roman;
     }
     
-    /* Fix paragraph spacing to match Quill editor */
+    /* Fix paragraph spacing to match Quill editor - use only bottom margin */
     .prose p {
-        margin-top: 1em;
+        margin-top: 0;
         margin-bottom: 1em;
     }
     
@@ -479,19 +479,12 @@
     /* Ensure consistent line breaks */
     .prose br {
         display: block;
-        margin: 0.5em 0;
         content: "";
     }
     
     /* Handle Quill's empty paragraphs */
     .prose p:empty {
-        margin: 0.5em 0;
         min-height: 1em;
-    }
-    
-    /* Handle consecutive paragraphs */
-    .prose p + p {
-        margin-top: 1em;
     }
     
     /* Quill specific classes */

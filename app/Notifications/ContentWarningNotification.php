@@ -31,11 +31,31 @@ class ContentWarningNotification extends Notification
     }
 
     /**
+     * Get the database representation of the notification.
+     */
+    public function toDatabase(object $notifiable): array
+    {
+        return [
+            'user_id' => $notifiable->id,
+            'type' => 'content_warning',
+            'title' => 'Content Warning Issued',
+            'message' => $this->warning->message,
+            'data' => [
+                'warning_id' => $this->warning->id,
+                'reason' => $this->warning->reason,
+                'issued_by' => $this->warning->issuer->name,
+                'issued_at' => $this->warning->created_at->toDateTimeString(),
+            ],
+        ];
+    }
+
+    /**
      * Get the array representation of the notification.
      */
     public function toArray(object $notifiable): array
     {
         return [
+            'title' => 'Content Warning Issued',
             'type' => 'content_warning',
             'warning_id' => $this->warning->id,
             'reason' => $this->warning->reason,

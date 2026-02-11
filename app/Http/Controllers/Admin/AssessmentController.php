@@ -47,6 +47,7 @@ class AssessmentController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'card_image' => 'nullable|image|max:2048',
             'type' => 'required|string|in:audit,dudit,phq9,gad7,dass21,pss,cage',
             'questions' => 'required|array|min:1',
             'questions.*.text' => 'required|string',
@@ -55,6 +56,12 @@ class AssessmentController extends Controller
 
         // Generate name from type
         $name = strtoupper($validated['type']);
+        
+        // Handle card image upload
+        if ($request->hasFile('card_image')) {
+            $validated['card_image'] = $request->file('card_image')
+                ->store('assessment-images', 'public');
+        }
         
         // Build scoring guidelines with interpretations
         $scoringGuidelines = [
@@ -70,6 +77,7 @@ class AssessmentController extends Controller
             'name' => $name,
             'full_name' => $validated['title'],
             'description' => $validated['description'],
+            'card_image' => $validated['card_image'] ?? null,
             'type' => $validated['type'],
             'scoring_guidelines' => json_encode($scoringGuidelines),
             'is_active' => true,
@@ -99,6 +107,7 @@ class AssessmentController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'card_image' => 'nullable|image|max:2048',
             'type' => 'required|string|in:audit,dudit,phq9,gad7,dass21,pss,cage',
             'questions' => 'required|array|min:1',
             'questions.*.text' => 'required|string',
@@ -107,6 +116,16 @@ class AssessmentController extends Controller
 
         // Generate name from type
         $name = strtoupper($validated['type']);
+        
+        // Handle card image upload
+        if ($request->hasFile('card_image')) {
+            // Delete old image if exists
+            if ($assessment->card_image) {
+                \Storage::disk('public')->delete($assessment->card_image);
+            }
+            $validated['card_image'] = $request->file('card_image')
+                ->store('assessment-images', 'public');
+        }
         
         // Build scoring guidelines with interpretations
         $scoringGuidelines = [
@@ -118,13 +137,20 @@ class AssessmentController extends Controller
             ]
         ];
         
-        $assessment->update([
+        $updateData = [
             'name' => $name,
             'full_name' => $validated['title'],
             'description' => $validated['description'],
             'type' => $validated['type'],
             'scoring_guidelines' => json_encode($scoringGuidelines),
-        ]);
+        ];
+        
+        // Only update card_image if a new one was uploaded
+        if (isset($validated['card_image'])) {
+            $updateData['card_image'] = $validated['card_image'];
+        }
+        
+        $assessment->update($updateData);
 
         // Delete old questions and create new ones
         $assessment->questions()->delete();
@@ -147,6 +173,11 @@ class AssessmentController extends Controller
         if ($assessment->attempts()->count() > 0) {
             return redirect()->route('admin.assessments.index')
                 ->with('error', 'Cannot delete assessment with existing attempts.');
+        }
+
+        // Delete card image if exists
+        if ($assessment->card_image) {
+            \Storage::disk('public')->delete($assessment->card_image);
         }
 
         $assessment->questions()->delete();

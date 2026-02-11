@@ -32,11 +32,30 @@ class UserBannedNotification extends Notification
     }
 
     /**
+     * Get the database representation of the notification.
+     */
+    public function toDatabase(object $notifiable): array
+    {
+        return [
+            'user_id' => $notifiable->id,
+            'type' => 'user_banned',
+            'title' => 'Account Suspended',
+            'message' => "Your account has been suspended. Reason: {$this->reason}",
+            'data' => [
+                'reason' => $this->reason,
+                'banned_by' => $this->bannedBy,
+                'banned_at' => now()->toDateTimeString(),
+            ],
+        ];
+    }
+
+    /**
      * Get the array representation of the notification.
      */
     public function toArray(object $notifiable): array
     {
         return [
+            'title' => 'Account Suspended',
             'type' => 'user_banned',
             'reason' => $this->reason,
             'banned_by' => $this->bannedBy,

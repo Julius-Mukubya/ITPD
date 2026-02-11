@@ -193,16 +193,24 @@
             <div class="flex-1 min-w-0">
                 <div class="space-y-4 sm:space-y-6" id="discussions-container">
         @forelse($posts as $post)
-        <article class="discussion-post bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-4 sm:p-6 hover:shadow-lg transition-all duration-200 hover:border-primary/30" 
+        <article class="discussion-post bg-white dark:bg-gray-800 rounded-2xl border {{ $post->is_hidden ? 'border-red-300 dark:border-red-700 bg-red-50/50 dark:bg-red-900/10' : 'border-gray-200 dark:border-gray-700' }} p-4 sm:p-6 hover:shadow-lg transition-all duration-200 {{ $post->is_hidden ? 'hover:border-red-400' : 'hover:border-primary/30' }}" 
                  data-category="{{ $post->category->slug ?? 'general' }}" 
                  data-title="{{ strtolower($post->title) }}" 
                  data-content="{{ strtolower(strip_tags($post->content)) }}"
                  data-author="{{ $post->is_anonymous ? 'anonymous' : strtolower($post->user->name ?? 'user') }}"
                  data-author-id="{{ $post->user_id ?? 0 }}">
+            @if($post->is_hidden && auth()->check() && auth()->user()->role === 'admin')
+            <!-- Hidden Badge for Admins -->
+            <div class="mb-3 flex items-center gap-2 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-lg px-3 py-2">
+                <span class="material-symbols-outlined text-red-600 dark:text-red-400 !text-base">visibility_off</span>
+                <span class="text-xs sm:text-sm font-semibold text-red-700 dark:text-red-300">Hidden from public view (Admin only)</span>
+            </div>
+            @endif
+            
             <div class="flex items-start gap-3 sm:gap-4">
                 <!-- Author Avatar -->
                 <div class="flex-shrink-0">
-                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-primary to-green-600 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-lg">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-primary to-green-600 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-lg {{ $post->is_hidden ? 'opacity-60' : '' }}">
                         {{ $post->is_anonymous ? '?' : strtoupper(substr($post->user->name ?? 'U', 0, 1)) }}
                     </div>
                 </div>
@@ -223,12 +231,12 @@
                                     </span>
                                 @endif
                             </div>
-                            <h3 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 break-words">
+                            <h3 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 break-words {{ $post->is_hidden ? 'opacity-70' : '' }}">
                                 <a href="{{ route('public.forum.show', $post->id) }}" class="hover:text-primary transition-colors">
                                     {{ $post->title }}
                                 </a>
                             </h3>
-                            <p class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm line-clamp-3 leading-relaxed mb-3 break-words">
+                            <p class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm line-clamp-3 leading-relaxed mb-3 break-words {{ $post->is_hidden ? 'opacity-60' : '' }}">
                                 {{ Str::limit(strip_tags($post->content), 200) }}
                             </p>
                         </div>

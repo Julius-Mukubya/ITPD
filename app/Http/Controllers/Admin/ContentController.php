@@ -59,6 +59,11 @@ class ContentController extends Controller
             $validated['published_at'] = now();
         }
 
+        // Clean up HTML content to remove excessive spacing from Quill editor
+        if (isset($validated['content'])) {
+            $validated['content'] = $this->cleanQuillHtml($validated['content']);
+        }
+
         EducationalContent::create($validated);
 
         return redirect()->route('admin.contents.index')
@@ -125,6 +130,11 @@ class ContentController extends Controller
             $validated['published_at'] = null;
         }
 
+        // Clean up HTML content to remove excessive spacing from Quill editor
+        if (isset($validated['content'])) {
+            $validated['content'] = $this->cleanQuillHtml($validated['content']);
+        }
+
         \Log::info('Content before update:', ['content' => substr($validated['content'], 0, 500)]);
         $content->update($validated);
         \Log::info('Content after update:', ['content' => substr($content->fresh()->content, 0, 500)]);
@@ -146,5 +156,23 @@ class ContentController extends Controller
 
         return redirect()->route('admin.contents.index')
             ->with('success', 'Content deleted successfully!');
+    }
+
+    /**
+     * Clean up HTML content from Quill editor to remove excessive spacing
+     */
+    private function cleanQuillHtml($html)
+    {
+        // Remove empty paragraphs that Quill might add
+        $html = preg_replace('/<p><br><\/p>/', '', $html);
+        $html = preg_replace('/<p>\s*<\/p>/', '', $html);
+        
+        // Remove multiple consecutive <br> tags
+        $html = preg_replace('/(<br\s*\/?>){2,}/', '<br>', $html);
+        
+        // Normalize whitespace between tags
+        $html = preg_replace('/>\s+</', '><', $html);
+        
+        return trim($html);
     }
 }
