@@ -7,7 +7,7 @@
 <section class="relative overflow-hidden h-screen">
     <!-- Background Image -->
     <div class="absolute inset-0 overflow-hidden">
-        <img src="{{ asset('images/contentpage-hero.avif') }}" 
+        <img src="{{ asset('images/mubs library.jpeg') }}" 
              alt="Students studying and learning" 
              class="w-full h-full object-cover animate-hero-zoom">
         <div class="absolute inset-0 bg-black/50"></div>
