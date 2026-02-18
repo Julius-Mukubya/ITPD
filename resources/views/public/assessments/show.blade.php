@@ -33,7 +33,7 @@
                             <span>Anonymous & Confidential</span>
                         </div>
                         <div class="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                            <span class="material-symbols-outlined !text-base text-blue-600">schedule</span>
+                            <span class="material-symbols-outlined !text-base text-green-600">schedule</span>
                             <span>5-15 minutes</span>
                         </div>
                         <div class="flex items-center gap-2 text-gray-600 dark:text-gray-400">
@@ -61,12 +61,12 @@
                 </div>
 
                 <!-- Tips -->
-                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl border border-blue-200 dark:border-blue-800 p-6">
+                <div class="bg-gradient-to-br from-green-50 to-indigo-50 dark:from-green-900/20 dark:to-indigo-900/20 rounded-2xl border border-green-200 dark:border-green-800 p-6">
                     <div class="flex items-center gap-2 mb-3">
-                        <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">lightbulb</span>
-                        <h3 class="font-bold text-blue-900 dark:text-blue-100">Tips</h3>
+                        <span class="material-symbols-outlined text-green-600 dark:text-green-400">lightbulb</span>
+                        <h3 class="font-bold text-green-900 dark:text-green-100">Tips</h3>
                     </div>
-                    <ul class="space-y-2 text-sm text-blue-800 dark:text-blue-200">
+                    <ul class="space-y-2 text-sm text-green-800 dark:text-green-200">
                         <li>• Answer honestly for accurate results</li>
                         <li>• Think about the past 2 weeks</li>
                         <li>• Take your time with each question</li>
@@ -228,7 +228,7 @@
                     </h3>
                     <div class="space-y-3">
                         <a href="{{ route('content.index') }}" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                            <span class="material-symbols-outlined text-blue-600">article</span>
+                            <span class="material-symbols-outlined text-green-600">article</span>
                             <div>
                                 <div class="font-medium text-gray-900 dark:text-white text-sm">Educational Content</div>
                                 <div class="text-xs text-gray-600 dark:text-gray-400">Learn more about mental health</div>
@@ -363,7 +363,7 @@ function showToast(message, type = 'info') {
         type === 'success' ? 'bg-green-500 text-white' : 
         type === 'error' ? 'bg-red-500 text-white' : 
         type === 'warning' ? 'bg-yellow-500 text-white' :
-        'bg-blue-500 text-white'
+        'bg-green-500 text-white'
     }`;
     
     toast.innerHTML = `
@@ -395,3 +395,4 @@ function showToast(message, type = 'info') {
 </script>
 @endpush
 @endsection
+

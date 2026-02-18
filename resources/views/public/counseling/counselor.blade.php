@@ -17,7 +17,7 @@
 </div>
 
 <!-- Counselor Profile Header -->
-<section class="py-20 bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-700 text-white relative overflow-hidden">
+<section class="py-20 bg-gradient-to-br from-green-500 via-indigo-600 to-purple-700 text-white relative overflow-hidden">
     <div class="absolute inset-0 bg-black/10"></div>
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
@@ -30,7 +30,7 @@
             <div class="lg:col-span-2">
                 <div class="text-center lg:text-left">
                     <h1 class="text-5xl font-bold mb-4">Dr. Sarah Rodriguez</h1>
-                    <p class="text-2xl text-blue-100 mb-6">Licensed Clinical Psychologist</p>
+                    <p class="text-2xl text-green-100 mb-6">Licensed Clinical Psychologist</p>
                     <p class="text-xl text-white/90 mb-8 max-w-2xl">
                         Specializing in anxiety disorders, depression, and trauma therapy with over 8 years of experience in student mental health support.
                     </p>
@@ -38,21 +38,21 @@
                     <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                         @auth
                             @if(auth()->user()->role === 'user')
-                                <a href="{{ route('public.counseling.sessions') }}" class="bg-white text-blue-600 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/90 transition-all shadow-xl">
+                                <a href="{{ route('public.counseling.sessions') }}" class="bg-white text-green-600 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/90 transition-all shadow-xl">
                                     Book Session with Dr. Rodriguez
                                 </a>
                             @else
-                                <button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="bg-white text-blue-600 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/90 transition-all shadow-xl">
+                                <button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="bg-white text-green-600 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/90 transition-all shadow-xl">
                                     Student Login Required
                                 </button>
                             @endif
                         @else
-                            <button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="bg-white text-blue-600 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/90 transition-all shadow-xl">
+                            <button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="bg-white text-green-600 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/90 transition-all shadow-xl">
                                 Login to Book Session
                             </button>
                         @endauth
                         
-                        <a href="#availability" class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-blue-700 transition-all border-2 border-white/20">
+                        <a href="#availability" class="bg-green-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-green-700 transition-all border-2 border-white/20">
                             View Availability
                         </a>
                     </div>
@@ -73,20 +73,20 @@
                 <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Areas of Specialization</h2>
                 
                 <div class="space-y-6">
-                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-2xl p-6">
+                    <div class="bg-gradient-to-br from-green-50 to-indigo-50 dark:from-green-900/20 dark:to-indigo-900/20 border border-green-200 dark:border-green-800 rounded-2xl p-6">
                         <div class="flex items-center gap-4 mb-4">
-                            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
-                                <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">psychology</span>
+                            <div class="w-12 h-12 bg-green-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                                <span class="material-symbols-outlined text-green-600 dark:text-green-400">psychology</span>
                             </div>
-                            <h3 class="text-xl font-bold text-blue-900 dark:text-blue-100">Anxiety Disorders</h3>
+                            <h3 class="text-xl font-bold text-green-900 dark:text-green-100">Anxiety Disorders</h3>
                         </div>
-                        <p class="text-blue-800 dark:text-blue-200 mb-4">
+                        <p class="text-green-800 dark:text-green-200 mb-4">
                             Specialized treatment for generalized anxiety, social anxiety, panic disorders, and phobias using evidence-based approaches.
                         </p>
                         <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm rounded-full">Panic Attacks</span>
-                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm rounded-full">Social Anxiety</span>
-                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm rounded-full">Test Anxiety</span>
+                            <span class="px-3 py-1 bg-green-100 dark:bg-blue-900/30 text-green-700 dark:text-green-300 text-sm rounded-full">Panic Attacks</span>
+                            <span class="px-3 py-1 bg-green-100 dark:bg-blue-900/30 text-green-700 dark:text-green-300 text-sm rounded-full">Social Anxiety</span>
+                            <span class="px-3 py-1 bg-green-100 dark:bg-blue-900/30 text-green-700 dark:text-green-300 text-sm rounded-full">Test Anxiety</span>
                         </div>
                     </div>
 
@@ -210,8 +210,8 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg border border-gray-200 dark:border-gray-700">
-                <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mb-6">
-                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400">school</span>
+                <div class="w-12 h-12 bg-green-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center mb-6">
+                    <span class="material-symbols-outlined text-green-600 dark:text-green-400">school</span>
                 </div>
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">University Counseling</h3>
                 <p class="text-gray-600 dark:text-gray-400 mb-4">
@@ -269,37 +269,37 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
             <!-- Session Types -->
-            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-2xl p-8">
-                <h3 class="text-2xl font-bold text-blue-900 dark:text-blue-100 mb-6">Available Session Types</h3>
+            <div class="bg-gradient-to-br from-green-50 to-indigo-50 dark:from-green-900/20 dark:to-indigo-900/20 border border-green-200 dark:border-green-800 rounded-2xl p-8">
+                <h3 class="text-2xl font-bold text-green-900 dark:text-green-100 mb-6">Available Session Types</h3>
                 
                 <div class="space-y-4">
                     <div class="flex items-center gap-4">
-                        <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-sm">person</span>
+                        <div class="w-8 h-8 bg-green-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-sm">person</span>
                         </div>
                         <div>
-                            <h4 class="font-semibold text-blue-900 dark:text-blue-100">Individual Counseling</h4>
-                            <p class="text-sm text-blue-700 dark:text-blue-300">50-minute one-on-one sessions</p>
+                            <h4 class="font-semibold text-green-900 dark:text-green-100">Individual Counseling</h4>
+                            <p class="text-sm text-green-700 dark:text-green-300">50-minute one-on-one sessions</p>
                         </div>
                     </div>
                     
                     <div class="flex items-center gap-4">
-                        <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-sm">video_call</span>
+                        <div class="w-8 h-8 bg-green-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-sm">video_call</span>
                         </div>
                         <div>
-                            <h4 class="font-semibold text-blue-900 dark:text-blue-100">Telehealth Sessions</h4>
-                            <p class="text-sm text-blue-700 dark:text-blue-300">Secure video counseling</p>
+                            <h4 class="font-semibold text-green-900 dark:text-green-100">Telehealth Sessions</h4>
+                            <p class="text-sm text-green-700 dark:text-green-300">Secure video counseling</p>
                         </div>
                     </div>
                     
                     <div class="flex items-center gap-4">
-                        <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-sm">emergency</span>
+                        <div class="w-8 h-8 bg-green-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-sm">emergency</span>
                         </div>
                         <div>
-                            <h4 class="font-semibold text-blue-900 dark:text-blue-100">Crisis Consultation</h4>
-                            <p class="text-sm text-blue-700 dark:text-blue-300">Same-day emergency support</p>
+                            <h4 class="font-semibold text-green-900 dark:text-green-100">Crisis Consultation</h4>
+                            <p class="text-sm text-green-700 dark:text-green-300">Same-day emergency support</p>
                         </div>
                     </div>
                 </div>
@@ -342,35 +342,35 @@
 
         <!-- Booking CTA -->
         <div class="text-center">
-            <div class="bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-700 rounded-3xl p-8 text-white">
+            <div class="bg-gradient-to-br from-green-500 via-indigo-600 to-purple-700 rounded-3xl p-8 text-white">
                 <h3 class="text-2xl font-bold mb-4">Ready to Begin Your Journey?</h3>
-                <p class="text-blue-100 mb-6 max-w-2xl mx-auto">
+                <p class="text-green-100 mb-6 max-w-2xl mx-auto">
                     Take the first step towards better mental health. Dr. Rodriguez is here to support you with compassionate, professional care.
                 </p>
                 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     @auth
                         @if(auth()->user()->role === 'user')
-                            <a href="{{ route('public.counseling.sessions') }}" class="bg-white text-blue-600 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/90 transition-all shadow-xl">
+                            <a href="{{ route('public.counseling.sessions') }}" class="bg-white text-green-600 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/90 transition-all shadow-xl">
                                 Book Session with Dr. Rodriguez
                             </a>
                         @else
-                            <button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="bg-white text-blue-600 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/90 transition-all shadow-xl">
+                            <button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="bg-white text-green-600 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/90 transition-all shadow-xl">
                                 Student Login Required
                             </button>
                         @endif
                     @else
-                        <button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="bg-white text-blue-600 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/90 transition-all shadow-xl">
+                        <button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="bg-white text-green-600 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/90 transition-all shadow-xl">
                             Login to Book Session
                         </button>
                     @endauth
                     
-                    <a href="{{ route('public.counseling.index') }}" class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-blue-700 transition-all border-2 border-white/20">
+                    <a href="{{ route('public.counseling.index') }}" class="bg-green-600 text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-green-700 transition-all border-2 border-white/20">
                         View All Counselors
                     </a>
                 </div>
                 
-                <p class="text-blue-100 text-sm mt-4">
+                <p class="text-green-100 text-sm mt-4">
                     All counseling services are free for students
                 </p>
             </div>

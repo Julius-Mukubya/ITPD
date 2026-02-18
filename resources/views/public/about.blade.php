@@ -74,7 +74,7 @@
 
                 <div class="group bg-gray-50 dark:bg-gray-800/50 p-6 rounded-xl hover:shadow-lg transition-all duration-300 border border-gray-100 dark:border-gray-700 hover:border-primary/30">
                     <div class="flex items-start gap-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                        <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                             <span class="material-symbols-outlined text-white">library_books</span>
                         </div>
                         <div>
@@ -132,7 +132,7 @@
                 </div>
 
                 <div class="text-center group">
-                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                    <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-outlined text-white text-2xl">favorite</span>
                     </div>
                     <h3 class="text-lg font-bold text-[#111816] dark:text-white mb-2 group-hover:text-primary transition-colors">Compassion</h3>

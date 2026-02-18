@@ -34,12 +34,12 @@
         <div class="w-full h-80 sm:h-96 lg:h-[500px] bg-gradient-to-br 
             @if($campaign->start_date && $campaign->end_date)
                 @if(now()->between($campaign->start_date, $campaign->end_date)) from-green-500 via-primary to-green-600
-                @elseif(now()->lt($campaign->start_date)) from-blue-500 via-purple-600 to-blue-700
+                @elseif(now()->lt($campaign->start_date)) from-green-500 via-purple-600 to-blue-700
                 @else from-gray-500 via-gray-600 to-gray-700
                 @endif
             @else
                 @if($campaign->status === 'active') from-green-500 via-primary to-green-600
-                @elseif($campaign->status === 'upcoming') from-blue-500 via-purple-600 to-blue-700
+                @elseif($campaign->status === 'upcoming') from-green-500 via-purple-600 to-blue-700
                 @else from-gray-500 via-gray-600 to-gray-700
                 @endif
             @endif flex items-center justify-center">
@@ -64,12 +64,12 @@
                     <div class="flex items-center gap-2 
                         @if($campaign->start_date && $campaign->end_date)
                             @if(now()->between($campaign->start_date, $campaign->end_date)) bg-green-500 
-                            @elseif(now()->lt($campaign->start_date)) bg-blue-500 
+                            @elseif(now()->lt($campaign->start_date)) bg-green-500 
                             @else bg-gray-500 
                             @endif
                         @else
                             @if($campaign->status === 'active') bg-green-500 
-                            @elseif($campaign->status === 'upcoming') bg-blue-500 
+                            @elseif($campaign->status === 'upcoming') bg-green-500 
                             @else bg-gray-500 
                             @endif
                         @endif text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
@@ -277,8 +277,8 @@
                             </div>
                         @elseif(now()->lt($campaign->start_date))
                             <div class="text-center mb-6">
-                                <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 !text-2xl">schedule</span>
+                                <div class="w-16 h-16 bg-green-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span class="material-symbols-outlined text-green-600 dark:text-green-400 !text-2xl">schedule</span>
                                 </div>
                                 <p class="font-semibold text-[#111816] dark:text-white mb-2">Coming Soon</p>
                                 <p class="text-sm text-[#61897c] dark:text-gray-400 mb-4">
@@ -310,8 +310,8 @@
                             </div>
                         @elseif($campaign->status === 'upcoming')
                             <div class="text-center mb-6">
-                                <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 !text-2xl">schedule</span>
+                                <div class="w-16 h-16 bg-green-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span class="material-symbols-outlined text-green-600 dark:text-green-400 !text-2xl">schedule</span>
                                 </div>
                                 <p class="font-semibold text-[#111816] dark:text-white mb-2">Coming Soon</p>
                                 <p class="text-sm text-[#61897c] dark:text-gray-400 mb-4">
@@ -474,11 +474,11 @@
                         Share Campaign
                     </h3>
                     <div class="space-y-3">
-                        <button onclick="shareToTwitter()" class="flex items-center gap-3 w-full p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors text-sm font-medium">
+                        <button onclick="shareToTwitter()" class="flex items-center gap-3 w-full p-3 bg-green-50 dark:bg-blue-900/30 text-green-600 dark:text-green-400 rounded-xl hover:bg-green-100 dark:hover:bg-blue-900/50 transition-colors text-sm font-medium">
                             <span class="material-symbols-outlined !text-lg">share</span>
                             Share on Twitter
                         </button>
-                        <button onclick="shareToFacebook()" class="flex items-center gap-3 w-full p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors text-sm font-medium">
+                        <button onclick="shareToFacebook()" class="flex items-center gap-3 w-full p-3 bg-green-50 dark:bg-blue-900/30 text-green-600 dark:text-green-400 rounded-xl hover:bg-green-100 dark:hover:bg-blue-900/50 transition-colors text-sm font-medium">
                             <span class="material-symbols-outlined !text-lg">share</span>
                             Share on Facebook
                         </button>
@@ -580,7 +580,7 @@ function showToast(message, type = 'info') {
     const bgColor = {
         'success': 'bg-green-500',
         'error': 'bg-red-500',
-        'info': 'bg-blue-500',
+        'info': 'bg-green-500',
         'warning': 'bg-yellow-500'
     }[type] || 'bg-primary';
     

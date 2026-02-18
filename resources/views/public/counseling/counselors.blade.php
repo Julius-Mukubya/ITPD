@@ -88,15 +88,15 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             @php
                 $gradients = [
-                    'from-blue-500 to-indigo-600',
+                    'from-green-500 to-indigo-600',
                     'from-emerald-500 to-teal-600',
                     'from-purple-500 to-pink-600',
                     'from-orange-500 to-red-600',
-                    'from-cyan-500 to-blue-600',
+                    'from-cyan-500 to-green-600',
                     'from-pink-500 to-rose-600',
                 ];
                 $badgeColors = [
-                    'blue' => 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
+                    'blue' => 'bg-green-100 dark:bg-blue-900/30 text-green-700 dark:text-green-300',
                     'emerald' => 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300',
                     'purple' => 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300',
                     'orange' => 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300',
@@ -110,7 +110,7 @@
                 $initials = strtoupper(substr($counselor->name, 0, 2));
                 $gradients = [
                     'from-purple-500 to-indigo-600',
-                    'from-blue-500 to-cyan-600',
+                    'from-green-500 to-cyan-600',
                     'from-green-500 to-teal-600',
                     'from-orange-500 to-red-600',
                     'from-pink-500 to-rose-600',
@@ -454,3 +454,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 </style>
 @endpush
+

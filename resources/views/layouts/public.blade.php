@@ -36,7 +36,7 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#14eba3",
+                        "primary": "#22c55e",
                         "background-light": "#f6f8f7",
                         "background-dark": "#10221c",
                     },
@@ -76,63 +76,63 @@
             transition: opacity 0.2s ease;
         }
         
-        /* MUBS Blue header that stands out from hero sections */
+        /* Header blending with hero section */
         .glass-header {
-            background: #0099CC;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), transparent);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: none;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
         }
         
-        /* Header text styling - white text */
+        /* Header text styling - white with shadow */
         .glass-header .header-text {
             color: #ffffff;
-            text-shadow: none;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             font-weight: 600;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .glass-header .header-logo {
-            filter: brightness(0) invert(1);
+            filter: none;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        /* Dark mode header - same blue */
+        /* Dark mode header */
         .dark .glass-header {
-            background: #0099CC;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: none;
         }
         
         .dark .glass-header .header-text {
             color: #ffffff;
         }
         
-        /* Header when scrolled - slightly darker blue */
+        /* Header when scrolled - solid background */
         .glass-header.scrolled {
-            background: #0088BB;
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(24px) saturate(180%);
             -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         
         .glass-header.scrolled .header-text {
-            color: #ffffff;
+            color: #111827;
             text-shadow: none;
         }
         
         .glass-header.scrolled .header-logo {
-            filter: brightness(0) invert(1);
+            filter: none;
         }
         
         .dark .glass-header.scrolled {
-            background: #0088BB;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.25);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            background: rgba(31, 41, 55, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
         }
         
         .dark .glass-header.scrolled .header-text {
@@ -163,6 +163,61 @@
         .dark .glass-sidebar {
             background: rgba(17, 24, 39, 0.9);
             border-right: 1px solid rgba(75, 85, 99, 0.3);
+        }
+        
+        /* Custom scrollbar for nested dropdowns */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(0, 153, 204, 0.3);
+            border-radius: 10px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 153, 204, 0.5);
+        }
+        
+        .dark .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(100, 200, 255, 0.3);
+        }
+        
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(100, 200, 255, 0.5);
+        }
+        
+        /* Fade in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 0.2s ease-out;
+        }
+        
+        /* Line clamp utility */
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
     </style>
     

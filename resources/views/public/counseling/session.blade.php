@@ -25,12 +25,12 @@
                 <div class="space-y-3 flex-1 overflow-y-auto">
                     <!-- Follow-up Badge -->
                     @if($session->isFollowUp())
-                    <div class="mb-3 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+                    <div class="mb-3 bg-gradient-to-r from-green-50 to-indigo-50 dark:from-green-900/20 dark:to-indigo-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3">
                         <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-sm">repeat</span>
+                            <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-sm">repeat</span>
                             <div>
-                                <p class="text-xs font-semibold text-blue-900 dark:text-blue-100">Follow-up Session</p>
-                                <a href="{{ route('public.counseling.session.show', $session->parentSession) }}" class="text-xs text-blue-600 dark:text-blue-400 hover:underline">
+                                <p class="text-xs font-semibold text-green-900 dark:text-green-100">Follow-up Session</p>
+                                <a href="{{ route('public.counseling.session.show', $session->parentSession) }}" class="text-xs text-green-600 dark:text-green-400 hover:underline">
                                     View original session →
                                 </a>
                             </div>
@@ -85,7 +85,7 @@
                         <p class="text-xs text-gray-500 dark:text-gray-400 mb-0.5">Status</p>
                         <span class="px-2 py-0.5 text-xs font-medium rounded-full
                             @if($session->status === 'pending') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
-                            @elseif($session->status === 'active') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300
+                            @elseif($session->status === 'active') bg-green-100 text-green-800 dark:bg-blue-900 dark:text-green-300
                             @elseif($session->status === 'completed') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
                             @else bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300
                             @endif">
@@ -119,7 +119,7 @@
                             <!-- Other Participants -->
                             @foreach($session->participants as $participant)
                             <div class="flex items-center gap-2">
-                                <div class="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold">
+                                <div class="w-6 h-6 rounded-full bg-gradient-to-br from-green-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold">
                                     {{ substr($participant->name, 0, 1) }}
                                 </div>
                                 <div class="flex-1">
@@ -242,7 +242,7 @@
                             <span class="px-2 py-1 rounded-full text-xs font-semibold
                                 @if($session->status === 'pending') bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300
                                 @elseif($session->status === 'active') bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300
-                                @else bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300
+                                @else bg-green-100 text-green-700 dark:bg-blue-900/30 dark:text-green-300
                                 @endif">
                                 {{ ucfirst($session->status) }}
                             </span>
@@ -381,8 +381,8 @@
                             placeholder="How was your session? Any feedback for your counselor?"></textarea>
                     </div>
                     
-                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-4">
-                        <p class="text-xs text-blue-800 dark:text-blue-200">
+                    <div class="bg-gradient-to-r from-green-50 to-indigo-50 dark:from-green-900/20 dark:to-indigo-900/20 border-2 border-green-200 dark:border-green-800 rounded-xl p-4">
+                        <p class="text-xs text-green-800 dark:text-green-200">
                             <strong>Note:</strong> 
                             @if($session->isGroupSession() && $session->isInitiator(auth()->id()))
                                 Ending the session will mark it as completed for all participants. You can schedule a follow-up session afterwards if needed.
@@ -432,8 +432,8 @@
                 <input type="hidden" name="action" value="leave_session">
                 
                 <div class="space-y-4 mb-6">
-                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-4">
-                        <p class="text-xs text-blue-800 dark:text-blue-200">
+                    <div class="bg-gradient-to-r from-green-50 to-indigo-50 dark:from-green-900/20 dark:to-indigo-900/20 border-2 border-green-200 dark:border-green-800 rounded-xl p-4">
+                        <p class="text-xs text-green-800 dark:text-green-200">
                             <strong>Note:</strong> Leaving the session will remove you from the group chat. The session will continue for other participants and the session creator.
                         </p>
                     </div>
@@ -488,8 +488,8 @@
                             class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-gray-700 dark:text-white text-sm">
                     </div>
                     
-                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-4">
-                        <p class="text-xs text-blue-800 dark:text-blue-200">
+                    <div class="bg-gradient-to-r from-green-50 to-indigo-50 dark:from-green-900/20 dark:to-indigo-900/20 border-2 border-green-200 dark:border-green-800 rounded-xl p-4">
+                        <p class="text-xs text-green-800 dark:text-green-200">
                             <strong>Note:</strong> Your follow-up session will be with the same counselor ({{ $session->counselor ? $session->counselor->name : 'assigned counselor' }}) for continuity of care.
                         </p>
                     </div>
@@ -547,7 +547,7 @@ function linkifyMessage(text, isSender) {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const linkClass = isSender 
         ? 'underline hover:opacity-80 font-medium break-all' 
-        : 'text-blue-600 dark:text-blue-400 underline hover:text-blue-800 dark:hover:text-blue-300 font-medium break-all';
+        : 'text-green-600 dark:text-green-400 underline hover:text-green-800 dark:hover:text-green-300 font-medium break-all';
     
     return text.replace(urlRegex, function(url) {
         let cleanUrl = url.replace(/[.,;:!?)]$/, '');
@@ -751,3 +751,4 @@ setInterval(() => {
 </script>
 @endpush
 @endsection
+

@@ -228,7 +228,7 @@
                         Share Preview
                     </h3>
                     <div class="space-y-3">
-                        <button onclick="shareToTwitter()" class="flex items-center gap-3 w-full p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors text-sm font-medium">
+                        <button onclick="shareToTwitter()" class="flex items-center gap-3 w-full p-3 bg-green-50 dark:bg-blue-900/30 text-green-600 dark:text-green-400 rounded-xl hover:bg-green-100 dark:hover:bg-blue-900/50 transition-colors text-sm font-medium">
                             <span class="material-symbols-outlined !text-lg">share</span>
                             Share on Twitter
                         </button>
@@ -307,7 +307,7 @@ function showToast(message, type = 'info') {
     const bgColor = {
         'success': 'bg-green-500',
         'error': 'bg-red-500',
-        'info': 'bg-blue-500',
+        'info': 'bg-green-500',
         'warning': 'bg-yellow-500'
     }[type] || 'bg-primary';
     

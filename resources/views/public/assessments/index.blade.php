@@ -105,7 +105,7 @@
                     $colors = [
                         'audit' => ['from' => 'from-yellow-500', 'to' => 'to-orange-600', 'icon' => 'local_bar'],
                         'dudit' => ['from' => 'from-orange-500', 'to' => 'to-red-600', 'icon' => 'medication'],
-                        'phq9' => ['from' => 'from-blue-500', 'to' => 'to-cyan-600', 'icon' => 'mood_bad'],
+                        'phq9' => ['from' => 'from-green-500', 'to' => 'to-cyan-600', 'icon' => 'mood_bad'],
                         'gad7' => ['from' => 'from-purple-500', 'to' => 'to-indigo-600', 'icon' => 'sentiment_worried'],
                         'dass21' => ['from' => 'from-pink-500', 'to' => 'to-rose-600', 'icon' => 'psychology'],
                         'pss' => ['from' => 'from-orange-500', 'to' => 'to-red-600', 'icon' => 'stress_management'],
@@ -203,7 +203,7 @@
                         @auth
                             @if($userAttempt)
                                 <div class="flex flex-col sm:flex-row gap-2">
-                                    <button onclick="viewLastScore('{{ $assessment->type }}')" class="flex-1 flex items-center justify-center gap-1 text-blue-600 dark:text-blue-400 font-semibold text-xs sm:text-sm hover:text-blue-700 dark:hover:text-blue-300 transition-colors border border-blue-200 dark:border-blue-700 rounded-lg py-2">
+                                    <button onclick="viewLastScore('{{ $assessment->type }}')" class="flex-1 flex items-center justify-center gap-1 text-green-600 dark:text-green-400 font-semibold text-xs sm:text-sm hover:text-green-700 dark:hover:text-green-300 transition-colors border border-green-200 dark:border-blue-700 rounded-lg py-2">
                                         <span class="material-symbols-outlined text-sm">visibility</span>
                                         <span>View Last Score</span>
                                     </button>
@@ -709,7 +709,7 @@ function showToast(message, type = 'info') {
         type === 'success' ? 'bg-green-500 text-white' : 
         type === 'error' ? 'bg-red-500 text-white' : 
         type === 'warning' ? 'bg-yellow-500 text-white' :
-        'bg-blue-500 text-white'
+        'bg-green-500 text-white'
     }`;
     
     toast.innerHTML = `
@@ -757,3 +757,4 @@ function showToast(message, type = 'info') {
     }
 </style>
 @endpush
+

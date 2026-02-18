@@ -247,7 +247,7 @@
                     <div class="flex items-center justify-between mb-4">
                         <span class="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full
                             @if($content->category->name === 'Mental Health') text-yellow-700 dark:text-yellow-300 bg-yellow-100 dark:bg-yellow-900/50
-                            @elseif($content->category->name === 'Alcohol') text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/50
+                            @elseif($content->category->name === 'Alcohol') text-green-700 dark:text-green-300 bg-green-100 dark:bg-blue-900/50
                             @elseif($content->category->name === 'Drug Information') text-orange-700 dark:text-orange-300 bg-orange-100 dark:bg-orange-900/50
                             @elseif($content->category->name === 'Support') text-purple-700 dark:text-purple-300 bg-purple-100 dark:bg-purple-900/50
                             @else text-green-700 dark:text-green-300 bg-green-100 dark:bg-green-900/50

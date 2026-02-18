@@ -265,17 +265,17 @@
                 </div>
                 @else
                 <!-- Guest CTA -->
-                <div class="mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
+                <div class="mb-6 sm:mb-8 p-4 sm:p-6 bg-gradient-to-r from-green-50 to-indigo-50 dark:from-green-900/20 dark:to-indigo-900/20 border border-green-200 dark:border-green-800 rounded-xl">
                     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                         <div>
-                            <h4 class="font-semibold text-blue-900 dark:text-blue-100 mb-1 text-sm sm:text-base">Join the conversation</h4>
-                            <p class="text-xs sm:text-sm text-blue-800 dark:text-blue-200">Sign in to share your thoughts and engage with the community.</p>
+                            <h4 class="font-semibold text-green-900 dark:text-green-100 mb-1 text-sm sm:text-base">Join the conversation</h4>
+                            <p class="text-xs sm:text-sm text-green-800 dark:text-green-200">Sign in to share your thoughts and engage with the community.</p>
                         </div>
                         <div class="flex flex-col sm:flex-row gap-2">
-                            <button onclick="openLoginModal()" class="bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-xl font-semibold hover:bg-blue-700 transition-colors text-xs sm:text-sm">
+                            <button onclick="openLoginModal()" class="bg-green-600 text-white px-3 sm:px-4 py-2 rounded-xl font-semibold hover:bg-green-700 transition-colors text-xs sm:text-sm">
                                 Sign In
                             </button>
-                            <button onclick="openSignupModal()" class="bg-white dark:bg-gray-700 border border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-400 px-3 sm:px-4 py-2 rounded-xl font-semibold hover:bg-blue-50 dark:hover:bg-gray-600 transition-colors text-xs sm:text-sm">
+                            <button onclick="openSignupModal()" class="bg-white dark:bg-gray-700 border border-green-300 dark:border-blue-700 text-green-600 dark:text-green-400 px-3 sm:px-4 py-2 rounded-xl font-semibold hover:bg-green-50 dark:hover:bg-gray-600 transition-colors text-xs sm:text-sm">
                                 Sign Up
                             </button>
                         </div>
@@ -393,7 +393,7 @@
                                         <div class="flex-1">
                                             <div class="bg-white dark:bg-gray-600/50 rounded-xl p-4 group-hover/reply:bg-gray-50 dark:group-hover/reply:bg-gray-600/70 transition-colors border border-gray-200 dark:border-gray-600">
                                                 <div class="flex items-center gap-3 mb-2">
-                                                    <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                                                    <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
                                                         {{ $reply->is_anonymous ? '?' : strtoupper(substr($reply->user->name ?? 'A', 0, 1)) }}
                                                     </div>
                                                     <div class="flex items-center justify-between flex-1">
@@ -616,7 +616,7 @@
             <!-- Community Guidelines -->
             <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-300 group sm:col-span-2 lg:col-span-1">
                 <div class="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-green-500 to-indigo-600 rounded-xl flex items-center justify-center">
                         <span class="material-symbols-outlined text-white text-lg sm:text-xl">verified_user</span>
                     </div>
                     <div class="min-w-0 flex-1">
@@ -712,7 +712,7 @@ function sharePost() {
 
 function showToast(message, type = 'success') {
     const toast = document.createElement('div');
-    const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+    const bgColor = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-green-500';
     toast.className = `fixed top-4 right-4 ${bgColor} text-white px-4 py-2 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300`;
     toast.textContent = message;
     document.body.appendChild(toast);
@@ -882,3 +882,4 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 @endpush
 @endsection
+

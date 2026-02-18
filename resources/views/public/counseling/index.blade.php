@@ -102,13 +102,13 @@
                     <div class="overflow-hidden">
                         <div id="services-track" class="flex transition-transform duration-300 ease-in-out gap-4 sm:gap-6">
                             <!-- Service Items -->
-                            <div class="flex-none w-72 sm:w-80 group rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/10 dark:to-indigo-900/10 border border-blue-100 dark:border-blue-900/30 hover:shadow-lg hover:shadow-blue-500/10 transition-all cursor-pointer overflow-hidden">
+                            <div class="flex-none w-72 sm:w-80 group rounded-xl bg-gradient-to-br from-green-50 to-indigo-50 dark:from-green-900/10 dark:to-indigo-900/10 border border-green-100 dark:border-green-900/30 hover:shadow-lg hover:shadow-green-500/10 transition-all cursor-pointer overflow-hidden">
                                 <div class="relative h-28 sm:h-32 overflow-hidden">
                                     <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&h=200&fit=crop" alt="Individual Counseling" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                                     <div class="absolute inset-0 bg-gradient-to-t from-blue-900/60 to-transparent"></div>
                                     <div class="absolute bottom-2 sm:bottom-3 left-2 sm:left-3">
                                         <div class="w-8 h-8 sm:w-10 sm:h-10 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center shadow-lg">
-                                            <span class="material-symbols-outlined text-blue-600 text-base sm:text-lg">person</span>
+                                            <span class="material-symbols-outlined text-green-600 text-base sm:text-lg">person</span>
                                         </div>
                                     </div>
                                 </div>
@@ -232,7 +232,7 @@
                 <div id="counselors-track" class="flex transition-transform duration-300 ease-in-out gap-4 sm:gap-6">
                     @php
                         $gradients = [
-                            ['bg' => 'from-blue-500 to-indigo-600', 'light' => 'from-blue-50 to-indigo-50', 'dark' => 'dark:from-blue-900/20 dark:to-indigo-900/20'],
+                            ['bg' => 'from-green-500 to-indigo-600', 'light' => 'from-green-50 to-indigo-50', 'dark' => 'dark:from-green-900/20 dark:to-indigo-900/20'],
                             ['bg' => 'from-emerald-500 to-teal-600', 'light' => 'from-emerald-50 to-teal-50', 'dark' => 'dark:from-emerald-900/20 dark:to-teal-900/20'],
                             ['bg' => 'from-purple-500 to-pink-600', 'light' => 'from-purple-50 to-pink-50', 'dark' => 'dark:from-purple-900/20 dark:to-pink-900/20'],
                         ];

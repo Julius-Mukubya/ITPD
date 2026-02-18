@@ -126,7 +126,7 @@
                             </div>
                             <div class="flex items-center justify-between">
                                 <span class="text-gray-600 dark:text-gray-400">Completed</span>
-                                <span class="font-semibold text-blue-600">{{ $sessions->where('status', 'completed')->count() }}</span>
+                                <span class="font-semibold text-green-600">{{ $sessions->where('status', 'completed')->count() }}</span>
                             </div>
                             @else
                             <div class="text-center text-gray-500 dark:text-gray-400 py-4">
@@ -221,7 +221,7 @@
                     <div class="absolute inset-0 
                         @if($session->status === 'pending') bg-gradient-to-t from-amber-900/80 via-amber-900/40 to-transparent
                         @elseif($session->status === 'active') bg-gradient-to-t from-emerald-900/80 via-emerald-900/40 to-transparent
-                        @else bg-gradient-to-t from-blue-900/80 via-blue-900/40 to-transparent
+                        @else bg-gradient-to-t from-green-900/80 via-blue-900/40 to-transparent
                         @endif"></div>
                     
                     <!-- Status Badge -->
@@ -229,7 +229,7 @@
                         <span class="px-3 py-1.5 rounded-full text-xs font-bold backdrop-blur-sm
                             @if($session->status === 'pending') bg-amber-100/90 text-amber-700 dark:bg-amber-900/60 dark:text-amber-300
                             @elseif($session->status === 'active') bg-emerald-100/90 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300
-                            @else bg-blue-100/90 text-blue-700 dark:bg-blue-900/60 dark:text-blue-300
+                            @else bg-green-100/90 text-green-700 dark:bg-green-900/60 dark:text-green-300
                             @endif">
                             {{ ucfirst($session->status) }}
                         </span>
@@ -265,15 +265,15 @@
                 <div class="p-6">
                     @if($isGroupParticipant && $participantRecord && $participantRecord->status === 'invited')
                         <!-- Group Session Invitation -->
-                        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-3 mb-4">
+                        <div class="bg-gradient-to-r from-green-50 to-indigo-50 dark:from-green-900/20 dark:to-indigo-900/20 border border-green-200 dark:border-green-800 rounded-xl p-3 mb-4">
                             <div class="flex items-center gap-2 mb-2">
-                                <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-sm">group</span>
-                                <span class="text-xs font-semibold text-blue-900 dark:text-blue-100">Group Invitation</span>
+                                <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-sm">group</span>
+                                <span class="text-xs font-semibold text-green-900 dark:text-green-100">Group Invitation</span>
                             </div>
                             <div class="flex gap-2">
                                 <form method="POST" action="{{ route('public.counseling.session.accept-invitation', $session) }}" class="inline">
                                     @csrf
-                                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1">
+                                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1">
                                         <span class="material-symbols-outlined text-xs">check</span>
                                         Accept
                                     </button>
@@ -293,7 +293,7 @@
                     <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">
                         {{ ucfirst(str_replace('_', ' ', $session->session_type)) }}
                         @if($isGroupParticipant)
-                            <span class="text-sm font-normal text-blue-600 dark:text-blue-400">(Participant)</span>
+                            <span class="text-sm font-normal text-green-600 dark:text-green-400">(Participant)</span>
                         @endif
                     </h3>
                     
@@ -320,7 +320,7 @@
                     <!-- Action Buttons -->
                     <div class="flex flex-col gap-2">
                         @if($session->status === 'active' && (!$isGroupParticipant || ($participantRecord && $participantRecord->status === 'joined')))
-                            <button onclick="toggleContactInfo({{ $session->id }})" class="w-full bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2">
+                            <button onclick="toggleContactInfo({{ $session->id }})" class="w-full bg-green-50 dark:bg-blue-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-300 px-4 py-2 rounded-lg hover:bg-green-100 dark:hover:bg-blue-900/30 text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2">
                                 <span class="material-symbols-outlined text-sm">contact_phone</span>
                                 <span>Share Contact</span>
                             </button>
@@ -329,7 +329,7 @@
                                 <span class="material-symbols-outlined text-lg">arrow_forward</span>
                             </a>
                         @elseif($isGroupParticipant && $participantRecord && $participantRecord->status === 'invited')
-                            <div class="text-center text-blue-600 dark:text-blue-400 font-semibold text-sm py-2">
+                            <div class="text-center text-green-600 dark:text-green-400 font-semibold text-sm py-2">
                                 Invitation Pending
                             </div>
                         @else
@@ -342,10 +342,10 @@
                 </div>
                 
                 <!-- Contact Information Panel (Hidden by default) -->
-                <div id="contact-info-{{ $session->id }}" class="hidden border-t border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-4">
+                <div id="contact-info-{{ $session->id }}" class="hidden border-t border-gray-200 dark:border-gray-700 bg-gradient-to-r from-green-50 to-indigo-50 dark:from-green-900/20 dark:to-indigo-900/20 p-4">
                     <div class="flex items-center gap-2 mb-3">
-                        <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-lg">contact_phone</span>
-                        <h4 class="font-semibold text-blue-900 dark:text-blue-100 text-sm">Share Contact Info</h4>
+                        <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-lg">contact_phone</span>
+                        <h4 class="font-semibold text-green-900 dark:text-green-100 text-sm">Share Contact Info</h4>
                     </div>
                     
                     <form id="contact-form-{{ $session->id }}" class="space-y-3">
@@ -354,30 +354,30 @@
                         
                         <!-- Phone Number -->
                         <div class="space-y-1">
-                            <label class="text-xs font-medium text-blue-900 dark:text-blue-100">Phone Number</label>
+                            <label class="text-xs font-medium text-green-900 dark:text-green-100">Phone Number</label>
                             <input type="tel" name="phone" value="{{ auth()->user()->phone ?? '' }}" 
                                    placeholder="Enter your phone number"
-                                   class="w-full px-3 py-2 border border-blue-200 dark:border-blue-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-blue-900/20 dark:text-white text-sm">
+                                   class="w-full px-3 py-2 border border-green-200 dark:border-blue-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-blue-900/20 dark:text-white text-sm">
                         </div>
                         
                         <!-- WhatsApp -->
                         <div class="space-y-1">
-                            <label class="text-xs font-medium text-blue-900 dark:text-blue-100">WhatsApp</label>
+                            <label class="text-xs font-medium text-green-900 dark:text-green-100">WhatsApp</label>
                             <input type="tel" name="whatsapp" value="{{ auth()->user()->phone ?? '' }}" 
                                    placeholder="WhatsApp number"
-                                   class="w-full px-3 py-2 border border-blue-200 dark:border-blue-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-blue-900/20 dark:text-white text-sm">
+                                   class="w-full px-3 py-2 border border-green-200 dark:border-blue-700 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-blue-900/20 dark:text-white text-sm">
                         </div>
                         
                         <!-- Preferred Contact Method -->
                         <div class="space-y-1">
-                            <label class="text-xs font-medium text-blue-900 dark:text-blue-100">Preferred Method</label>
+                            <label class="text-xs font-medium text-green-900 dark:text-green-100">Preferred Method</label>
                             <div class="flex gap-2">
-                                <label class="flex items-center gap-1 bg-white dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg px-2 py-1 cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/40 transition-colors text-xs">
-                                    <input type="radio" name="preferred_contact" value="phone" class="text-blue-600 focus:ring-blue-500">
+                                <label class="flex items-center gap-1 bg-white dark:bg-blue-900/30 border border-green-200 dark:border-blue-700 rounded-lg px-2 py-1 cursor-pointer hover:bg-green-50 dark:hover:bg-blue-900/40 transition-colors text-xs">
+                                    <input type="radio" name="preferred_contact" value="phone" class="text-green-600 focus:ring-blue-500">
                                     <span>Phone</span>
                                 </label>
-                                <label class="flex items-center gap-1 bg-white dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg px-2 py-1 cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/40 transition-colors text-xs">
-                                    <input type="radio" name="preferred_contact" value="whatsapp" class="text-blue-600 focus:ring-blue-500">
+                                <label class="flex items-center gap-1 bg-white dark:bg-blue-900/30 border border-green-200 dark:border-blue-700 rounded-lg px-2 py-1 cursor-pointer hover:bg-green-50 dark:hover:bg-blue-900/40 transition-colors text-xs">
+                                    <input type="radio" name="preferred_contact" value="whatsapp" class="text-green-600 focus:ring-blue-500">
                                     <span>WhatsApp</span>
                                 </label>
                             </div>
@@ -385,7 +385,7 @@
                         
                         <!-- Action Buttons -->
                         <div class="flex gap-2 pt-2">
-                            <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1">
+                            <button type="submit" class="flex-1 bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1">
                                 <span class="material-symbols-outlined text-xs">share</span>
                                 Share
                             </button>
@@ -746,7 +746,7 @@ function showNotification(message, type = 'info') {
     notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transform transition-all duration-300 translate-x-full ${
         type === 'success' ? 'bg-green-500 text-white' : 
         type === 'error' ? 'bg-red-500 text-white' : 
-        'bg-blue-500 text-white'
+        'bg-green-500 text-white'
     }`;
     
     notification.innerHTML = `
@@ -852,3 +852,4 @@ function scrollToSessions() {
     }
 </style>
 @endpush
+

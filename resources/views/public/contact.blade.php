@@ -57,7 +57,7 @@
                 </div>
                 
                 <div class="text-center group">
-                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                    <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-outlined text-white text-2xl">email</span>
                     </div>
                     <h3 class="text-lg font-bold text-[#111816] dark:text-white mb-2 group-hover:text-primary transition-colors">Email Support</h3>

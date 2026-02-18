@@ -213,7 +213,7 @@
                 <!-- Step 4: Details -->
                 <div class="form-step" data-step="4">
                     <div class="text-center mb-8">
-                        <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-2xl mb-4">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-green-50 dark:bg-blue-900/20 rounded-2xl mb-4">
                             <span class="material-symbols-outlined text-4xl text-blue-500">edit_note</span>
                         </div>
                         <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Session Details</h2>
@@ -367,12 +367,12 @@
                     </div>
 
                     <!-- Confidentiality Notice -->
-                    <div class="mb-8 bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-6">
+                    <div class="mb-8 bg-green-50 dark:bg-blue-900/20 border-2 border-green-200 dark:border-green-800 rounded-xl p-6">
                         <div class="flex gap-3">
-                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 flex-shrink-0">lock</span>
+                            <span class="material-symbols-outlined text-green-600 dark:text-green-400 flex-shrink-0">lock</span>
                             <div>
-                                <h4 class="font-semibold text-blue-900 dark:text-blue-100 mb-2">Confidentiality & Privacy</h4>
-                                <p class="text-sm text-blue-800 dark:text-blue-200 leading-relaxed">
+                                <h4 class="font-semibold text-green-900 dark:text-green-100 mb-2">Confidentiality & Privacy</h4>
+                                <p class="text-sm text-green-800 dark:text-green-200 leading-relaxed">
                                     All counseling sessions are completely confidential. Your information will only be shared with your explicit consent or in cases where there's immediate danger to yourself or others.
                                 </p>
                             </div>
@@ -624,3 +624,4 @@ document.head.appendChild(style);
 </script>
 @endpush
 @endsection
+

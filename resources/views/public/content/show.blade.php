@@ -29,7 +29,7 @@
         <div class="flex flex-wrap items-center gap-3 mb-4">
             <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full
                 @if($content->category->name === 'Mental Health') text-yellow-700 dark:text-yellow-300 bg-gradient-to-r from-yellow-100 to-yellow-200 dark:from-yellow-900/50 dark:to-yellow-800/50
-                @elseif($content->category->name === 'Alcohol') text-blue-700 dark:text-blue-300 bg-gradient-to-r from-blue-100 to-blue-200 dark:from-blue-900/50 dark:to-blue-800/50
+                @elseif($content->category->name === 'Alcohol') text-green-700 dark:text-green-300 bg-gradient-to-r from-blue-100 to-blue-200 dark:from-blue-900/50 dark:to-blue-800/50
                 @elseif($content->category->name === 'Drug Information') text-orange-700 dark:text-orange-300 bg-gradient-to-r from-orange-100 to-orange-200 dark:from-orange-900/50 dark:to-orange-800/50
                 @elseif($content->category->name === 'Support') text-purple-700 dark:text-purple-300 bg-gradient-to-r from-purple-100 to-purple-200 dark:from-purple-900/50 dark:to-purple-800/50
                 @else text-green-700 dark:text-green-300 bg-gradient-to-r from-green-100 to-green-200 dark:from-green-900/50 dark:to-green-800/50
@@ -82,7 +82,7 @@
                         <span class="material-symbols-outlined !text-base" id="bookmark-icon">bookmark_border</span>
                         <span id="bookmark-text">Save</span>
                     </button>
-                    <button onclick="shareContent()" class="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-all text-sm font-medium">
+                    <button onclick="shareContent()" class="flex items-center gap-1.5 px-3 py-1.5 bg-green-50 dark:bg-blue-900/30 text-green-600 dark:text-green-400 rounded-lg hover:bg-green-100 dark:hover:bg-blue-900/50 transition-all text-sm font-medium">
                         <span class="material-symbols-outlined !text-base">share</span>
                         Share
                     </button>
@@ -314,7 +314,7 @@
                     <div class="flex items-center justify-between">
                         <span class="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full
                             @if($related->category->name === 'Mental Health') text-yellow-700 dark:text-yellow-300 bg-yellow-100 dark:bg-yellow-900/50
-                            @elseif($related->category->name === 'Alcohol') text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/50
+                            @elseif($related->category->name === 'Alcohol') text-green-700 dark:text-green-300 bg-green-100 dark:bg-blue-900/50
                             @elseif($related->category->name === 'Drug Information') text-orange-700 dark:text-orange-300 bg-orange-100 dark:bg-orange-900/50
                             @elseif($related->category->name === 'Support') text-purple-700 dark:text-purple-300 bg-purple-100 dark:bg-purple-900/50
                             @else text-green-700 dark:text-green-300 bg-green-100 dark:bg-green-900/50
@@ -858,7 +858,7 @@ function showToast(message, type = 'info') {
     const bgColor = {
         'success': 'bg-green-500',
         'error': 'bg-red-500',
-        'info': 'bg-blue-500',
+        'info': 'bg-green-500',
         'warning': 'bg-yellow-500'
     }[type] || 'bg-primary';
     
@@ -949,8 +949,8 @@ document.addEventListener('DOMContentLoaded', function() {
             <!-- Share Options -->
             <div class="space-y-3">
                 <!-- Twitter -->
-                <button onclick="shareToTwitter()" class="flex items-center gap-3 w-full p-4 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-all duration-200 transform hover:scale-105 font-medium">
-                    <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                <button onclick="shareToTwitter()" class="flex items-center gap-3 w-full p-4 bg-green-50 dark:bg-blue-900/30 text-green-600 dark:text-green-400 rounded-xl hover:bg-green-100 dark:hover:bg-blue-900/50 transition-all duration-200 transform hover:scale-105 font-medium">
+                    <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
                         <span class="material-symbols-outlined text-white !text-lg">share</span>
                     </div>
                     <div class="text-left">
@@ -960,7 +960,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </button>
                 
                 <!-- LinkedIn -->
-                <button onclick="shareToLinkedIn()" class="flex items-center gap-3 w-full p-4 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-all duration-200 transform hover:scale-105 font-medium">
+                <button onclick="shareToLinkedIn()" class="flex items-center gap-3 w-full p-4 bg-green-50 dark:bg-blue-900/30 text-green-600 dark:text-green-400 rounded-xl hover:bg-green-100 dark:hover:bg-blue-900/50 transition-all duration-200 transform hover:scale-105 font-medium">
                     <div class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center">
                         <span class="material-symbols-outlined text-white !text-lg">business</span>
                     </div>

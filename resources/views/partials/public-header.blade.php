@@ -25,7 +25,7 @@
                         <div class="p-2">
                             <a href="{{ route('content.index') }}#filters-section" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                 <div class="flex items-center gap-3">
-                                    <span class="material-symbols-outlined" style="color: #407cdd;">library_books</span>
+                                    <span class="material-symbols-outlined" style="color: rgb(34, 197, 94);">library_books</span>
                                     <div>
                                         <div class="font-medium">All Resources</div>
                                         <div class="text-xs text-gray-500 dark:text-gray-400">Browse all educational content</div>
@@ -51,7 +51,7 @@
                                 <div class="relative category-item">
                                     <div class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors cursor-pointer">
                                         <a href="{{ route('content.index', ['category' => $category->slug]) }}" class="flex items-center gap-3 flex-1">
-                                            <span class="material-symbols-outlined" style="color: #407cdd;">{{ $categoryIcons[$category->slug] ?? 'article' }}</span>
+                                            <span class="material-symbols-outlined" style="color: rgb(34, 197, 94);">{{ $categoryIcons[$category->slug] ?? 'article' }}</span>
                                             <span>{{ $category->name }}</span>
                                         </a>
                                         <button onclick="toggleCategoryResources(event, '{{ $category->slug }}')" class="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors">
@@ -62,9 +62,9 @@
                                     <div id="resources-{{ $category->slug }}" class="hidden absolute left-full top-0 ml-2 w-96 glass-dropdown rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50 animate-fadeIn">
                                         <div class="p-3 max-h-96 overflow-y-auto custom-scrollbar">
                                             <!-- Header with gradient -->
-                                            <div class="px-3 py-3 mb-2 bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20 rounded-lg border-l-4 border-cyan-500">
+                                            <div class="px-3 py-3 mb-2 bg-gradient-to-r from-green-50 to-green-50 dark:from-green-900/20 dark:to-green-900/20 rounded-lg border-l-4 border-green-500">
                                                 <div class="flex items-center gap-2">
-                                                    <span class="material-symbols-outlined text-lg" style="color: #407cdd;">{{ $categoryIcons[$category->slug] ?? 'article' }}</span>
+                                                    <span class="material-symbols-outlined text-lg" style="color: rgb(34, 197, 94);">{{ $categoryIcons[$category->slug] ?? 'article' }}</span>
                                                     <p class="text-sm font-bold text-gray-800 dark:text-gray-200">{{ $category->name }}</p>
                                                 </div>
                                                 @php
@@ -81,21 +81,21 @@
                                                     @foreach($resources as $resource)
                                                         <a href="{{ route('content.show', $resource) }}" class="group block px-3 py-2.5 text-sm hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 dark:hover:from-gray-700 dark:hover:to-gray-600 rounded-lg transition-all duration-200 border border-transparent hover:border-gray-200 dark:hover:border-gray-600">
                                                             <div class="flex items-start gap-2">
-                                                                <span class="material-symbols-outlined text-gray-400 dark:text-gray-500 text-base mt-0.5 transition-colors flex-shrink-0" style="--hover-color: #407cdd;" onmouseenter="this.style.color='var(--hover-color)'" onmouseleave="this.style.color=''">description</span>
+                                                                <span class="material-symbols-outlined text-gray-400 dark:text-gray-500 text-base mt-0.5 transition-colors flex-shrink-0" style="--hover-color: rgb(34, 197, 94);" onmouseenter="this.style.color='var(--hover-color)'" onmouseleave="this.style.color=''">description</span>
                                                                 <div class="flex-1 min-w-0">
-                                                                    <div class="font-semibold text-gray-800 dark:text-gray-200 group-hover:text-cyan-700 dark:group-hover:text-cyan-300 transition-colors break-words">{{ $resource->title }}</div>
+                                                                    <div class="font-semibold text-gray-800 dark:text-gray-200 group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors break-words">{{ $resource->title }}</div>
                                                                     @if($resource->excerpt)
                                                                         <div class="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 mt-1">{{ Str::limit($resource->excerpt, 80) }}</div>
                                                                     @endif
                                                                     @if($resource->content_type)
                                                                         <div class="flex items-center gap-1 mt-1.5">
-                                                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                                                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
                                                                                 {{ ucfirst($resource->content_type) }}
                                                                             </span>
                                                                         </div>
                                                                     @endif
                                                                 </div>
-                                                                <span class="material-symbols-outlined text-gray-300 dark:text-gray-600 text-sm opacity-0 transition-all flex-shrink-0" style="--hover-color: #407cdd;" onmouseenter="this.parentElement.parentElement.parentElement.classList.contains('group') && (this.style.color='var(--hover-color)', this.style.opacity='1')" onmouseleave="this.style.color=''; this.style.opacity='0'">arrow_forward</span>
+                                                                <span class="material-symbols-outlined text-gray-300 dark:text-gray-600 text-sm opacity-0 transition-all flex-shrink-0" style="--hover-color: rgb(34, 197, 94);" onmouseenter="this.parentElement.parentElement.parentElement.classList.contains('group') && (this.style.color='var(--hover-color)', this.style.opacity='1')" onmouseleave="this.style.color=''; this.style.opacity='0'">arrow_forward</span>
                                                             </div>
                                                         </a>
                                                     @endforeach
@@ -103,7 +103,7 @@
                                                 
                                                 @if($totalResources > 8)
                                                     <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
-                                                        <a href="{{ route('content.index', ['category' => $category->slug]) }}" class="flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg">
+                                                        <a href="{{ route('content.index', ['category' => $category->slug]) }}" class="flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-green-600 to-green-600 hover:from-green-700 hover:to-green-700 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg">
                                                             <span>View all {{ $totalResources }} resources</span>
                                                             <span class="material-symbols-outlined text-base">arrow_forward</span>
                                                         </a>
@@ -135,7 +135,7 @@
                         <div class="p-2">
                             <a href="{{ route('public.counseling.index') }}" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                 <div class="flex items-center gap-3">
-                                    <span class="material-symbols-outlined" style="color: #407cdd;">support_agent</span>
+                                    <span class="material-symbols-outlined" style="color: rgb(34, 197, 94);">support_agent</span>
                                     <div>
                                         <div class="font-medium">Our Services</div>
                                         <div class="text-xs text-gray-500 dark:text-gray-400">Professional counseling support</div>
@@ -144,7 +144,7 @@
                             </a>
                             <a href="{{ route('public.counseling.counselors') }}" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                 <div class="flex items-center gap-3">
-                                    <span class="material-symbols-outlined text-blue-600">group</span>
+                                    <span class="material-symbols-outlined text-green-600">group</span>
                                     <div>
                                         <div class="font-medium">Our Counselors</div>
                                         <div class="text-xs text-gray-500 dark:text-gray-400">Meet our professional team</div>
@@ -155,7 +155,7 @@
                                 <div class="border-t border-gray-200 dark:border-gray-600 my-2"></div>
                                 <a href="{{ route('public.counseling.sessions') }}" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                     <div class="flex items-center gap-3">
-                                        <span class="material-symbols-outlined text-blue-600">psychology</span>
+                                        <span class="material-symbols-outlined text-green-600">psychology</span>
                                         <div>
                                             <div class="font-medium">My Sessions</div>
                                             <div class="text-xs text-gray-500 dark:text-gray-400">View your counseling sessions</div>
@@ -205,13 +205,13 @@
                         <div class="p-2">
                             <a href="{{ route('public.about') }}" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                 <div class="flex items-center gap-3">
-                                    <span class="material-symbols-outlined text-blue-600">info</span>
+                                    <span class="material-symbols-outlined text-green-600">info</span>
                                     <span class="font-medium">About Us</span>
                                 </div>
                             </a>
                             <a href="{{ route('public.contact') }}" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                 <div class="flex items-center gap-3">
-                                    <span class="material-symbols-outlined" style="color: #407cdd;">mail</span>
+                                    <span class="material-symbols-outlined" style="color: rgb(34, 197, 94);">mail</span>
                                     <span class="font-medium">Contact</span>
                                 </div>
                             </a>
@@ -257,38 +257,38 @@
                                 <!-- User Menu -->
                                 <a href="{{ route('public.counseling.sessions') }}#sessions" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                     <div class="flex items-center gap-3">
-                                        <span class="material-symbols-outlined style="color: #407cdd;"">psychology</span>
+                                        <span class="material-symbols-outlined style="color: rgb(34, 197, 94);"">psychology</span>
                                         <span>My Counseling</span>
                                     </div>
                                     @php
                                         $sessionsCount = auth()->user()->allCounselingSessions()->count();
                                     @endphp
                                     @if($sessionsCount > 0)
-                                        <span class="bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $sessionsCount }}</span>
+                                        <span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $sessionsCount }}</span>
                                     @endif
                                 </a>
                                 <a href="{{ route('public.assessments.index') }}#completed" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                     <div class="flex items-center gap-3">
-                                        <span class="material-symbols-outlined text-blue-600">quiz</span>
+                                        <span class="material-symbols-outlined text-green-600">quiz</span>
                                         <span>My Assessments</span>
                                     </div>
                                     @php
                                         $assessmentsCount = auth()->user()->assessmentAttempts()->count();
                                     @endphp
                                     @if($assessmentsCount > 0)
-                                        <span class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $assessmentsCount }}</span>
+                                        <span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $assessmentsCount }}</span>
                                     @endif
                                 </a>
                                 <a href="{{ route('public.forum.index') }}?filter=my" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                     <div class="flex items-center gap-3">
-                                        <span class="material-symbols-outlined text-purple-600">forum</span>
+                                        <span class="material-symbols-outlined text-green-600">forum</span>
                                         <span>My Posts</span>
                                     </div>
                                     @php
                                         $postsCount = auth()->user()->forumPosts()->count();
                                     @endphp
                                     @if($postsCount > 0)
-                                        <span class="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $postsCount }}</span>
+                                        <span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $postsCount }}</span>
                                     @endif
                                 </a>
                                 <a href="{{ route('content.index', ['bookmarked' => 1]) }}#resources" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
@@ -315,7 +315,7 @@
                                 @endif
                                 <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
                                 <button onclick="openProfileModal()" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors w-full text-left">
-                                    <span class="material-symbols-outlined text-blue-600">person</span>
+                                    <span class="material-symbols-outlined text-green-600">person</span>
                                     <span>Profile Settings</span>
                                 </button>
                                 <form method="POST" action="{{ route('logout') }}">
@@ -371,38 +371,38 @@
                                 <!-- User Menu -->
                                 <a href="{{ route('public.counseling.sessions') }}#sessions" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                     <div class="flex items-center gap-3">
-                                        <span class="material-symbols-outlined style="color: #407cdd;"">psychology</span>
+                                        <span class="material-symbols-outlined style="color: rgb(34, 197, 94);"">psychology</span>
                                         <span>My Counseling</span>
                                     </div>
                                     @php
                                         $sessionsCount = auth()->user()->allCounselingSessions()->count();
                                     @endphp
                                     @if($sessionsCount > 0)
-                                        <span class="bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $sessionsCount }}</span>
+                                        <span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $sessionsCount }}</span>
                                     @endif
                                 </a>
                                 <a href="{{ route('public.assessments.index') }}#completed" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                     <div class="flex items-center gap-3">
-                                        <span class="material-symbols-outlined text-blue-600">quiz</span>
+                                        <span class="material-symbols-outlined text-green-600">quiz</span>
                                         <span>My Assessments</span>
                                     </div>
                                     @php
                                         $assessmentsCount = auth()->user()->assessmentAttempts()->count();
                                     @endphp
                                     @if($assessmentsCount > 0)
-                                        <span class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $assessmentsCount }}</span>
+                                        <span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $assessmentsCount }}</span>
                                     @endif
                                 </a>
                                 <a href="{{ route('public.forum.index') }}?filter=my" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                     <div class="flex items-center gap-3">
-                                        <span class="material-symbols-outlined text-purple-600">forum</span>
+                                        <span class="material-symbols-outlined text-green-600">forum</span>
                                         <span>My Posts</span>
                                     </div>
                                     @php
                                         $postsCount = auth()->user()->forumPosts()->count();
                                     @endphp
                                     @if($postsCount > 0)
-                                        <span class="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $postsCount }}</span>
+                                        <span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $postsCount }}</span>
                                     @endif
                                 </a>
                                 <a href="{{ route('content.index', ['bookmarked' => 1]) }}#resources" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
@@ -429,7 +429,7 @@
                                 @endif
                                 <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
                                 <button onclick="openProfileModal()" class="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors w-full text-left">
-                                    <span class="material-symbols-outlined text-blue-600">person</span>
+                                    <span class="material-symbols-outlined text-green-600">person</span>
                                     <span>Profile Settings</span>
                                 </button>
                                 <form method="POST" action="{{ route('logout') }}">
@@ -502,7 +502,7 @@
                         @endphp
                         @foreach($categories as $category)
                             <a class="flex items-center gap-3 text-gray-900 dark:text-primary hover:text-gray-700 dark:hover:text-primary/80 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" href="{{ route('content.index', ['category' => $category->slug]) }}">
-                                <span class="material-symbols-outlined !text-base" style="color: #407cdd;">{{ $categoryIcons[$category->slug] ?? 'article' }}</span>
+                                <span class="material-symbols-outlined !text-base" style="color: rgb(34, 197, 94);">{{ $categoryIcons[$category->slug] ?? 'article' }}</span>
                                 <span>{{ $category->name }}</span>
                             </a>
                         @endforeach
