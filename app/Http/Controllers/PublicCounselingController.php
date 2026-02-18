@@ -147,7 +147,7 @@ class PublicCounselingController extends Controller
             : 'Your counseling request has been submitted successfully. A counselor will contact you soon.';
 
         return redirect()
-            ->route('public.counseling.sessions')
+            ->route('public.counseling.session.show', $session)
             ->with('success', $message);
     }
     

@@ -37,7 +37,7 @@
 </section>
 
 <!-- How to Talk to a Counselor - Step by Step Guide -->
-<section class="py-12 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+<section id="how-to-talk" class="py-12 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Section Header -->
         <div class="text-center mb-8">
@@ -128,12 +128,28 @@
             </div>
         </div>
 
-        <!-- CTA Button -->
+        <!-- CTA Buttons -->
         <div class="text-center mt-8">
-            <button onclick="openRequestModal()" class="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-green-500/30 transition-all duration-200 transform hover:scale-105">
-                <span class="material-symbols-outlined !text-xl">chat</span>
-                Start Your First Session
-            </button>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <button onclick="openRequestModal()" class="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-green-500/30 transition-all duration-200 transform hover:scale-105">
+                    <span class="material-symbols-outlined !text-xl">chat</span>
+                    Start Your First Session
+                </button>
+                
+                @auth
+                    @php
+                        $activeSessions = auth()->user()->allCounselingSessions()
+                            ->whereIn('status', ['pending', 'accepted', 'active'])
+                            ->get();
+                    @endphp
+                    @if($activeSessions->count() > 0)
+                        <a href="#sessions" class="inline-flex items-center gap-2 bg-white dark:bg-gray-800 text-green-600 dark:text-green-400 border-2 border-green-600 dark:border-green-400 px-8 py-4 rounded-xl font-bold text-lg hover:bg-green-50 dark:hover:bg-gray-700 transition-all duration-200 transform hover:scale-105">
+                            <span class="material-symbols-outlined !text-xl">forum</span>
+                            Continue Existing Session
+                        </a>
+                    @endif
+                @endauth
+            </div>
             <p class="text-sm text-gray-500 dark:text-gray-400 mt-3">No commitment required • Free for students</p>
         </div>
     </div>
@@ -393,12 +409,28 @@
                     @endif
                     
                     <!-- Session Title -->
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3">
                         {{ ucfirst(str_replace('_', ' ', $session->session_type)) }}
                         @if($isGroupParticipant)
                             <span class="text-sm font-normal text-green-600 dark:text-green-400">(Participant)</span>
                         @endif
                     </h3>
+                    
+                    <!-- Reason for Counseling -->
+                    @if($session->description)
+                    <div class="mb-4 relative">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-green-500 to-green-600 rounded-full"></div>
+                        <div class="pl-4">
+                            <div class="flex items-center gap-2 mb-1.5">
+                                <span class="material-symbols-outlined text-base text-green-600 dark:text-green-400">format_quote</span>
+                                <span class="text-xs font-bold text-green-700 dark:text-green-400 uppercase tracking-wide">Topic</span>
+                            </div>
+                            <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed line-clamp-3 italic">
+                                "{{ $session->description }}"
+                            </p>
+                        </div>
+                    </div>
+                    @endif
                     
                     <!-- Session Details -->
                     <div class="space-y-2 mb-4">

@@ -12,6 +12,129 @@
     </nav>
 </div>
 
+<!-- Instructions Section -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
+    @if($session->status === 'pending')
+    <div class="bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border-l-4 border-amber-500 rounded-lg p-6 shadow-sm">
+        <div class="flex items-start gap-4">
+            <div class="flex-shrink-0">
+                <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/40 rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-amber-600 dark:text-amber-400 text-2xl">schedule</span>
+                </div>
+            </div>
+            <div class="flex-1">
+                <h3 class="text-lg font-bold text-amber-900 dark:text-amber-100 mb-2 flex items-center gap-2">
+                    <span>Your Session Request is Pending</span>
+                </h3>
+                <div class="space-y-2 text-sm text-amber-800 dark:text-amber-200">
+                    <p class="font-medium">What happens next:</p>
+                    <ul class="space-y-1.5 ml-4">
+                        <li class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-base mt-0.5">check_circle</span>
+                            <span>A professional counselor will review your request within 24-48 hours</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-base mt-0.5">check_circle</span>
+                            <span>You'll receive a notification once a counselor accepts your session</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-base mt-0.5">check_circle</span>
+                            <span>Once accepted, you can share your contact information and start communicating</span>
+                        </li>
+                    </ul>
+                    <p class="mt-3 text-xs italic">💡 Tip: Check your notifications regularly for updates on your session status.</p>
+                </div>
+                <div class="mt-4">
+                    <a href="{{ route('public.counseling.sessions') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border-2 border-amber-500 text-amber-700 dark:text-amber-300 rounded-lg hover:bg-amber-50 dark:hover:bg-amber-900/20 transition-all duration-200 text-sm font-semibold">
+                        <span class="material-symbols-outlined text-base">arrow_back</span>
+                        <span>View All Sessions</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @elseif($session->status === 'active')
+    <div class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-l-4 border-green-500 rounded-lg p-6 shadow-sm">
+        <div class="flex items-start gap-4">
+            <div class="flex-shrink-0">
+                <div class="w-12 h-12 bg-green-100 dark:bg-green-900/40 rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-2xl">psychology</span>
+                </div>
+            </div>
+            <div class="flex-1">
+                <h3 class="text-lg font-bold text-green-900 dark:text-green-100 mb-2 flex items-center gap-2">
+                    <span>Your Session is Active</span>
+                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300">
+                        <span class="w-2 h-2 bg-green-500 rounded-full mr-1.5 animate-pulse"></span>
+                        Live
+                    </span>
+                </h3>
+                <div class="space-y-2 text-sm text-green-800 dark:text-green-200">
+                    <p class="font-medium">You can now:</p>
+                    <ul class="space-y-1.5 ml-4">
+                        <li class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-base mt-0.5">contact_phone</span>
+                            <span>Share your contact information with your counselor using the "Share Contact" button</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-base mt-0.5">chat</span>
+                            <span>Send messages to communicate with your counselor</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-base mt-0.5">video_call</span>
+                            <span>Connect via your preferred method ({{ $session->preferred_method ? ucfirst(str_replace('_', ' ', $session->preferred_method)) : 'as discussed' }})</span>
+                        </li>
+                    </ul>
+                    <p class="mt-3 text-xs italic">💡 Tip: Be open and honest with your counselor. All sessions are confidential and secure.</p>
+                </div>
+                <div class="mt-4">
+                    <a href="{{ route('public.counseling.sessions') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border-2 border-green-500 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-200 text-sm font-semibold">
+                        <span class="material-symbols-outlined text-base">arrow_back</span>
+                        <span>View All Sessions</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @elseif($session->status === 'completed')
+    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-l-4 border-blue-500 rounded-lg p-6 shadow-sm">
+        <div class="flex items-start gap-4">
+            <div class="flex-shrink-0">
+                <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/40 rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 text-2xl">check_circle</span>
+                </div>
+            </div>
+            <div class="flex-1">
+                <h3 class="text-lg font-bold text-blue-900 dark:text-blue-100 mb-2">Session Completed</h3>
+                <div class="space-y-2 text-sm text-blue-800 dark:text-blue-200">
+                    <p>This counseling session has been completed. You can:</p>
+                    <ul class="space-y-1.5 ml-4">
+                        <li class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-base mt-0.5">history</span>
+                            <span>Review your conversation history below</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-base mt-0.5">repeat</span>
+                            <span>Schedule a follow-up session if you need continued support</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-base mt-0.5">star</span>
+                            <span>Provide feedback to help us improve our services</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mt-4">
+                    <a href="{{ route('public.counseling.sessions') }}" class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border-2 border-blue-500 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-200 text-sm font-semibold">
+                        <span class="material-symbols-outlined text-base">arrow_back</span>
+                        <span>View All Sessions</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+</div>
+
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-4">
         <!-- Session Info Sidebar -->

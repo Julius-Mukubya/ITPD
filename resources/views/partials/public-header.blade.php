@@ -288,17 +288,23 @@
                                 </div>
                             </div>
                             @auth
-                                <div class="border-t border-gray-200 dark:border-gray-600 my-2"></div>
-                                <a href="{{ route('public.counseling.sessions') }}" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                    <div class="flex items-center gap-3">
-                                        <span class="material-symbols-outlined text-green-600">psychology</span>
-                                        <div>
-                                            <div class="font-medium">My Sessions</div>
-                                            <div class="text-xs text-gray-500 dark:text-gray-400">View your counseling sessions</div>
+                                @php
+                                    $userSessionsCount = auth()->user()->allCounselingSessions()->count();
+                                @endphp
+                                @if($userSessionsCount > 0)
+                                    <div class="border-t border-gray-200 dark:border-gray-600 my-2"></div>
+                                    <a href="{{ route('public.counseling.sessions') }}" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                        <div class="flex items-center gap-3">
+                                            <span class="material-symbols-outlined text-green-600">psychology</span>
+                                            <div>
+                                                <div class="font-medium">My Sessions</div>
+                                                <div class="text-xs text-gray-500 dark:text-gray-400">View your counseling sessions</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
-                                <a href="{{ route('public.counseling.sessions') }}" class="block px-4 py-3 text-sm text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors">
+                                    </a>
+                                @endif
+                                <div class="border-t border-gray-200 dark:border-gray-600 my-2"></div>
+                                <a href="{{ route('public.counseling.sessions') }}#how-to-talk" class="block px-4 py-3 text-sm text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors">
                                     <div class="flex items-center gap-3">
                                         <span class="material-symbols-outlined">chat</span>
                                         <div class="font-medium">Talk to a Counselor</div>
@@ -317,18 +323,180 @@
                     </div>
                 </div>
                 
-                <a class="header-text hover:opacity-80 text-sm font-medium leading-normal flex items-center gap-1.5 {{ request()->routeIs('public.assessments.*') ? 'font-bold' : '' }}" href="{{ route('public.assessments.index') }}">
-                    <span class="material-symbols-outlined text-base">quiz</span>
-                    <span>Assessments</span>
-                </a>
-                <a class="header-text hover:opacity-80 text-sm font-medium leading-normal flex items-center gap-1.5 {{ request()->routeIs('public.forum.*') || request()->routeIs('student.forum.*') ? 'font-bold' : '' }}" href="{{ route('public.forum.index') }}">
-                    <span class="material-symbols-outlined text-base">forum</span>
-                    <span>Community</span>
-                </a>
-                <a class="header-text hover:opacity-80 text-sm font-medium leading-normal flex items-center gap-1.5" href="{{ route('campaigns.index') }}">
-                    <span class="material-symbols-outlined text-base">campaign</span>
-                    <span>Events</span>
-                </a>
+                <!-- Assessments Dropdown -->
+                <div class="relative group">
+                    <a href="{{ route('public.assessments.index') }}" class="header-text hover:opacity-80 text-sm font-medium leading-normal flex items-center gap-1.5 {{ request()->routeIs('public.assessments.*') ? 'font-bold' : '' }}">
+                        <span class="material-symbols-outlined text-base">quiz</span>
+                        <span>Assessments</span>
+                        <span class="material-symbols-outlined text-sm">expand_more</span>
+                    </a>
+                    <div class="absolute top-full left-0 mt-2 w-80 glass-dropdown rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                        <div class="p-2">
+                            <!-- All Assessments Link -->
+                            <a href="{{ route('public.assessments.index') }}" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined" style="color: rgb(34, 197, 94);">quiz</span>
+                                    <div>
+                                        <div class="font-medium">All Assessments</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">Mental health screening tools</div>
+                                    </div>
+                                </div>
+                            </a>
+                            
+                            <div class="border-t border-gray-200 dark:border-gray-600 my-2"></div>
+                            
+                            <!-- Individual Assessments -->
+                            @php
+                                $assessments = \App\Models\Assessment::where('is_active', true)->orderBy('name')->limit(6)->get();
+                            @endphp
+                            @if($assessments->count() > 0)
+                                <div class="space-y-1 max-h-80 overflow-y-auto custom-scrollbar">
+                                    @foreach($assessments as $assessment)
+                                        <a href="{{ route('public.assessments.show', $assessment->type) }}" class="group block px-3 py-2.5 text-sm hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 dark:hover:from-gray-700 dark:hover:to-gray-600 rounded-lg transition-all duration-200">
+                                            <div class="flex items-start gap-3">
+                                                <!-- Assessment Image -->
+                                                <div class="w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
+                                                    @if($assessment->card_image)
+                                                        <img src="{{ $assessment->card_image_url }}" alt="{{ $assessment->full_name ?? $assessment->name }}" class="w-full h-full object-cover">
+                                                    @else
+                                                        <div class="w-full h-full flex items-center justify-center">
+                                                            <span class="material-symbols-outlined text-green-600 dark:text-green-400">psychology_alt</span>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                                <div class="flex-1 min-w-0">
+                                                    <div class="font-semibold text-gray-800 dark:text-gray-200 group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors break-words line-clamp-2">{{ $assessment->full_name ?? $assessment->name }}</div>
+                                                    @if($assessment->description)
+                                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-1">{{ Str::limit($assessment->description, 50) }}</p>
+                                                    @endif
+                                                </div>
+                                                <span class="material-symbols-outlined text-gray-300 dark:text-gray-600 text-sm opacity-0 group-hover:opacity-100 transition-all flex-shrink-0 mt-1" style="color: rgb(34, 197, 94);">arrow_forward</span>
+                                            </div>
+                                        </a>
+                                    @endforeach
+                                </div>
+                            @else
+                                <div class="px-4 py-6 text-center">
+                                    <span class="material-symbols-outlined text-gray-300 dark:text-gray-600 text-3xl mb-2">quiz</span>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">No assessments available</p>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Community Dropdown -->
+                <div class="relative group">
+                    <a href="{{ route('public.forum.index') }}" class="header-text hover:opacity-80 text-sm font-medium leading-normal flex items-center gap-1.5 {{ request()->routeIs('public.forum.*') || request()->routeIs('student.forum.*') ? 'font-bold' : '' }}">
+                        <span class="material-symbols-outlined text-base">forum</span>
+                        <span>Community</span>
+                        <span class="material-symbols-outlined text-sm">expand_more</span>
+                    </a>
+                    <div class="absolute top-full left-0 mt-2 w-80 glass-dropdown rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                        <div class="p-2">
+                            <!-- All Discussions Link -->
+                            <a href="{{ route('public.forum.index') }}" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined" style="color: rgb(34, 197, 94);">forum</span>
+                                    <div>
+                                        <div class="font-medium">All Discussions</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">Browse community topics</div>
+                                    </div>
+                                </div>
+                            </a>
+                            
+                            <div class="border-t border-gray-200 dark:border-gray-600 my-2"></div>
+                            
+                            <!-- Forum Categories -->
+                            @php
+                                $forumCategories = \App\Models\ForumCategory::withCount('posts')->orderBy('name')->get();
+                            @endphp
+                            @if($forumCategories->count() > 0)
+                                <div class="space-y-1 max-h-80 overflow-y-auto custom-scrollbar">
+                                    @foreach($forumCategories as $forumCategory)
+                                        <a href="{{ route('public.forum.category', $forumCategory->slug) }}" class="group block px-3 py-2.5 text-sm hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 dark:hover:from-gray-700 dark:hover:to-gray-600 rounded-lg transition-all duration-200">
+                                            <div class="flex items-start gap-3">
+                                                <div class="w-10 h-10 flex-shrink-0 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                                                    <span class="material-symbols-outlined text-green-600 dark:text-green-400">{{ $forumCategory->icon ?? 'chat_bubble' }}</span>
+                                                </div>
+                                                <div class="flex-1 min-w-0">
+                                                    <div class="font-semibold text-gray-800 dark:text-gray-200 group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors">{{ $forumCategory->name }}</div>
+                                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ $forumCategory->posts_count }} {{ Str::plural('post', $forumCategory->posts_count) }}</p>
+                                                </div>
+                                                <span class="material-symbols-outlined text-gray-300 dark:text-gray-600 text-sm opacity-0 group-hover:opacity-100 transition-all flex-shrink-0 mt-1" style="color: rgb(34, 197, 94);">arrow_forward</span>
+                                            </div>
+                                        </a>
+                                    @endforeach
+                                </div>
+                            @else
+                                <div class="px-4 py-6 text-center">
+                                    <span class="material-symbols-outlined text-gray-300 dark:text-gray-600 text-3xl mb-2">forum</span>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">No categories available</p>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Events Dropdown -->
+                <div class="relative group">
+                    <a href="{{ route('campaigns.index') }}" class="header-text hover:opacity-80 text-sm font-medium leading-normal flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-base">campaign</span>
+                        <span>Events</span>
+                        <span class="material-symbols-outlined text-sm">expand_more</span>
+                    </a>
+                    <div class="absolute top-full left-0 mt-2 w-80 glass-dropdown rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                        <div class="p-2">
+                            <!-- All Events Link -->
+                            <a href="{{ route('campaigns.index') }}" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined" style="color: rgb(34, 197, 94);">campaign</span>
+                                    <div>
+                                        <div class="font-medium">All Events</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">View upcoming campaigns</div>
+                                    </div>
+                                </div>
+                            </a>
+                            
+                            <div class="border-t border-gray-200 dark:border-gray-600 my-2"></div>
+                            
+                            <!-- Upcoming Events -->
+                            @php
+                                $campaigns = \App\Models\Campaign::where('status', 'published')->where('end_date', '>=', now())->orderBy('start_date')->limit(6)->get();
+                            @endphp
+                            @if($campaigns->count() > 0)
+                                <div class="space-y-1 max-h-80 overflow-y-auto custom-scrollbar">
+                                    @foreach($campaigns as $campaign)
+                                        <a href="{{ route('campaigns.show', $campaign) }}" class="group block px-3 py-2.5 text-sm hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 dark:hover:from-gray-700 dark:hover:to-gray-600 rounded-lg transition-all duration-200">
+                                            <div class="flex items-start gap-3">
+                                                <!-- Event Image -->
+                                                <div class="w-12 h-12 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
+                                                    @if($campaign->banner_image)
+                                                        <img src="{{ asset('storage/' . $campaign->banner_image) }}" alt="{{ $campaign->title }}" class="w-full h-full object-cover">
+                                                    @else
+                                                        <div class="w-full h-full flex items-center justify-center">
+                                                            <span class="material-symbols-outlined text-green-600 dark:text-green-400">event</span>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                                <div class="flex-1 min-w-0">
+                                                    <div class="font-semibold text-gray-800 dark:text-gray-200 group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors break-words line-clamp-2">{{ $campaign->title }}</div>
+                                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ $campaign->start_date->format('M d, Y') }}</p>
+                                                </div>
+                                                <span class="material-symbols-outlined text-gray-300 dark:text-gray-600 text-sm opacity-0 group-hover:opacity-100 transition-all flex-shrink-0 mt-1" style="color: rgb(34, 197, 94);">arrow_forward</span>
+                                            </div>
+                                        </a>
+                                    @endforeach
+                                </div>
+                            @else
+                                <div class="px-4 py-6 text-center">
+                                    <span class="material-symbols-outlined text-gray-300 dark:text-gray-600 text-3xl mb-2">event_busy</span>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">No upcoming events</p>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
                 
                 <!-- More Dropdown -->
                 <div class="relative group">
