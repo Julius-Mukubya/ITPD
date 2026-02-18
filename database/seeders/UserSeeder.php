@@ -43,6 +43,28 @@ class UserSeeder extends Seeder
             ]
         );
 
+        // Teacher 1
+        User::firstOrCreate(
+            ['email' => 'teacher@email.com'],
+            [
+                'name' => 'Prof. Jane Smith',
+                'password' => Hash::make('password123'),
+                'role' => 'teacher',
+                'email_verified_at' => now(),
+            ]
+        );
+
+        // Teacher 2
+        User::firstOrCreate(
+            ['email' => 'teacher2@email.com'],
+            [
+                'name' => 'Mr. David Williams',
+                'password' => Hash::make('password123'),
+                'role' => 'teacher',
+                'email_verified_at' => now(),
+            ]
+        );
+
         // Student 1
         User::firstOrCreate(
             ['email' => 'user@email.com'],

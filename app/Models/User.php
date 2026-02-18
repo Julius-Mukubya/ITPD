@@ -211,6 +211,11 @@ class User extends Authenticatable
         return $this->role === 'user';
     }
 
+    public function isTeacher()
+    {
+        return $this->role === 'teacher';
+    }
+
     // Backward compatibility - alias for isUser()
     public function isStudent()
     {

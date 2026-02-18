@@ -34,6 +34,10 @@ class DashboardController extends Controller
                 $data = $this->getCounselorData($user);
                 $view = 'counselor.dashboard';
                 break;
+            case 'teacher':
+                $data = $this->getTeacherData($user);
+                $view = 'teacher.dashboard';
+                break;
             case 'admin':
                 $data = $this->getAdminData();
                 $view = 'admin.dashboard';
@@ -353,6 +357,123 @@ class DashboardController extends Controller
         return CounselingMessage::whereHas('session', function($query) use ($user) {
             $query->where('counselor_id', $user->id);
         })->where('sender_id', '!=', $user->id)->where('is_read', false)->count();
+    }
+
+    public function getTeacherData($user)
+    {
+        // Get campaigns created by this teacher
+        $teacherCampaigns = Campaign::where('created_by', $user->id)->pluck('id');
+        
+        // Get ALL regular users (students) in the system (not filtered by campaigns)
+        $allStudents = User::where('role', 'user')->pluck('id');
+        
+        return [
+            // Campaign Statistics
+            'total_campaigns' => Campaign::where('created_by', $user->id)->count(),
+            'active_campaigns' => Campaign::where('created_by', $user->id)->active()->count(),
+            'total_participants' => CampaignParticipant::whereIn('campaign_id', $teacherCampaigns)->count(),
+            'this_month_participants' => CampaignParticipant::whereIn('campaign_id', $teacherCampaigns)
+                ->whereMonth('created_at', now()->month)->count(),
+            
+            // Student Engagement - ALL STUDENTS (system-wide)
+            'students_taking_assessments' => AssessmentAttempt::whereIn('user_id', $allStudents)
+                ->distinct('user_id')->count(),
+            'total_assessment_attempts' => AssessmentAttempt::whereIn('user_id', $allStudents)->count(),
+            'this_week_attempts' => AssessmentAttempt::whereIn('user_id', $allStudents)
+                ->where('created_at', '>=', now()->subWeek())->count(),
+            'this_month_attempts' => AssessmentAttempt::whereIn('user_id', $allStudents)
+                ->whereMonth('created_at', now()->month)->count(),
+            
+            // Content Engagement - ALL STUDENTS (system-wide)
+            'students_viewing_content' => ContentView::whereIn('user_id', $allStudents)
+                ->distinct('user_id')->count(),
+            'total_content_views' => ContentView::whereIn('user_id', $allStudents)->count(),
+            'this_week_views' => ContentView::whereIn('user_id', $allStudents)
+                ->where('viewed_at', '>=', now()->subWeek())->count(),
+            
+            // Counseling Referrals - ALL STUDENTS (system-wide)
+            'students_in_counseling' => CounselingSession::whereIn('student_id', $allStudents)
+                ->distinct('student_id')->count(),
+            'total_counseling_sessions' => CounselingSession::whereIn('student_id', $allStudents)->count(),
+            
+            // Recent Data
+            'my_campaigns' => Campaign::where('created_by', $user->id)->withCount('participants')->latest()->take(5)->get(),
+            'recent_participants' => CampaignParticipant::whereIn('campaign_id', $teacherCampaigns)
+                ->with('campaign')->latest()->take(10)->get(),
+            
+            // Weekly Trends - ALL STUDENTS (system-wide)
+            'weekly_assessment_trend' => $this->getTeacherWeeklyTrend($allStudents, 'assessment_attempts'),
+            'weekly_content_trend' => $this->getTeacherWeeklyTrend($allStudents, 'content_views'),
+            'weekly_participation_trend' => $this->getTeacherWeeklyParticipation($teacherCampaigns),
+            
+            // Assessment Type Distribution - ALL STUDENTS (system-wide)
+            'assessment_type_distribution' => $this->getAssessmentTypeDistribution($allStudents),
+        ];
+    }
+
+    private function getTeacherWeeklyTrend($studentIds, $type)
+    {
+        $data = [];
+        
+        // If no student IDs, return empty data
+        if ($studentIds->isEmpty()) {
+            for ($i = 6; $i >= 0; $i--) {
+                $date = now()->subDays($i);
+                $data[] = [
+                    'date' => $date->format('M d'),
+                    'count' => 0
+                ];
+            }
+            return $data;
+        }
+        
+        for ($i = 6; $i >= 0; $i--) {
+            $date = now()->subDays($i);
+            
+            if ($type === 'assessment_attempts') {
+                $count = AssessmentAttempt::whereIn('user_id', $studentIds)
+                    ->whereDate('created_at', $date)->count();
+            } else {
+                $count = ContentView::whereIn('user_id', $studentIds)
+                    ->whereDate('viewed_at', $date)->count();
+            }
+            
+            $data[] = [
+                'date' => $date->format('M d'),
+                'count' => $count
+            ];
+        }
+        return $data;
+    }
+
+    private function getTeacherWeeklyParticipation($campaignIds)
+    {
+        $data = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $date = now()->subDays($i);
+            $count = CampaignParticipant::whereIn('campaign_id', $campaignIds)
+                ->whereDate('created_at', $date)->count();
+            $data[] = [
+                'date' => $date->format('M d'),
+                'count' => $count
+            ];
+        }
+        return $data;
+    }
+
+    private function getAssessmentTypeDistribution($studentIds)
+    {
+        if ($studentIds->isEmpty()) {
+            return [];
+        }
+        
+        return AssessmentAttempt::whereIn('user_id', $studentIds)
+            ->join('assessments', 'assessment_attempts.assessment_id', '=', 'assessments.id')
+            ->select('assessments.type', \DB::raw('count(*) as count'))
+            ->groupBy('assessments.type')
+            ->get()
+            ->pluck('count', 'type')
+            ->toArray();
     }
 
     public function getAdminData()

@@ -397,6 +397,23 @@ Route::middleware([
         });
     });
     
+    // Teacher Routes
+    Route::middleware('role:teacher')->prefix('teacher')->name('teacher.')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        
+        // Campaign Management
+        Route::resource('campaigns', \App\Http\Controllers\Teacher\CampaignController::class);
+        
+        // Analytics Pages
+        Route::get('/content', [\App\Http\Controllers\Teacher\AnalyticsController::class, 'content'])->name('content');
+        Route::get('/assessments', [\App\Http\Controllers\Teacher\AnalyticsController::class, 'assessments'])->name('assessments');
+        Route::get('/forum', [\App\Http\Controllers\Teacher\AnalyticsController::class, 'forum'])->name('forum');
+        
+        // Reports
+        Route::get('/reports', [\App\Http\Controllers\Teacher\AnalyticsController::class, 'reports'])->name('reports');
+        Route::get('/reports/export', [\App\Http\Controllers\Teacher\AnalyticsController::class, 'exportReports'])->name('reports.export');
+    });
+    
     // Shared Routes (Admin & Counselor access)
     Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
         // Content Management (Counselors can create/edit resources)

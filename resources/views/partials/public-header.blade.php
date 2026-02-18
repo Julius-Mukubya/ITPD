@@ -561,7 +561,7 @@
                                 <!-- User Menu -->
                                 <a href="{{ route('public.counseling.sessions') }}#sessions" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                     <div class="flex items-center gap-3">
-                                        <span class="material-symbols-outlined style="color: rgb(34, 197, 94);"">psychology</span>
+                                        <span class="material-symbols-outlined" style="color: rgb(34, 197, 94);">psychology</span>
                                         <span>My Counseling</span>
                                     </div>
                                     @php
@@ -635,10 +635,10 @@
                 @endauth
                 
                 @guest
-                    <button onclick="openLoginModal()" class="hidden sm:flex items-center justify-center rounded-lg h-9 sm:h-10 px-3 sm:px-5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-[#111816] dark:text-white text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    <button onclick="openLoginModal()" class="hidden sm:inline-flex items-center justify-center rounded-lg h-10 px-4 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-[#111816] dark:text-white text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors whitespace-nowrap">
                         Sign In
                     </button>
-                    <button onclick="openSignupModal()" class="hidden sm:flex items-center justify-center rounded-lg h-9 sm:h-10 px-3 sm:px-5 bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors">
+                    <button onclick="openSignupModal()" class="hidden sm:inline-flex items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors whitespace-nowrap">
                         Sign Up
                     </button>
                 @else
