@@ -30,7 +30,7 @@
                         <div class="p-2">
                             <a href="{{ route('public.counseling.index') }}" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                 <div class="flex items-center gap-3">
-                                    <span class="material-symbols-outlined text-emerald-600">support_agent</span>
+                                    <span class="material-symbols-outlined text-cyan-600">support_agent</span>
                                     <div>
                                         <div class="font-medium">Our Services</div>
                                         <div class="text-xs text-gray-500 dark:text-gray-400">Professional counseling support</div>
@@ -106,7 +106,7 @@
                             </a>
                             <a href="{{ route('public.contact') }}" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                 <div class="flex items-center gap-3">
-                                    <span class="material-symbols-outlined text-green-600">mail</span>
+                                    <span class="material-symbols-outlined text-cyan-600">mail</span>
                                     <span class="font-medium">Contact</span>
                                 </div>
                             </a>
@@ -128,7 +128,7 @@
                             @if(auth()->user()->avatar)
                                 <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="w-8 h-8 rounded-full object-cover">
                             @else
-                                <div class="w-8 h-8 bg-gradient-to-br from-primary to-green-600 rounded-full flex items-center justify-center text-xs font-bold text-white">
+                                <div class="w-8 h-8 bg-gradient-to-br from-primary to-cyan-600 rounded-full flex items-center justify-center text-xs font-bold text-white">
                                     {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
                                 </div>
                             @endif
@@ -152,14 +152,14 @@
                                 <!-- User Menu -->
                                 <a href="{{ route('public.counseling.sessions') }}#sessions" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                     <div class="flex items-center gap-3">
-                                        <span class="material-symbols-outlined text-green-600">psychology</span>
+                                        <span class="material-symbols-outlined text-cyan-600">psychology</span>
                                         <span>My Counseling</span>
                                     </div>
                                     @php
                                         $sessionsCount = auth()->user()->allCounselingSessions()->count();
                                     @endphp
                                     @if($sessionsCount > 0)
-                                        <span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $sessionsCount }}</span>
+                                        <span class="bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $sessionsCount }}</span>
                                     @endif
                                 </a>
                                 <a href="{{ route('public.assessments.index') }}#completed" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
@@ -240,7 +240,7 @@
                                 @if(auth()->user()->avatar)
                                     <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}" class="size-9 sm:size-10 rounded-full object-cover border-2 border-primary">
                                 @else
-                                    <div class="size-9 sm:size-10 bg-gradient-to-br from-primary to-green-600 rounded-full flex items-center justify-center text-sm font-bold text-white border-2 border-primary">
+                                    <div class="size-9 sm:size-10 bg-gradient-to-br from-primary to-cyan-600 rounded-full flex items-center justify-center text-sm font-bold text-white border-2 border-primary">
                                         {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
                                     </div>
                                 @endif
@@ -266,14 +266,14 @@
                                 <!-- User Menu -->
                                 <a href="{{ route('public.counseling.sessions') }}#sessions" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
                                     <div class="flex items-center gap-3">
-                                        <span class="material-symbols-outlined text-green-600">psychology</span>
+                                        <span class="material-symbols-outlined text-cyan-600">psychology</span>
                                         <span>My Counseling</span>
                                     </div>
                                     @php
                                         $sessionsCount = auth()->user()->allCounselingSessions()->count();
                                     @endphp
                                     @if($sessionsCount > 0)
-                                        <span class="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $sessionsCount }}</span>
+                                        <span class="bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 text-xs font-semibold px-2 py-1 rounded-full min-w-[20px] text-center">{{ $sessionsCount }}</span>
                                     @endif
                                 </a>
                                 <a href="{{ route('public.assessments.index') }}#completed" class="flex items-center justify-between px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
@@ -503,3 +503,4 @@ function toggleCounselingDropdown() {
     }
 }
 </script>
+
