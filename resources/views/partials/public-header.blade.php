@@ -23,15 +23,93 @@
                     </a>
                     <div class="absolute top-full left-0 mt-2 w-80 glass-dropdown rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                         <div class="p-2">
-                            <a href="{{ route('content.index') }}#filters-section" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                <div class="flex items-center gap-3">
-                                    <span class="material-symbols-outlined" style="color: rgb(34, 197, 94);">library_books</span>
-                                    <div>
-                                        <div class="font-medium">All Resources</div>
-                                        <div class="text-xs text-gray-500 dark:text-gray-400">Browse all educational content</div>
+                            <!-- All Resources with nested dropdown -->
+                            <div class="relative category-item group/allresources">
+                                <div class="flex items-center justify-between px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors cursor-pointer">
+                                    <a href="{{ route('content.index') }}#filters-section" class="flex items-center gap-3 flex-1">
+                                        <span class="material-symbols-outlined" style="color: rgb(34, 197, 94);">library_books</span>
+                                        <div>
+                                            <div class="font-medium">All Resources</div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">Browse all educational content</div>
+                                        </div>
+                                    </a>
+                                    <div class="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors">
+                                        <span class="material-symbols-outlined text-sm">chevron_right</span>
                                     </div>
                                 </div>
-                            </a>
+                                <!-- Nested All Resources Dropdown -->
+                                <div class="opacity-0 invisible group-hover/allresources:opacity-100 group-hover/allresources:visible absolute left-full top-0 ml-2 w-96 glass-dropdown rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50 transition-all duration-200">
+                                    <div class="p-3 max-h-96 overflow-y-auto custom-scrollbar">
+                                        <!-- Header with gradient -->
+                                        <div class="px-3 py-3 mb-2 bg-gradient-to-r from-green-50 to-green-50 dark:from-green-900/20 dark:to-green-900/20 rounded-lg border-l-4 border-green-500">
+                                            <div class="flex items-center gap-2">
+                                                <span class="material-symbols-outlined text-lg" style="color: rgb(34, 197, 94);">library_books</span>
+                                                <p class="text-sm font-bold text-gray-800 dark:text-gray-200">All Resources</p>
+                                            </div>
+                                            @php
+                                                $totalAllResources = \App\Models\EducationalContent::where('is_published', true)->count();
+                                            @endphp
+                                            <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">{{ $totalAllResources }} {{ Str::plural('resource', $totalAllResources) }} available</p>
+                                        </div>
+                                        
+                                        @php
+                                            $allResources = \App\Models\EducationalContent::where('is_published', true)->orderBy('created_at', 'desc')->limit(8)->get();
+                                        @endphp
+                                        @if($allResources->count() > 0)
+                                            <div class="space-y-1">
+                                                @foreach($allResources as $resource)
+                                                    <a href="{{ route('content.show', $resource) }}" class="group block px-3 py-2.5 text-sm hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 dark:hover:from-gray-700 dark:hover:to-gray-600 rounded-lg transition-all duration-200 border border-transparent hover:border-gray-200 dark:hover:border-gray-600">
+                                                        <div class="flex items-start gap-3">
+                                                            <!-- Resource Image -->
+                                                            <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
+                                                                @if($resource->featured_image)
+                                                                    <img src="{{ $resource->featured_image_url }}" alt="{{ $resource->title }}" class="w-full h-full object-cover">
+                                                                @else
+                                                                    <div class="w-full h-full flex items-center justify-center">
+                                                                        <span class="material-symbols-outlined text-gray-400 dark:text-gray-500">
+                                                                            @if($resource->content_type === 'video') play_circle
+                                                                            @elseif($resource->content_type === 'infographic') image
+                                                                            @elseif($resource->content_type === 'guide') menu_book
+                                                                            @else article
+                                                                            @endif
+                                                                        </span>
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+                                                            <div class="flex-1 min-w-0">
+                                                                <div class="font-semibold text-gray-800 dark:text-gray-200 group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors break-words line-clamp-2">{{ $resource->title }}</div>
+                                                                @if($resource->content_type)
+                                                                    <div class="flex items-center gap-1 mt-1">
+                                                                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
+                                                                            {{ ucfirst($resource->content_type) }}
+                                                                        </span>
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+                                                            <span class="material-symbols-outlined text-gray-300 dark:text-gray-600 text-sm opacity-0 group-hover:opacity-100 transition-all flex-shrink-0 mt-1" style="color: rgb(34, 197, 94);">arrow_forward</span>
+                                                        </div>
+                                                    </a>
+                                                @endforeach
+                                            </div>
+                                            
+                                            @if($totalAllResources > 8)
+                                                <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
+                                                    <a href="{{ route('content.index') }}" class="flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-green-600 to-green-600 hover:from-green-700 hover:to-green-700 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg">
+                                                        <span>View all {{ $totalAllResources }} resources</span>
+                                                        <span class="material-symbols-outlined text-base">arrow_forward</span>
+                                                    </a>
+                                                </div>
+                                            @endif
+                                        @else
+                                            <div class="px-4 py-8 text-center">
+                                                <span class="material-symbols-outlined text-gray-300 dark:text-gray-600 text-4xl mb-2">folder_open</span>
+                                                <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">No resources available</p>
+                                                <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">Check back later for updates</p>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
                             <div class="border-t border-gray-200 dark:border-gray-600 my-2"></div>
                             <div class="px-2 py-1">
                                 <p class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">By Category</p>
@@ -48,18 +126,18 @@
                                 ];
                             @endphp
                             @foreach($categories as $category)
-                                <div class="relative category-item">
+                                <div class="relative category-item group/category">
                                     <div class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors cursor-pointer">
                                         <a href="{{ route('content.index', ['category' => $category->slug]) }}" class="flex items-center gap-3 flex-1">
                                             <span class="material-symbols-outlined" style="color: rgb(34, 197, 94);">{{ $categoryIcons[$category->slug] ?? 'article' }}</span>
                                             <span>{{ $category->name }}</span>
                                         </a>
-                                        <button onclick="toggleCategoryResources(event, '{{ $category->slug }}')" class="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors">
+                                        <div class="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors">
                                             <span class="material-symbols-outlined text-sm">chevron_right</span>
-                                        </button>
+                                        </div>
                                     </div>
                                     <!-- Nested Resources Dropdown -->
-                                    <div id="resources-{{ $category->slug }}" class="hidden absolute left-full top-0 ml-2 w-96 glass-dropdown rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50 animate-fadeIn">
+                                    <div class="opacity-0 invisible group-hover/category:opacity-100 group-hover/category:visible absolute left-full top-0 ml-2 w-96 glass-dropdown rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50 transition-all duration-200">
                                         <div class="p-3 max-h-96 overflow-y-auto custom-scrollbar">
                                             <!-- Header with gradient -->
                                             <div class="px-3 py-3 mb-2 bg-gradient-to-r from-green-50 to-green-50 dark:from-green-900/20 dark:to-green-900/20 rounded-lg border-l-4 border-green-500">
@@ -80,22 +158,34 @@
                                                 <div class="space-y-1">
                                                     @foreach($resources as $resource)
                                                         <a href="{{ route('content.show', $resource) }}" class="group block px-3 py-2.5 text-sm hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 dark:hover:from-gray-700 dark:hover:to-gray-600 rounded-lg transition-all duration-200 border border-transparent hover:border-gray-200 dark:hover:border-gray-600">
-                                                            <div class="flex items-start gap-2">
-                                                                <span class="material-symbols-outlined text-gray-400 dark:text-gray-500 text-base mt-0.5 transition-colors flex-shrink-0" style="--hover-color: rgb(34, 197, 94);" onmouseenter="this.style.color='var(--hover-color)'" onmouseleave="this.style.color=''">description</span>
-                                                                <div class="flex-1 min-w-0">
-                                                                    <div class="font-semibold text-gray-800 dark:text-gray-200 group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors break-words">{{ $resource->title }}</div>
-                                                                    @if($resource->excerpt)
-                                                                        <div class="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 mt-1">{{ Str::limit($resource->excerpt, 80) }}</div>
+                                                            <div class="flex items-start gap-3">
+                                                                <!-- Resource Image -->
+                                                                <div class="w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
+                                                                    @if($resource->featured_image)
+                                                                        <img src="{{ $resource->featured_image_url }}" alt="{{ $resource->title }}" class="w-full h-full object-cover">
+                                                                    @else
+                                                                        <div class="w-full h-full flex items-center justify-center">
+                                                                            <span class="material-symbols-outlined text-gray-400 dark:text-gray-500">
+                                                                                @if($resource->content_type === 'video') play_circle
+                                                                                @elseif($resource->content_type === 'infographic') image
+                                                                                @elseif($resource->content_type === 'guide') menu_book
+                                                                                @else article
+                                                                                @endif
+                                                                            </span>
+                                                                        </div>
                                                                     @endif
+                                                                </div>
+                                                                <div class="flex-1 min-w-0">
+                                                                    <div class="font-semibold text-gray-800 dark:text-gray-200 group-hover:text-green-700 dark:group-hover:text-green-300 transition-colors break-words line-clamp-2">{{ $resource->title }}</div>
                                                                     @if($resource->content_type)
-                                                                        <div class="flex items-center gap-1 mt-1.5">
+                                                                        <div class="flex items-center gap-1 mt-1">
                                                                             <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
                                                                                 {{ ucfirst($resource->content_type) }}
                                                                             </span>
                                                                         </div>
                                                                     @endif
                                                                 </div>
-                                                                <span class="material-symbols-outlined text-gray-300 dark:text-gray-600 text-sm opacity-0 transition-all flex-shrink-0" style="--hover-color: rgb(34, 197, 94);" onmouseenter="this.parentElement.parentElement.parentElement.classList.contains('group') && (this.style.color='var(--hover-color)', this.style.opacity='1')" onmouseleave="this.style.color=''; this.style.opacity='0'">arrow_forward</span>
+                                                                <span class="material-symbols-outlined text-gray-300 dark:text-gray-600 text-sm opacity-0 group-hover:opacity-100 transition-all flex-shrink-0 mt-1" style="color: rgb(34, 197, 94);">arrow_forward</span>
                                                             </div>
                                                         </a>
                                                     @endforeach
@@ -131,26 +221,72 @@
                         <span>Counseling</span>
                         <span class="material-symbols-outlined text-sm">expand_more</span>
                     </a>
-                    <div class="absolute top-full left-0 mt-2 w-64 glass-dropdown rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <div class="absolute top-full left-0 mt-2 w-80 glass-dropdown rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                         <div class="p-2">
-                            <a href="{{ route('public.counseling.index') }}" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                <div class="flex items-center gap-3">
-                                    <span class="material-symbols-outlined" style="color: rgb(34, 197, 94);">support_agent</span>
-                                    <div>
-                                        <div class="font-medium">Our Services</div>
-                                        <div class="text-xs text-gray-500 dark:text-gray-400">Professional counseling support</div>
+                            <!-- Counseling Services with nested dropdown -->
+                            <div class="relative category-item group/services">
+                                <div class="flex items-center justify-between px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors cursor-pointer">
+                                    <a href="{{ route('public.counseling.index') }}" class="flex items-center gap-3 flex-1">
+                                        <span class="material-symbols-outlined" style="color: rgb(34, 197, 94);">support_agent</span>
+                                        <div>
+                                            <div class="font-medium">Counseling Services</div>
+                                            <div class="text-xs text-gray-500 dark:text-gray-400">Professional counseling support</div>
+                                        </div>
+                                    </a>
+                                    <div class="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors">
+                                        <span class="material-symbols-outlined text-sm">chevron_right</span>
                                     </div>
                                 </div>
-                            </a>
-                            <a href="{{ route('public.counseling.counselors') }}" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-                                <div class="flex items-center gap-3">
-                                    <span class="material-symbols-outlined text-green-600">group</span>
-                                    <div>
-                                        <div class="font-medium">Our Counselors</div>
-                                        <div class="text-xs text-gray-500 dark:text-gray-400">Meet our professional team</div>
+                                <!-- Nested Services Dropdown -->
+                                <div class="opacity-0 invisible group-hover/services:opacity-100 group-hover/services:visible absolute left-full top-0 ml-2 w-80 glass-dropdown rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 z-50 transition-all duration-200">
+                                    <div class="p-3 max-h-96 overflow-y-auto custom-scrollbar">
+                                        <!-- Header -->
+                                        <div class="px-3 py-3 mb-2 bg-gradient-to-r from-green-50 to-green-50 dark:from-green-900/20 dark:to-green-900/20 rounded-lg border-l-4 border-green-500">
+                                            <div class="flex items-center gap-2">
+                                                <span class="material-symbols-outlined text-lg" style="color: rgb(34, 197, 94);">psychology</span>
+                                                <p class="text-sm font-bold text-gray-800 dark:text-gray-200">Our Services</p>
+                                            </div>
+                                            <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Professional support for your wellbeing</p>
+                                        </div>
+                                        
+                                        <div class="space-y-1">
+                                            @php
+                                                $counselingServices = [
+                                                    ['name' => 'Individual Counseling', 'icon' => 'person', 'desc' => 'One-on-one personal support'],
+                                                    ['name' => 'Group Counseling', 'icon' => 'groups', 'desc' => 'Peer support groups'],
+                                                    ['name' => 'Substance Abuse Support', 'icon' => 'medication', 'desc' => 'Recovery and prevention'],
+                                                    ['name' => 'Mental Health Support', 'icon' => 'psychology', 'desc' => 'Anxiety, depression, stress'],
+                                                    ['name' => 'Crisis Intervention', 'icon' => 'emergency', 'desc' => 'Immediate support available'],
+                                                    ['name' => 'Academic Stress', 'icon' => 'school', 'desc' => 'Study and exam support'],
+                                                    ['name' => 'Family Counseling', 'icon' => 'family_restroom', 'desc' => 'Involving parents/guardians'],
+                                                    ['name' => 'Peer Pressure Support', 'icon' => 'diversity_3', 'desc' => 'Building confidence'],
+                                                ];
+                                            @endphp
+                                            @foreach($counselingServices as $service)
+                                                <div class="group/service px-3 py-2.5 text-sm hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 dark:hover:from-gray-700 dark:hover:to-gray-600 rounded-lg transition-all duration-200 border border-transparent hover:border-gray-200 dark:hover:border-gray-600">
+                                                    <div class="flex items-center gap-3">
+                                                        <div class="w-8 h-8 flex-shrink-0 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                                                            <span class="material-symbols-outlined text-green-600 dark:text-green-400 text-lg">{{ $service['icon'] }}</span>
+                                                        </div>
+                                                        <div class="flex-1 min-w-0">
+                                                            <div class="font-semibold text-gray-800 dark:text-gray-200 group-hover/service:text-green-700 dark:group-hover/service:text-green-300 transition-colors">{{ $service['name'] }}</div>
+                                                            <div class="text-xs text-gray-500 dark:text-gray-400">{{ $service['desc'] }}</div>
+                                                        </div>
+                                                        <span class="material-symbols-outlined text-gray-300 dark:text-gray-600 text-sm opacity-0 group-hover/service:opacity-100 transition-all flex-shrink-0" style="color: rgb(34, 197, 94);">check_circle</span>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        
+                                        <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-600">
+                                            <a href="{{ route('public.counseling.index') }}" class="flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-green-600 to-green-600 hover:from-green-700 hover:to-green-700 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg">
+                                                <span>Learn More About Our Services</span>
+                                                <span class="material-symbols-outlined text-base">arrow_forward</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
                             @auth
                                 <div class="border-t border-gray-200 dark:border-gray-600 my-2"></div>
                                 <a href="{{ route('public.counseling.sessions') }}" class="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
@@ -164,16 +300,16 @@
                                 </a>
                                 <a href="{{ route('public.counseling.sessions') }}" class="block px-4 py-3 text-sm text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors">
                                     <div class="flex items-center gap-3">
-                                        <span class="material-symbols-outlined">add</span>
-                                        <div class="font-medium">Request Session</div>
+                                        <span class="material-symbols-outlined">chat</span>
+                                        <div class="font-medium">Talk to a Counselor</div>
                                     </div>
                                 </a>
                             @else
                                 <div class="border-t border-gray-200 dark:border-gray-600 my-2"></div>
                                 <button onclick="openLoginModal()" class="block w-full px-4 py-3 text-sm text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors">
                                     <div class="flex items-center gap-3">
-                                        <span class="material-symbols-outlined">login</span>
-                                        <div class="font-medium">Login to Request Session</div>
+                                        <span class="material-symbols-outlined">chat</span>
+                                        <div class="font-medium">Talk to a Counselor</div>
                                     </div>
                                 </button>
                             @endauth

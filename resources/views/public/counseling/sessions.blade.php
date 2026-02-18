@@ -36,6 +36,109 @@
     </div>
 </section>
 
+<!-- How to Talk to a Counselor - Step by Step Guide -->
+<section class="py-12 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center gap-2 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-4 py-2 rounded-full text-sm font-semibold mb-3">
+                <span class="material-symbols-outlined !text-lg">info</span>
+                Getting Started
+            </div>
+            <h2 class="text-3xl lg:text-4xl font-black text-gray-900 dark:text-white mb-3">How to Talk to a Counselor</h2>
+            <p class="text-base text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Follow these simple steps to connect with a professional counselor and start your journey to better mental health.</p>
+        </div>
+
+        <!-- Steps -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <!-- Step 1 -->
+            <div class="relative group">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 border-2 border-gray-200 dark:border-gray-700 hover:border-green-500 dark:hover:border-green-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 h-full">
+                    <!-- Step Number -->
+                    <div class="absolute -top-3 -left-3 w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                        <span class="text-white font-bold text-lg">1</span>
+                    </div>
+                    
+                    <!-- Icon -->
+                    <div class="w-14 h-14 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center mb-3 mt-3 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-2xl text-green-600 dark:text-green-400">person_add</span>
+                    </div>
+                    
+                    <!-- Content -->
+                    <h3 class="text-base font-bold text-gray-900 dark:text-white mb-2">Create an Account</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Sign up or log in to access our counseling services. Your information is kept confidential and secure.</p>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="relative group">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 border-2 border-gray-200 dark:border-gray-700 hover:border-green-500 dark:hover:border-green-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 h-full">
+                    <!-- Step Number -->
+                    <div class="absolute -top-3 -left-3 w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                        <span class="text-white font-bold text-lg">2</span>
+                    </div>
+                    
+                    <!-- Icon -->
+                    <div class="w-14 h-14 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center mb-3 mt-3 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-2xl text-green-600 dark:text-green-400">edit_note</span>
+                    </div>
+                    
+                    <!-- Content -->
+                    <h3 class="text-base font-bold text-gray-900 dark:text-white mb-2">Request a Session</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Click "Talk to a Counselor" and fill out a brief form describing what you'd like to discuss. Choose individual or group sessions.</p>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="relative group">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 border-2 border-gray-200 dark:border-gray-700 hover:border-green-500 dark:hover:border-green-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 h-full">
+                    <!-- Step Number -->
+                    <div class="absolute -top-3 -left-3 w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                        <span class="text-white font-bold text-lg">3</span>
+                    </div>
+                    
+                    <!-- Icon -->
+                    <div class="w-14 h-14 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center mb-3 mt-3 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-2xl text-green-600 dark:text-green-400">schedule</span>
+                    </div>
+                    
+                    <!-- Content -->
+                    <h3 class="text-base font-bold text-gray-900 dark:text-white mb-2">Get Matched</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">A professional counselor will review your request within 24-48 hours and reach out to schedule your session.</p>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="relative group">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-5 border-2 border-gray-200 dark:border-gray-700 hover:border-green-500 dark:hover:border-green-500 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 h-full">
+                    <!-- Step Number -->
+                    <div class="absolute -top-3 -left-3 w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                        <span class="text-white font-bold text-lg">4</span>
+                    </div>
+                    
+                    <!-- Icon -->
+                    <div class="w-14 h-14 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center mb-3 mt-3 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-2xl text-green-600 dark:text-green-400">video_call</span>
+                    </div>
+                    
+                    <!-- Content -->
+                    <h3 class="text-base font-bold text-gray-900 dark:text-white mb-2">Attend Your Session</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Connect with your counselor via video call, phone, or in-person. Share your contact info when your session becomes active.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Button -->
+        <div class="text-center mt-8">
+            <button onclick="openRequestModal()" class="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-green-500/30 transition-all duration-200 transform hover:scale-105">
+                <span class="material-symbols-outlined !text-xl">chat</span>
+                Start Your First Session
+            </button>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-3">No commitment required • Free for students</p>
+        </div>
+    </div>
+</section>
+
 <!-- Sessions List -->
 <div id="sessions" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 scroll-mt-16">
     <div class="space-y-6">

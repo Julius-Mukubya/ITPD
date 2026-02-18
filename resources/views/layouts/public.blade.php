@@ -176,12 +176,12 @@
         }
         
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(0, 153, 204, 0.3);
+            background: rgba(34, 197, 94, 0.3);
             border-radius: 10px;
         }
         
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 153, 204, 0.5);
+            background: rgba(34, 197, 94, 0.5);
         }
         
         .dark .custom-scrollbar::-webkit-scrollbar-track {
@@ -189,11 +189,11 @@
         }
         
         .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(100, 200, 255, 0.3);
+            background: rgba(34, 197, 94, 0.4);
         }
         
         .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(100, 200, 255, 0.5);
+            background: rgba(34, 197, 94, 0.6);
         }
         
         /* Fade in animation */
