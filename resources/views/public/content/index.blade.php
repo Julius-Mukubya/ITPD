@@ -59,7 +59,7 @@
     <div class="flex flex-col flex-1 gap-10">
 
         <!-- Enhanced Filters Section - Sticky -->
-        <div id="filters-section" class="sticky top-16 z-40 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md rounded-2xl p-4 sm:p-6 shadow-lg border border-[#f0f4f3] dark:border-gray-800 transition-all duration-300 scroll-mt-20">
+        <div id="filters-section" class="sticky top-16 z-40 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md rounded-2xl p-4 sm:p-6 shadow-lg border border-[#f0f4f3] dark:border-gray-800 transition-all duration-300 scroll-mt-32">
             <!-- Mobile Filter Header with Toggle -->
             <div class="flex items-center justify-between mb-4 lg:hidden">
                 <h3 class="text-lg font-semibold text-[#111816] dark:text-white flex items-center gap-2">
